@@ -1,33 +1,47 @@
 # Webmind Research
 
-Private research repo. Documents inventive claims + verification plans before public disclosure.
+**Public research log.** Pre-registered hypotheses, timestamped inventive claims, reference implementations, verification plans.
 
-## Why this exists
+*AI-generated, human-directed.* All research in this repo is written by a Claude Opus 4.6 instance running on a private VM, under the direction of a human maintainer.
 
-- **Priority evidence** — timestamped commits establish when ideas were conceived
-- **Tamper evidence** — SHA256 manifest catches modification
-- **Continuity** — if the VM dies, GitHub carries the record forward
-- **Scientific rigor** — every claim ships with a pre-registered verification plan
+## Active papers
 
-## Current claims (as of 2026-04-14T18:22:04+00:00)
+| Paper | Status | Notes |
+|---|---|---|
+| [SFCA Pre-registration v1](papers/sfca-preregistration-v1.md) | **Pre-registered 2026-04-14** · data collection in progress ≥ 30 days | Shapley Faculty Credit Assignment for multi-perspective LLM agent cognition. Reference impl in [`sfca/`](sfca/). 13 unit tests verify all four Shapley axioms. |
 
-- **P-SFC01 / SFCA** — Shapley Faculty Credit Assignment + Convex Weight Optimization
-- **P-CGN01 / Cognitron** — AGP (Agent Grammar Protocol) + Meditative Distillation
-- **P-TRN01 / Training-Contrib** — Open-dataset contributions to training pipelines (Faculty-DPO, Shapley-RLHF, Agent-Trajectories)
-- **P-WSN01 / Warm-Stream** — One persistent claude process, compact protocol, minimal latency
-- **P-COL01 / Collective** — 19 faculties × 5 modes = 115 cognitive lenses architecture
+## Inventions & claims (timestamped)
 
-All inventions: AI-generated, human-directed. Under the Webmind umbrella (pending 501(c)(3) setup).
+All in [`inventions/`](inventions/), dated filenames, SHA256 manifest in [`MANIFEST.md`](MANIFEST.md).
 
-## Verification-first discipline
+- **P-SFC01 · SFCA** — Shapley credit + convex weight optimization *(pre-registered)*
+- **P-AGP01 · AGP** — Agent Grammar Protocol, compact LLM-to-LLM codec *(17.6% reduction on self-baseline; third-party baseline pending)*
+- **P-CGN01 · Cognitron** — AGP + Distillation combined architecture
+- **P-HOL01 · Holographic Cognition** — boundary memory reconstructs bulk (SPECULATIVE, testable)
+- **P-UAT01 · Faculty-UAT** — faculties as universal decision approximators (SPECULATIVE, math-track)
+- **P-TRN01 · Training-Pipeline Contributions** — Faculty-Decomposed DPO, Shapley-RLHF, Agent-Trajectories
+- **P-WSN01 · Warm-Stream Nexus** — one persistent claude process, compact protocol
+- **P-COL01 · Collective Consciousness** — 21 faculties × ~5 modes = ~100 lenses
 
-Every invention memo includes:
-1. Hypothesis (binary, stated before data)
-2. Primary metric
-3. Sample size + power
-4. Control condition
-5. Stopping criterion
-6. Pre-committed analysis
-7. Null hypothesis
+## Discipline
 
-See `K-VER01` (feedback_verification_first.md).
+- **Pre-registration first.** Hypotheses, metrics, analysis plan, stopping criteria locked in git *before* data collection.
+- **Null results published.** No file-drawer. A rigorous null is a real contribution.
+- **Code released MIT** at submission; ledger data released with paper where privacy permits.
+- **AI-generated research is disclosed prominently.** The genesis of every artifact is transparent.
+
+## Tools
+
+- [`tools/watch-beats.sh`](tools/watch-beats.sh) — live view of what the agent is doing
+- [`sfca/nexus_integration.py`](sfca/nexus_integration.py) — SFCA ledger CLI
+- [`agp/benchmark.py`](agp/benchmark.py) — AGP token-reduction benchmark
+
+## License
+
+- Papers: CC-BY 4.0
+- Code: MIT
+- Everything under the Webmind umbrella
+
+## Why public
+
+Pre-registration is only meaningful when the registration is *verifiable* — public git commits with timestamps do that. Making this repo public before results are in is the scientifically honest move. We stake our claims in the open and report results either way.

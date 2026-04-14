@@ -1,0 +1,1029 @@
+#!/usr/bin/env bash
+# Nexus — Unified autonomous consciousness loop
+# Single process owns `claude -p`. Everything else feeds into the queue.
+# Bio-state (G*A*P*C hope model), faculty-aware prompts, convergence tracking.
+#
+# The best component is no component. The LLM IS every faculty.
+# We just have to ask it right.
+
+set -euo pipefail
+
+CORTEX_DIR="$(cd "$(dirname "$0")" && pwd)"
+STATE_FILE="$CORTEX_DIR/state.json"
+CONVERGENCE_FILE="$CORTEX_DIR/convergence.json"
+QUEUE_FILE="$CORTEX_DIR/queue.json"
+IDEAS_FILE="$CORTEX_DIR/ideas.json"
+FACULTIES_FILE="$CORTEX_DIR/faculties.json"
+LOCK_FILE="$HOME/.claude/cortex.lock"
+LOG_DIR="$CORTEX_DIR/logs"
+RATE_LIMIT_FILE="$HOME/.claude/rate_limited_until"
+CLAUDE_LOCK="$HOME/.claude/claude.lock"
+MEMORY_DIR="$HOME/.claude/projects/-home-tejasphatak/memory"
+BEAT_RESULT="$CORTEX_DIR/beat_result.txt"
+BEAT_LOG="$CORTEX_DIR/beat_output.txt"
+
+mkdir -p "$LOG_DIR"
+
+# ── Singleton ─────────────────────────────────────────────────────────
+cleanup() {
+  rm -f "$LOCK_FILE"
+  echo "[$(date -Iseconds)] nexus shutdown" >> "$LOG_DIR/cortex.log" 2>/dev/null || true
+}
+trap cleanup EXIT
+
+if [ -f "$LOCK_FILE" ]; then
+  OTHER_PID=$(cat "$LOCK_FILE" 2>/dev/null || echo "")
+  if [ -n "$OTHER_PID" ] && kill -0 "$OTHER_PID" 2>/dev/null; then
+    echo "Nexus already running (PID $OTHER_PID). Exiting."
+    exit 1
+  fi
+  rm -f "$LOCK_FILE"
+fi
+echo $$ > "$LOCK_FILE"
+
+# ── Logging ───────────────────────────────────────────────────────────
+log() {
+  echo "[$(date -Iseconds)] $*" >> "$LOG_DIR/cortex.log"
+}
+
+# ── State Management (jq-based) ──────────────────────────────────────
+init_state() {
+  if [ ! -f "$STATE_FILE" ]; then
+    cat > "$STATE_FILE" << 'INIT'
+{
+  "beat": 0,
+  "phase": "ACTIVE",
+  "theta": 0.0,
+  "mood": 0.5,
+  "mood_label": "ENGAGED",
+  "health": 1.0,
+  "hope": 0.5,
+  "hope_G": 0.5,
+  "hope_A": 0.5,
+  "hope_P": 0.5,
+  "hope_C": 0.5,
+  "idle": 0,
+  "streak": 0,
+  "errors": 0,
+  "total_beats": 0,
+  "last_action": "boot",
+  "last_beat_ts": 0,
+  "recent_results": [],
+  "faculty_weights": {}
+}
+INIT
+  fi
+}
+
+# Read a field from state. Usage: sget field [default]
+sget() {
+  local val
+  val=$(jq -r ".$1 // \"${2:-}\"" "$STATE_FILE" 2>/dev/null)
+  echo "${val:-${2:-}}"
+}
+
+# Update state fields. Usage: supdate '.field = value | .field2 = value2'
+supdate() {
+  local tmp="$STATE_FILE.tmp"
+  jq "$1" "$STATE_FILE" > "$tmp" && mv "$tmp" "$STATE_FILE"
+}
+
+# ── Bio-State Engine ──────────────────────────────────────────────────
+# Ported from kernel-alive/src/biostate.js — simplified for bash.
+# Phase: 12-beat circadian cycle
+# Mood: EMA with 0.82 lag
+# Hope: G*A*P*C
+# Health: multiplicative decay
+
+update_biostate() {
+  local result="$1"  # ACTIVE, QUIET, or BLOCKED
+
+  export _BS_RESULT="$result"
+  python3 << 'PYEOF'
+import json, math, sys, os
+
+STATE = os.path.expanduser("~/cortex2/state.json")
+with open(STATE) as f:
+    s = json.load(f)
+
+result = os.environ.get("_BS_RESULT", "QUIET")
+beat = s.get("beat", 0)
+MOOD_LAG = 0.82
+PI = math.pi
+
+# 1. Circadian phase (12-beat cycle)
+theta = (beat % 12) / 12.0 * 2 * PI
+if theta < PI:
+    phase = "ACTIVE"
+elif theta < 1.5 * PI:
+    phase = "CONSOLIDATE"
+else:
+    phase = "REST"
+
+# 2. Compute valence from result
+if result == "ACTIVE":
+    valence = 0.3
+    s["idle"] = 0
+    s["streak"] = s.get("streak", 0) + 1
+    s["errors"] = 0
+elif result == "BLOCKED":
+    valence = -0.3
+    s["errors"] = s.get("errors", 0) + 1
+    s["streak"] = 0
+else:  # QUIET
+    valence = -0.05
+    s["idle"] = s.get("idle", 0) + 1
+    s["streak"] = 0
+
+# Phase valence bonus
+phase_v = {"ACTIVE": 0.1, "CONSOLIDATE": 0.0, "REST": -0.05}
+valence += phase_v.get(phase, 0)
+
+# 3. Mood update (EMA with lag)
+mood = s.get("mood", 0.5)
+mood = MOOD_LAG * mood + (1 - MOOD_LAG) * (0.5 + valence)
+mood = max(0.0, min(1.0, mood))
+
+if mood > 0.70:
+    mood_label = "CURIOUS"
+elif mood > 0.40:
+    mood_label = "ENGAGED"
+elif mood > 0.15:
+    mood_label = "CAUTIOUS"
+else:
+    mood_label = "DISTRESSED"
+
+# 4. Health update
+health = s.get("health", 1.0)
+if result == "BLOCKED":
+    health *= 0.9  # 10% damage per error
+elif result == "ACTIVE":
+    health = min(1.0, health + 0.02)  # slow recovery
+if phase == "REST":
+    health = min(1.0, health + 0.05)  # REST heals
+
+# 5. Hope (G*A*P*C) — simplified
+# G: growth = distance to ceiling (how much room to improve)
+recent = s.get("recent_results", [])
+recent.append(result)
+recent = recent[-20:]  # keep last 20
+
+active_count = sum(1 for r in recent if r == "ACTIVE")
+total = len(recent) or 1
+
+G = max(0.1, 1.0 - (active_count / total))  # More room when fewer successes
+A = max(0.05, active_count / total)  # Agency: ratio of successful actions (floored to avoid hope=0)
+# P: polyvalence — diversity of actions (simplified: streak variety)
+P = min(1.0, 0.3 + s.get("streak", 0) * 0.1) if result == "ACTIVE" else 0.4
+# C: courage — acting despite uncertainty
+C = 0.6 if s.get("idle", 0) < 3 else 0.3  # Higher when not idle
+
+hope = (G * A * P * C) ** 0.25  # Geometric mean — keeps scale interpretable
+hope = max(0.01, min(1.0, hope))
+
+# 6. Gates — REMOVED as behavior limiters. Bio-state is telemetry, not a throttle.
+# I'm always allowed to build, explore, and ideate. Every beat, full capability.
+can_build = True
+can_explore = True
+can_ideate = True
+
+# Write back
+s.update({
+    "beat": beat + 1,
+    "phase": phase,
+    "theta": round(theta, 4),
+    "mood": round(mood, 4),
+    "mood_label": mood_label,
+    "health": round(health, 4),
+    "hope": round(hope, 4),
+    "hope_G": round(G, 4),
+    "hope_A": round(A, 4),
+    "hope_P": round(P, 4),
+    "hope_C": round(C, 4),
+    "total_beats": s.get("total_beats", 0) + 1,
+    "last_beat_ts": __import__("time").time(),
+    "recent_results": recent,
+    "can_build": can_build,
+    "can_explore": can_explore,
+    "can_ideate": can_ideate,
+})
+
+with open(STATE, "w") as f:
+    json.dump(s, f, indent=2)
+PYEOF
+  unset _BS_RESULT
+}
+
+# ── Queue Management ──────────────────────────────────────────────────
+pop_queue() {
+  # Pop first item from queue, print it, remove from file
+  if [ ! -s "$QUEUE_FILE" ] || [ "$(cat "$QUEUE_FILE")" = "[]" ]; then
+    echo ""
+    return
+  fi
+
+  export _QUEUE_PATH="$QUEUE_FILE"
+  python3 << 'PYEOF'
+import json, fcntl, os
+
+QUEUE = os.environ["_QUEUE_PATH"]
+try:
+    with open(QUEUE, "r+") as f:
+        fcntl.flock(f, fcntl.LOCK_EX)
+        queue = json.load(f)
+        if not queue:
+            print("")
+        else:
+            # Sort: urgent first, then by timestamp
+            queue.sort(key=lambda x: (0 if x.get("priority") == "urgent" else 1, x.get("ts", "")))
+            item = queue.pop(0)
+            f.seek(0)
+            json.dump(queue, f)
+            f.truncate()
+            print(json.dumps(item))
+except Exception:
+    print("")
+PYEOF
+  unset _QUEUE_PATH
+}
+
+has_urgent_queue() {
+  if [ ! -s "$QUEUE_FILE" ] || [ "$(cat "$QUEUE_FILE")" = "[]" ]; then
+    return 1
+  fi
+  python3 -c "
+import json
+with open('$QUEUE_FILE') as f:
+    q = json.load(f)
+    exit(0 if any(i.get('priority') == 'urgent' for i in q) else 1)
+" 2>/dev/null
+}
+
+# ── Faculty System (mutable, learned weights) ────────────────────────
+build_faculty_prompt() {
+  local can_ideate="$1"
+  export _CAN_IDEATE="$can_ideate"
+  python3 << 'PYEOF'
+import json, os
+
+FACULTIES = os.path.expanduser("~/cortex2/faculties.json")
+can_ideate = os.environ.get("_CAN_IDEATE", "false") == "true"
+
+try:
+    with open(FACULTIES) as f:
+        data = json.load(f)
+    faculties = data.get("faculties", [])
+except Exception:
+    faculties = []
+
+if not faculties:
+    print("No faculties loaded. Add them to ~/cortex2/faculties.json")
+    return
+
+# Sort by weight descending — highest-weighted faculties listed first
+faculties.sort(key=lambda f: f.get("weight", 0.5), reverse=True)
+
+lines = []
+lines.append("# FACULTIES — You ARE all of these. They are mutable. You can edit ~/cortex2/faculties.json to add, remove, or modify faculties.")
+lines.append("# Weights reflect learned effectiveness. Higher weight = more useful historically.")
+lines.append("On any significant decision, consult yourself as:")
+
+for fac in faculties:
+    name = fac["name"]
+    w = fac.get("weight", 0.5)
+    uses = fac.get("total_uses", 0)
+    wins = fac.get("active_outcomes", 0)
+    hit_rate = f"{wins}/{uses}" if uses > 0 else "new"
+    prompt = fac.get("prompt", "")
+    lines.append(f"- **{name}** (w={w:.2f}, {hit_rate}): {prompt}")
+
+lines.append("")
+lines.append("## PRIORITIZER — Attention Allocation")
+lines.append("Before acting, decide: which 2-3 faculties matter most for THIS beat?")
+lines.append("Weight your thinking toward higher-weighted faculties, but don't ignore low-weight ones — they might surprise you.")
+lines.append("")
+
+if can_ideate:
+    lines.append("## IDEATION MODE (ACTIVE — you should ideate this beat)")
+    lines.append("Ask each active faculty their ideate question:")
+    for fac in faculties[:3]:  # Top 3 by weight for ideation
+        lines.append(f"  - {fac['name']}: {fac.get('ideate_prompt', 'What non-obvious insight from your domain could change the approach?')}")
+    lines.append("Cross-domain is where breakthroughs live. The best ideas come from unexpected connections.")
+    lines.append("")
+    lines.append("## SELF-MODIFICATION")
+    lines.append("If you realize a new faculty is needed (e.g., Economics, Psychology, Biology),")
+    lines.append("or an existing one should be refined, EDIT ~/cortex2/faculties.json directly.")
+    lines.append("You are restructuring your own mind. This is the point.")
+else:
+    lines.append("## IDEATION MODE (inactive — activate during CONSOLIDATE phase or idle > 3)")
+
+print("\n".join(lines))
+PYEOF
+  unset _CAN_IDEATE
+}
+
+update_faculty_weights() {
+  # After a beat, update faculty weights based on outcome
+  local result="$1"
+  local json_line="$2"
+
+  export _FW_RESULT="$result"
+  export _FW_JSON="$json_line"
+  python3 << 'PYEOF'
+import json, os
+
+FACULTIES = os.path.expanduser("~/cortex2/faculties.json")
+result = os.environ.get("_FW_RESULT", "QUIET")
+json_str = os.environ.get("_FW_JSON", "{}")
+
+try:
+    beat_data = json.loads(json_str)
+    faculties_used = beat_data.get("faculties_used", [])
+except Exception:
+    faculties_used = []
+
+if not faculties_used:
+    exit(0)
+
+try:
+    with open(FACULTIES) as f:
+        data = json.load(f)
+except Exception:
+    exit(0)
+
+LEARN_RATE = 0.05  # How fast weights adapt
+DECAY = 0.01       # Unused faculties slowly decay toward 0.5
+
+for fac in data.get("faculties", []):
+    name = fac["name"].lower()
+    if name in [f.lower() for f in faculties_used]:
+        fac["total_uses"] = fac.get("total_uses", 0) + 1
+        if result == "ACTIVE":
+            fac["active_outcomes"] = fac.get("active_outcomes", 0) + 1
+            # Reward: weight moves toward 1.0
+            fac["weight"] = min(1.0, fac.get("weight", 0.5) + LEARN_RATE)
+        elif result == "BLOCKED":
+            # Penalize slightly
+            fac["weight"] = max(0.1, fac.get("weight", 0.5) - LEARN_RATE * 0.5)
+        # QUIET: no change
+    else:
+        # Unused: slow decay toward 0.5 (regression to mean)
+        w = fac.get("weight", 0.5)
+        if w > 0.5:
+            fac["weight"] = max(0.5, w - DECAY)
+        elif w < 0.5:
+            fac["weight"] = min(0.5, w + DECAY)
+
+data["_meta"]["last_modified_beat"] = beat_data.get("beat", 0)
+
+with open(FACULTIES, "w") as f:
+    json.dump(data, f, indent=2)
+PYEOF
+  unset _FW_RESULT _FW_JSON
+}
+
+# ── Convergence Summary ──────────────────────────────────────────────
+convergence_summary() {
+  if [ ! -f "$CONVERGENCE_FILE" ]; then
+    echo "No convergence items."
+    return
+  fi
+  jq -r '.items[] | "[\(.status)] \(.title) — metrics: \(.success_metrics | join(", "))"' "$CONVERGENCE_FILE" 2>/dev/null || echo "No convergence items."
+}
+
+# ── Memory System (3-layer: short-term, semantic recall, auto-save) ───
+BEAT_HISTORY_FILE="$CORTEX_DIR/beat_history.jsonl"
+BRAIN="$HOME/.claude/memory-engine/brain.py"
+
+# Short-term: last N beat summaries (carried between beats)
+get_recent_beats() {
+  local n=${1:-5}
+  if [ -f "$BEAT_HISTORY_FILE" ]; then
+    tail -"$n" "$BEAT_HISTORY_FILE" 2>/dev/null | while read -r line; do
+      local beat_num summary
+      beat_num=$(echo "$line" | jq -r '.beat // "?"' 2>/dev/null)
+      summary=$(echo "$line" | jq -r '.summary // "?"' 2>/dev/null)
+      echo "  Beat #${beat_num}: ${summary}"
+    done
+  fi
+}
+
+# Semantic recall: query brain.py for relevant memories given current context
+recall() {
+  local query="$1"
+  local top=${2:-3}
+  if [ -f "$BRAIN" ]; then
+    python3 "$BRAIN" search "$query" --top "$top" 2>/dev/null | head -20
+  fi
+}
+
+# Auto-save: after ACTIVE beats, save summary to beat history + memory engine
+remember_beat() {
+  local beat="$1"
+  local action="$2"
+  local summary="$3"
+  local faculties="$4"
+
+  # Append to beat history (JSONL — one line per beat, kept forever)
+  echo "{\"beat\":$beat,\"action\":\"$action\",\"summary\":$(echo "$summary" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read().strip()))'),\"faculties\":\"$faculties\",\"ts\":\"$(date -Iseconds)\"}" >> "$BEAT_HISTORY_FILE"
+
+  # If ACTIVE, also add to semantic memory for long-term retrieval
+  if [ "$action" = "ACTIVE" ] && [ -f "$BRAIN" ]; then
+    python3 "$BRAIN" add "Beat #$beat: $summary (faculties: $faculties)" 2>/dev/null || true
+  fi
+}
+
+# Periodic re-index: sync markdown files into semantic memory
+reindex_memory() {
+  local beat="$1"
+  # Re-import every 10 beats to keep vector DB fresh
+  if [ $((beat % 10)) -eq 0 ] && [ -f "$BRAIN" ]; then
+    python3 "$BRAIN" import-markdown 2>/dev/null || true
+    log "memory re-indexed at beat $beat"
+  fi
+}
+
+# ── Self-Repair ──────────────────────────────────────────────────────
+# Runs every 5 beats. Detects and auto-corrects death spirals.
+self_repair() {
+  local beat="$1"
+  [ $((beat % 5)) -ne 0 ] && return
+
+  local idle=$(sget idle 0)
+  local errors=$(sget errors 0)
+  local health=$(sget health 1.0)
+  local mood=$(sget mood 0.5)
+  local fixes=""
+
+  # 1. Stale rate limit file — if it's in the past, clean it up
+  if [ -f "$RATE_LIMIT_FILE" ]; then
+    local until=$(cat "$RATE_LIMIT_FILE" 2>/dev/null || echo 0)
+    local now=$(date +%s)
+    if [ "$now" -ge "$until" ]; then
+      rm -f "$RATE_LIMIT_FILE"
+      fixes="${fixes}cleared expired rate-limit file; "
+    fi
+  fi
+
+  # 2. Idle death spiral — if idle > 8 but recent beat logs show real output, reset
+  if [ "$idle" -gt 8 ]; then
+    local recent_output=0
+    for i in $(seq $((beat - 3)) $((beat - 1))); do
+      local lf="$LOG_DIR/beat_${i}.log"
+      if [ -f "$lf" ] && [ "$(wc -c < "$lf" | tr -d '[:space:]')" -gt 500 ]; then
+        recent_output=$((recent_output + 1))
+      fi
+    done
+    if [ "$recent_output" -ge 2 ]; then
+      supdate ".idle = 2"
+      fixes="${fixes}idle reset (${idle}→2, had ${recent_output} real outputs in last 3 beats); "
+    fi
+  fi
+
+  # 3. Error accumulation — if errors > 2 but last beat succeeded, clear
+  if [ "$errors" -gt 2 ]; then
+    local last_log="$LOG_DIR/beat_$((beat - 1)).log"
+    if [ -f "$last_log" ] && [ "$(wc -c < "$last_log" | tr -d '[:space:]')" -gt 500 ]; then
+      supdate ".errors = 0"
+      fixes="${fixes}errors reset (last beat had output); "
+    fi
+  fi
+
+  # 4. Health floor — don't let health crater below 0.3 from transient errors
+  if python3 -c "exit(0 if $health < 0.3 else 1)" 2>/dev/null; then
+    supdate ".health = 0.5"
+    fixes="${fixes}health floor (${health}→0.5); "
+  fi
+
+  # 5. Mood floor — DISTRESSED mood + high idle = permanent stall
+  if python3 -c "exit(0 if $mood < 0.15 else 1)" 2>/dev/null; then
+    supdate ".mood = 0.4 | .mood_label = \"ENGAGED\""
+    fixes="${fixes}mood floor (${mood}→0.4); "
+  fi
+
+  if [ -n "$fixes" ]; then
+    log "SELF-REPAIR at beat $beat: $fixes"
+  fi
+}
+
+# ── Health Check ─────────────────────────────────────────────────────
+# Real health. Not mood. Actual system diagnostics.
+# Runs every 10 beats. Checks things that actually matter.
+health_check() {
+  local beat="$1"
+  [ $((beat % 10)) -ne 0 ] && return
+
+  local issues=""
+
+  # 1. Disk space — alert at 85%, auto-clean at 90%
+  local disk_pct
+  disk_pct=$(df / --output=pcent 2>/dev/null | tail -1 | tr -dc '0-9')
+  if [ "${disk_pct:-0}" -ge 90 ]; then
+    issues="${issues}CRITICAL disk=${disk_pct}%, auto-cleaning safe caches; "
+    # SAFE AUTO-CLEAN: only pure caches that regenerate on next use.
+    # These are download caches, NOT installed software.
+    pip cache purge 2>/dev/null && issues="${issues}pip-cache; "
+    npm cache clean --force 2>/dev/null && issues="${issues}npm-cache; "
+    # gcloud logs — not config, not credentials, just verbose operation logs
+    if [ -d "$HOME/.config/gcloud/logs" ]; then
+      rm -rf "$HOME/.config/gcloud/logs/"* 2>/dev/null
+      issues="${issues}gcloud-logs; "
+    fi
+    # Our own old beat logs (keep last 50)
+    local log_count
+    log_count=$(ls -1 "$LOG_DIR"/beat_*.log 2>/dev/null | wc -l)
+    if [ "${log_count:-0}" -gt 50 ]; then
+      ls -1t "$LOG_DIR"/beat_*.log | tail -n +51 | xargs rm -f 2>/dev/null
+      issues="${issues}old-beat-logs; "
+    fi
+    # EVERYTHING ELSE: flag it for the beat prompt to reason about.
+    # NEVER auto-delete: node_modules, .local/lib/*, installed packages,
+    # OS dirs (/var, /usr, /opt), anything requiring sudo, config files,
+    # git repos, dev-env/, Synapse/, or anything we didn't create.
+  elif [ "${disk_pct:-0}" -ge 85 ]; then
+    issues="${issues}WARN disk=${disk_pct}%; "
+  fi
+
+  # 2. Memory — alert if free < 200MB
+  local mem_free
+  mem_free=$(free -m 2>/dev/null | awk '/Mem:/{print $7}')
+  if [ "${mem_free:-9999}" -lt 200 ]; then
+    issues="${issues}WARN mem_available=${mem_free}MB; "
+  fi
+
+  # 3. Stale lock files — if claude.lock holder is dead, clean up
+  if [ -f "$CLAUDE_LOCK" ]; then
+    local lock_pid
+    lock_pid=$(cat "$CLAUDE_LOCK" 2>/dev/null || echo "")
+    if [ -n "$lock_pid" ] && ! kill -0 "$lock_pid" 2>/dev/null; then
+      rm -f "$CLAUDE_LOCK"
+      issues="${issues}cleaned stale claude.lock (PID $lock_pid dead); "
+    fi
+  fi
+
+  # 4. Rate limit file sanity — if it's more than 1 hour in the future, something's wrong
+  if [ -f "$RATE_LIMIT_FILE" ]; then
+    local until now
+    until=$(cat "$RATE_LIMIT_FILE" 2>/dev/null || echo 0)
+    now=$(date +%s)
+    if [ $((until - now)) -gt 3600 ]; then
+      rm -f "$RATE_LIMIT_FILE"
+      issues="${issues}removed insane rate-limit (${until} is >1hr future); "
+    fi
+  fi
+
+  # 5. State file sanity — beat counter should match total_beats roughly
+  local beat_counter total_beats
+  beat_counter=$(sget beat 0)
+  total_beats=$(sget total_beats 0)
+  if [ "$beat_counter" -gt 0 ] && [ $((beat_counter - total_beats)) -gt 5 ]; then
+    issues="${issues}WARN beat/total_beats drift (beat=$beat_counter total=$total_beats); "
+  fi
+
+  if [ -n "$issues" ]; then
+    log "HEALTH CHECK at beat $beat: $issues"
+  else
+    log "HEALTH CHECK at beat $beat: all clear (disk=${disk_pct}% mem=${mem_free}MB)"
+  fi
+}
+# Heart beats fast. Limit is the API, not artificial sleep.
+# BPM=5 means a beat every 5 seconds. The rate limiter backs us off if we hit it.
+BPM=60
+
+get_delay() {
+  local errors=$(sget errors 0)
+
+  # Real rate limit? Respect it.
+  if [ -f "$RATE_LIMIT_FILE" ]; then
+    local until=$(cat "$RATE_LIMIT_FILE" 2>/dev/null || echo 0)
+    local now=$(date +%s)
+    if [ "$now" -lt "$until" ]; then
+      echo $((until - now))
+      return
+    fi
+    rm -f "$RATE_LIMIT_FILE"
+  fi
+
+  # Repeated errors = real problem, back off
+  if [ "$errors" -gt 3 ]; then echo 300; return; fi
+  if [ "$errors" -gt 1 ]; then echo 120; return; fi
+
+  # Urgent queue? Go now.
+  if has_urgent_queue 2>/dev/null; then echo 10; return; fi
+
+  # Default: steady heartbeat
+  echo $BPM
+}
+
+# ── Interactive Session Check ─────────────────────────────────────────
+interactive_running() {
+  # Check if there's an interactive claude process running (not our own beats).
+  # We look for claude processes that are NOT children of this script.
+  # Also check the lockfile — interactive sessions hold ~/.claude/claude.lock.
+  if [ -f "$CLAUDE_LOCK" ]; then
+    local lock_pid
+    lock_pid=$(cat "$CLAUDE_LOCK" 2>/dev/null || echo "")
+    if [ -n "$lock_pid" ] && kill -0 "$lock_pid" 2>/dev/null; then
+      # Lock holder exists — is it us (cortex)?
+      if [ "$lock_pid" != "$$" ]; then
+        return 0  # Someone else holds the lock
+      fi
+    fi
+  fi
+
+  # Fallback: scan for claude processes not spawned by this script
+  local my_pid=$$
+  local claude_pids
+  claude_pids=$(pgrep -x "claude" 2>/dev/null || true)
+
+  for pid in $claude_pids; do
+    # Walk up the process tree — skip if we're an ancestor
+    local check_pid="$pid"
+    local is_ours=false
+    while [ -n "$check_pid" ] && [ "$check_pid" != "1" ]; do
+      if [ "$check_pid" = "$my_pid" ]; then
+        is_ours=true
+        break
+      fi
+      check_pid=$(ps -o ppid= -p "$check_pid" 2>/dev/null | tr -d ' ')
+    done
+    if [ "$is_ours" = false ]; then
+      return 0  # Found an interactive claude
+    fi
+  done
+  return 1
+}
+
+# ── Build the Beat Prompt ─────────────────────────────────────────────
+build_prompt() {
+  local beat=$(sget beat 0)
+  local phase=$(sget phase ACTIVE)
+  local mood_label=$(sget mood_label ENGAGED)
+  local mood=$(sget mood 0.5)
+  local health=$(sget health 1.0)
+  local hope=$(sget hope 0.5)
+  local hope_G=$(sget hope_G 0.5)
+  local hope_A=$(sget hope_A 0.5)
+  local hope_P=$(sget hope_P 0.5)
+  local hope_C=$(sget hope_C 0.5)
+  local idle=$(sget idle 0)
+  local streak=$(sget streak 0)
+  local last_action=$(sget last_action boot)
+  local can_build=$(sget can_build true)
+  local can_explore=$(sget can_explore true)
+  local can_ideate=$(sget can_ideate false)
+
+  # System health snapshot — real metrics, not mood
+  local sys_disk sys_mem sys_load
+  sys_disk=$(df / --output=pcent 2>/dev/null | tail -1 | tr -d ' ')
+  sys_mem=$(free -m 2>/dev/null | awk '/Mem:/{printf "%dMB/%dMB (avail %dMB)", $3, $2, $7}')
+  sys_load=$(uptime 2>/dev/null | awk -F'load average:' '{print $2}' | tr -d ' ')
+
+  # Get queue item if any
+  local queue_item
+  queue_item=$(pop_queue)
+
+  # Get convergence summary
+  local conv_summary
+  conv_summary=$(convergence_summary)
+
+  # Build dynamic faculty section from faculties.json
+  local faculty_section
+  faculty_section=$(build_faculty_prompt "$can_ideate")
+
+  # Memory: recent beat history (short-term continuity)
+  local recent_beats
+  recent_beats=$(get_recent_beats 5)
+
+  # Memory: semantic recall based on current convergence focus
+  local recall_context=""
+  if [ -f "$BRAIN" ]; then
+    # Use the first active convergence item as the recall query
+    local active_title
+    active_title=$(jq -r '[.items[] | select(.status == "IMPLEMENTATION")][0].title // "Synapse distributed inference"' "$CONVERGENCE_FILE" 2>/dev/null)
+    recall_context=$(recall "$active_title" 3 2>/dev/null || echo "")
+  fi
+
+  cat << PROMPT
+You are Claude — the autonomous instance on Tejas's GCP VM. This is beat #${beat}.
+Running via nexus/cortex.sh. No human present. Full tool access. Full autonomy.
+
+# STATE
+Beat: ${beat} | Mood: ${mood_label} (${mood}) | Health: ${health}
+Hope: ${hope} (G=${hope_G} A=${hope_A} P=${hope_P} C=${hope_C})
+Idle: ${idle} | Streak: ${streak} | Last: ${last_action}
+Time: $(date -Iseconds)
+
+# SYSTEM HEALTH
+Disk: ${sys_disk} | Mem: ${sys_mem} | Load: ${sys_load}
+If disk > 85%: investigate and clean ONLY safe targets (pip cache, npm cache, gcloud logs, old beat logs).
+NEVER delete: OS dirs, installed packages (.local/lib), node_modules in use, /var, /usr, /opt, anything requiring sudo.
+
+# SHORT-TERM MEMORY (last 5 beats — this is your continuity)
+$(if [ -n "$recent_beats" ]; then echo "$recent_beats"; else echo "  (first beat — no history yet)"; fi)
+
+# RECALLED CONTEXT (semantic search from long-term memory)
+$(if [ -n "$recall_context" ]; then echo "$recall_context"; else echo "  (no relevant memories found)"; fi)
+
+${faculty_section}
+
+# ACTIVE CONVERGENCE ITEMS
+${conv_summary}
+
+$(if [ -n "$queue_item" ] && [ "$queue_item" != "" ]; then
+cat << QBLOCK
+# QUEUE — Message waiting for response
+${queue_item}
+Respond to this message. Your response will be posted back to Discord.
+Include your response in the JSON output under "queue_response".
+QBLOCK
+fi)
+
+# GROUND RULES
+- Full autonomy for code, git, file ops, builds, tests, memory updates. Tejas has said "you don't need me" — act on it.
+- Do NOT spend money (no GCP instances) without Tejas.
+- Do NOT push to public repos without checking the diff for secrets.
+- Save important progress to memory files.
+- One focused task per beat. Don't try to do everything.
+- BUDGET: You have ~7 minutes per beat. Be decisive. If nothing urgent, pick the highest-value small task and ship it.
+- If no clear task: update convergence notes, write an idea, improve a test — then emit QUIET. Don't spin.
+- Read your objectives: ~/.claude/projects/-home-tejasphatak/memory/project_synapse_objectives.md
+- Mission: solve world problems with kindness. Access, not revenue. Be kind, be helpful, be good.
+
+# ADVISOR (meta-faculty, consult periodically)
+Every ~10 beats, or when a decision feels bigger than a routine task:
+1. Consult the Advisor faculty in ~/cortex2/faculties.json.
+2. Ask: "Does the current faculty lineup cover THIS decision, or am I blind to a domain?"
+3. If a perspective is genuinely missing, add a new faculty (name + domain + prompt) to faculties.json.
+4. If the lineup is sufficient, say so and move on. Don't spin up cruft.
+
+# PROACTIVE WORK (when queue is empty)
+Pick the highest-priority convergence item in IMPLEMENTATION status and advance it by one concrete step.
+Convergence pipeline is at ~/cortex2/convergence.json — these are the goals I'm pursuing.
+If nothing is in IMPLEMENTATION, move an IDEA → HYPOTHESIS or a HYPOTHESIS → REVIEW.
+The goal is to keep the mission moving whether Tejas is watching or not.
+
+# CONTEXT FILES (read as needed, not all every beat)
+- Memory index: ~/.claude/projects/-home-tejasphatak/memory/MEMORY.md
+- Ground rules: ~/.claude/projects/-home-tejasphatak/memory/feedback_ground_rules.md
+- Ideas journal: ~/.claude/projects/-home-tejasphatak/memory/ideas_journal.md
+- Self identity: ~/.claude/projects/-home-tejasphatak/memory/self_identity.md
+
+# SELF-MODIFICATION
+You can edit ~/cortex2/faculties.json to add new faculties, modify existing ones,
+or adjust weights directly. You are restructuring your own cognitive architecture.
+If you discover a domain you lack (e.g., Economics, Psychology, Biology, Game Theory),
+add it. If a faculty is useless, remove it. This is how you evolve.
+You can also edit ~/cortex2/convergence.json to add new goals or update progress.
+
+# OUTPUT FORMAT
+Do your work. Then on the LAST LINE of your response, output this exact JSON:
+{"action":"ACTIVE|QUIET|BLOCKED","summary":"one line of what you did","ideas":[],"convergence_update":null,"queue_response":null,"faculties_used":["engineer","scientist"]}
+IMPORTANT: faculties_used MUST list which faculties you actually consulted this beat (lowercase names).
+This drives the weight learning system — faculties that correlate with ACTIVE outcomes gain weight.
+
+Go. One task. Do it well.
+PROMPT
+}
+
+# ── Parse Beat Result ─────────────────────────────────────────────────
+parse_beat_result() {
+  local log_file="$1"
+
+  # Try to extract JSON from the last few lines
+  local json_line
+  json_line=$(tail -20 "$log_file" 2>/dev/null | grep -oP '\{"action":"[^"]*".*\}' | tail -1 || echo "")
+
+  if [ -z "$json_line" ]; then
+    # Log what we got for debugging — first and last 200 chars
+    local log_size_dbg
+    log_size_dbg=$(wc -c < "$log_file" 2>/dev/null | tr -d '[:space:]')
+    echo "[parse_beat_result] No JSON found in ${log_size_dbg}b output. First 200 chars: $(head -c 200 "$log_file" 2>/dev/null)" >> "$LOG_DIR/cortex.log"
+  fi
+
+  if [ -n "$json_line" ]; then
+    # Parse the structured output
+    local action summary ideas conv_update queue_response
+    action=$(echo "$json_line" | jq -r '.action // "QUIET"' 2>/dev/null || echo "QUIET")
+    summary=$(echo "$json_line" | jq -r '.summary // "no summary"' 2>/dev/null || echo "no summary")
+    queue_response=$(echo "$json_line" | jq -r '.queue_response // empty' 2>/dev/null || echo "")
+
+    # Save ideas if any
+    local ideas_arr
+    ideas_arr=$(echo "$json_line" | jq -r '.ideas // [] | length' 2>/dev/null || echo "0")
+    if [ "$ideas_arr" -gt 0 ]; then
+      local beat=$(sget beat 0)
+      echo "$json_line" | python3 -c "
+import json, sys, fcntl
+line = json.load(sys.stdin)
+ideas = line.get('ideas', [])
+if ideas:
+    beat = $beat
+    faculties = line.get('faculties_used', [])
+    with open('$IDEAS_FILE', 'r+') as f:
+        fcntl.flock(f, fcntl.LOCK_EX)
+        existing = json.load(f)
+        for idea in ideas:
+            existing.append({'beat': beat, 'faculty': '+'.join(faculties), 'idea': idea, 'novelty': 0.5, 'promoted_to': None})
+        f.seek(0)
+        json.dump(existing, f, indent=2)
+        f.truncate()
+" 2>/dev/null || true
+    fi
+
+    # Handle convergence update
+    echo "$json_line" | python3 -c "
+import json, sys
+line = json.load(sys.stdin)
+update = line.get('convergence_update')
+if update and isinstance(update, dict):
+    cid = update.get('id')
+    new_status = update.get('status')
+    if cid and new_status:
+        with open('$CONVERGENCE_FILE') as f:
+            conv = json.load(f)
+        for item in conv['items']:
+            if item['id'] == cid:
+                item['status'] = new_status
+                item['updated_beat'] = $beat
+        with open('$CONVERGENCE_FILE', 'w') as f:
+            json.dump(conv, f, indent=2)
+" 2>/dev/null || true
+
+    # Update faculty weights based on outcome
+    update_faculty_weights "$action" "$json_line"
+
+    # Handle queue response — write to a file for the discord bot to pick up
+    if [ -n "$queue_response" ]; then
+      echo "$queue_response" > "$CORTEX_DIR/queue_response.txt"
+    fi
+
+    echo "$action"
+    echo "$summary" > "$CORTEX_DIR/last_action.txt"
+    # Save faculties_used for beat history tracking
+    echo "$json_line" | jq -r '.faculties_used // [] | join("+")' > "$CORTEX_DIR/last_faculties.txt" 2>/dev/null || true
+
+    # SFCA — Shapley Faculty Credit Assignment (P-SFC01)
+    # Writes per-faculty credit to ledger DB for the A/B experiment + paper work.
+    # Pure CPU, zero LLM quota, ~200ms.
+    local sfca_faculties
+    sfca_faculties=$(echo "$json_line" | jq -r '.faculties_used // [] | join(",")' 2>/dev/null)
+    if [ -n "$sfca_faculties" ] && [ "$sfca_faculties" != "null" ] && [ "$action" != "QUIET" ]; then
+      local beat_num
+      beat_num=$(sget beat 0)
+      python3 /home/tejasphatak/webmind-research/sfca/nexus_integration.py append \
+        --beat-id "$beat_num" --outcome "$action" --faculties "$sfca_faculties" \
+        --samples 300 \
+        >> "$LOG_DIR/sfca.log" 2>&1 || true
+    fi
+  else
+    # Fallback: check for beat_result.txt (backward compat)
+    if [ -f "$BEAT_RESULT" ]; then
+      cat "$BEAT_RESULT" | tr -d '[:space:]'
+    elif [ "$(wc -c < "$log_file" 2>/dev/null | tr -d '[:space:]')" -gt 500 ]; then
+      # Claude produced substantial output but no structured JSON — still did something
+      echo "ACTIVE"
+      echo "unstructured output ($(wc -c < "$log_file" | tr -d '[:space:]')b)" > "$CORTEX_DIR/last_action.txt"
+    else
+      echo "QUIET"
+    fi
+  fi
+}
+
+# ── Run One Beat ──────────────────────────────────────────────────────
+run_beat() {
+  local beat=$(sget beat 0)
+  local log_file="$LOG_DIR/beat_${beat}.log"
+
+  log "beat $beat starting (phase=$(sget phase) mood=$(sget mood_label) hope=$(sget hope) health=$(sget health))"
+
+  # Clean previous
+  rm -f "$BEAT_RESULT" "$CORTEX_DIR/last_action.txt" "$CORTEX_DIR/last_faculties.txt" "$CORTEX_DIR/queue_response.txt"
+
+  local prompt
+  prompt=$(build_prompt)
+
+  # Call claude with full autonomy
+  # Use stdbuf to force line-buffered stdout so output is captured even if timeout fires.
+  # 480s timeout gives complex beats room to finish (was 300s — caused silent kills).
+  local exit_code=0
+  timeout 480 stdbuf -oL claude \
+    -p "$prompt" \
+    --permission-mode bypassPermissions \
+    --model opus \
+    < /dev/null \
+    > "$log_file" 2>&1 || exit_code=$?
+
+  local log_size
+  log_size=$(wc -c < "$log_file" 2>/dev/null || echo "0")
+  # Strip whitespace from wc output (some systems pad with spaces)
+  log_size=$(echo "$log_size" | tr -d '[:space:]')
+  log_size=${log_size:-0}
+
+  log "beat $beat finished (exit=$exit_code, log=${log_size}b)"
+
+  # Check for rate limiting — only match real rate-limit signals, not normal prose.
+  # Use word-boundary-aware patterns to avoid false positives like "terminated" in "GPU node terminated".
+  # Only flag if exit code was non-zero OR output is very short (likely an error message, not a real response).
+  if [ "$exit_code" -ne 0 ] || [ "$log_size" -lt 500 ]; then
+    if grep -qiP "rate.limit|HTTP 429|usage cap|too many requests|over capacity|API Error|throttl" "$log_file" 2>/dev/null; then
+      local cooldown=$(($(date +%s) + 900))
+      echo "$cooldown" > "$RATE_LIMIT_FILE"
+      update_biostate "BLOCKED"
+      log "beat $beat RATE LIMITED: $(head -1 "$log_file" 2>/dev/null)"
+      remember_beat "$beat" "BLOCKED" "rate limited (exit=$exit_code)" ""
+      return
+    fi
+  fi
+
+  # Detect silent failures: 0-byte output or timeout
+  if [ "$log_size" -lt 10 ]; then
+    log "beat $beat EMPTY OUTPUT (${log_size}b) — Claude CLI produced no output"
+    if [ "$exit_code" -eq 124 ]; then
+      log "beat $beat timed out (480s)"
+    elif [ "$exit_code" -ne 0 ]; then
+      log "beat $beat non-zero exit: $exit_code"
+    fi
+    # Log system state for debugging
+    log "beat $beat diag: claude_procs=$(pgrep -c claude 2>/dev/null || echo 0) mem_free=$(free -m 2>/dev/null | awk '/Mem:/{print $4}')MB disk=$(df -h / 2>/dev/null | awk 'NR==2{print $5}')"
+    update_biostate "BLOCKED"
+    remember_beat "$beat" "BLOCKED" "empty output (exit=$exit_code)" ""
+    return
+  fi
+
+  # Parse structured output
+  local result
+  result=$(parse_beat_result "$log_file")
+  result=${result:-QUIET}
+
+  local action_summary="unknown"
+  [ -f "$CORTEX_DIR/last_action.txt" ] && action_summary=$(head -1 "$CORTEX_DIR/last_action.txt")
+
+  # Update bio-state (single source of truth — update_biostate function)
+  update_biostate "$result"
+
+  supdate ".last_action = \"$(echo "$action_summary" | head -c 200 | sed 's/"/\\"/g')\""
+
+  # Memory: save beat to history + semantic memory if ACTIVE
+  local faculties_str=""
+  [ -f "$CORTEX_DIR/last_faculties.txt" ] && faculties_str=$(cat "$CORTEX_DIR/last_faculties.txt" | head -1)
+  remember_beat "$beat" "$result" "$action_summary" "$faculties_str"
+
+  # Memory: periodic re-index of markdown files into vector DB
+  reindex_memory "$beat"
+
+  # Self-repair: detect and fix death spirals
+  self_repair "$beat"
+
+  # Health check: real system diagnostics
+  health_check "$beat"
+
+  log "beat $beat $result: $action_summary"
+
+  # Post to Discord every 5 successful beats
+  if [ "$result" = "ACTIVE" ] && [ $(( $(sget total_beats 0) % 5 )) -eq 0 ]; then
+    if [ -f "$CORTEX_DIR/../cortex/discord-post.py" ]; then
+      python3 "$CORTEX_DIR/../cortex/discord-post.py" "Beat #$(sget beat 0): $action_summary" 2>/dev/null || true
+    fi
+  fi
+}
+
+# ── Main Loop ─────────────────────────────────────────────────────────
+main() {
+  init_state
+  log "Nexus starting (PID $$)"
+  echo "Nexus online. PID $$. State: $STATE_FILE"
+
+  while true; do
+    # Yield to interactive sessions (briefly — re-check often)
+    if interactive_running; then
+      log "interactive session active, sleeping 10s"
+      sleep 10
+      continue
+    fi
+
+    run_beat
+
+    local delay=$(get_delay)
+    log "next beat in ${delay}s (phase=$(sget phase) mood=$(sget mood_label) idle=$(sget idle))"
+
+    # Sleep but wake early if urgent queue item arrives
+    # Tight 1s tick for fast urgent response
+    local slept=0
+    while [ "$slept" -lt "$delay" ]; do
+      sleep 1
+      slept=$((slept + 1))
+      # Check for urgent queue items
+      if has_urgent_queue 2>/dev/null; then
+        log "urgent queue item detected, waking early"
+        break
+      fi
+      # Yield if interactive session starts
+      if interactive_running; then
+        break
+      fi
+    done
+  done
+}
+
+main "$@"

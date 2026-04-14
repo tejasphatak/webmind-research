@@ -259,6 +259,6 @@ All artifacts published under the Webmind umbrella.
 ---
 
 **Pre-registration integrity hash (of this file at commit time):**
-`7d817fdbc1fdd0f355246dd74d4b90ffa06267f433413aba2f54545243e44b0b`
+`6c0317b0bc7550a2f683cabcd376dd6e0367b1a05fe48a16a001b2fc5b90b04d`
 
 Future readers can verify this file hasn't been altered post-hoc by recomputing the SHA256 from the git-tracked content.

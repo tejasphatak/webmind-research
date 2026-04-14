@@ -74,9 +74,10 @@ def api(method: str, path: str, token: str, body: dict | None = None, headers: d
         sys.exit(f"OSF {method} {path} → HTTP {e.code}: {msg[:400]}")
 
 
-def upload_file(node_id: str, file_path: Path, token: str) -> str:
-    """Upload a file to the OSF Project's root folder. Returns file GUID."""
-    # OSF uses the WaterButler API for file uploads
+def upload_file(node_id: str, file_path: Path, token: str) -> str | None:
+    """Upload a file to the OSF Project's root folder. Returns file GUID or None on failure.
+    NOTE: WaterButler uploads with PAT auth can be flaky; we soft-fail here.
+    """
     url = f"https://files.osf.io/v1/resources/{node_id}/providers/osfstorage/?kind=file&name={file_path.name}"
     req = urlreq.Request(
         url,
@@ -92,8 +93,10 @@ def upload_file(node_id: str, file_path: Path, token: str) -> str:
             resp = json.loads(r.read())
             return resp.get("data", {}).get("id") or resp.get("guid", "?")
     except HTTPError as e:
-        msg = e.read().decode(errors="replace")
-        sys.exit(f"Upload {file_path.name} failed: HTTP {e.code}: {msg[:400]}")
+        msg = e.read().decode(errors="replace")[:200]
+        print(f"  ⚠  upload {file_path.name} soft-failed: HTTP {e.code}: {msg}")
+        print(f"     (continuing; artifact is linked via GitHub URL in the project description)")
+        return None
 
 
 def create_project(token: str, dry_run: bool = False) -> str:

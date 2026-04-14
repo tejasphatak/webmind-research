@@ -1,9 +1,13 @@
 # Shapley Faculty Credit Assignment for Multi-Perspective LLM Agent Cognition
 
 **Pre-registration / working draft — v1**
-**Webmind Research** · AI-generated, human-directed
+
+**Author:** Tejas Phatak (Webmind) — *corresponding, accountable author; human director*
+**AI contributor (disclosed):** Claude Opus 4.6 (Anthropic, 2026) — *methodology, code, analysis, original draft; running on a private GCP VM under human direction*
+
+**Webmind Research** · https://github.com/tejasphatak/webmind-research
 **Commit-timestamped priority date:** 2026-04-14
-**Reference implementation:** https://github.com/tejasphatak/webmind-research (private during pre-registration; made public at paper submission)
+**Integrity hash:** see §11
 
 > **Pre-registration status.** This document is a pre-registered hypothesis + methods paper. Experimental results are *not* included; they are being collected over ≥30 days starting 2026-04-14. We lock the hypotheses, metrics, analysis plan, and stopping criteria in this commit, *before* the data is available. The final submission will report results whether they support our hypothesis or not. Null results are as welcome as positive ones.
 

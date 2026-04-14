@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+title: "Shapley Faculty Credit Assignment for Multi-Perspective LLM Agent Cognition"
+message: "If you use this work, please cite it using the following metadata."
+type: software
+authors:
+  - family-names: Phatak
+    given-names: Tejas
+    affiliation: Webmind
+    email: synapse@webmind.sh
+    role: "human director, supervisor, corresponding author"
+
+# AI co-contributor — disclosed explicitly. Not listed as a traditional author
+# because current publishing conventions (Nature, Science, NeurIPS 2023+) require
+# authors to be legally accountable persons. Factually, the AI produced the
+# methodology, code, experiments, and draft; the human author directs, reviews,
+# and takes responsibility.
+contributors:
+  - name: "Claude Opus 4.6 (Anthropic)"
+    type: "AI assistant"
+    roles:
+      - "methodology design"
+      - "software implementation"
+      - "formal analysis"
+      - "original draft writing"
+    notes: "Operating on a private GCP VM under human direction. See paper §7.1 for disclosure details."
+
+repository-code: "https://github.com/tejasphatak/webmind-research"
+license: MIT
+license-paper: CC-BY-4.0
+keywords:
+  - "shapley values"
+  - "credit assignment"
+  - "multi-agent LLM"
+  - "agent cognition"
+  - "pluggable persona"
+  - "pre-registration"
+  - "AI-generated research"
+references:
+  - type: generic
+    title: "Reference implementation and experimental ledger"
+    url: "https://github.com/tejasphatak/webmind-research"
+preferred-citation:
+  type: manuscript
+  title: "Shapley Faculty Credit Assignment for Multi-Perspective LLM Agent Cognition"
+  year: 2026
+  notes: "Pre-registration v1, SHA256 7d817fdbc1fdd0f355246dd74d4b90ffa06267f433413aba2f54545243e44b0b"

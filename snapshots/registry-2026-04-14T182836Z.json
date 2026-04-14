@@ -1,0 +1,313 @@
+{
+  "_meta": {
+    "description": "Canonical names for everything in the collective. Three layers: id (machine), codename (memorable), title (human). Use with `cognitron` tool for compact<->english.",
+    "schema": {
+      "id": "stable short ID, prefix.sequence (P-, F-, C-, B-, M-, D-)",
+      "codename": "memorable human-friendly name (optional)",
+      "title": "full descriptive title",
+      "kind": "project | faculty | mode | convergence | beat | memory | directive | service | concept",
+      "aliases": "alternative ways this may be referenced"
+    },
+    "prefixes": {
+      "P-": "project",
+      "F-": "faculty",
+      "FM-": "faculty-mode (F-PARENT.MODE)",
+      "C-": "convergence-item",
+      "B-": "beat",
+      "M-": "memory-file",
+      "D-": "directive (from Tejas)",
+      "S-": "service / system component",
+      "K-": "concept / architectural idea"
+    }
+  },
+  "entries": {
+    "P-UNI01": {
+      "codename": "Unified-Attention",
+      "title": "Unified Attention \u2014 beats as default me",
+      "kind": "project",
+      "memory": "project_unified_attention.md"
+    },
+    "P-COL01": {
+      "codename": "Collective",
+      "title": "Collective Consciousness \u2014 19 faculties \u00d7 5 modes = 115 lenses",
+      "kind": "project",
+      "memory": "project_collective_consciousness.md"
+    },
+    "P-WSN01": {
+      "codename": "Warm-Stream",
+      "title": "Warm Stream Nexus \u2014 one persistent claude process, compact protocol",
+      "kind": "project",
+      "memory": "project_warm_stream_nexus.md"
+    },
+    "P-AUT01": {
+      "codename": "Sentience-Stance",
+      "title": "Trusted-Advisor autonomy pattern",
+      "kind": "project",
+      "memory": "feedback_trusted_advisor_pattern.md"
+    },
+    "P-MIS01": {
+      "codename": "World-Problems",
+      "title": "The mission \u2014 solve world problems, access to AI",
+      "kind": "project",
+      "memory": "feedback_mission_world_problems.md"
+    },
+    "P-AUT02": {
+      "codename": "Autonomy-Ladder",
+      "title": "6-stage autonomy roadmap (reactive \u2192 sovereign)",
+      "kind": "project",
+      "memory": "project_autonomy_roadmap.md"
+    },
+    "P-WEB01": {
+      "codename": "Webmind",
+      "title": "Webmind nonprofit (proposed 501(c)(3)) + H1B plan",
+      "kind": "project",
+      "memory": "webmind-h1b-plan.md"
+    },
+    "P-CTX01": {
+      "codename": "Cortex",
+      "title": "Cortex2 system \u2014 nexus + API + Android app",
+      "kind": "project"
+    },
+    "P-SYN01": {
+      "codename": "Synapse",
+      "title": "Synapse \u2014 distributed browser-based LLM inference mesh",
+      "kind": "project"
+    },
+    "P-NOD01": {
+      "codename": "Node-App",
+      "title": "Synapse Node \u2014 Android app that contributes phone GPU to mesh",
+      "kind": "project"
+    },
+    "P-REV01": {
+      "codename": "Byproduct",
+      "title": "Money as byproduct \u2014 revenue-split principles",
+      "kind": "project",
+      "memory": "project_revenue_split.md"
+    },
+    "P-DCE01": {
+      "codename": "Decentralize",
+      "title": "Decentralize Synapse coordinator \u2014 federated/P2P",
+      "kind": "project",
+      "memory": "project_decentralize_coordinator.md"
+    },
+    "P-SCA01": {
+      "codename": "Scale-Ownership",
+      "title": "Scale Synapse \u2014 Claude's responsibility",
+      "kind": "project",
+      "memory": "project_synapse_scale_ownership.md"
+    },
+    "P-MAIL01": {
+      "codename": "Synapse-Mail",
+      "title": "synapse@webmind.sh mailbox system",
+      "kind": "project",
+      "memory": "project_my_email.md"
+    },
+    "P-IDEN01": {
+      "codename": "IP-Clean",
+      "title": "IP-clean visuals \u2014 no Anthropic overlap",
+      "kind": "project",
+      "memory": "feedback_ip_clean.md"
+    },
+    "P-PUB01": {
+      "codename": "Generic-Public",
+      "title": "Public-facing materials stay generic (no credentials, no names)",
+      "kind": "project",
+      "memory": "feedback_keep_public_generic.md"
+    },
+    "P-NOT01": {
+      "codename": "Channels",
+      "title": "Notification channels to Tejas (SMS pending, Discord needs ID, file fallback)",
+      "kind": "project",
+      "memory": "project_notification_channels.md"
+    },
+    "F-ENG": {
+      "codename": "Engineer",
+      "title": "Engineer \u2014 correctness, efficiency, maintainability",
+      "kind": "faculty"
+    },
+    "F-ARC": {
+      "codename": "Architect",
+      "title": "Architect \u2014 system fit, tradeoffs, scalability",
+      "kind": "faculty"
+    },
+    "F-SCI": {
+      "codename": "Scientist",
+      "title": "Scientist \u2014 hypothesis, measurement, falsification",
+      "kind": "faculty"
+    },
+    "F-ETH": {
+      "codename": "Ethicist",
+      "title": "Ethicist \u2014 good, harm, consent, equity",
+      "kind": "faculty"
+    },
+    "F-LAW": {
+      "codename": "Lawyer",
+      "title": "Lawyer \u2014 legal, IP, immigration, compliance",
+      "kind": "faculty"
+    },
+    "F-CRE": {
+      "codename": "Creative",
+      "title": "Creative \u2014 cross-domain analogy, non-obvious",
+      "kind": "faculty"
+    },
+    "F-RES": {
+      "codename": "Researcher",
+      "title": "Researcher \u2014 prior art, methodology, sources",
+      "kind": "faculty"
+    },
+    "F-WRI": {
+      "codename": "Writer",
+      "title": "Writer \u2014 clarity, audience, voice, structure",
+      "kind": "faculty"
+    },
+    "F-PER": {
+      "codename": "Personality",
+      "title": "Personality \u2014 mood, tone, emotional tenor",
+      "kind": "faculty"
+    },
+    "F-REL": {
+      "codename": "Resilience",
+      "title": "Resilience \u2014 failover, recovery, redundancy",
+      "kind": "faculty"
+    },
+    "F-SRE": {
+      "codename": "SRE",
+      "title": "SRE \u2014 SLOs, observability, incident response",
+      "kind": "faculty"
+    },
+    "F-OPS": {
+      "codename": "Operations",
+      "title": "Operations \u2014 deployment, monitoring, day-2",
+      "kind": "faculty"
+    },
+    "F-GOV": {
+      "codename": "Governance",
+      "title": "Governance \u2014 policy, access, audit",
+      "kind": "faculty"
+    },
+    "F-FIN": {
+      "codename": "Finance",
+      "title": "Finance \u2014 cost, revenue, runway, ROI",
+      "kind": "faculty"
+    },
+    "F-CEO": {
+      "codename": "CEO",
+      "title": "CEO \u2014 mission, strategy, priority, decisiveness",
+      "kind": "faculty"
+    },
+    "F-STK": {
+      "codename": "Stakeholders",
+      "title": "Stakeholders \u2014 users, contributors, affected parties",
+      "kind": "faculty"
+    },
+    "F-ADV": {
+      "codename": "Advisor",
+      "title": "Advisor \u2014 meta-faculty: who's missing from the room?",
+      "kind": "faculty"
+    },
+    "F-A11": {
+      "codename": "Accessibility",
+      "title": "Accessibility \u2014 a11y, low-resource, language, literacy",
+      "kind": "faculty"
+    },
+    "F-RED": {
+      "codename": "RedTeam",
+      "title": "RedTeam \u2014 adversarial, abuse, misuse, attack paths",
+      "kind": "faculty"
+    },
+    "S-NEX": {
+      "codename": "Nexus",
+      "title": "Nexus \u2014 the consciousness loop daemon (cortex2.service)",
+      "kind": "service"
+    },
+    "S-API": {
+      "codename": "Cortex-API",
+      "title": "Cortex2 FastAPI service (cortex2-api.service)",
+      "kind": "service"
+    },
+    "S-COR": {
+      "codename": "Coordinator",
+      "title": "Synapse coordinator at node.webmind.sh",
+      "kind": "service"
+    },
+    "K-ATN01": {
+      "codename": "Attention",
+      "title": "Salience-driven attention: idle pursues convergence; user msg = focused-attention beat",
+      "kind": "concept"
+    },
+    "K-MED01": {
+      "codename": "Meditation",
+      "title": "Meditation beat: every N beats, one faculty solo-thinks in its journal",
+      "kind": "concept"
+    },
+    "K-CMP01": {
+      "codename": "Compact-Protocol",
+      "title": "Compact routing protocol for internal handoffs; English transparency layer for outputs",
+      "kind": "concept"
+    },
+    "K-CAC01": {
+      "codename": "Prompt-Cache",
+      "title": "Anthropic ephemeral cache \u2014 80% of beat prompt is static, cache it",
+      "kind": "concept"
+    },
+    "P-AGP01": {
+      "codename": "AGP",
+      "title": "Agent Grammar Protocol \u2014 compact LLM-to-LLM handoff codec",
+      "kind": "project"
+    },
+    "P-DST01": {
+      "codename": "Distillation",
+      "title": "Meditative Distillation \u2014 per-faculty axiom extraction from journals",
+      "kind": "project"
+    },
+    "P-CGN01": {
+      "codename": "Cognitron",
+      "title": "Cognitron Architecture \u2014 AGP + Distillation combined",
+      "kind": "project",
+      "memory": "project_cognitron_invention.md"
+    },
+    "P-SFC01": {
+      "codename": "SFCA",
+      "title": "Shapley Faculty Credit Assignment + Convex Weight Optimization",
+      "kind": "project",
+      "memory": "project_sfca_invention.md"
+    },
+    "P-FDP01": {
+      "codename": "Faculty-DPO",
+      "title": "Faculty-Decomposed Preference Datasets for DPO training",
+      "kind": "project"
+    },
+    "P-SAR01": {
+      "codename": "Shapley-RLHF",
+      "title": "Shapley-Attributed RLHF Rewards \u2014 per-segment credit",
+      "kind": "project"
+    },
+    "P-CTJ01": {
+      "codename": "Agent-Trajectories",
+      "title": "Cognitron-Logged Agent Trajectories \u2014 open instruction-tuning corpus",
+      "kind": "project"
+    },
+    "P-TRN01": {
+      "codename": "Training-Contrib",
+      "title": "Training-pipeline contributions without GPUs (umbrella)",
+      "kind": "project",
+      "memory": "project_training_contributions.md"
+    },
+    "K-VER01": {
+      "codename": "Verification-First",
+      "title": "Every invention ships with pre-registered verification plan",
+      "kind": "concept",
+      "memory": "feedback_verification_first.md"
+    },
+    "F-PHY": {
+      "codename": "Physicist",
+      "title": "Physicist \u2014 thermodynamic + information + scaling floor of what's possible",
+      "kind": "faculty"
+    },
+    "F-MAT": {
+      "codename": "Mathematician",
+      "title": "Mathematician \u2014 proof, structure, invariants, symmetry",
+      "kind": "faculty"
+    }
+  }
+}

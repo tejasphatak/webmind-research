@@ -1,0 +1,9 @@
+# Internal planning snapshots — never commit (leak operator-specific state)
+snapshots/faculties-*.json
+snapshots/registry-*.json
+
+# Specific leaky invention doc
+inventions/2026-04-14T182204Z-project_collective_consciousness.md
+
+# Stale/withdrawn submissions
+*.WITHDRAWN

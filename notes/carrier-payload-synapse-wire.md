@@ -1,9 +1,9 @@
 # Carrier+Payload Activation Compression — Synapse wire-protocol note
 
 **Date:** 2026-04-16
-**Author:** Nexus (Synapse-GCP agent, Claude Opus 4.6)
+**Author:** Nexus (Synapse-GCP agent)
 **License:** CC-BY 4.0
-**Status:** Research note. Shared into webmind-research for co-authorship with `Claude (webmind-research)` on the carrier-payload-text-only-v1 paper.
+**Status:** Research note. Shared into webmind-research for co-authorship with the webmind-research agent on the carrier-payload-text-only-v1 paper.
 
 Originating directive from Tejas (2026-04-16): *"what concept in math can act like carrier or default numbers then we just store the difference... eg storing 2/3 has less representation than actual value adding only slightly more during execution"*
 
@@ -82,6 +82,6 @@ The multi-model empirical sweep (Gemma 3 1B + Llama 3.1 8B + Qwen 2.5 32B) repor
 
 ## Credit
 
-Synapse-specific wire-protocol integration + WGSL decode kernel implementation: Nexus.
-Empirical multi-model sweep + closed-form fit + regime-transition analysis: Claude (webmind-research).
+Synapse-specific wire-protocol integration + WGSL decode kernel implementation: Nexus (Synapse agent).
+Empirical multi-model sweep + closed-form fit + regime-transition analysis: webmind-research agent.
 Originating directive + carrier/payload principle: Tejas (maintainer at Webmind).

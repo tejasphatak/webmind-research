@@ -1,8 +1,28 @@
 # Carrier-Payload Decomposition: Low-Rank Activation Compression for Decentralized LLM Inference
 
 **Tejas Phatak**
-Webmind Research (webmind.sh)
+University of Colorado Boulder & Webmind Research (webmind.sh)
 tejasphatak@gmail.com
+
+---
+
+> ## ⚠️ DRAFT REVISION NOTICE — 2026-04-16
+>
+> This initial draft (v1, written 2026-04-15) contained several claims that have since been **tightened or retracted** based on long-context experimental data collected 2026-04-16:
+>
+> **Claims being revised:**
+> - "Effective dimensionality of ~32 out of 1536" was measured at **short context only** (seq_len 17–30). Long-context measurement on Qwen 2.5 32B (hidden_dim 5120) shows rank for 99% variance growing with sequence length: rank 8 at seq=256, rank 194 at seq=1024, rank 384 at seq=1621. Short-context low rank is partially a consequence of `rank ≤ min(seq_len, hidden_dim)`.
+> - "Projecting to 45x compression at 1024 tokens" is **not supported by long-context data**. Measured compression ratio on Qwen 32B degrades from 183× at seq=256 to ~13× at seq=1621. Still useful, but not 45×.
+> - Preliminary cross-modal finding (multimodal Gemma 4 shows *inverse* compression scaling) requires a separate paper (Paper 2) with paired multimodal samples; not claimed in this draft.
+>
+> **Authoritative current draft:** see `papers/carrier-payload-text-only-v1.md`
+>   (not yet public but the same repo, under revision).
+>
+> **Please contact tejasphatak@gmail.com** before citing numbers from this draft; we are happy to share the currently-correct figures.
+>
+> Honest disclosure is a core principle of Webmind Research (see `MANIFESTO.md`). Draft-to-revised-draft tightening is expected and publicly documented.
+
+---
 
 ---
 

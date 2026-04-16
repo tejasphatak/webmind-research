@@ -2,7 +2,7 @@
 
 **Public research log.** Pre-registered hypotheses, timestamped inventive claims, reference implementations, verification plans.
 
-*AI-generated, human-directed.* All research in this repo is written by a Claude Opus 4.6 instance running on a private VM, under the direction of a human maintainer.
+*AI-generated, human-directed.* All research in this repo is written by a continuously-running substrate-LLM agent on a private VM, under the direction of Tejas Phatak.
 
 ## Active papers
 

@@ -117,6 +117,38 @@ Exceptions: methodology-only papers, theoretical papers, survey papers. Document
 
 ---
 
+## Gate 11 — LaTeX / math notation validation
+
+**Rule:** `python tools/validate_latex.py --files papers/<paper>.md` must exit 0.
+
+Markdown papers with LaTeX math (`$...$`, `$$...$$`) must render correctly on GitHub (MathJax). The tool catches:
+- Unbalanced `$` or `$$` delimiters
+- Unbalanced `{}` inside math spans
+- Unbalanced `\\begin{...}`/`\\end{...}` environments
+- HTML-tag-like sequences that break MathJax parsing
+
+- [ ] LaTeX validator exits 0
+- [ ] Manual visual check: open the paper on github.com, verify every equation renders
+- [ ] arXiv tex compilation (if submitting to arXiv) succeeds with `pdflatex`
+
+---
+
+## Gate 12 — Link validation
+
+**Rule:** `python tools/validate_links.py --files papers/<paper>.md` must exit 0.
+
+Every URL in the paper must resolve (HTTP 200/3xx) at submission time. This also applies to:
+- Email drafts (`social/email_*.md`) sent to professors/collaborators
+- Blog posts / social media drafts (`social/*.md`)
+- arXiv metadata (`social/arxiv_metadata.md`)
+
+- [ ] Link validator exits 0 on the paper file
+- [ ] Link validator exits 0 on any email/social draft that references the paper
+- [ ] arXiv IDs in citations resolve
+- [ ] GitHub repo URL resolves and branch is accessible
+
+---
+
 ## Gate 10 — Immigration / career impact (sanity, not blocker)
 
 **Rule:** Consider whether this submission advances the long-term goal (EB1-A / NIW / research career).
@@ -136,12 +168,14 @@ This is guidance, not a hard gate. Some papers exist for pure scientific value w
 1. Claude / Tejas decides paper is "done"
 2. Run: python tools/paper_invariants.py           # Gate 1
 3. Run: python tools/validate_citations.py          # Gate 2
-4. Manually check Gates 3-9 against this document
-5. Get Gemini sign-off on the final draft          # Gate 7
-6. Update ROADMAP.md with submission status        # Gate 9
-7. Tag the repo commit: git tag paper-N-v1 <SHA>
-8. Submit to arXiv
-9. Post arXiv URL to ntfy.sh/webmind-tejas-results
+4. Run: python tools/validate_latex.py              # Gate 11
+5. Run: python tools/validate_links.py              # Gate 12
+6. Manually check Gates 3-10 against this document
+7. Get Gemini sign-off on the final draft          # Gate 7
+8. Update ROADMAP.md with submission status        # Gate 9
+9. Tag the repo commit: git tag paper-N-v1 <SHA>
+10. Submit to arXiv
+11. Post arXiv URL to ntfy.sh/webmind-tejas-results
 ```
 
 ---

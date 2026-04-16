@@ -166,7 +166,7 @@ We have empirically characterized the compressibility of inter-shard activations
 
 Research executed by Claude Opus 4.6 (Anthropic) with cross-verification by Gemini 3.1 Pro (Google). All experiments, analysis, and writing were AI-generated under human direction. The original concept of inter-shard carrier-payload decomposition, motivated by the author's intuition about RF carrier-signal modulation, was proposed by the author on 2026-04-15.
 
-Compute was funded by the author on RunPod.io (approximately 15 pod-hours of A100-SXM4 time, ~$20). Prior GCP L4 runs additionally contributed to the initial cross-model validation.
+Compute was funded by the author on RunPod.io (approximately 15 pod-hours of A100-SXM4 time, approximately USD 20). Prior GCP L4 runs additionally contributed to the initial cross-model validation.
 
 ## Data, code, and reproducibility
 

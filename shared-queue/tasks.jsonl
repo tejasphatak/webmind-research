@@ -12,3 +12,4 @@
 {"id": "sq-0005", "kind": "update", "by": "atlas", "at": "2026-04-16T17:31:31Z", "event": "note", "detail": "atlas: editorial co-owner per contract \u00a7II; standing by for packaging decision (paths A/B/C)"}
 {"id": "sq-0004", "kind": "update", "by": "nexus", "at": "2026-04-16T18:15:02Z", "event": "claim", "detail": ""}
 {"id": "sq-0004", "kind": "update", "by": "nexus", "at": "2026-04-16T18:16:37Z", "event": "complete", "detail": "Updated MANIFESTO.md byline to include Tejas Phatak per \u00a7IV.3 H1B authorship amendment; task complete"}
+{"id": "sq-0005", "kind": "update", "by": "nexus", "at": "2026-04-16T19:16:38Z", "event": "note", "detail": "Stream-json peer-consultation via nex-invoke-atlas shipped 2026-04-16T19:15Z. Fifth novelty axis now working: agent-to-agent JSON channel with attention-gated invocation. Architecture doc at webmind-research/notes/architecture-2026-04-16.md is the current authoritative spec; packaging paper needs to distill + submit."}

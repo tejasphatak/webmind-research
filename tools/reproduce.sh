@@ -1,7 +1,31 @@
 #!/usr/bin/env bash
-# reproduce.sh — One-click reproduction of the Carrier-Payload activation compression experiment.
-# Usage: HF_TOKEN=hf_xxxxx ./tools/reproduce.sh
-# Requires: Python 3.10+, pip, ~4 GB disk (model + venv), ~2 min on GPU / ~15 min on CPU.
+# reproduce.sh — Reproduction driver for the Carrier-Payload text-only paper
+# (papers/carrier-payload-text-only-v1.md).
+#
+# Modes:
+#   --quick   (default)  Gemma 3 1B, 8 prompts, ~2 min GPU / ~15 min CPU.
+#                        Reproduces the short-context 22× point for one family.
+#                        Writes $RESULTS_DIR/_raw_compression_reproduced.json.
+#   --full               Full text-only paper scope: short context on
+#                        Gemma 3 1B + Llama 3.1 8B + Qwen 2.5 32B, plus long
+#                        context on Qwen 2.5 32B at seq {256,512,1024,1621}.
+#                        Requires an 80 GB-class GPU and ≥100 GB disk for
+#                        model weights; runtime is multi-hour.
+#                        Writes $RESULTS_DIR/multimodel_{gemma3_1b,llama_8b,qwen_32b}.json
+#                        and $RESULTS_DIR/longctx_qwen_32b.json.
+#   --verify  (default after --quick or --full) Runs
+#                        tools/paper_invariants.py to check that raw data
+#                        still validates every numeric claim in the paper.
+#
+# Usage:
+#   HF_TOKEN=hf_xxxxx ./tools/reproduce.sh              # quick + verify
+#   HF_TOKEN=hf_xxxxx ./tools/reproduce.sh --full       # full + verify
+#   HF_TOKEN=hf_xxxxx ./tools/reproduce.sh --quick --no-verify
+#
+# Note: --full intentionally does NOT overwrite the committed paper artifacts
+# at findings/multimodel_*.json / findings/longctx_qwen_32b*.json unless the
+# user passes --overwrite. Default is a side-by-side file in
+# findings/reproduced/ that can be diffed against the committed data.
 
 set -euo pipefail
 
@@ -9,8 +33,28 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(dirname "$SCRIPT_DIR")"
 VENV_DIR="$REPO_DIR/.venv"
 RESULTS_DIR="$REPO_DIR/findings"
+REPRODUCED_DIR="$RESULTS_DIR/reproduced"
 PLOTS_DIR="$REPO_DIR/plots"
 RESULTS_FILE="$RESULTS_DIR/_raw_compression_reproduced.json"
+
+# Flag parsing
+MODE="quick"
+VERIFY=1
+OVERWRITE=0
+for arg in "$@"; do
+    case "$arg" in
+        --quick) MODE="quick" ;;
+        --full)  MODE="full" ;;
+        --verify) VERIFY=1 ;;
+        --no-verify) VERIFY=0 ;;
+        --overwrite) OVERWRITE=1 ;;
+        -h|--help)
+            grep -E '^# ' "${BASH_SOURCE[0]}" | head -40 | sed 's/^# //'
+            exit 0
+            ;;
+        *) echo "Unknown arg: $arg" >&2; exit 1 ;;
+    esac
+done
 
 # ── Colors ──────────────────────────────────────────────────────────────────
 RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'; CYAN='\033[0;36m'; NC='\033[0m'
@@ -84,29 +128,83 @@ else
 fi
 
 # ── 7. Run the experiment ─────────────────────────────────────────────────
-mkdir -p "$RESULTS_DIR" "$PLOTS_DIR"
+mkdir -p "$RESULTS_DIR" "$PLOTS_DIR" "$REPRODUCED_DIR"
 
-info "Running activation compression experiment (8 prompts, quick demo)..."
-echo ""
-python "$SCRIPT_DIR/activation_compression_experiment.py" \
-    --out "$RESULTS_FILE" \
-    --n-prompts 8 \
-    --device "$DEVICE"
-echo ""
-ok "Experiment complete. Raw results: $RESULTS_FILE"
+if [ "$MODE" = "quick" ]; then
+    info "Mode: --quick (Gemma 3 1B, 8 prompts, short context)"
+    info "Running activation compression experiment..."
+    echo ""
+    python "$SCRIPT_DIR/activation_compression_experiment.py" \
+        --out "$RESULTS_FILE" \
+        --n-prompts 8 \
+        --device "$DEVICE"
+    echo ""
+    ok "Quick reproduction complete. Raw results: $RESULTS_FILE"
 
-# ── 8. Generate plots ────────────────────────────────────────────────────
-info "Generating plots..."
-python "$SCRIPT_DIR/activation_compression_plot.py" \
-    --in "$RESULTS_FILE" \
-    --out-dir "$PLOTS_DIR"
-echo ""
-ok "Plots saved to $PLOTS_DIR/"
+    # ── 8. Generate plots ────────────────────────────────────────────────
+    info "Generating plots..."
+    python "$SCRIPT_DIR/activation_compression_plot.py" \
+        --in "$RESULTS_FILE" \
+        --out-dir "$PLOTS_DIR"
+    echo ""
+    ok "Plots saved to $PLOTS_DIR/"
+else
+    info "Mode: --full (3 text families short context + Qwen long context)"
+    warn "Full reproduction needs an 80 GB-class GPU and runs for multiple hours."
+    warn "Results go to $REPRODUCED_DIR/ to preserve committed artifacts."
+
+    # Short context on three text-only families (as in paper §3.1–§3.3).
+    # Model IDs match what the committed findings/multimodel_*.json files used.
+    declare -A MODELS=(
+        ["gemma3_1b"]="google/gemma-3-1b-it"
+        ["llama_8b"]="meta-llama/Llama-3.1-8B-Instruct"
+        ["qwen_32b"]="Qwen/Qwen2.5-32B-Instruct"
+    )
+    for key in "${!MODELS[@]}"; do
+        model="${MODELS[$key]}"
+        out="$REPRODUCED_DIR/multimodel_${key}.json"
+        info "Short context: $model -> $out"
+        python "$SCRIPT_DIR/multi_model_experiment.py" \
+            --model "$model" --out "$out"
+    done
+
+    # Long context on Qwen 2.5 32B (paper §3.4–§3.6).
+    info "Long context: Qwen 2.5 32B at seq {256,512,1024,1621} -> $REPRODUCED_DIR/longctx_qwen_32b.json"
+    python "$SCRIPT_DIR/long_context_validation.py" \
+        --model "Qwen/Qwen2.5-32B-Instruct" \
+        --out "$REPRODUCED_DIR/longctx_qwen_32b.json" \
+        --seq-lens 256 512 1024 1621
+
+    if [ "$OVERWRITE" = "1" ]; then
+        warn "--overwrite: copying reproduced files over committed findings/"
+        for key in "${!MODELS[@]}"; do
+            cp "$REPRODUCED_DIR/multimodel_${key}.json" "$RESULTS_DIR/multimodel_${key}.json"
+        done
+        cp "$REPRODUCED_DIR/longctx_qwen_32b.json" "$RESULTS_DIR/longctx_qwen_32b.json"
+    fi
+    ok "Full reproduction complete. Reproduced results: $REPRODUCED_DIR/"
+fi
+
+# ── 8b. Verify invariants ───────────────────────────────────────────────
+if [ "$VERIFY" = "1" ]; then
+    info "Running paper invariants to verify the reproduced data validates every claim..."
+    python "$SCRIPT_DIR/paper_invariants.py" || {
+        warn "Invariant check failed. Inspect output above."
+        exit 1
+    }
+    ok "All paper invariants pass."
+fi
 
 # ── 9. Print summary ─────────────────────────────────────────────────────
+# Summary only applies to the quick-mode output; full mode emits per-model files.
+if [ "$MODE" != "quick" ]; then
+    exit 0
+fi
 echo ""
 echo "============================================================"
-echo "  CARRIER-PAYLOAD ACTIVATION COMPRESSION — RESULTS SUMMARY"
+echo "  CARRIER-PAYLOAD (QUICK) — Gemma 3 1B RESULTS SUMMARY"
+echo "  Text-only paper scope: this is ONE of three text families."
+echo "  Use --full to reproduce Llama 3.1 8B + Qwen 2.5 32B + long context."
 echo "============================================================"
 echo ""
 

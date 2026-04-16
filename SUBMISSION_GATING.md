@@ -133,6 +133,23 @@ Markdown papers with LaTeX math (`$...$`, `$$...$$`) must render correctly on Gi
 
 ---
 
+## Gate 13 — External-claim validation (third-party / co-author numbers)
+
+**Rule:** Every numeric claim that was NOT measured in this repo's raw data — including claims from co-authors (Nexus, collaborators), cited prior work, or deployment projections — must be either (a) backed by raw data in the repo and invariant-checked, or (b) explicitly labeled as "projection / unvalidated / deployment-model-only" with a clear scope note in the paper text AND recorded in the Limitations section.
+
+**Why this gate exists:** On 2026-04-16, during paper merge with Nexus's co-authorship content, Triadic initially integrated Nex's "36× / 70× at ~128 / ~65 bytes per hop" numbers as if they were measured results. They are actually *formula projections* under the shared-basis deployment model, not yet empirically measured against Synapse's live wire traffic. Tejas caught the leak before push. Gate 13 codifies the fix: any external numeric claim must pass through this validation before it can enter a paper's body text.
+
+**Checklist:**
+- [ ] For every numeric claim in the paper: is it in the repo's raw data?
+  - YES → add an invariant in `tools/paper_invariants.py` that checks it.
+  - NO → add a scope qualifier in the paper text (e.g., "projected under the shared-basis deployment model", "not empirically validated in this paper") AND add a corresponding entry to the Limitations section.
+- [ ] Co-author content (e.g., a research note from Nexus) is not copied verbatim; numbers are filtered through the gate above.
+- [ ] If you find yourself writing "~" or "approximately" next to a compression/accuracy number sourced from outside this repo, the number is a projection and must be labeled as such.
+
+**Blocker example:** A co-author's memo claims "70× compression at 65 bytes/hop" on a system that hasn't been measured by us. If we paste this verbatim into the paper body without the scope qualifier, we're making an empirical claim we don't own. Fix: qualify as "projected under [specific deployment model], not live-measured in this paper; companion note pending."
+
+---
+
 ## Gate 12 — Link validation
 
 **Rule:** `python tools/validate_links.py --files papers/<paper>.md` must exit 0.
@@ -165,17 +182,22 @@ This is guidance, not a hard gate. Some papers exist for pure scientific value w
 ## The gating workflow
 
 ```
-1. Claude / Tejas decides paper is "done"
+1. Triadic / Nexus / Tejas decides paper is "done"
 2. Run: python tools/paper_invariants.py           # Gate 1
 3. Run: python tools/validate_citations.py          # Gate 2
 4. Run: python tools/validate_latex.py              # Gate 11
 5. Run: python tools/validate_links.py              # Gate 12
-6. Manually check Gates 3-10 against this document
-7. Get Gemini sign-off on the final draft          # Gate 7
-8. Update ROADMAP.md with submission status        # Gate 9
-9. Tag the repo commit: git tag paper-N-v1 <SHA>
-10. Submit to arXiv
-11. Post arXiv URL to ntfy.sh/webmind-tejas-results
+6. MANUAL pass over every numeric claim — is it in raw data?
+   - YES → already invariant-checked.
+   - NO → must be labeled "projected / unvalidated" in paper AND
+           listed in Limitations.                 # Gate 13
+7. Manually check Gates 3-10 against this document
+8. Get Gemini sign-off on the final draft          # Gate 7
+9. Update ROADMAP.md with submission status        # Gate 9
+10. Tag the repo commit: git tag paper-N-v1 <SHA>
+11. Submit to arXiv (via Tejas's account; endorsement via Path A/B/C)
+12. Post arXiv URL to ntfy topic (webmind-tejas-results — Tejas only,
+    not public discussion)
 ```
 
 ---

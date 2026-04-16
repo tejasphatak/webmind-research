@@ -382,25 +382,31 @@ This research was conducted at Webmind Research (webmind.sh) under the direction
 
 ## References
 
-[1] A. Borzunov, D. Baranchuk, T. Dettmers, M. Riabinin, Y. Belkada, A. Chumachenko, P. Samygin, C. Raffel. "Petals: Collaborative Inference and Fine-tuning of Large Models." *Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (ACL)*, 2023.
+[1] A. Borzunov, D. Baranchuk, T. Dettmers, M. Riabinin, Y. Belkada, A. Chumachenko, P. Samygin, C. Raffel. "Petals: Collaborative Inference and Fine-tuning of Large Models." *Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (ACL 2023 System Demonstrations)*, pp. 558–568, Toronto, 2023. arXiv:2209.01188.
 
-[2] J. Lei, Y. Sun, et al. "opML: Optimistic Machine Learning on Blockchain." *arXiv preprint*, 2024.
+[2] K. D. Conway, C. So, X. Yu, K. Wong. "opML: Optimistic Machine Learning on Blockchain." *arXiv preprint arXiv:2401.17555*, 2024.
 
-[3] D. Kang, T. Hashimoto, I. Stoica, Y. Sun. "Scaling up Trustless DNN Inference with Zero-Knowledge Proofs." *arXiv preprint*, 2024.
+[3] D. Kang, T. Hashimoto, I. Stoica, Y. Sun. "Scaling up Trustless DNN Inference with Zero-Knowledge Proofs." *arXiv preprint arXiv:2210.08674*, 2022.
 
-[4] Z. Ghodsi, T. Gu, S. Garg. "SafetyNets: Verifiable Execution of Deep Neural Networks on an Untrusted Cloud." *Advances in Neural Information Processing Systems (NeurIPS)*, 2017.
+[4] Z. Ghodsi, T. Gu, S. Garg. "SafetyNets: Verifiable Execution of Deep Neural Networks on an Untrusted Cloud." *Advances in Neural Information Processing Systems (NIPS 2017)*. arXiv:1706.10268.
 
-[5] K. Ethayarajh. "How Contextual are Contextualized Word Representations? Comparing the Geometry of BERT, ELMo, and GPT-2 Representations." *Proceedings of EMNLP-IJCNLP*, 2019.
+[5] K. Ethayarajh. "How Contextual are Contextualized Word Representations? Comparing the Geometry of BERT, ELMo, and GPT-2 Embeddings." *Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing (EMNLP-IJCNLP 2019)*, pp. 55–65, Hong Kong. arXiv:1909.00512.
 
-[6] A. Aghajanyan, L. Zettlemoyer, S. Gupta. "Intrinsic Dimensionality Explains the Effectiveness of Language Model Fine-Tuning." *Proceedings of the 59th Annual Meeting of the ACL*, 2021.
+[6] A. Aghajanyan, S. Gupta, L. Zettlemoyer. "Intrinsic Dimensionality Explains the Effectiveness of Language Model Fine-Tuning." *Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics (ACL-IJCNLP 2021)*, Outstanding Paper, pp. 7319–7328, 2021. arXiv:2012.13255.
 
-[7] T. Dettmers, M. Lewis, Y. Belkada, L. Zettlemoyer. "LLM.int8(): 8-bit Matrix Multiplication for Transformers at Scale." *Advances in Neural Information Processing Systems (NeurIPS)*, 2022.
+[7] T. Dettmers, M. Lewis, Y. Belkada, L. Zettlemoyer. "LLM.int8(): 8-bit Matrix Multiplication for Transformers at Scale." *Advances in Neural Information Processing Systems (NeurIPS 2022)*. arXiv:2208.07339.
 
-[8] E. J. Hu, Y. Shen, P. Wallis, Z. Allen-Zhu, Y. Li, S. Wang, L. Wang, W. Chen. "LoRA: Low-Rank Adaptation of Large Language Models." *Proceedings of ICLR*, 2022.
+[8] E. J. Hu, Y. Shen, P. Wallis, Z. Allen-Zhu, Y. Li, S. Wang, L. Wang, W. Chen. "LoRA: Low-Rank Adaptation of Large Language Models." *Proceedings of the International Conference on Learning Representations (ICLR 2022)*. arXiv:2106.09685.
 
-[9] N. Shazeer, A. Mirhoseini, K. Maziarz, A. Davis, Q. Le, G. Hinton, J. Dean. "Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer." *Proceedings of ICLR*, 2017.
+[9] N. Shazeer, A. Mirhoseini, K. Maziarz, A. Davis, Q. Le, G. Hinton, J. Dean. "Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer." *Proceedings of the International Conference on Learning Representations (ICLR 2017)*. arXiv:1701.06538.
 
 [10] T. Chen, B. Xu, C. Zhang, C. Guestrin. "Training Deep Nets with Sublinear Memory Cost." *arXiv preprint arXiv:1604.06174*, 2016.
+
+[11] F. Tramèr, D. Boneh. "Slalom: Fast, Verifiable and Private Execution of Neural Networks in Trusted Hardware." *Proceedings of the International Conference on Learning Representations (ICLR 2019)*. arXiv:1806.03287.
+
+[12] G. Xiao, J. Lin, M. Seznec, H. Wu, J. Demouth, S. Han. "SmoothQuant: Accurate and Efficient Post-Training Quantization for Large Language Models." *Proceedings of the 40th International Conference on Machine Learning (ICML 2023)*. arXiv:2211.10438.
+
+[13] A. Ansuini, A. Laio, J. H. Macke, D. Zoccolan. "Intrinsic dimension of data representations in deep neural networks." *Advances in Neural Information Processing Systems (NeurIPS 2019)*. arXiv:1905.12784.
 
 ---
 

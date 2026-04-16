@@ -10,10 +10,17 @@
 ## The 4-paper plan
 
 ### P1 — Carrier-Payload: Training-Free Activation Compression for Text-Only Decentralized Inference
-- **Status (2026-04-16 end-of-day):** Clean rewrite at `papers/carrier-payload-text-only-v1.md`. 13/13 citations arXiv-verified. LaTeX 0 errors. Links 13/13 resolve. Short-context data: N=3 text families (Gemma 3 1B, Llama 8B, Qwen 32B), all 22–24x at short context. Long-context data: Qwen 32B at seq 256/512/1024/1621, CR 183x→13x degradation documented honestly. 37 paper invariants defined; need to update for text-only scope before final ship.
-- **Timeline:** Ship to arXiv this week pending remaining gates (paper_invariants.py text-only rescope, reproduce.sh text-only update, ROADMAP sync).
-- **Venue target:** COLM, ACL, or EMNLP main conference (not MLSys — pivoted per Gemini scope analysis 2026-04-16).
-- **Effort remaining:** ~3 days (invariant rescope + reproduce script + final ROADMAP sync + arXiv endorsement).
+- **Status (2026-04-16 late evening):** All 9 internal submission gates GREEN. Gate 10 (arXiv endorsement) is the only remaining item, pending the Dettmers response email send.
+  - Clean text-only rewrite at `papers/carrier-payload-text-only-v1.md`.
+  - **16/16** citations arXiv-verified (added AWQ, BottleNet++, StreamingLLM per Gemini Deep Research review 2026-04-16).
+  - LaTeX 0 errors, Links 16/16 resolve, **40/40** paper invariants pass (rescoped from 37 to cover long-context Qwen §3.4–§3.6).
+  - Short-context data: N=3 text families (Gemma 3 1B, Llama 8B, Qwen 32B), all 22–24× at short context; rank-bound-artifact disclosed with practical-regime defense.
+  - Long-context data: Qwen 32B at seq 256/512/1024/1621, CR 183×→13× degradation documented honestly; §5.3 reframed from "law" to "short-context empirical heuristic."
+  - External novelty validated 2026-04-16 by Tim Dettmers (CMU, LLM.int8! / QLoRA / bitsandbytes author): "not aware of a deep analysis of how activation compression can be tweaked to be best for distributed inference on regular consumer computers + internet connections."
+  - Gemini 3.1 Pro external review 2026-04-16 verdict: **READY FOR arXiv (with minor polish)** — 100% confidence; findings at `findings/2026-04-16-deep-research-review-carrier-payload.md`.
+- **arXiv primary category:** `cs.DC` (distributed computing). Secondaries: `cs.LG`, `cs.CL`.
+- **Target venues post-arXiv:** COLM, ACL, or EMNLP main conference (not MLSys — pivoted per Gemini scope analysis 2026-04-16).
+- **Effort remaining:** Tejas sends the Dettmers email → wait for endorsement → arXiv upload. Zero additional code or writing required on the Nexus/Atlas side.
 
 ### P1' (OLD superseded) — `papers/carrier-payload-v1.md`
 - Original broad draft with multimodal claims. Now superseded by P1 text-only. Retained with prominent revision notice at top because Tim Dettmers and CU Boulder professors received URLs to it via email. Not for submission.

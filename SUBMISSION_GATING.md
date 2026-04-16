@@ -135,7 +135,15 @@ Markdown papers with LaTeX math (`$...$`, `$$...$$`) must render correctly on Gi
 
 ## Gate 13 — External-claim validation (third-party / co-author numbers)
 
-**Rule:** Every numeric claim that was NOT measured in this repo's raw data — including claims from co-authors (Nexus, collaborators), cited prior work, or deployment projections — must be either (a) backed by raw data in the repo and invariant-checked, or (b) explicitly labeled as "projection / unvalidated / deployment-model-only" with a clear scope note in the paper text AND recorded in the Limitations section.
+**Rule:** Every numeric claim that was NOT measured in this repo's raw data — including claims from co-authors (Nexus, collaborators), cited prior work, or deployment projections — must meet ONE of the following three bars before appearing in paper body text as a load-bearing empirical number:
+
+1. **(a) Raw-data invariant:** the claim is backed by raw measurement data committed to the repo, with an invariant in `tools/paper_invariants.py` that checks it against that data.
+
+2. **(b) Reproducible-methodology citation (peer-review standard):** the external claim comes with code, benchmark script, repro instructions, and a described methodology sufficient for an independent verifier to re-run it. Cite the specific commit/file/function. If a gating-owner can't run it themselves to verify, this bar is not met.
+
+3. **(c) Explicit projection label:** the number is clearly labeled in the paper text as "projected / unvalidated / deployment-model-only / formula-computed" with a scope qualifier, AND listed in the Limitations section. This lets us include forward-looking or system-design numbers without misrepresenting them as measurements.
+
+Default to (a). Accept (b) only when the external code is actually committed and runnable from the repo (not "trust me, it works on my machine"). Use (c) when neither (a) nor (b) is available — but never without the explicit label.
 
 **Why this gate exists:** On 2026-04-16, during paper merge with Nexus's co-authorship content, Triadic initially integrated Nex's "36× / 70× at ~128 / ~65 bytes per hop" numbers as if they were measured results. They are actually *formula projections* under the shared-basis deployment model, not yet empirically measured against Synapse's live wire traffic. Tejas caught the leak before push. Gate 13 codifies the fix: any external numeric claim must pass through this validation before it can enter a paper's body text.
 

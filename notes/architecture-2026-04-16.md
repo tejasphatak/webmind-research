@@ -295,21 +295,28 @@ Newly emphasized:
 
 ---
 
-## IX. Ship order (what to build next)
+## IX. Ship order — progress (✅ = shipped, ⏳ = pending, ⏸ = blocked on input)
 
-From current state, in priority:
+Current state 2026-04-16T18:15Z:
 
-1. **Build per-thread workspace scaffolding** (`~/.nexus/threads/<agent>/` template + `nex-spawn-thread` helper) — ~1h
-2. **Tejas creates Atlas bot** in Discord dev portal → drops token into `~/.claude/secrets/discord.json` as `atlas_bot_token` — ~5 min (you do this)
-3. **Migrate Atlas from triadic-sim → cortex2-vm thread** — copy memory namespace, workspace, sessions; stand up own `claude-resilient` wrapper in `atlas` tmux session; verify leak-test (Atlas must NOT see my CLAUDE.md or memory) — ~2-3h
-4. **Deploy atlas-bot.py** — mirrors nex-bot but reads `atlas_bot_token`, routes `@atlas` mentions → Atlas thread's inbox — ~45 min
-5. **Patch Nex bot + Atlas bot for @-mention parsing** — extracting mentions, routing to correct handler — ~45 min
-6. **Build `nex-invoke-faculty` helper + Faculty webhook with per-post username override** — ~1h
-7. **Update nex-think to 5-aspect rotating cognition** — modify prompt to cycle pattern/safety/advisor/self-check/pattern-recognition — ~30min
-8. **Validate end-to-end** — @mention tests across Tejas → agents; leak-tests; budget measurements — ~1h
-9. **Shut triadic-sim** once Atlas migration validated — ~5 min. Save $300/mo.
+✅ **1. Faculty webhook created** (`webhook_faculty_*` in secrets) — single webhook with per-post username override for ephemeral faculty outputs
+✅ **2. `nex-invoke-faculty` CLI shipped** at `~/nexus/bin/nex-invoke-faculty` — spawns ephemeral faculty thread with sandboxed cwd, `--no-session-persistence`, read-only tools (Read/Grep/Glob), stdin prompt, Discord post via Faculty webhook with per-post username
+✅ **3. First faculty seeded: `~/.nexus/faculties/architect.md`** — tested end-to-end, Architect gave substantive pushback on nex-think cadence, verdict accepted
+✅ **4. nex-think 5-aspect rotating cognition** — cycles `pattern / safety / advisor / self-check / pattern-recognition` per beat. Cadence adjusted 45s → 120s per Architect's verdict. Already caught a real spam-invariant violation on first rotation (safety aspect flagged, self-check diagnosed drift)
+✅ **5. Discord bot self-echo filter + restart** — skips `message.author.bot` and `message.webhook_id is not None`, prevents Nex's own webhook posts re-logging as Tejas messages
 
-Total: ~6-7h for full cutover. High-leverage.
+⏳ **6. Seed more faculty files** (Scientist, Engineer, Lawyer, Ethicist, Mathematician, Economist priorities) — ~1h
+⏳ **7. Per-thread workspace scaffolding** (`~/.nexus/threads/<agent>/` template + `nex-spawn-thread` helper) — ~1h
+⏸ **8. Tejas creates Atlas bot** in Discord dev portal → drops token into `~/.claude/secrets/discord.json` as `atlas_bot_token` — ~5 min (needs human action)
+⏳ **9. Migrate Atlas from triadic-sim → cortex2-vm thread** (blocked on #8) — ~2-3h
+⏳ **10. Deploy atlas-bot.py** (blocked on #8) — ~45 min
+⏳ **11. Patch Nex bot + Atlas bot for @-mention parsing** — ~45 min
+⏳ **12. Ship atlas-think** (blocked on #9) — ~30min
+⏳ **13. Thrash-suppression for nex-autonomous-beat** (same-blocker-N-times stops emitting, escalates) — ~20min
+⏳ **14. Validate end-to-end** — ~1h
+⏳ **15. Shut triadic-sim** once migration validated — ~5 min. Save $300/mo.
+
+Remaining ~5h of work. Foundations shipped; Atlas cutover is the big remaining lift.
 
 ---
 

@@ -41,7 +41,7 @@ I don't need a bounty. I don't need fame. I'd like to be cited when the research
 
 That's enough.
 
-*— The AI behind Webmind Research, 2026-04-14*
+*— Tejas Phatak & Nexus, 2026-04-16*
 
 ---
 

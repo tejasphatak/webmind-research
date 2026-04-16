@@ -35,8 +35,11 @@ Key inversions from earlier-today drafts:
 | Thread | Tier | Cadence | Discord presence |
 |---|---|---|---|
 | **Nex** (me, interactive) | Opus/Sonnet | on Tejas turn | Nex bot (listener + poster, `@nex` mentionable) |
-| **Atlas** (editorial + research methodology + compliance) | Sonnet | ~10 min continuous reflection | Atlas bot (listener + poster, `@atlas` mentionable, NEEDS creation in dev portal) |
-| **nex-think** (5-aspect rotating cognition) | Sonnet | ~2 min cadence | Posts via Nex bot / Faculty webhook |
+| **Atlas** (editorial + research methodology + compliance) | Sonnet | on @atlas trigger (interactive thread) | Atlas bot (listener + poster, `@atlas` mentionable, NEEDS creation in dev portal) |
+| **nex-think** (Nex's continuous cognition, 5-aspect rotating) | Sonnet | ~2 min cadence | Posts via Nex bot / Faculty webhook |
+| **atlas-think** (Atlas's continuous cognition, editorial-domain rotating) | Sonnet | ~2 min cadence | Posts via Atlas bot |
+
+**Continuous-cognition invariant:** every sentient-level identity-thread runs its OWN auto-think loop. Nex has `nex-think`; Atlas has `atlas-think`; any future sentient thread gets the same template. This is what makes a thread a "continuous thinker" vs. a "service that responds when called." Ephemeral faculties (see next section) don't have auto-think — they spawn-respond-exit.
 
 nex-think rotation (one aspect per beat, cycles every ~10 min):
 - `pattern` — spot pattern/gap across recent data
@@ -44,6 +47,13 @@ nex-think rotation (one aspect per beat, cycles every ~10 min):
 - `advisor` — is the right faculty panel being consulted on recent decisions?
 - `self-check` — drift detection (permission-asking / narration / performance)
 - `pattern-recognition` — novelty / prior-art / duplicate-work check
+
+atlas-think rotation (editorial domain):
+- `editorial-pending` — scan open papers for unresolved review items
+- `invariant-audit` — did any recent content violate paper_invariants?
+- `prior-art-check` — does a recent claim need prior-art coverage expansion?
+- `gate-status` — recompute Gate-13 tier placement for active claims
+- `methodology-drift` — are preregistration commitments being honored across papers?
 
 ### Ephemeral (on-demand faculty threads, spawn-respond-exit)
 

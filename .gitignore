@@ -10,3 +10,4 @@ inventions/2026-04-14T182204Z-project_collective_consciousness.md
 .venv/
 logs/
 sfca/__pycache__/
+tools/__pycache__/

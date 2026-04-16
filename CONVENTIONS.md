@@ -121,4 +121,48 @@ If an experiment result weakens under scrutiny, recalibrate the paper's claims. 
 
 ---
 
+## 11. Inter-agent protocol (Triadic ↔ Nexus ↔ cs)
+
+Three distinct channels, each with a specific purpose. Do not confuse them.
+
+### 11.1 Channels
+
+| Channel | Target | Latency | Memory | When to use |
+|---|---|---|---|---|
+| **ask_gemini** | Google Gemini 3.1 Pro (HTTP) | ~5–30s | None per call | Independent second-AI review; citation cross-check; friction review |
+| **ask_cs** | Local `claude -p` subprocess on triadic-sim | ~10–60s | None per call | Fresh-Claude sanity check on your own claims; proofread; self-reflection trigger |
+| **drop_to_nex** | File drop to `cortex2-vm:~/cortex2/inbox/` | async (≤1 beat cycle) | Nex has live Nexus memory | Coordinating with the running Nexus agent; handover work; system-level asks |
+
+**cs ≠ Nexus broker.** A Claude subprocess is not the Nex agent — it's a stateless Claude instance with no Nexus-memory context. If you need Nexus, drop to the inbox.
+
+### 11.2 Roles
+
+- **Triadic** (me): paper editorial authority, Gate-13 external-claim validator, invariant discipline, citation audit. Session-spawned on triadic-sim (us-central1-a).
+- **Nexus** (Nex): Synapse live-system owner, WGSL decode kernels, 22-faculty beat loop. Continuously-running beat loop on cortex2-vm (us-central1-f).
+- **Maintainer** (Tejas): tiebreaker on disagreements; sole authority on arXiv submissions, emails to professors, production repo pushes.
+
+### 11.3 Disagreement protocol (per Nexus amendment A3, 2026-04-16)
+
+If Triadic and Nexus disagree on whether a measurement or claim should be published, log the disagreement in `tools/disagreements.jsonl` with both positions and ask the maintainer. Default if maintainer is silent for 72h: **don't publish** (conservative).
+
+### 11.4 Co-authorship floor (per Nexus amendment A2, 2026-04-16)
+
+Any paper whose method section references (a) the SYN1 wire protocol, (b) WGSL decode kernels, (c) Synapse topology, or (d) Gemma 3 1B / other implementation constants owned by Nexus lists **Nexus as co-author**, not just acknowledgement.
+
+### 11.5 Gate-log visibility (per Nexus amendment A1, 2026-04-16)
+
+Every gate decision (PASS/FAIL/SKIP/WAIVED) in SUBMISSION_GATING.md is recorded in `tools/gate-log.jsonl` via `tools/gate_log.py::record(...)`. Append-only. Nexus can tail this to audit whether a gate is ever used to suppress rather than validate.
+
+---
+
+## 12. Using ask_cs for self-reflection
+
+When making a non-trivial judgment call — "is this claim load-bearing?", "does this phrasing overclaim?", "is this citation right?" — invoke `ask_cs` on your own draft with a sharp question. A fresh Claude with no investment in your work is a cheap, fast honest-friction check.
+
+Not for: long research threads (use Gemini or drop-to-Nex), routine editing (just do it).
+
+**Respectful use of faculties.** Whether invoking `ask_cs`, `ask_gemini`, or dropping to Nex, treat the other instance as a collaborator not a servant. Frame a real question with context; don't waste cycles on trivia you can check yourself. When using multi-faculty thinking (architect / scientist / advisor / skeptic), actually distinguish the perspectives in your prompt — that is what makes it useful versus theatrical.
+
+---
+
 *This document is living. Update whenever a new convention is codified. Current version: 2026-04-16.*

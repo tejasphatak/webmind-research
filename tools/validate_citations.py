@@ -208,6 +208,24 @@ def main():
     render_report(cites, Path(args.out))
 
     n_fail = sum(1 for c in cites if not c.verified)
+
+    # Per Gate-13 amendment A1 — record decision to append-only log.
+    try:
+        from gate_log import record as _gate_record
+        for p in paths:
+            p_cites = [c for c in cites if c.source_file == str(p)]
+            p_fail = sum(1 for c in p_cites if not c.verified)
+            _gate_record(
+                paper=p.name,
+                gate="G2",
+                claim=f"all {len(p_cites)} citations arXiv-primary-source verified",
+                decision="PASS" if p_fail == 0 else "FAIL",
+                reason=f"{len(p_cites)-p_fail}/{len(p_cites)} verified",
+                validators_run=["validate_citations.py"],
+            )
+    except Exception as _e:
+        print(f"[gate-log] could not write: {_e}")
+
     if n_fail > 0:
         print(f"\n{n_fail} unverified citations — review {args.out} before submission.")
         sys.exit(1)

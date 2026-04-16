@@ -196,6 +196,11 @@ def main():
 
     all_errors = 0
     all_warnings = 0
+    try:
+        from gate_log import record as _gate_record
+    except Exception:
+        _gate_record = None
+
     for p in paths:
         if not p.exists():
             print(f"  SKIP (missing): {p}")
@@ -213,6 +218,18 @@ def main():
             print(f"  {tag} {loc:>8}  {i.message}")
             if i.snippet:
                 print(f"            snippet: {i.snippet[:80]}")
+        if _gate_record:
+            try:
+                _gate_record(
+                    paper=p.name,
+                    gate="G11",
+                    claim="LaTeX/math balanced and GitHub-renderable",
+                    decision="PASS" if not errors else "FAIL",
+                    reason=f"{len(errors)} errors, {len(warnings)} warnings",
+                    validators_run=["validate_latex.py"],
+                )
+            except Exception as _e:
+                print(f"[gate-log] could not write: {_e}")
 
     print(f"\n=== SUMMARY: {all_errors} errors, {all_warnings} warnings ===")
     if all_errors > 0:

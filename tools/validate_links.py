@@ -109,6 +109,25 @@ def main():
         time.sleep(0.3)
 
     print(f"\n{len(all_checks)} URLs checked, {len(failures)} failures")
+
+    try:
+        from gate_log import record as _gate_record
+        by_file: dict[str, list] = {}
+        for lc in all_checks:
+            by_file.setdefault(lc.source_file, []).append(lc)
+        for fname, lcs in by_file.items():
+            fails = [x for x in lcs if not x.ok]
+            _gate_record(
+                paper=Path(fname).name,
+                gate="G12",
+                claim=f"all {len(lcs)} URLs resolve (HTTP 2xx/3xx)",
+                decision="PASS" if not fails else "FAIL",
+                reason=f"{len(fails)} broken" if fails else "all ok",
+                validators_run=["validate_links.py"],
+            )
+    except Exception as _e:
+        print(f"[gate-log] could not write: {_e}")
+
     if failures:
         print("\nBLOCKERS before submission:")
         for f in failures:

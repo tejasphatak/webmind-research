@@ -208,6 +208,20 @@ def main():
     # === Summary ===
     print("\n" + "=" * 80)
     print(f"SUMMARY: {CHECKED} invariants checked, {len(FAILURES)} failures")
+
+    try:
+        from gate_log import record as _gate_record
+        _gate_record(
+            paper="carrier-payload-text-only-v1.md",
+            gate="G1",
+            claim=f"all {CHECKED} invariants round-trip against raw findings/*.json",
+            decision="PASS" if not FAILURES else "FAIL",
+            reason=f"{CHECKED - len(FAILURES)}/{CHECKED} passed",
+            validators_run=["paper_invariants.py"],
+        )
+    except Exception as _e:
+        print(f"[gate-log] could not write: {_e}")
+
     if FAILURES:
         print("FAILED INVARIANTS:")
         for f in FAILURES:

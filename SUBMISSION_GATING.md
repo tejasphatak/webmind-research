@@ -214,18 +214,18 @@ This is guidance, not a hard gate. Some papers exist for pure scientific value w
 
 ### `papers/carrier-payload-text-only-v1.md` (Paper 1)
 
-- [ ] Gate 1: paper_invariants.py — pending update for text-only scope
+- [x] Gate 1: paper_invariants.py — text-only rescope shipped 2026-04-16; 40/40 invariants pass (3 text families short context + Qwen long context §3.4–§3.6)
 - [x] Gate 2: validate_citations.py — 13/13 verified on 2026-04-16
-- [ ] Gate 3: no pre-registration (this is exploratory measurement paper; document exception)
+- [x] Gate 3: documented exception committed at `papers/carrier-payload-preregistration-exception-v1.md` (2026-04-16) — characterization/methodology paper, not hypothesis-test; invariants + null-results + Gate-13 substitute for pre-registration
 - [ ] Gate 4: disclosure — present, needs final review
 - [ ] Gate 5: limitations — need update to drop multimodal references
-- [ ] Gate 6: reproduce.sh — needs update to match text-only scope
+- [x] Gate 6: reproduce.sh — `--quick` and `--full` modes + auto-verify via paper_invariants (2026-04-16)
 - [x] Gate 7: Gemini sign-off on scope received 2026-04-16 (see `gemini_responses/two_paper_split.md`)
 - [x] Gate 8: scope discipline — explicitly text-only after 2-paper split
 - [ ] Gate 9: coherence — needs ROADMAP.md update
-- [x] Gate 10: career impact — EB1-A-aligned
+- [ ] Gate 10 (arXiv endorsement): primary candidate is Dettmers (CMU) — response email draft at `announcements/2026-04-16-draft-response-dettmers.md`, pending Tejas send + Dettmers reply
 
-**Blockers before ship:** Gates 1, 3 (document exception), 4, 5, 6, 9.
+**Blockers before ship:** Gates 4, 5, 9 (editorial polish); Gate 10 (external, pending Dettmers response).
 
 ### `papers/modality-gap-v2-placeholder.md` (Paper 2)
 

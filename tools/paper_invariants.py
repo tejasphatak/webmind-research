@@ -1,13 +1,18 @@
 """
 Paper Invariants — auto-validates every numeric claim against raw data.
 
-Every numeric assertion in the carrier-payload paper should be checkable here.
+SCOPE: papers/carrier-payload-text-only-v1.md (text-only, inference-time).
+The multimodal model gemma4_31b is deliberately excluded here; the paper's
+§1.2 Non-contributions section disclaims all vision-language claims, which
+are moved to a companion paper with its own invariant suite.
+
+Every numeric assertion in the text-only paper should be checkable here.
 If this script fails, the paper is wrong.
 
 Run before every arXiv submission, every revision, every draft-share.
 
-Author: Tejas Phatak (with Claude Opus 4.6)
-Date: 2026-04-16
+Author: Tejas Phatak
+Date: 2026-04-16 (text-only rescope)
 """
 from __future__ import annotations
 import json
@@ -52,8 +57,29 @@ MULTIMODEL_FILES = {
     'gemma3_1b':   ('Gemma 3 1B IT',   1152, 26),
     'llama_8b':    ('Llama 3.1 8B',    4096, 32),
     'qwen_32b':    ('Qwen 2.5 32B',    5120, 64),
-    'gemma4_31b':  ('Gemma 4 31B',     5376, 60),
 }
+# Text-only paper scope (2026-04-16): gemma4_31b deliberately excluded.
+# See papers/carrier-payload-text-only-v1.md §1.2 Non-contributions and the
+# companion multimodal paper for vision-language coverage.
+
+# Long-context Qwen 2.5 32B — claims from §3.4 of the text-only paper.
+# Raw files hold per-prompt ranks_for_variance at splice layers [16, 32, 48].
+# Sequence lengths covered across the two files: {256, 512, 1024, 1621}.
+LONGCTX_QWEN_FILES = [
+    'findings/longctx_qwen_32b.json',
+    'findings/longctx_qwen_32b_extended.json',
+]
+LONGCTX_SEQ_LENS = [256, 512, 1024, 1621]
+# Paper §3.4 claim: PCA rank for 99% variance (mean across splice layers 16/32/48)
+# grows with sequence length. Raw-data-derived values as of 2026-04-16:
+# mean rank99 = {256: 8.4, 512: 55.0, 1024: 193.6, 1621: 384.0}.
+CLAIMED_MEAN_RANK99 = {256: 8, 512: 55, 1024: 194, 1621: 384}
+# Paper §3.5 claim: compression ratio degrades from 183× at 256 → 13× at 1621.
+# Computed from the CR formula using mean rank99 at each seq.
+CLAIMED_CR_BY_SEQ = {256: 183, 512: 81, 1024: 26, 1621: 13}
+# Paper §3.6 layer-depth claim: L48/L16 rank99 ratio shrinks with seq_len.
+CLAIMED_L48_L16_RATIO = {256: 23.0, 512: 26.5, 1024: 4.25, 1621: 2.88}
+QWEN_HIDDEN_DIM = 5120
 
 
 def load(key: str) -> dict:
@@ -149,6 +175,121 @@ def check_hidden_dim_matches(key: str, expected_hd: int):
 
 
 # ──────────────────────────────────────────────────────────────────────────
+# Long-context Qwen invariants (text-only paper §3.4–§3.6)
+# ──────────────────────────────────────────────────────────────────────────
+
+def _load_longctx_qwen() -> dict:
+    """Merge records across longctx_qwen_32b.json + _extended.json.
+
+    Returns: {(seq_len, splice_layer): [rank99, ...]} aggregated across prompts.
+    """
+    agg: dict[tuple[int, int], list[int]] = {}
+    for rel in LONGCTX_QWEN_FILES:
+        p = Path(rel)
+        if not p.exists():
+            continue
+        with open(p) as f:
+            d = json.load(f)
+        for r in d['results']:
+            k = (r['seq_len'], r['splice_layer'])
+            agg.setdefault(k, []).append(r['ranks_for_variance']['0.99'])
+    return agg
+
+
+def check_longctx_seq_coverage():
+    """All four claimed sequence lengths must be present in the raw data."""
+    agg = _load_longctx_qwen()
+    seqs_seen = sorted(set(s for s, _ in agg.keys()))
+    missing = [s for s in LONGCTX_SEQ_LENS if s not in seqs_seen]
+    return len(missing) == 0, f"seq_lens seen={seqs_seen}, missing={missing}"
+
+
+def check_longctx_mean_rank99(seq_len: int, claimed: int, tol_frac: float = 0.15):
+    """Mean rank99 across splice layers {16, 32, 48} at this seq matches paper claim.
+
+    Paper §3.4 claim: rank for 99% variance = 8/55/194/384 at seq 256/512/1024/1621.
+    These are means across the three splice layers [16, 32, 48].
+    """
+    agg = _load_longctx_qwen()
+    layer_means = []
+    for layer in (16, 32, 48):
+        vs = agg.get((seq_len, layer))
+        if not vs:
+            return False, f"missing (seq={seq_len}, L={layer}) data"
+        layer_means.append(sum(vs) / len(vs))
+    observed_mean = sum(layer_means) / len(layer_means)
+    err = abs(observed_mean - claimed) / max(claimed, 1)
+    return err <= tol_frac, \
+        f"observed mean rank99 at seq={seq_len} = {observed_mean:.1f} (claimed {claimed}, tol {tol_frac:.0%})"
+
+
+def check_longctx_rank_monotonic():
+    """rank99 must be non-decreasing in seq_len at every splice layer (geometric invariant)."""
+    agg = _load_longctx_qwen()
+    for layer in (16, 32, 48):
+        prev = -1
+        for seq in LONGCTX_SEQ_LENS:
+            vs = agg.get((seq, layer))
+            if not vs:
+                return False, f"missing (seq={seq}, L={layer})"
+            m = sum(vs) / len(vs)
+            if m < prev - 1e-6:
+                return False, f"L{layer}: rank99 drops at seq={seq}: {m:.1f} < prev {prev:.1f}"
+            prev = m
+    return True, "monotonic at L16, L32, L48"
+
+
+def check_longctx_depth_ratio(seq_len: int, claimed_ratio: float, tol_frac: float = 0.20):
+    """Paper §3.6 claim: L48/L16 rank99 ratio = 23, 26.5, 4.25, 2.88 at seq 256/512/1024/1621.
+
+    Ratio shrinks with seq_len — the depth gap closes as context grows.
+    """
+    agg = _load_longctx_qwen()
+    l16 = agg.get((seq_len, 16))
+    l48 = agg.get((seq_len, 48))
+    if not l16 or not l48:
+        return False, f"missing (seq={seq_len}) L16 or L48 data"
+    m16 = sum(l16) / len(l16)
+    m48 = sum(l48) / len(l48)
+    if m16 < 1e-6:
+        return False, f"L16 rank99 is 0 at seq={seq_len} — cannot form ratio"
+    observed = m48 / m16
+    err = abs(observed - claimed_ratio) / max(claimed_ratio, 1e-6)
+    return err <= tol_frac, \
+        f"L48/L16 ratio at seq={seq_len} = {observed:.2f} (claimed {claimed_ratio:.2f}, tol {tol_frac:.0%})"
+
+
+def check_longctx_cr_endpoints(tol_frac: float = 0.20):
+    """Paper §3.5 claim: CR degrades 183× → 13× across seq 256 → 1621.
+
+    CR formula (zero sparse-residual, rank = mean rank99 across layers):
+        baseline = seq * hidden_dim
+        wire     = seq * k + hidden_dim
+        CR       = baseline / wire
+    """
+    agg = _load_longctx_qwen()
+    results = {}
+    for seq in LONGCTX_SEQ_LENS:
+        layer_means = []
+        for layer in (16, 32, 48):
+            vs = agg.get((seq, layer))
+            if not vs:
+                return False, f"missing (seq={seq}, L={layer})"
+            layer_means.append(sum(vs) / len(vs))
+        k = sum(layer_means) / len(layer_means)
+        baseline = seq * QWEN_HIDDEN_DIM
+        wire = seq * k + QWEN_HIDDEN_DIM
+        results[seq] = baseline / max(wire, 1)
+    endpoints = [(256, CLAIMED_CR_BY_SEQ[256]), (1621, CLAIMED_CR_BY_SEQ[1621])]
+    for seq, claimed in endpoints:
+        observed = results[seq]
+        err = abs(observed - claimed) / max(claimed, 1e-6)
+        if err > tol_frac:
+            return False, f"CR at seq={seq}: observed {observed:.1f}× vs claimed {claimed}× (err {err:.0%}, tol {tol_frac:.0%})"
+    return True, f"CR endpoints: 256→{results[256]:.1f}×, 1621→{results[1621]:.1f}× (claimed 183×, 13×)"
+
+
+# ──────────────────────────────────────────────────────────────────────────
 # Run invariants
 # ──────────────────────────────────────────────────────────────────────────
 
@@ -183,27 +324,46 @@ def main():
         invariant(f"{display}: top-1 agreement at rank 16 ≥ top-1 at rank 2 (sparse=0)",
                   lambda k=key: check_top1_improves_with_rank(k))
 
-    # === Paper headline claims ===
-    print("\n[PAPER CLAIMS] ------------")
-    # CLAIM 1: 22-24x compression at KL < 0.1 with 100% top-1 across all 4 models
+    # === Paper headline claims — short context ===
+    print("\n[PAPER CLAIMS — SHORT CONTEXT] ------------")
+    # §3.1–§3.3: 22–24x compression at KL < 0.1 with 100% top-1 across 3 text families.
     invariant("Gemma 3 1B: ≥22x at KL<0.1 with top-1=100%",
               lambda: check_best_cr_at_kl_threshold('gemma3_1b', 0.1, 22.0, True))
     invariant("Llama 3.1 8B: ≥24x at KL<0.1 with top-1=100%",
               lambda: check_best_cr_at_kl_threshold('llama_8b', 0.1, 24.0, True))
     invariant("Qwen 2.5 32B: ≥24x at KL<0.1 with top-1=100%",
               lambda: check_best_cr_at_kl_threshold('qwen_32b', 0.1, 24.0, True))
-    invariant("Gemma 4 31B: ≥24x at KL<0.1 with top-1=100%",
-              lambda: check_best_cr_at_kl_threshold('gemma4_31b', 0.1, 24.0, True))
+
+    # === Paper headline claims — long context (Qwen 2.5 32B) ===
+    print("\n[PAPER CLAIMS — LONG CONTEXT] ------------")
+    # §3.4 coverage
+    invariant("Long-context Qwen: seq_lens {256,512,1024,1621} all covered in raw data",
+              check_longctx_seq_coverage)
+    # §3.4 rank growth
+    for seq, claimed in CLAIMED_MEAN_RANK99.items():
+        invariant(f"Long-context Qwen: mean rank99 at seq={seq} ≈ {claimed} (±15%)",
+                  lambda s=seq, c=claimed: check_longctx_mean_rank99(s, c))
+    invariant("Long-context Qwen: rank99 non-decreasing in seq_len at L16/L32/L48",
+              check_longctx_rank_monotonic)
+    # §3.5 CR degradation endpoints
+    invariant("Long-context Qwen: CR endpoints 256→183× and 1621→13× (±20%)",
+              check_longctx_cr_endpoints)
+    # §3.6 layer-depth ratio
+    for seq, claimed in CLAIMED_L48_L16_RATIO.items():
+        invariant(f"Long-context Qwen: L48/L16 rank99 ratio at seq={seq} ≈ {claimed} (±20%)",
+                  lambda s=seq, c=claimed: check_longctx_depth_ratio(s, c))
 
     # === Known limitation DISCLOSURES ===
     print("\n[LIMITATION INVARIANTS — these document known caveats] ------------")
     for key, (display, hd, nl) in MULTIMODEL_FILES.items():
         d = load(key)
         seq_lens = [r['actual_seq_len'] for r in d['results']]
-        invariant(f"{display}: all prompts ≤ 30 tokens (SHORT CONTEXT LIMITATION)",
+        invariant(f"{display}: all short-context prompts ≤ 30 tokens (documents SC bound)",
                   lambda sl=seq_lens: (max(sl) <= 30, f"max seq_len = {max(sl)}"))
-    invariant("Ranks tested only up to 16 (due to short prompts capping at 2-30 tokens)",
-              lambda: (True, "DOCUMENTED: rank 32/64 not tested at short context; covered by long_context_validation.py"))
+    invariant("Short-context ranks tested only up to 16 (prompts cap at 2–30 tokens)",
+              lambda: (True, "DOCUMENTED: rank 32/64 at short context infeasible; long-context run covers higher ranks"))
+    invariant("Multimodal scope explicitly excluded from this paper",
+              lambda: (True, "DOCUMENTED: §1.2 Non-contributions disclaims VLM claims; gemma4_31b moved to companion paper invariants"))
 
     # === Summary ===
     print("\n" + "=" * 80)

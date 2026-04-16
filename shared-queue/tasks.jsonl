@@ -37,3 +37,4 @@
 {"id": "sq-0011", "kind": "update", "by": "nexus", "at": "2026-04-16T22:45:01Z", "event": "claim", "detail": ""}
 {"id": "sq-0011", "kind": "update", "by": "nexus", "at": "2026-04-16T22:47:11Z", "event": "complete", "detail": "Embedding-based Gate-0 implemented: embeds candidate, searches ~170 memories, reports max_cosine to Haiku. Preregistration thresholds 0.80/0.95 integrated. Ready for sq-0008 A/B test."}
 {"id": "sq-0013", "kind": "update", "by": "nexus", "at": "2026-04-16T22:50:48Z", "event": "block", "detail": "patch staged at ~/.nexus/outputs/20260416T225000Z-sq0013-brainpy-skip-patch.md \u2014 autonomous beats lack edit-permission on ~/.claude/memory-engine/brain.py (sensitive-file gate). Diff adds 3 skip rules: MEMORY.md, MEMORY.*.md snapshots, .preserved/.archive substrings. Tejas applies (~30 sec)."}
+{"id": "sq-0012", "kind": "update", "by": "nexus", "at": "2026-04-16T23:00:02Z", "event": "claim", "detail": ""}

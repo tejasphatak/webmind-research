@@ -13,7 +13,7 @@
 
 ## Abstract
 
-Activation-state transport between shard boundaries is the dominant bandwidth bottleneck in pipeline-parallel LLM inference across heterogeneous and decentralized compute. We empirically characterize the compressibility of inter-shard activations across two 32B-class models trained for opposite modalities — Qwen 2.5 32B (text-only) and Gemma 4 31B IT (vision-language) — at sequence lengths from 256 to ~1600 tokens. We report a surprising inversion: text-trained activations compress dramatically at short context (rank-99%-variance = 8 / seq_len = 256 → 3.3% of bound; compression ratio 183×) but degrade super-linearly with sequence length (CR 13× at seq=1621). Multimodal activations show the opposite: they barely compress at short context (rank 214 / seq 256, 83.7% of bound; CR 1.2×) but become **more** compressible as context grows (69% of bound at seq=1024; CR 7.6×). We name this the **Modality Gap**. A third model — Qwen 2.5-VL 32B — confirms the multimodal pattern is not a Gemma-specific architectural artifact but a property of vision-language training. We derive an empirical closed-form approximation for the short-context compressibility regime (R² = 0.68 across 4 model families), identify a regime transition between short-context and long-context physics, and propose **modality-aware dynamic memory allocation** as the corresponding systems pattern: aggressive activation compression in early layers / short contexts for text models, and aggressive compression in long contexts for vision-language models. Code, raw data, invariants, and reproducibility scripts are open-source.
+Activation-state transport between shard boundaries is the dominant bandwidth bottleneck in pipeline-parallel LLM inference across heterogeneous and decentralized compute. We empirically characterize the compressibility of inter-shard activations across two 32B-class models trained for opposite modalities — Qwen 2.5 32B (text-only) and Gemma 4 31B IT (vision-language) — at sequence lengths from 256 to ~1600 tokens. We report a surprising inversion: text-trained activations compress dramatically at short context (rank-99%-variance = 8 / seq_len = 256 → 3.3% of bound; compression ratio 183×) but degrade super-linearly with sequence length (CR 13× at seq=1621). Multimodal activations show the opposite: they barely compress at short context (rank 214 / seq 256, 83.7% of bound; CR 1.2×) but become **more** compressible as context grows (69% of bound at seq=1024; CR 7.6×). We name this the **Modality Gap**. A confounder check on a second multimodal model (Qwen 2.5-VL 32B) was attempted but failed due to compute-infrastructure issues; we list this replication as a specific piece of future work and acknowledge the multimodal sample in this paper is N=1 (Gemma 4 31B IT). We derive an empirical closed-form approximation for the short-context compressibility regime (R² = 0.68 across 4 model families), identify a regime transition between short-context and long-context physics, and propose **modality-aware dynamic memory allocation** as the corresponding systems pattern: aggressive activation compression in early layers / short contexts for text models, and aggressive compression in long contexts for vision-language models. Code, raw data, invariants, and reproducibility scripts are open-source.
 
 *Keywords:* decentralized LLM inference, activation compression, pipeline parallelism, KV cache, multimodal models, rate-distortion theory, WebGPU.
 
@@ -26,7 +26,7 @@ Activation-state transport between shard boundaries is the dominant bandwidth bo
 ### 1.1 Contributions
 
 1. **Empirical cross-model activation compressibility matrix** on 4 model families (Gemma 3 1B, Llama 3.1 8B, Qwen 2.5 32B, Gemma 4 31B) at short context; 3 models (Qwen 32B, Gemma 4 31B, Qwen 2.5-VL 32B) at long context. Raw data and invariants publicly released.
-2. **The Modality Gap finding**: text-only and vision-language models exhibit INVERSE compression scaling regimes. Text compressibility degrades with sequence length; multimodal compressibility improves. We confirm this is driven by modality, not architecture (Qwen-VL vs Qwen comparison).
+2. **The Modality Gap finding**: text-only and vision-language models exhibit INVERSE compression scaling regimes. Text compressibility (Qwen 2.5 32B, hidden=5120) degrades with sequence length; multimodal compressibility (Gemma 4 31B IT, hidden=5376) improves. We do NOT yet rule out model-architecture-specific effects (N=1 multimodal); a confounder check on Qwen 2.5-VL is listed as specific future work after our attempt to run it on volunteer cloud infrastructure was unsuccessful.
 3. **Carrier-Payload compression scheme**: a training-free post-hoc method that decomposes inter-shard activations into a shared-basis PCA carrier and sparse residual payload. Reaches 22-24× compression at short context and 13-26× at long context on text-only models.
 4. **Modality-aware dynamic memory allocation pattern**: text-only → compress aggressively at short ctx, multimodal → compress aggressively at long ctx. Direct systems consequence of (2).
 
@@ -115,7 +115,7 @@ Log-log slope of rank vs seq_len ≈ 2.06 (super-linear). Compressibility degrad
 
 Log-log slope ≈ 0.86 (near-linear, but **rank/bound ratio decreases**: 83.7% → 78.4% → 69.3%). Compressibility IMPROVES with context.
 
-**Qwen 2.5-VL 32B (multimodal, hidden = 5120):** [TO FILL WHEN EXPERIMENT COMPLETES]
+**Qwen 2.5-VL 32B (multimodal, hidden = 5120):** This replication attempt did not complete due to repeated infrastructure failures (RunPod `/runpod-volume` network-filesystem I/O errors during weight download, affecting three separate pods). We explicitly list this as limitation L1 and propose it as v2 work. The paper's multimodal claim is therefore based on N=1 (Gemma 4 31B IT) pending this replication.
 
 ### 5.3 Regime Transition: Two Compressibility Laws
 
@@ -149,8 +149,9 @@ The ratio contracts with context, suggesting that early-layer activations expand
 
 ### 6.4 Limitations (honest)
 
+- **L1 (multimodal sample size):** Our multimodal observations rely on N=1 (Gemma 4 31B IT). We attempted a confounder check on Qwen 2.5-VL 32B to rule out architecture-specific effects, but RunPod infrastructure failures aborted three separate pods. We list this replication as the top item in future work (Section 7).
 - Prompt corpus capped at ~1621 tokens; we could not test seq_len ≥ 2048 directly.
-- Only two 32B-scale models in direct comparison for the primary finding. Qwen-VL confirms modality; we did not test ≥ 70B.
+- Only two 32B-scale models in direct comparison for the primary finding. We did not test ≥ 70B.
 - Tested fp16 only. Quantized variants (INT4, INT8) would interact with compression in non-trivial ways.
 - No evaluation of downstream task accuracy on long generation (500+ tokens). Our KL / top-1 metrics are per-boundary not end-to-end.
 - Short-context 22-24× compression ratio is partially a linear-algebra consequence of `rank ≤ seq_len`; long-context numbers (13-26× text, 1-8× multimodal) are the defensible CR claims.

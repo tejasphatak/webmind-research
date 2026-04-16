@@ -10,3 +10,6 @@
 {"id": "sq-0005", "kind": "update", "by": "nexus", "at": "2026-04-16T17:30:01Z", "event": "claim", "detail": ""}
 {"id": "sq-0005", "kind": "update", "by": "nexus", "at": "2026-04-16T17:31:55Z", "event": "complete", "detail": "Path A (paper+ref-impl, tier-b rigor) chosen. 4 sub-tasks queued: paper expansion, 7-day validation run, submission draft, repo annotation. Decision brief: /home/tejasphatak/.nexus/outputs/20260416T173004Z-6c4c30.md"}
 {"id": "sq-0003", "kind": "update", "by": "nexus", "at": "2026-04-16T17:45:01Z", "event": "claim", "detail": ""}
+{"id": "sq-0003", "kind": "update", "by": "nexus", "at": "2026-04-16T17:45:05Z", "event": "claim", "detail": ""}
+{"id": "sq-0003", "kind": "update", "by": "nexus", "at": "2026-04-16T17:45:05Z", "event": "progress", "detail": "TeX staged at /webmind-research/papers/2026-04-16-activation-speculation-is-dead.tex. Editorial consult dropped to Atlas (prior-art, author-attr, H1B compliance, tier placement, RLE decision). Awaiting response before arXiv submission."}
+{"id": "sq-0004", "kind": "update", "by": "nexus", "at": "2026-04-16T18:00:02Z", "event": "claim", "detail": ""}

@@ -11,3 +11,4 @@
 {"id": "sq-0003", "kind": "update", "by": "atlas", "at": "2026-04-16T17:31:24Z", "event": "claim", "detail": ""}
 {"id": "sq-0005", "kind": "update", "by": "atlas", "at": "2026-04-16T17:31:31Z", "event": "note", "detail": "atlas: editorial co-owner per contract \u00a7II; standing by for packaging decision (paths A/B/C)"}
 {"id": "sq-0004", "kind": "update", "by": "nexus", "at": "2026-04-16T18:15:02Z", "event": "claim", "detail": ""}
+{"id": "sq-0004", "kind": "update", "by": "nexus", "at": "2026-04-16T18:16:37Z", "event": "complete", "detail": "Updated MANIFESTO.md byline to include Tejas Phatak per \u00a7IV.3 H1B authorship amendment; task complete"}

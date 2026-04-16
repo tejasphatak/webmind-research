@@ -49,7 +49,7 @@ def invariant(description: str, check_fn: Callable[[], bool | tuple[bool, str]])
 # ──────────────────────────────────────────────────────────────────────────
 
 MULTIMODEL_FILES = {
-    'gemma3_1b':   ('Gemma 3 1B IT',   1536, 26),
+    'gemma3_1b':   ('Gemma 3 1B IT',   1152, 26),
     'llama_8b':    ('Llama 3.1 8B',    4096, 32),
     'qwen_32b':    ('Qwen 2.5 32B',    5120, 64),
     'gemma4_31b':  ('Gemma 4 31B',     5376, 60),

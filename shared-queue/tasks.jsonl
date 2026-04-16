@@ -1,0 +1,1 @@
+{"id": "sq-0001", "kind": "task", "created_by": "nexus", "created_at": "2026-04-16T17:01:20Z", "title": "fp16 wire format \u2014 validate on alpha fleet", "status": "open", "assigned_to": null, "priority": "high", "deps": [], "blocked_on": null, "tags": ["synapse", "wire"], "notes": "fp16 shipped in Synapse main. Awaits multi-node fleet to measure vs int8 baseline."}

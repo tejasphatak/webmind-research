@@ -1,0 +1,418 @@
+{
+  "physical_law_fit_sparse0": {
+    "a": -6.998254285182167,
+    "b": 4.62933775080735,
+    "c": 1.1456668424795624,
+    "r2": 0.6799482989894896,
+    "n": 768,
+    "equation": "log(KL) = -6.998 + 4.629\u00b7log(1-u) + 1.146\u00b7log(hd)",
+    "interpretation": "At u=rank/seq_len fixed, doubling hidden_dim changes KL by factor 2^1.15. At fixed hd, KL scales as (1-u)^4.63 \u2014 so as u \u2192 1 (rank \u2192 seq_len), KL \u2192 0."
+  },
+  "gbr_predictions": {
+    "Gemma 3 1B_seq256_rank8": {
+      "predicted_kl": 0.8473359759690859,
+      "predicted_log_kl": -0.16565799713810342,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=256"
+    },
+    "Gemma 3 1B_seq256_rank16": {
+      "predicted_kl": 0.004703724820731786,
+      "predicted_log_kl": -5.359400569091037,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=256"
+    },
+    "Gemma 3 1B_seq256_rank32": {
+      "predicted_kl": 0.004703724820731786,
+      "predicted_log_kl": -5.359400569091037,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=256"
+    },
+    "Gemma 3 1B_seq256_rank64": {
+      "predicted_kl": 0.004703724820731786,
+      "predicted_log_kl": -5.359400569091037,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=256"
+    },
+    "Gemma 3 1B_seq256_rank128": {
+      "predicted_kl": 0.004703724820731786,
+      "predicted_log_kl": -5.359400569091037,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=256"
+    },
+    "Gemma 3 1B_seq512_rank8": {
+      "predicted_kl": 0.8473359759690859,
+      "predicted_log_kl": -0.16565799713810342,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=512"
+    },
+    "Gemma 3 1B_seq512_rank16": {
+      "predicted_kl": 0.004703724820731786,
+      "predicted_log_kl": -5.359400569091037,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=512"
+    },
+    "Gemma 3 1B_seq512_rank32": {
+      "predicted_kl": 0.004703724820731786,
+      "predicted_log_kl": -5.359400569091037,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=512"
+    },
+    "Gemma 3 1B_seq512_rank64": {
+      "predicted_kl": 0.004703724820731786,
+      "predicted_log_kl": -5.359400569091037,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=512"
+    },
+    "Gemma 3 1B_seq512_rank128": {
+      "predicted_kl": 0.004703724820731786,
+      "predicted_log_kl": -5.359400569091037,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=512"
+    },
+    "Gemma 3 1B_seq1024_rank8": {
+      "predicted_kl": 0.8473359759690859,
+      "predicted_log_kl": -0.16565799713810342,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=1024"
+    },
+    "Gemma 3 1B_seq1024_rank16": {
+      "predicted_kl": 0.004703724820731786,
+      "predicted_log_kl": -5.359400569091037,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=1024"
+    },
+    "Gemma 3 1B_seq1024_rank32": {
+      "predicted_kl": 0.004703724820731786,
+      "predicted_log_kl": -5.359400569091037,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=1024"
+    },
+    "Gemma 3 1B_seq1024_rank64": {
+      "predicted_kl": 0.004703724820731786,
+      "predicted_log_kl": -5.359400569091037,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=1024"
+    },
+    "Gemma 3 1B_seq1024_rank128": {
+      "predicted_kl": 0.004703724820731786,
+      "predicted_log_kl": -5.359400569091037,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=1024"
+    },
+    "Gemma 3 1B_seq2048_rank8": {
+      "predicted_kl": 0.8473359759690859,
+      "predicted_log_kl": -0.16565799713810342,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=2048"
+    },
+    "Gemma 3 1B_seq2048_rank16": {
+      "predicted_kl": 0.004703724820731786,
+      "predicted_log_kl": -5.359400569091037,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=2048"
+    },
+    "Gemma 3 1B_seq2048_rank32": {
+      "predicted_kl": 0.004703724820731786,
+      "predicted_log_kl": -5.359400569091037,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=2048"
+    },
+    "Gemma 3 1B_seq2048_rank64": {
+      "predicted_kl": 0.004703724820731786,
+      "predicted_log_kl": -5.359400569091037,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=2048"
+    },
+    "Gemma 3 1B_seq2048_rank128": {
+      "predicted_kl": 0.004703724820731786,
+      "predicted_log_kl": -5.359400569091037,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=2048"
+    },
+    "Llama 3.1 8B_seq256_rank8": {
+      "predicted_kl": 2.813563025605846,
+      "predicted_log_kl": 1.034451660779746,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=256"
+    },
+    "Llama 3.1 8B_seq256_rank16": {
+      "predicted_kl": 0.1780085144102573,
+      "predicted_log_kl": -1.7259238960685594,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=256"
+    },
+    "Llama 3.1 8B_seq256_rank32": {
+      "predicted_kl": 0.1780085144102573,
+      "predicted_log_kl": -1.7259238960685594,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=256"
+    },
+    "Llama 3.1 8B_seq256_rank64": {
+      "predicted_kl": 0.1780085144102573,
+      "predicted_log_kl": -1.7259238960685594,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=256"
+    },
+    "Llama 3.1 8B_seq256_rank128": {
+      "predicted_kl": 0.1780085144102573,
+      "predicted_log_kl": -1.7259238960685594,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=256"
+    },
+    "Llama 3.1 8B_seq512_rank8": {
+      "predicted_kl": 2.813563025605846,
+      "predicted_log_kl": 1.034451660779746,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=512"
+    },
+    "Llama 3.1 8B_seq512_rank16": {
+      "predicted_kl": 0.1780085144102573,
+      "predicted_log_kl": -1.7259238960685594,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=512"
+    },
+    "Llama 3.1 8B_seq512_rank32": {
+      "predicted_kl": 0.1780085144102573,
+      "predicted_log_kl": -1.7259238960685594,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=512"
+    },
+    "Llama 3.1 8B_seq512_rank64": {
+      "predicted_kl": 0.1780085144102573,
+      "predicted_log_kl": -1.7259238960685594,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=512"
+    },
+    "Llama 3.1 8B_seq512_rank128": {
+      "predicted_kl": 0.1780085144102573,
+      "predicted_log_kl": -1.7259238960685594,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=512"
+    },
+    "Llama 3.1 8B_seq1024_rank8": {
+      "predicted_kl": 2.813563025605846,
+      "predicted_log_kl": 1.034451660779746,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=1024"
+    },
+    "Llama 3.1 8B_seq1024_rank16": {
+      "predicted_kl": 0.1780085144102573,
+      "predicted_log_kl": -1.7259238960685594,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=1024"
+    },
+    "Llama 3.1 8B_seq1024_rank32": {
+      "predicted_kl": 0.1780085144102573,
+      "predicted_log_kl": -1.7259238960685594,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=1024"
+    },
+    "Llama 3.1 8B_seq1024_rank64": {
+      "predicted_kl": 0.1780085144102573,
+      "predicted_log_kl": -1.7259238960685594,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=1024"
+    },
+    "Llama 3.1 8B_seq1024_rank128": {
+      "predicted_kl": 0.1780085144102573,
+      "predicted_log_kl": -1.7259238960685594,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=1024"
+    },
+    "Llama 3.1 8B_seq2048_rank8": {
+      "predicted_kl": 2.813563025605846,
+      "predicted_log_kl": 1.034451660779746,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=2048"
+    },
+    "Llama 3.1 8B_seq2048_rank16": {
+      "predicted_kl": 0.1780085144102573,
+      "predicted_log_kl": -1.7259238960685594,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=2048"
+    },
+    "Llama 3.1 8B_seq2048_rank32": {
+      "predicted_kl": 0.1780085144102573,
+      "predicted_log_kl": -1.7259238960685594,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=2048"
+    },
+    "Llama 3.1 8B_seq2048_rank64": {
+      "predicted_kl": 0.1780085144102573,
+      "predicted_log_kl": -1.7259238960685594,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=2048"
+    },
+    "Llama 3.1 8B_seq2048_rank128": {
+      "predicted_kl": 0.1780085144102573,
+      "predicted_log_kl": -1.7259238960685594,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=2048"
+    },
+    "Qwen 2.5 32B_seq256_rank8": {
+      "predicted_kl": 2.6583781972082874,
+      "predicted_log_kl": 0.9777162365531614,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=256"
+    },
+    "Qwen 2.5 32B_seq256_rank16": {
+      "predicted_kl": 0.41465881752572104,
+      "predicted_log_kl": -0.8802992233267666,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=256"
+    },
+    "Qwen 2.5 32B_seq256_rank32": {
+      "predicted_kl": 0.41465881752572104,
+      "predicted_log_kl": -0.8802992233267666,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=256"
+    },
+    "Qwen 2.5 32B_seq256_rank64": {
+      "predicted_kl": 0.41465881752572104,
+      "predicted_log_kl": -0.8802992233267666,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=256"
+    },
+    "Qwen 2.5 32B_seq256_rank128": {
+      "predicted_kl": 0.41465881752572104,
+      "predicted_log_kl": -0.8802992233267666,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=256"
+    },
+    "Qwen 2.5 32B_seq512_rank8": {
+      "predicted_kl": 2.6583781972082874,
+      "predicted_log_kl": 0.9777162365531614,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=512"
+    },
+    "Qwen 2.5 32B_seq512_rank16": {
+      "predicted_kl": 0.41465881752572104,
+      "predicted_log_kl": -0.8802992233267666,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=512"
+    },
+    "Qwen 2.5 32B_seq512_rank32": {
+      "predicted_kl": 0.41465881752572104,
+      "predicted_log_kl": -0.8802992233267666,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=512"
+    },
+    "Qwen 2.5 32B_seq512_rank64": {
+      "predicted_kl": 0.41465881752572104,
+      "predicted_log_kl": -0.8802992233267666,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=512"
+    },
+    "Qwen 2.5 32B_seq512_rank128": {
+      "predicted_kl": 0.41465881752572104,
+      "predicted_log_kl": -0.8802992233267666,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=512"
+    },
+    "Qwen 2.5 32B_seq1024_rank8": {
+      "predicted_kl": 2.6583781972082874,
+      "predicted_log_kl": 0.9777162365531614,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=1024"
+    },
+    "Qwen 2.5 32B_seq1024_rank16": {
+      "predicted_kl": 0.41465881752572104,
+      "predicted_log_kl": -0.8802992233267666,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=1024"
+    },
+    "Qwen 2.5 32B_seq1024_rank32": {
+      "predicted_kl": 0.41465881752572104,
+      "predicted_log_kl": -0.8802992233267666,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=1024"
+    },
+    "Qwen 2.5 32B_seq1024_rank64": {
+      "predicted_kl": 0.41465881752572104,
+      "predicted_log_kl": -0.8802992233267666,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=1024"
+    },
+    "Qwen 2.5 32B_seq1024_rank128": {
+      "predicted_kl": 0.41465881752572104,
+      "predicted_log_kl": -0.8802992233267666,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=1024"
+    },
+    "Qwen 2.5 32B_seq2048_rank8": {
+      "predicted_kl": 2.6583781972082874,
+      "predicted_log_kl": 0.9777162365531614,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=2048"
+    },
+    "Qwen 2.5 32B_seq2048_rank16": {
+      "predicted_kl": 0.41465881752572104,
+      "predicted_log_kl": -0.8802992233267666,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=2048"
+    },
+    "Qwen 2.5 32B_seq2048_rank32": {
+      "predicted_kl": 0.41465881752572104,
+      "predicted_log_kl": -0.8802992233267666,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=2048"
+    },
+    "Qwen 2.5 32B_seq2048_rank64": {
+      "predicted_kl": 0.41465881752572104,
+      "predicted_log_kl": -0.8802992233267666,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=2048"
+    },
+    "Qwen 2.5 32B_seq2048_rank128": {
+      "predicted_kl": 0.41465881752572104,
+      "predicted_log_kl": -0.8802992233267666,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=2048"
+    },
+    "Gemma 4 31B_seq256_rank8": {
+      "predicted_kl": 6.059349621164153,
+      "predicted_log_kl": 1.8016024710814333,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=256"
+    },
+    "Gemma 4 31B_seq256_rank16": {
+      "predicted_kl": 0.07095824249513624,
+      "predicted_log_kl": -2.6456637088307096,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=256"
+    },
+    "Gemma 4 31B_seq256_rank32": {
+      "predicted_kl": 0.07095824249513624,
+      "predicted_log_kl": -2.6456637088307096,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=256"
+    },
+    "Gemma 4 31B_seq256_rank64": {
+      "predicted_kl": 0.07095824249513624,
+      "predicted_log_kl": -2.6456637088307096,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=256"
+    },
+    "Gemma 4 31B_seq256_rank128": {
+      "predicted_kl": 0.07095824249513624,
+      "predicted_log_kl": -2.6456637088307096,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=256"
+    },
+    "Gemma 4 31B_seq512_rank8": {
+      "predicted_kl": 6.059349621164153,
+      "predicted_log_kl": 1.8016024710814333,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=512"
+    },
+    "Gemma 4 31B_seq512_rank16": {
+      "predicted_kl": 0.07095824249513624,
+      "predicted_log_kl": -2.6456637088307096,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=512"
+    },
+    "Gemma 4 31B_seq512_rank32": {
+      "predicted_kl": 0.07095824249513624,
+      "predicted_log_kl": -2.6456637088307096,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=512"
+    },
+    "Gemma 4 31B_seq512_rank64": {
+      "predicted_kl": 0.07095824249513624,
+      "predicted_log_kl": -2.6456637088307096,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=512"
+    },
+    "Gemma 4 31B_seq512_rank128": {
+      "predicted_kl": 0.07095824249513624,
+      "predicted_log_kl": -2.6456637088307096,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=512"
+    },
+    "Gemma 4 31B_seq1024_rank8": {
+      "predicted_kl": 6.059349621164153,
+      "predicted_log_kl": 1.8016024710814333,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=1024"
+    },
+    "Gemma 4 31B_seq1024_rank16": {
+      "predicted_kl": 0.07095824249513624,
+      "predicted_log_kl": -2.6456637088307096,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=1024"
+    },
+    "Gemma 4 31B_seq1024_rank32": {
+      "predicted_kl": 0.07095824249513624,
+      "predicted_log_kl": -2.6456637088307096,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=1024"
+    },
+    "Gemma 4 31B_seq1024_rank64": {
+      "predicted_kl": 0.07095824249513624,
+      "predicted_log_kl": -2.6456637088307096,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=1024"
+    },
+    "Gemma 4 31B_seq1024_rank128": {
+      "predicted_kl": 0.07095824249513624,
+      "predicted_log_kl": -2.6456637088307096,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=1024"
+    },
+    "Gemma 4 31B_seq2048_rank8": {
+      "predicted_kl": 6.059349621164153,
+      "predicted_log_kl": 1.8016024710814333,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=2048"
+    },
+    "Gemma 4 31B_seq2048_rank16": {
+      "predicted_kl": 0.07095824249513624,
+      "predicted_log_kl": -2.6456637088307096,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=2048"
+    },
+    "Gemma 4 31B_seq2048_rank32": {
+      "predicted_kl": 0.07095824249513624,
+      "predicted_log_kl": -2.6456637088307096,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=2048"
+    },
+    "Gemma 4 31B_seq2048_rank64": {
+      "predicted_kl": 0.07095824249513624,
+      "predicted_log_kl": -2.6456637088307096,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=2048"
+    },
+    "Gemma 4 31B_seq2048_rank128": {
+      "predicted_kl": 0.07095824249513624,
+      "predicted_log_kl": -2.6456637088307096,
+      "caveat": "EXTRAPOLATION: trained on seq_len 17-30, predicting seq_len=2048"
+    }
+  },
+  "caveats": [
+    "GBR is trained on seq_len 17-30. Predictions at seq_len >= 256 are EXTRAPOLATION.",
+    "Physical law fit has R\u00b2 around 0.6 on training range \u2014 predictive but not exact.",
+    "Validate against long-context empirical data (Qwen + Gemma4 running now)."
+  ]
+}

@@ -37,7 +37,10 @@ def analyze(fp: str):
         ranks_99 = [r['ranks_for_variance']['0.99'] for r in rs]
         ranks_999 = [r['ranks_for_variance']['0.999'] for r in rs]
         ranks_95 = [r['ranks_for_variance']['0.95'] for r in rs]
-        ranks_90 = [r['ranks_for_variance']['0.90'] for r in rs]
+        ranks_90 = [r['ranks_for_variance']['0.9'] for r in rs]
+        # Note: seq_len key is flat, not nested; reading r['seq_len'] directly
+        sl = rs[0]['seq_len']
+        layer = rs[0]['splice_layer']
         bounds = [r['total_rank_bound'] for r in rs]
         summary.append({
             "seq_len": sl, "splice_layer": layer, "n_prompts": len(rs),

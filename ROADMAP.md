@@ -9,11 +9,14 @@
 
 ## The 4-paper plan
 
-### P1 — Carrier-Payload: Activation Compression for Decentralized Inference
-- **Status (2026-04-16):** Experiment complete on Gemma 3 1B (22x compression at KL=0.023). Multi-model validation running tonight (Llama 3.1 8B, Gemma 4 27B, Qwen 2.5 32B). Paper draft written. Social posts drafted. Email templates ready.
-- **Timeline:** Ship to arXiv April 2026. Workshop submission (NeurIPS ENLSP or MLSys workshop) by Aug 2026.
-- **Venue target:** MLSys 2027 main track OR ICML/NeurIPS workshop 2026.
-- **Effort remaining:** ~2 weeks (polish, arXiv submit, social rollout).
+### P1 — Carrier-Payload: Training-Free Activation Compression for Text-Only Decentralized Inference
+- **Status (2026-04-16 end-of-day):** Clean rewrite at `papers/carrier-payload-text-only-v1.md`. 13/13 citations arXiv-verified. LaTeX 0 errors. Links 13/13 resolve. Short-context data: N=3 text families (Gemma 3 1B, Llama 8B, Qwen 32B), all 22–24x at short context. Long-context data: Qwen 32B at seq 256/512/1024/1621, CR 183x→13x degradation documented honestly. 37 paper invariants defined; need to update for text-only scope before final ship.
+- **Timeline:** Ship to arXiv this week pending remaining gates (paper_invariants.py text-only rescope, reproduce.sh text-only update, ROADMAP sync).
+- **Venue target:** COLM, ACL, or EMNLP main conference (not MLSys — pivoted per Gemini scope analysis 2026-04-16).
+- **Effort remaining:** ~3 days (invariant rescope + reproduce script + final ROADMAP sync + arXiv endorsement).
+
+### P1' (OLD superseded) — `papers/carrier-payload-v1.md`
+- Original broad draft with multimodal claims. Now superseded by P1 text-only. Retained with prominent revision notice at top because Tim Dettmers and CU Boulder professors received URLs to it via email. Not for submission.
 
 ### P2 — Portable ML on WebGPU: Numerical Fidelity Across Consumer Hardware
 - **Status:** Data already exists in `Synapse` repo (Pixel 10 Pro, iPhone 16, Qualcomm Android, Nvidia desktop, Intel iGPU failure). Tested GPT-2 parity across architectures. 2026-04-15 benchmark shows 2.34x speedup on heterogeneous vs all-mobile.
@@ -22,13 +25,18 @@
 - **Effort remaining:** 6-8 weeks (formalize data, add device classes if possible, write).
 - **Low-effort, high-yield.** Data is already collected.
 
-### P3 — Distributed Speculative Decoding for Decentralized Inference
-- **Status:** Idea stage. Listed as "Phase 2" in Synapse roadmap. Infra partially exists.
-- **Timeline:** Sept-Dec 2026 research + experiments. Submit early 2027.
-- **Venue target:** MLSys 2027 main track OR NSDI 2027 OR OSDI 2027.
-- **Novelty:** High. Almost no published work on distributed speculative decoding.
-- **Expected impact:** 2-4x tok/s speedup on volunteer networks.
-- **Effort:** 3-4 months deep work, needs GPU budget for experiments.
+### P2 — The Modality Gap (NEW from today's pivot)
+- **Status:** Placeholder at `papers/modality-gap-v2-placeholder.md`. Preliminary Gemma 4 31B data (N=1 multimodal) shows inverse compression scaling vs text. Qwen-VL confounder check failed 3x on RunPod infra.
+- **Timeline:** Q3 2026. Requires N=3 paired text/vision-language families (e.g., Qwen 2.5 vs Qwen-VL, Llama 3.1 vs Llama 3.2-Vision, Mistral vs Pixtral).
+- **Venue target:** NeurIPS or ICLR.
+- **Dependency:** builds on and cites P1 (text-only). Coherent research-program narrative for EB1-A.
+
+### P3 — Predictive Residual Transport (was "Distributed Speculative Decoding")
+- **Status:** Scope pivoted after SpecPipe/FlowSpec/PPSD/EAGLE prior-art found 2026-04-16. Original "Distributed Speculative Decoding" is prior art. New scope: residual-only transport via shared online predictor + carrier-payload on residuals (novel synthesis).
+- **Timeline:** Sept 2026 – Feb 2027 research + experiments. Submit early 2027.
+- **Venue target:** MLSys 2027 workshop or NSDI.
+- **Novelty (narrow but defensible):** first residual-only transport protocol combining prediction + carrier-payload compression + Byzantine attestation for decentralized LLM inference.
+- **Effort:** 3-4 months (predictor.js + speculative.js already exist in Synapse from Apr 13, 2026).
 
 ### P4 — Trust, Compress, Verify: A Complete Protocol for Decentralized LLM Inference (FLAGSHIP)
 - **Status:** Depends on P1 + P3 complete + Byzantine verification (Artifact 2 from earlier research mission).

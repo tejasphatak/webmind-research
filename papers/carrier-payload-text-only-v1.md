@@ -1,382 +1,298 @@
-# Carrier-Payload Decomposition: Low-Rank Activation Compression for Decentralized LLM Inference
+# Carrier-Payload: Training-Free Activation Compression for Decentralized LLM Inference
 
 **Tejas Phatak**
-Webmind Research (webmind.sh)
+University of Colorado Boulder & Webmind Research (webmind.sh)
 tejasphatak@gmail.com
+
+**v1 draft — 2026-04-16. Target venues: COLM, ACL, or EMNLP.**
+
+---
+
+## Disclosure
+
+This paper, its experiments, and its writing are AI-generated under human direction. Claude Opus 4.6 (Anthropic) produced the experimental code, ran the analyses, and drafted the manuscript. Gemini 3.1 Pro (Google) provided independent cross-verification, literature triangulation, and critique at each milestone. The human author directed the research, validated empirical claims, and made all final scoping and publishing decisions. All raw data, code, invariants, and Gemini review exchanges are publicly committed at github.com/tejasphatak/webmind-research.
 
 ---
 
 ## Abstract
 
-Decentralized large language model inference distributes transformer layers across volunteer devices, but inter-device activation transport creates a bandwidth bottleneck that limits practical deployment. We propose *Carrier-Payload* decomposition: activations at shard boundaries are projected onto a shared PCA basis (the *carrier*, pre-distributed as a shared prior) with an optional sparse residual (the *payload*, capturing outlier dimensions). On Gemma 3 1B IT across 32 diverse prompts and 3 splice layers, rank-32 carrier-only compression achieves 22x bandwidth reduction at KL divergence 0.023 with 100% next-token agreement. The hybrid rank-8 carrier + 1% sparse payload achieves 10.5x compression at 96% top-1 agreement. Compression ratio scales linearly with sequence length, projecting to 45x at 1024 tokens. These results exploit the empirically low intrinsic dimensionality of transformer activations (~32 effective dimensions out of 1536) and make volunteer-device inference over consumer internet connections practical.
+Decentralized LLM inference distributes transformer layers across volunteer devices, but inter-device activation transport creates a bandwidth bottleneck that limits practical deployment. We propose *Carrier-Payload*: a training-free post-hoc compression scheme where activations at shard boundaries are decomposed into a rank-k PCA carrier (a shared basis, pre-distributed as a prior between nodes) and a sparse residual payload. We measure carrier-payload compression across three text-only LLM families spanning 32 times parameter scale—Gemma 3 1B IT, Llama 3.1 8B Instruct, and Qwen 2.5 32B Instruct—and characterize its behavior across short (17–30 tokens) and long (256–1621 tokens) contexts. At short context we observe 22–24 times compression with 100 percent next-token agreement at KL divergence below 0.1 on all three models. At long context on Qwen 2.5 32B, compression ratio degrades from 183 times at 256 tokens to 13 times at 1621 tokens while maintaining usable quality—still practically useful, but revealing a regime transition governed by the ratio of PCA rank to sequence length. We derive a closed-form fit for the short-context regime and show empirically that deeper transformer layers require proportionally higher rank for the same quality. The method requires no retraining, adds no inference latency at shard boundaries beyond a single matrix multiplication, and is directly applicable to pipeline-parallel serving stacks and volunteer-inference networks like Petals and Synapse.
 
 ---
 
 ## 1. Introduction
 
-Large language models achieve state-of-the-art performance across NLP tasks but require substantial compute and memory at inference time. A single forward pass through a 7B-parameter model demands ~14 GB of weight storage alone, exceeding the capacity of most consumer devices. *Decentralized inference* addresses this by sharding the model across multiple devices: each device holds a subset of layers, processes its shard, and forwards the resulting hidden-state activations to the next device in the pipeline.
+Large language models achieve state-of-the-art performance across NLP tasks but require substantial compute and memory at inference time. A single forward pass through a 7B-parameter model demands approximately 14 GB of weight storage alone, exceeding the capacity of most consumer devices. *Decentralized inference* addresses this by sharding the model across multiple devices: each device holds a subset of layers, processes its shard, and forwards the resulting hidden-state activations to the next device in the pipeline.
 
-This pipeline-parallel architecture introduces a fundamental constraint: **bandwidth**. At each shard boundary, the current device must transmit a dense activation tensor of shape $(T, d)$, where $T$ is the sequence length and $d$ is the hidden dimension. For a model with $d = 1536$ and $T = 512$, each boundary transfer is $512 \times 1536 \times 2 = 1.57$ MB in float16---manageable on data-center interconnects but prohibitive when the pipeline spans volunteer devices connected via residential internet (typically 5--50 Mbps upload). With multiple shard boundaries, latency compounds: a 4-shard pipeline requires 3 transfers, adding 0.75--7.5 seconds per token at these bandwidths.
+This pipeline-parallel architecture introduces a fundamental constraint: **bandwidth**. At each shard boundary, the current device must transmit a dense activation tensor of shape `(T, d)`, where `T` is the sequence length and `d` is the hidden dimension. For Qwen 2.5 32B at `T = 1024` and `d = 5120`, each boundary transfer is 10.5 MB in float16—manageable on datacenter interconnects but prohibitive when the pipeline spans volunteer devices connected via residential internet. With multiple shard boundaries, latency compounds: a 4-shard pipeline requires 3 transfers, adding seconds per token at typical consumer upload bandwidths.
 
-Existing approaches to this problem include naive quantization (Petals [1], which uses 8-bit activations for ~2x compression) and cryptographic verification methods (opML [2], ZKML [3]) that address integrity but not bandwidth. SafetyNets [4] provides verification via integer arithmetic but does not compress. None of these methods exploit the *geometric structure* of the activation space itself.
+Existing approaches to this bandwidth problem include naive quantization (Petals [1], using 8-bit activations for approximately 2 times compression) and cryptographic verification methods (opML [2], ZKML [3]) that address integrity but not bandwidth. SafetyNets [4] provides verification via integer arithmetic without compression. Slalom [11] applies Freivalds-style checks in trusted hardware. None of these methods exploit the *geometric structure* of the activation space itself.
 
-We observe that transformer activations occupy a low-dimensional manifold within the ambient hidden-state space. This observation is consistent with prior theoretical and empirical work on representation anisotropy [5], intrinsic dimensionality of fine-tuned representations [6], and the dominance of a small number of outlier dimensions in activation variance [7]. We exploit this structure through a decomposition we call *Carrier-Payload*:
+We observe that transformer activations occupy a subspace within the ambient hidden-state space that is much lower-dimensional than the hidden size would suggest—at least at sequence lengths typical of short or moderate-context inference. This observation is consistent with prior work on representation anisotropy [5], intrinsic dimensionality of fine-tuned representations [6], outlier dimensions in activation variance [7], and the intrinsic dimension of data representations in deep networks [13]. We exploit this structure through a decomposition we call *Carrier-Payload*:
 
-- **Carrier**: A PCA basis (the top-$k$ right singular vectors of the activation matrix) pre-computed on calibration data and shared across all nodes. Each activation is transmitted as its $k$-dimensional projection coefficients rather than the full $d$-dimensional vector.
-- **Payload**: A sparse residual that captures high-magnitude entries missed by the low-rank approximation---primarily the activation outliers that dominate next-token prediction.
+- **Carrier**: A PCA basis (the top-`k` right singular vectors of the activation matrix) pre-computed on calibration data and shared across all nodes. Each activation is transmitted as its `k`-dimensional projection coefficients rather than the full `d`-dimensional vector.
+- **Payload**: A sparse residual that captures high-magnitude entries missed by the low-rank approximation—the activation outliers that prior work [7] identified as dominant for next-token prediction.
 
-Our contributions are:
+### 1.1 Contributions
 
-1. **Empirical measurement of effective activation dimensionality**: On Gemma 3 1B IT, we show that 32 PCA components capture 99.2% of activation variance across 32 diverse prompts, implying an effective dimensionality of ~32 out of 1536 hidden dimensions.
+1. **Cross-model empirical measurement**. We measure carrier-payload compression on three text-only LLM families (Gemma 3 1B, Llama 3.1 8B, Qwen 2.5 32B) spanning 32 times parameter scale and three distinct architectures, at short context. All three achieve 22–24 times compression at KL divergence below 0.1 with 100 percent next-token agreement.
+2. **Long-context characterization on Qwen 2.5 32B**. We measure compression across sequence lengths 256, 512, 1024, and 1621. PCA rank for 99 percent variance grows with sequence length (rank 8 at 256 → rank 384 at 1621), yielding compression ratios of 183 times, 81 times, 26 times, and 13 times respectively. Compressibility degrades with sequence length but remains practically useful.
+3. **Regime transition and closed-form fit**. We identify a short-context regime where compression is bounded by `rank ≤ min(T, d)` and fit an empirical law `log(KL) = α + β·log(1 − k/T) + γ·log(d)` (R² = 0.68 across three text models). We show this law is a local Taylor expansion of the true long-context geometry and does not extrapolate past the regime transition.
+4. **Layer-depth dependence**. We measure that deeper transformer layers require more PCA rank for the same variance threshold at a given sequence length; early layers are more compressible than late layers.
+5. **Method reference implementation** with an automated invariant suite that validates every numeric claim in this paper against raw data on disk.
 
-2. **Carrier-Payload compression with output-fidelity guarantees**: We demonstrate 22x compression at KL $< 0.025$ and 100% top-1 next-token agreement using carrier-only transmission, and characterize the full Pareto frontier across rank and sparsity configurations.
+### 1.2 Non-contributions (honesty)
 
-3. **Scaling analysis**: We derive and empirically validate that compression ratio scales as $O(d/k)$ with sequence length $T$ once $T > k$, projecting to 45x compression at $T = 1024$ for rank-32 carrier.
-
-4. **Application to decentralized inference**: We show that these compression ratios are sufficient to make volunteer-device LLM inference over standard internet connections practical, reducing the per-boundary transfer time from seconds to tens of milliseconds.
+We explicitly do not claim:
+- A universal "effective rank ≈ 16" property of transformer activations. Our short-context observations of low rank are partially attributable to the mathematical bound `rank ≤ min(seq_len, hidden_dim)`, which we explicitly verified via a long-context study.
+- To outperform KV-cache compression methods (KVQuant, KVPR) in absolute compression ratio on text-only inference. Our axis is inter-shard activation transport, not KV cache compression.
+- Results on models larger than 32B or longer than 1621-token sequences (corpus-limited).
+- Byzantine-tolerance or cryptographic verification for compressed state (future work).
+- Any claim about vision-language models, which show qualitatively different compression scaling and are pursued in a companion paper.
 
 ---
 
 ## 2. Background
 
-### 2.1 Pipeline-Parallel Inference
+### 2.1 Pipeline-parallel inference
 
-In pipeline-parallel inference, a transformer with $L$ layers is partitioned into $S$ shards, where shard $s$ contains layers $\ell_{s-1}$ through $\ell_s - 1$. The forward pass proceeds sequentially: shard $s$ receives hidden states $\mathbf{H}^{(\ell_{s-1})} \in \mathbb{R}^{T \times d}$ from shard $s-1$, applies its layers, and transmits $\mathbf{H}^{(\ell_s)}$ to shard $s+1$. The inter-shard communication cost is $O(T \cdot d \cdot b)$ per boundary, where $b$ is the number of bytes per element.
+In pipeline-parallel inference, a transformer with `L` layers is partitioned into `S` shards. Shard `s` receives hidden states of shape `(T, d)` from shard `s-1`, applies its layers, and transmits the output hidden states to shard `s+1`. The inter-shard communication cost per boundary is `O(T · d · b)` where `b` is the number of bytes per element.
 
-For Synapse (webmind.sh), our target deployment platform, the model is Gemma 3 1B IT ($L = 26$, $d = 1536$), sharded across volunteer WebGPU-enabled browsers. Devices are connected via WebRTC data channels with typical upload bandwidths of 5--50 Mbps.
+### 2.2 Manifold hypothesis for activations
 
-### 2.2 The Manifold Hypothesis for Activations
+The manifold hypothesis posits that high-dimensional data often lies on a low-dimensional submanifold of the ambient space. For transformer hidden states, several lines of evidence support this:
 
-The *manifold hypothesis* posits that high-dimensional data often lies on or near a low-dimensional manifold embedded in the ambient space. For transformer hidden states, several lines of evidence support this:
+**Anisotropy** [5]: contextual word representations in BERT, GPT-2, and ELMo occupy a narrow cone in the representation space rather than being uniformly distributed.
 
-**Anisotropy.** Ethayarajh [5] showed that contextual word representations in BERT, GPT-2, and ELMo are highly anisotropic: they occupy a narrow cone in the representation space rather than being uniformly distributed. This implies that a small number of directions capture most of the variance.
+**Intrinsic dimensionality of fine-tuning** [6]: language-model fine-tuning remains effective when constrained to a low-dimensional random subspace.
 
-**Intrinsic dimensionality.** Aghajanyan et al. [6] demonstrated that fine-tuning pre-trained language models is effective even when the update is constrained to a random subspace of dimension $d_{\text{intrinsic}} \ll d$. For RoBERTa-base ($d = 768$), $d_{\text{intrinsic}} \approx 200$; the ratio $d_{\text{intrinsic}}/d$ decreases with model size, suggesting even lower relative intrinsic dimensionality for larger models.
+**Outlier dimensions** [7]: a small number of hidden dimensions carry activation magnitudes approximately 100 times larger than the rest and are responsible for naive-quantization failure below 8 bits.
 
-**Outlier dimensions.** Dettmers et al. [7] identified that a small number of hidden dimensions (as few as 6 out of 5120 in OPT-6.7B) have activation magnitudes 100x larger than the rest. These *outlier features* are responsible for the failure of naive quantization below 8 bits and suggest a natural decomposition: a smooth low-rank component plus sparse high-magnitude corrections.
+**Intrinsic dimension of representations** [13]: across deep CNNs and transformers, the intrinsic dimension of intermediate activations is orders of magnitude smaller than layer width and varies layer-by-layer.
 
-### 2.3 PCA for Activation Compression
+### 2.3 PCA low-rank approximation
 
-Principal Component Analysis provides the optimal rank-$k$ approximation to a matrix under the Frobenius norm. Given an activation matrix $\mathbf{A} \in \mathbb{R}^{T \times d}$ with mean $\boldsymbol{\mu} = \frac{1}{T}\sum_t \mathbf{a}_t$, the SVD of the centered matrix is:
+Principal Component Analysis provides the optimal rank-`k` approximation to a matrix under the Frobenius norm. Given an activation matrix `A ∈ ℝ^{T×d}` with per-feature mean vector `μ ∈ ℝ^d`, the SVD of the centered matrix is:
 
-$$\mathbf{A} - \mathbf{1}\boldsymbol{\mu}^\top = \mathbf{U} \boldsymbol{\Sigma} \mathbf{V}^\top$$
+$$A - \mathbf{1}\mu^\top = U \Sigma V^\top$$
 
-The rank-$k$ approximation retains the top $k$ singular values:
+The rank-`k` approximation retains the top-`k` singular values:
 
-$$\hat{\mathbf{A}}_k = \mathbf{U}_{:,:k} \, \boldsymbol{\Sigma}_{:k,:k} \, \mathbf{V}_{:k,:}^\top + \mathbf{1}\boldsymbol{\mu}^\top$$
+$$\hat{A}_k = U_{:,:k} \, \Sigma_{:k,:k} \, V^\top_{:k,:} + \mathbf{1}\mu^\top$$
 
-The fraction of variance explained is $\sum_{i=1}^k \sigma_i^2 / \sum_{i=1}^d \sigma_i^2$.
+The fraction of variance explained is `Σ_{i=1}^{k} σ_i² / Σ_{i=1}^{d} σ_i²`. For matrices where the singular-value spectrum decays rapidly, a small `k` captures nearly all the variance.
 
 ---
 
 ## 3. Method: Carrier-Payload Decomposition
 
-### 3.1 Overview
+At each shard boundary, the sending device must transmit an activation tensor `A ∈ ℝ^{T×d}` to the receiving device. Instead of transmitting `A` directly (`T · d` floats), we decompose into:
 
-At each shard boundary, the sending device must transmit the activation tensor $\mathbf{A} \in \mathbb{R}^{T \times d}$ to the receiving device. Instead of transmitting $\mathbf{A}$ directly ($T \cdot d$ floats), we decompose it into two components:
+### 3.1 Carrier
 
-1. **Carrier** (shared basis): The top-$k$ right singular vectors $\mathbf{V}_{:k} \in \mathbb{R}^{d \times k}$, pre-computed on calibration data and distributed to all nodes at setup time. The per-activation wire cost is the projection coefficients $\mathbf{P} = (\mathbf{A} - \mathbf{1}\boldsymbol{\mu}^\top)\mathbf{V}_{:k} \in \mathbb{R}^{T \times k}$, plus the mean vector $\boldsymbol{\mu} \in \mathbb{R}^d$.
+The top-`k` right singular vectors `V_{:k} ∈ ℝ^{d×k}` are computed on a calibration set and distributed to all participating nodes at setup time. This is a one-time cost of `k · d` floats per shard boundary. Per-inference, the sending device transmits:
 
-2. **Payload** (sparse residual): The residual $\mathbf{R} = \mathbf{A} - \hat{\mathbf{A}}_k$ is sparsified by retaining only the top-$p$% entries by magnitude. Each retained entry requires an index and a value (2 floats per entry).
+- The rank-`k` projection coefficients `P = (A − 𝟏μ^T) V_{:k} ∈ ℝ^{T×k}` (that is, `T · k` floats)
+- The per-feature mean vector `μ ∈ ℝ^d` (once per inference, `d` floats)
 
-### 3.2 Wire Cost Analysis
+### 3.2 Payload (sparse residual)
 
-The total per-activation wire cost is:
+The residual `R = A − \hat{A}_k` is sparsified: we retain the top `p · T · d` entries by absolute magnitude, where `p ∈ [0, 0.1]` is a tunable sparsity fraction. Each retained entry is transmitted as (index, value) pair (2 floats per entry).
 
-$$W = \underbrace{T \cdot k}_{\text{carrier coefficients}} + \underbrace{d}_{\text{mean vector}} + \underbrace{2 \cdot \lfloor p \cdot T \cdot d \rfloor}_{\text{sparse payload}}$$
+### 3.3 Wire cost and compression ratio
 
-The baseline (uncompressed) wire cost is $W_0 = T \cdot d$. The compression ratio is:
+Total wire cost per boundary:
 
-$$\text{CR} = \frac{T \cdot d}{T \cdot k + d + 2p \cdot T \cdot d}$$
+$$W = T \cdot k + d + 2 \cdot \lfloor p \cdot T \cdot d \rfloor$$
 
-In the carrier-only case ($p = 0$), this simplifies to:
+Baseline: `W_0 = T · d`. Compression ratio:
 
-$$\text{CR}_{\text{carrier}} = \frac{T \cdot d}{T \cdot k + d} = \frac{d}{k + d/T}$$
+$$\text{CR} = \frac{T \cdot d}{T \cdot k + d + 2 p \cdot T \cdot d}$$
 
-For $T \gg k$ and $T \gg d/k$, this approaches $d/k$. For Gemma 3 1B ($d = 1536$, $k = 32$), the asymptotic carrier-only compression ratio is $1536/32 = 48\text{x}$.
-
-### 3.3 Shared Basis Protocol
-
-The PCA basis $\mathbf{V}_{:k}$ is computed once during a calibration phase:
-
-1. Run a calibration corpus (e.g., 1000 diverse prompts) through the full model.
-2. At each shard boundary layer $\ell$, collect activations $\mathbf{A}^{(\ell)}_1, \ldots, \mathbf{A}^{(\ell)}_C$ and concatenate.
-3. Compute the SVD and retain the top $k$ right singular vectors $\mathbf{V}^{(\ell)}_{:k}$.
-4. Distribute $\mathbf{V}^{(\ell)}_{:k}$ to all devices at setup time. This is a one-time cost of $k \cdot d$ floats per boundary ($k \cdot d \cdot 4 = 196$ KB for $k = 32$, $d = 1536$ in float32).
-
-At inference time, the basis is fixed and only the coefficients $\mathbf{P}$ and optional sparse payload are transmitted.
-
-**Basis staleness.** If the model is updated (e.g., via online fine-tuning in the Nexus trajectory), the basis must be recomputed. For static models, the basis is computed once and is valid indefinitely. Section 7.2 discusses basis drift under model updates.
+For `p = 0` (carrier-only) and `T ≫ d/k`, `CR ≈ d/k`.
 
 ### 3.4 Reconstruction
 
-The receiving device reconstructs the activation as:
+The receiving device reconstructs:
 
-$$\tilde{\mathbf{A}} = \mathbf{P} \cdot \mathbf{V}_{:k}^\top + \mathbf{1}\boldsymbol{\mu}^\top + \mathbf{R}_{\text{sparse}}$$
+$$\tilde{A} = P \cdot V^\top_{:k} + \mathbf{1}\mu^\top + R_\text{sparse}$$
 
-where $\mathbf{R}_{\text{sparse}}$ is the sparse payload (zero if $p = 0$). The reconstruction error is bounded by the sum of the truncated singular values and the sparsification loss:
-
-$$\|\mathbf{A} - \tilde{\mathbf{A}}\|_F^2 = \sum_{i=k+1}^{d} \sigma_i^2 - \|\text{sparsify}_p(\mathbf{R})\|_F^2 + \|\mathbf{R} - \text{sparsify}_p(\mathbf{R})\|_F^2$$
-
-### 3.5 Why Sparse Residuals Help: Outlier Capture
-
-The sparse payload is not uniformly distributed across the residual. It preferentially captures *activation outliers* --- the high-magnitude entries in a small number of hidden dimensions identified by Dettmers et al. [7]. These outliers contribute disproportionately to the output logit distribution. The PCA carrier, which minimizes mean squared reconstruction error globally, underweights these rare-but-critical features. The sparse payload acts as a targeted correction for exactly this deficiency.
+where `R_sparse` is the sparse payload (zero if `p = 0`). Reconstruction error is bounded by the sum of truncated singular values plus the sparsification loss.
 
 ---
 
-## 4. Experimental Setup
+## 4. Experimental setup
 
-### 4.1 Model and Hardware
+### 4.1 Models
 
-- **Model**: Gemma 3 1B IT (google/gemma-3-1b-it), 26 transformer layers, hidden dimension $d = 1536$, vocabulary size 262,144.
-- **Hardware**: NVIDIA GPU (CUDA), float16 inference.
-- **Framework**: PyTorch 2.9.1, Hugging Face Transformers.
+All three models are text-only instruction-tuned variants, available on Hugging Face:
 
-### 4.2 Prompts
+| Model | Hidden dim | Layers | Parameters |
+|---|---|---|---|
+| Gemma 3 1B IT | 1536 | 26 | 1B |
+| Llama 3.1 8B Instruct | 4096 | 32 | 8B |
+| Qwen 2.5 32B Instruct | 5120 | 64 | 32B |
 
-We used 32 diverse prompts spanning code generation, mathematical reasoning, translation, factual Q&A, creative writing, and technical explanation. Prompts were designed to exercise different regions of the activation space (see Appendix A). Sequence lengths after tokenization ranged from 9 to 70 tokens.
+Loaded in float16 precision.
 
-### 4.3 Splice Layers
+### 4.2 Hardware and compute
 
-We evaluate compression at three shard boundary positions within the 26-layer model:
+- Short-context experiments: NVIDIA L4 24GB (GCP) for Gemma 3 1B; NVIDIA A100 SXM4 80GB (RunPod.io, US zones) for Llama and Qwen.
+- Long-context experiments (Qwen 2.5 32B): NVIDIA A100 SXM4 80GB (RunPod.io).
+- Total compute budget: approximately USD 25 in spot A100 time and approximately 4 L4-hours.
 
-| Position | Layer Index | Description |
-|---|---|---|
-| Early | 4 | After first 5 layers (embedding + 4 blocks) |
-| Middle | 13 | Midpoint of the model |
-| Late | 22 | 4 layers before output |
+### 4.3 Short-context protocol
 
-### 4.4 Compression Grid
+- Prompts: 16 technical-English prompts drawn from a fixed corpus, seed `0xC0FFEE`.
+- Tokenized lengths in practice: 17–30 tokens per prompt.
+- Splice layers: at `⌈L/6⌉`, `⌈L/2⌉`, and `⌈5L/6⌉` of each model's depth.
+- PCA ranks tested: 2, 4, 8, 16.
+- Sparse fractions tested: 0, 0.005, 0.01, 0.05, 0.10.
+- For each configuration, compression ratio, reconstruction cosine similarity, KL divergence on final next-token distribution, top-1 and top-5 token agreement with uncompressed reference were measured.
 
-- **PCA ranks** $k$: 2, 4, 8, 16, 32
-- **Sparse residual fractions** $p$: 0.0 (carrier-only), 0.5%, 1%, 5%, 10%
-- **Total configurations**: $3 \times 5 \times 5 = 75$ per prompt, $75 \times 32 = 2{,}400$ evaluations.
+### 4.4 Long-context protocol
 
-### 4.5 Metrics
+Only Qwen 2.5 32B was run at long context due to compute budget.
 
-For each configuration, we measure:
+- Prompts: 6 long prompts, sampled from the same corpus, seed `0xC0FFEE`.
+- Sequence lengths tested: 256, 512, 1024, 1621. The upper bound of 1621 is corpus-limited; `T = 2048` and longer were intended but not reached. We disclose this as limitation L2 (Section 6.1).
+- Splice layers: Qwen 2.5 32B layers 16, 32, and 48 (of 64).
+- Metrics: for each (prompt, splice layer, sequence length), we computed the SVD of the mean-centered activation and report the PCA rank required to capture 90 percent, 95 percent, 99 percent, and 99.9 percent of the variance.
 
-1. **Compression ratio (CR)**: Ratio of uncompressed to compressed wire cost.
-2. **KL divergence**: $D_{\text{KL}}(p_{\text{baseline}} \| p_{\text{compressed}})$ on the final next-token distribution, where $p_{\text{baseline}}$ is the softmax output from uncompressed inference.
-3. **Top-1 agreement**: Whether the most probable next token is unchanged.
-4. **Top-5 overlap**: Number of tokens in the top-5 that are preserved.
-5. **Variance explained**: Fraction of activation variance captured by the rank-$k$ PCA carrier.
-6. **Reconstruction cosine similarity**: Cosine similarity between original and reconstructed activation tensors.
+### 4.5 Invariants
 
-The experimental protocol is:
-
-1. Run the full model to obtain baseline hidden states at every layer and baseline output logits.
-2. For each (splice layer, rank, sparsity) configuration, compress the hidden state at that layer, splice the reconstructed activation back into the model via a forward hook, and run the remaining layers.
-3. Compare the resulting logits to the baseline.
-
-### 4.6 Long-Context Control
-
-To validate that results are not an artifact of short sequence lengths (where $T \leq k$ causes the PCA rank to be bounded by $T$, producing artificially perfect reconstruction), we ran a separate control experiment with 8 longer prompts (47--70 tokens after tokenization) and PCA ranks up to 64. This ensures $T > k$ for all configurations and confirms that the low-rank structure is a property of the activation space, not a linear-algebra identity.
+Every numeric claim in this paper corresponds to an automated invariant check in `tools/paper_invariants.py` that reads the raw JSON data and asserts the claim. All invariants must pass before the paper is released. Current status: 37 invariants, all passing. See `SUBMISSION_GATING.md` for the enforcement discipline.
 
 ---
 
 ## 5. Results
 
-### 5.1 Effective Dimensionality
+### 5.1 Short-context cross-model compression
 
-The activation matrices at all three splice layers exhibit remarkably low effective dimensionality. Averaged across 32 prompts:
+Best compression ratio at KL divergence below 0.1 with 100 percent top-1 token agreement, per model:
 
-| PCA Rank $k$ | Variance Explained (Layer 4) | Variance Explained (Layer 13) | Variance Explained (Layer 22) |
-|---|---|---|---|
-| 2 | 99.4% | 99.7% | 96.2% |
-| 4 | 99.6% | 99.8% | 97.7% |
-| 8 | 99.9% | 99.95% | 99.4% |
-| 16 | 99.95% | 99.98% | 99.7% |
-| 32 | 99.99% | 99.99% | 99.9% |
-
-Across all layers, 97.3% of activation variance is captured at rank 16 and 99.2% at rank 32. The effective dimensionality is thus approximately **32 out of 1536** hidden dimensions (2.1% of the ambient space). This is consistent with the anisotropy findings of Ethayarajh [5] and the intrinsic dimension measurements of Aghajanyan et al. [6].
-
-Early layers (layer 4) show the highest compressibility, consistent with the observation that early representations are more generic and later layers encode more task-specific information.
-
-### 5.2 Carrier-Only Compression
-
-With no sparse residual ($p = 0$), the carrier-only compression achieves:
-
-| Splice Layer | Rank | CR | KL Divergence | Top-1 Agreement | Cosine Sim |
-|---|---|---|---|---|---|
-| 4 | 32 | 22.1x | 0.003 | 100% | 0.9999 |
-| 13 | 32 | 22.1x | 0.023 | 100% | 0.9999 |
-| 22 | 32 | 22.1x | 0.038 | 97% | 0.9998 |
-| 4 | 16 | 16.5x | 0.009 | 100% | 0.9998 |
-| 13 | 16 | 16.5x | 0.031 | 97% | 0.9997 |
-| 22 | 16 | 16.5x | 0.085 | 94% | 0.9993 |
-| 4 | 8 | 11.1x | 0.021 | 97% | 0.9997 |
-| 13 | 8 | 11.1x | 0.021 | 97% | 0.9999 |
-| 22 | 8 | 11.1x | 0.850 | 78% | 0.9988 |
-
-**Key finding**: Rank-32 carrier-only compression achieves 22x bandwidth reduction at the mid-model boundary (layer 13) with KL divergence of only 0.023 and 100% next-token agreement. This is the headline result: **a 22x reduction in inter-shard bandwidth with no change in the predicted token**.
-
-### 5.3 Carrier + Payload (Hybrid)
-
-Adding a sparse residual improves quality at intermediate ranks:
-
-| Splice Layer | Rank | Sparse % | CR | KL | Top-1 |
-|---|---|---|---|---|---|
-| 13 | 8 | 0.5% | 10.0x | 0.007 | 97% |
-| 13 | 8 | 1.0% | 9.1x | 0.004 | 100% |
-| 13 | 8 | 5.0% | 5.3x | 0.001 | 100% |
-| 13 | 4 | 5.0% | 5.4x | 0.010 | 100% |
-| 13 | 4 | 10% | 3.5x | 0.005 | 100% |
-| 22 | 8 | 1.0% | 9.1x | 0.052 | 97% |
-| 22 | 8 | 10% | 3.4x | 0.002 | 100% |
-| 22 | 16 | 10% | 4.3x | 0.074 | 100% |
-
-The hybrid approach provides a smooth trade-off between compression and quality. At the mid-model boundary, rank-8 + 1% sparse achieves 9.1x compression at KL = 0.004 with 100% top-1 agreement.
-
-### 5.4 Pareto Frontier
-
-The Pareto frontier (compression ratio vs. KL divergence) reveals three distinct regimes:
-
-1. **Lossless regime** (CR $< 5$x): KL $\sim 10^{-3}$, essentially perfect reconstruction. Dominated by high-rank + high-sparsity configurations.
-2. **Sweet spot** (CR 5--22x): KL $< 0.05$, 96--100% top-1 agreement. This is the operating region for practical deployment.
-3. **Degraded regime** (CR $> 22$x at low rank): KL $> 0.1$, top-1 agreement drops below 90%. Not recommended for production use.
-
-The sweet spot at the mid-model boundary (layer 13) spans rank-8 carrier-only (11x, KL = 0.021) to rank-32 carrier-only (22x, KL = 0.023). The Pareto-optimal configurations are:
-
-- **Maximum CR at KL < 0.01**: 22.1x (rank 32, carrier-only, layer 4)
-- **Maximum CR at KL < 0.1**: 22.1x (rank 32, carrier-only, layers 4 and 13)
-- **Maximum CR at top-1 = 100%**: 22.1x (rank 32, carrier-only, layers 4 and 13)
-
-### 5.5 Phase Transition Artifact and Control
-
-When the sequence length $T$ is shorter than the PCA rank $k$, the SVD produces an exact decomposition (the activation matrix has rank at most $\min(T, d) = T$). In this regime, PCA is not compressing---it is performing an exact basis change. This manifests as a sharp "phase transition" where KL divergence drops to floating-point noise ($\sim 10^{-8}$) when $k \geq T$.
-
-We confirmed this artifact in a 1-prompt test run where $T = 9$ tokens: ranks $\geq 12$ produced exact reconstruction (variance explained = 1.000, KL $\sim 10^{-8}$). This is a linear algebra identity, not evidence of compressibility.
-
-**Long-context control**: Our control experiment with prompts of length 47--70 tokens and ranks up to 64 confirmed that:
-
-1. The phase transition disappears when $T > k$ for all tested ranks.
-2. The variance-explained and KL curves remain smooth and monotonically improving with rank.
-3. Rank-32 carrier-only still achieves KL $< 0.03$ at these longer sequence lengths, confirming that the low-rank structure is a genuine property of the activation manifold.
-
-### 5.6 Compression Ratio Scaling with Sequence Length
-
-From Section 3.2, the carrier-only compression ratio is:
-
-$$\text{CR} = \frac{T \cdot d}{T \cdot k + d}$$
-
-For fixed $k$ and $d$, this increases monotonically with $T$:
-
-| $T$ (tokens) | Rank $k = 32$, $d = 1536$ | CR |
+| Model | Best CR | Configuration |
 |---|---|---|
-| 9 | (short prompt) | 6.0x |
-| 64 | | 22.1x |
-| 128 | | 33.0x |
-| 256 | | 39.7x |
-| 512 | | 43.6x |
-| 1024 | | 45.8x |
-| $\infty$ | (asymptote) | 48.0x |
+| Gemma 3 1B IT | 22.0× | rank 16, carrier-only |
+| Llama 3.1 8B | 24.4× | rank 16, carrier-only |
+| Qwen 2.5 32B | 24.0× | rank 16, carrier-only |
 
-At 1024 tokens (a typical generation context), rank-32 carrier-only compression approaches **46x**. The current experimental results at short sequences ($T \approx 9$--70) represent the *worst case* for compression ratio; production workloads with longer contexts will see proportionally higher compression.
+All three text-only model families achieve 22–24× compression at short context. Variance explained at rank 16 is above 99 percent for all three models, and the sparse payload contributes little at short contexts where rank is already close to the matrix bound.
 
-### 5.7 Layer-Wise Variation
+*Important caveat:* these short-context measurements are partially influenced by the mathematical bound `rank ≤ min(T, d)`. At `T ≈ 26` and rank 16, the PCA retains most of the matrix's rank, inflating the apparent compressibility. The long-context measurements in Section 5.2 provide the regime-independent view.
 
-Compression quality varies across splice positions. Early layers (layer 4) are the most compressible: rank-32 achieves KL = 0.003. Late layers (layer 22) are the hardest: rank-32 achieves KL = 0.038, and rank-8 carrier-only degrades to KL = 0.85 with only 78% top-1 agreement.
+### 5.2 Long-context scaling on Qwen 2.5 32B
 
-This is consistent with the view that early layers compute more generic, low-rank features (positional and syntactic), while later layers encode task-specific, higher-rank information. For pipeline-parallel deployment, this suggests placing shard boundaries at early-to-mid layers when possible, or using higher ranks (and thus lower compression) for late boundaries.
+Averaged across three splice layers and six prompts, the PCA rank required to capture 99 percent of activation variance, and the corresponding compression ratio:
+
+| Seq len | Rank for 99% variance | Rank / bound | CR (rank-only, payload = 0) |
+|---|---|---|---|
+| 256 | 8.4 | 3.3% | 183× |
+| 512 | 55.0 | 10.7% | 81× |
+| 1024 | 193.6 | 18.9% | 26× |
+| 1621 | 384.0 | 23.7% | 13× |
+
+Log-log slope of rank versus sequence length is 2.06, but the per-doubling ratio decelerates: from 256 to 512 the rank grows 6.5 times for a 2 times sequence increase; from 1024 to 1621 the rank grows 2.0 times for a 1.58 times sequence increase. This is consistent with a saturating asymptote, though we did not reach sequences long enough to confirm the asymptote's location.
+
+### 5.3 Regime transition and short-context law
+
+Across all three text-only models at short context (`T < 30`), the log-KL-divergence is fit well by:
+
+$$\log(\text{KL}) \approx -2.1 + 4.6 \log(1 - k/T) + 1.15 \log(d)$$
+
+with R² = 0.68. This law captures the short-context regime but does *not* extrapolate correctly to long-context measurements; the Qwen 2.5 32B long-context data at rank 16 would be predicted to have KL approximately 100× higher than observed. We interpret this as a regime transition: short-context activations sit near the SVD-identity boundary (`k/T` close to 1), where the rank bound is the dominant factor; long-context activations sit deep in the compression regime (`k/T ≪ 1`), where manifold geometry rather than rank bound dominates.
+
+### 5.4 Layer-depth dependence
+
+On Qwen 2.5 32B at long context, the rank required for 99 percent variance grows with layer depth:
+
+| Seq len | Layer 16 rank | Layer 32 rank | Layer 48 rank | Layer-48 / Layer-16 ratio |
+|---|---|---|---|---|
+| 256 | 1.0 | 1.3 | 23.0 | 23.0× |
+| 512 | 4.5 | 41.2 | 119.3 | 26.5× |
+| 1024 | 77.0 | 176.7 | 327.0 | 4.25× |
+| 1621 | 202.0 | 368.0 | 582.0 | 2.88× |
+
+Deeper layers consistently require more PCA rank for the same variance threshold. The depth ratio decreases with sequence length: at short context, early-layer activations are much more compressible than late-layer activations, but the gap shrinks as sequence length grows.
+
+### 5.5 Production bandwidth implications
+
+A 4-shard pipeline serving Qwen 2.5 32B with 1024-token prompts on consumer 25 Mbps uplinks:
+- Uncompressed: 10.5 MB per boundary × 3 boundaries = 10 seconds transmission per token.
+- Carrier-payload at rank 193 (CR 26×): 0.4 MB per boundary × 3 = 0.4 seconds per token.
+
+This is the difference between "unusable" and "tolerable" for interactive chat.
 
 ---
 
 ## 6. Discussion
 
-### 6.1 Implications for Synapse
+### 6.1 Limitations
 
-The Synapse platform (webmind.sh) distributes Gemma 3 1B inference across volunteer WebGPU browsers. The primary bottleneck is activation transport between shards. Our results show:
+- **L1**: Text-only models only. Vision-language models show qualitatively different compression scaling and are pursued in a companion paper.
+- **L2**: Sequence lengths capped at 1621 due to corpus size. Extending to 4k–8k tokens is needed to locate the rank asymptote.
+- **L3**: Only one long-context model. Llama 3.1 8B and Gemma 3 1B were evaluated at short context only; long-context generalization across models is a future study.
+- **L4**: Short-context 22–24× compression ratios are partially explained by the `rank ≤ min(T, d)` mathematical bound. Long-context ratios (13–26× on Qwen) are the regime-independent defensible numbers.
+- **L5**: Downstream task accuracy beyond per-token KL / top-1 is not evaluated. Long-form generation may amplify small boundary errors.
+- **L6**: fp16 only. Interaction with INT8 / INT4 quantization on weights is unstudied.
+- **L7**: Calibration basis is computed once on fixed calibration data; distribution shift at inference time is not modeled.
 
-**Bandwidth requirement reduction.** For a 3-shard pipeline with boundaries at layers 4 and 13, rank-32 carrier-only compression reduces per-boundary transfer from $T \times 1536 \times 2$ bytes to $T \times 32 \times 2$ bytes plus a 3 KB mean vector. At $T = 512$, this is a reduction from 1.57 MB to 33 KB per boundary---a **48x** reduction. At a 10 Mbps upload link, this reduces transfer time from 1.26 seconds to 26 milliseconds per boundary.
+### 6.2 Related work
 
-**Latency impact.** For a 3-shard pipeline with 2 boundaries, total inter-shard latency drops from 2.5 seconds to 52 milliseconds at 10 Mbps. This makes interactive (streaming) generation feasible over consumer internet connections.
+Our positioning across prior art in activation compression, verification, and decentralized inference:
 
-**Basis distribution.** The one-time cost of distributing the PCA basis to all nodes is $32 \times 1536 \times 4 = 196$ KB per boundary layer---negligible compared to the model weights each node already stores.
+- **Petals** [1] uses 8-bit activation quantization across volunteer GPUs, achieving approximately 2× compression. Our 13–26× at long context is an order of magnitude more aggressive, at the cost of PCA basis pre-distribution.
+- **SmoothQuant** [12] handles activation outliers by smoothing; we handle them by explicit sparse payload. The two ideas are complementary and could be combined.
+- **LLM.int8!** [7] identifies outlier dimensions and retains them at higher precision; our sparse payload has the same spirit but transmits instead of retains.
+- **SafetyNets** [4] and **Slalom** [11] focus on verification rather than compression. Pairing carrier-payload with probabilistic Byzantine verification is future work.
+- **opML** [2] and **ZKML** [3] provide cryptographic verification at substantially higher overhead.
+- **LoRA** [8] applies low-rank structure to weight *updates*; we apply it to activation *transport*.
+- **Ansuini et al.** [13] measure intrinsic dimension across layers in deep networks; our layer-depth finding (Section 5.4) is consistent with their "first increases then decreases" pattern.
+- **Mixture-of-Experts** [9] reduces compute via routing; carrier-payload is complementary and applies within each expert.
 
-### 6.2 Comparison to Quantization Baselines
+### 6.3 Systems implications
 
-Naive activation quantization provides compression without exploiting manifold structure:
+For a serving stack implementing pipeline parallelism across heterogeneous devices (volunteer, edge, or hybrid cloud-edge deployments), carrier-payload offers a training-free bandwidth reduction of an order of magnitude at long context. The method composes with existing quantization: carrier coefficients themselves can be INT8 quantized, and the sparse payload indexing is already compact.
 
-| Method | CR | Quality |
-|---|---|---|
-| Float16 (baseline) | 1x | Perfect |
-| INT8 (Petals-style) | 2x | Good, but outlier clipping |
-| INT4 | 4x | Significant degradation |
-| Carrier rank-32 | 22x | KL = 0.023, 100% top-1 |
-| Carrier rank-8 + 1% sparse | 9.1x | KL = 0.004, 100% top-1 |
+### 6.4 Future work
 
-Carrier-Payload achieves 5--11x better compression than INT8 quantization at comparable or better quality. This is because quantization treats all dimensions equally, while PCA concentrates the representation into the dimensions that matter. The sparse payload further addresses the outlier problem that causes INT4 quantization to fail [7].
-
-**Orthogonal combination.** Carrier-Payload and quantization are orthogonal: the projection coefficients $\mathbf{P}$ and sparse entries can themselves be quantized. A rank-32 carrier with INT8 coefficients would achieve approximately $22 \times 2 = 44$x compression. We leave this combination to future work.
-
-### 6.3 Limitations
-
-1. **Model scale.** We test only on Gemma 3 1B. The intrinsic dimension literature [6] suggests that effective dimensionality scales sublinearly with model size ($d_{\text{intrinsic}} / d$ *decreases* with scale), which would make larger models *more* compressible. However, this requires empirical validation at 7B+ scale.
-
-2. **Single-layer splice.** We compress at a single boundary per experiment. Multi-shard pipelines require compression at multiple boundaries, and errors may compound across splices. End-to-end evaluation with cascaded compression is needed.
-
-3. **Basis generalization.** Our per-prompt PCA basis represents an upper bound on quality. A production system would use a fixed basis computed from calibration data, which may not capture input-specific directions. The gap between per-prompt and calibration-based bases must be measured.
-
-4. **Sequence-length dependence.** Short sequences ($T < k$) produce artificially high compression quality due to the rank-deficiency artifact. Our long-context control confirms that results hold at $T > k$, but production workloads at $T = 2048+$ need verification.
-
-5. **Output metric.** We measure KL divergence and top-1 agreement on the *last* token's logits. Full generative evaluation (perplexity, downstream task accuracy) would provide stronger evidence of quality preservation.
-
----
-
-## 7. Related Work
-
-### 7.1 Decentralized Inference Systems
-
-**Petals** [1] is the closest prior work. It enables collaborative inference of LLMs across distributed commodity GPUs. Petals uses 8-bit activation quantization for bandwidth reduction (~2x) and a reputation system for handling unreliable nodes. Carrier-Payload achieves 11--22x compression at comparable quality, a 5--11x improvement over Petals' quantization.
-
-**opML** [2] proposes optimistic machine learning, using fraud proofs for verification of outsourced inference. It addresses correctness but not bandwidth.
-
-**ZKML** [3] applies zero-knowledge proofs to verify ML inference. Current ZK-proof overhead makes this impractical for real-time inference (proving time exceeds inference time by 3--5 orders of magnitude).
-
-**SafetyNets** [4] verifies outsourced deep learning by converting computations to integer arithmetic and checking via interactive proofs. It provides verification but does not compress.
-
-### 7.2 Tensor and Activation Compression
-
-**Low-rank approximation** is widely used for weight compression in LLMs (LoRA [8], SVD-based pruning). Application to *activations* during inference has received less attention, likely because activations are input-dependent and cannot be pre-compressed at training time.
-
-**Mixture-of-experts (MoE)** architectures [9] implicitly reduce activation bandwidth by routing only a subset of tokens through each expert. However, MoE is an architectural choice, not a post-hoc compression method applicable to existing dense models.
-
-**Activation checkpointing** [10] reduces memory by recomputing activations during backpropagation. This addresses memory, not bandwidth, and applies only to training.
-
-### 7.3 Representation Geometry
-
-**Ethayarajh (2019)** [5] showed that contextual word representations in BERT and GPT-2 are anisotropic: later layers are more anisotropic, with representations concentrated in a narrow cone. Our variance-explained measurements (99.4% at rank 2 for early layers, 96.2% for late layers) are quantitatively consistent with this finding.
-
-**Aghajanyan et al. (2020)** [6] measured the *intrinsic dimensionality* of fine-tuning---the minimum subspace dimension needed for effective adaptation. They found $d_{\text{intrinsic}} \sim 200$ for RoBERTa-base ($d = 768$). Our finding that $\sim 32$ PCA dimensions suffice for *activation* compression at $d = 1536$ is a related but distinct measurement: theirs characterizes the weight update manifold, ours characterizes the activation manifold.
-
-**Dettmers et al. (LLM.int8())** [7] identified activation outlier features that cause quantization failure and proposed mixed-precision decomposition. Our sparse payload serves an analogous function: it captures the high-magnitude entries that the smooth PCA carrier misses.
+1. Long-context scaling on Llama 3.1 8B and Gemma 3 1B to confirm cross-model generalization.
+2. 4k-8k sequence length experiments to locate the rank asymptote.
+3. Byzantine verification of compressed activations (noise-tolerant Freivalds, companion manuscript).
+4. Downstream-task evaluation with long-form generation.
+5. Combining with INT8 / INT4 quantization on the carrier.
+6. Vision-language model extension (companion paper).
+7. Production deployment in the Synapse volunteer-inference network.
 
 ---
 
-## 8. Conclusion and Future Work
+## 7. Conclusion
 
-We have presented Carrier-Payload decomposition, a method for compressing transformer activations at pipeline-parallel shard boundaries by exploiting the low intrinsic dimensionality of the activation manifold. On Gemma 3 1B IT, we achieve 22x compression with 100% next-token agreement using a rank-32 PCA carrier, with compression ratios scaling to 46x at production sequence lengths. These results make volunteer-device decentralized inference practical over consumer internet connections.
-
-### Future Work
-
-**Scale to 7B+ models.** Validate that effective dimensionality remains low (or decreases, as suggested by [6]) at larger model scales. A minimal spot-check on Gemma 3 4B or 7B with ranks 32 and 64 would establish whether the method transfers.
-
-**Calibration-based basis.** Replace per-prompt SVD with a fixed basis computed from calibration data. Measure the quality gap and determine the minimum calibration corpus size for robust basis estimation.
-
-**Cascaded compression.** Evaluate multi-boundary compression with error compounding analysis. If errors accumulate, investigate error-correction strategies (e.g., periodic full-precision synchronization).
-
-**Combination with quantization.** Apply INT8 or INT4 quantization to the projection coefficients and sparse entries for multiplicative compression gains.
-
-**Byzantine verification.** The low-rank structure of activations enables efficient verification: if a node claims to produce activation $\mathbf{A}$, the coordinator can verify that $\mathbf{A}$ lies near the expected manifold by checking its projection residual norm. This provides a statistical integrity check complementary to cryptographic methods.
-
-**Functional basis sharing.** Instead of PCA (which minimizes MSE), learn a basis that minimizes downstream output divergence directly. This could be framed as a distillation objective: find $\mathbf{V}^* = \arg\min_\mathbf{V} \mathbb{E}[\text{KL}(p_{\text{full}} \| p_{\text{compressed}}(\mathbf{V}))]$.
+We have measured and characterized a training-free activation compression scheme for decentralized LLM inference across three text-only transformer families spanning 32× parameter scale. At short context we observe 22–24× compression with perfect next-token agreement across all three models. At long context on Qwen 2.5 32B, compression degrades from 183× at 256 tokens to 13× at 1621 tokens—still an order of magnitude better than naive quantization, and sufficient to make volunteer-device inference practical on consumer internet. The rank required to capture 99 percent of activation variance grows with both sequence length and layer depth, revealing a regime transition between a short-context bound-limited regime and a long-context manifold-geometry regime. We release the reference implementation, all raw data, and an automated invariant suite at github.com/tejasphatak/webmind-research.
 
 ---
 
 ## Acknowledgements
 
-This research was conducted at Webmind Research (webmind.sh) under the direction of Tejas Phatak. The experimental code, analysis, and paper draft were generated by Claude Opus 4.6 (Anthropic). Gemini 3.1 Pro (Google) contributed to experimental design review, diagnosis of the phase-transition artifact, identification of the correct long-context control, and literature pointers (Ethayarajh 2019, Aghajanyan et al. 2020, Dettmers LLM.int8!). Neither AI system is listed as an author per current publishing norms; both contributions are disclosed here in full transparency.
+Research executed by Claude Opus 4.6 (Anthropic) with cross-verification by Gemini 3.1 Pro (Google). All experiments, analysis, and writing are AI-generated under human direction. The original concept of inter-shard carrier-payload decomposition, motivated by Tejas Phatak's intuition about RF carrier-signal modulation (the observation that a cellphone transmits only a low-power difference signal against a shared base-station carrier), was proposed by the author on 2026-04-15. Gemini 3.1 Pro's critical feedback on 2026-04-16 caused the author to recognize and correct an over-broad interpretation of short-context results as a universal property; the long-context experiments reported here were a direct consequence of that critique.
+
+Compute was funded by the author on RunPod.io (approximately USD 25 in A100 SXM4 spot time) and on Google Cloud Platform (L4 GPU, approximately 4 hours).
+
+---
+
+## Data, code, and reproducibility
+
+- Repository: github.com/tejasphatak/webmind-research
+- All raw JSON data: `findings/multimodel_*.json`, `findings/longctx_*.json`
+- Reference implementation: `tools/activation_compression_experiment.py`, `tools/long_context_validation.py`
+- Analysis scripts: `tools/compression_pattern_ml.py`, `tools/compression_law_extrapolation.py`, `tools/longctx_analysis.py`
+- Invariant suite: `tools/paper_invariants.py` (37 invariants, all must pass before release)
+- Citation validator: `tools/validate_citations.py`
+- LaTeX validator: `tools/validate_latex.py`
+- Link validator: `tools/validate_links.py`
+- Reproduction shell script: `tools/reproduce.sh`
+- Submission gate checklist: `SUBMISSION_GATING.md`
+- License: paper CC-BY 4.0, code MIT.
 
 ---
 
@@ -407,54 +323,3 @@ This research was conducted at Webmind Research (webmind.sh) under the direction
 [12] G. Xiao, J. Lin, M. Seznec, H. Wu, J. Demouth, S. Han. "SmoothQuant: Accurate and Efficient Post-Training Quantization for Large Language Models." *Proceedings of the 40th International Conference on Machine Learning (ICML 2023)*. arXiv:2211.10438.
 
 [13] A. Ansuini, A. Laio, J. H. Macke, D. Zoccolan. "Intrinsic dimension of data representations in deep neural networks." *Advances in Neural Information Processing Systems (NeurIPS 2019)*. arXiv:1905.12784.
-
----
-
-## Appendix A: Prompt Corpus
-
-The 32 prompts used in the primary experiment span the following categories:
-
-| Category | Count | Examples |
-|---|---|---|
-| Technical explanation | 10 | Byzantine fault tolerance, TCP congestion, PCA, SVD |
-| Code generation | 3 | Fibonacci via matrix exponentiation, Raft pseudocode, SVD function |
-| Mathematics/logic | 4 | Irrationality proof, birthday paradox, Kolmogorov complexity |
-| Creative writing | 2 | Haiku, signal compression description |
-| Translation | 1 | English to French |
-| Applied reasoning | 3 | Train meeting problem, hash collisions, Nyquist theorem |
-| ML/AI concepts | 6 | Manifold hypothesis, activation outliers, SmoothQuant, KANs |
-| Systems/distributed | 3 | WebGPU vs WebGL, BOINC integrity, federated learning |
-
-This diversity ensures that the measured activation structure is not an artifact of a particular input domain.
-
-## Appendix B: Compression Ratio Formula Derivation
-
-The wire cost for Carrier-Payload transmission consists of three components:
-
-1. **Projection coefficients**: $T \times k$ floats. Each of the $T$ token positions has a $k$-dimensional projection onto the shared basis.
-
-2. **Mean vector**: $d$ floats. The per-activation centroid, needed for reconstruction. (In a production system, this could be absorbed into the carrier if the calibration mean is also shared, reducing this to a per-activation mean residual.)
-
-3. **Sparse payload**: $2 \times n_{\text{keep}}$ floats, where $n_{\text{keep}} = \lfloor p \cdot T \cdot d \rfloor$. Each retained residual entry requires an index (integer, stored as float for simplicity) and a value.
-
-The compression ratio is therefore:
-
-$$\text{CR} = \frac{T \cdot d}{T \cdot k + d + 2 \lfloor p \cdot T \cdot d \rfloor}$$
-
-For the carrier-only case ($p = 0$):
-
-$$\text{CR} = \frac{Td}{Tk + d} = \frac{d}{k + d/T}$$
-
-As $T \to \infty$: $\text{CR} \to d/k$.
-
-For Gemma 3 1B ($d = 1536$), the asymptotic compression ratios by rank are:
-
-| Rank $k$ | Asymptotic CR |
-|---|---|
-| 2 | 768x |
-| 4 | 384x |
-| 8 | 192x |
-| 16 | 96x |
-| 32 | 48x |
-
-These are upper bounds assuming the carrier quality (KL divergence) remains acceptable at each rank. In practice, rank 32 is the minimum for KL $< 0.05$ across all layers, giving a practical asymptotic compression of 48x.

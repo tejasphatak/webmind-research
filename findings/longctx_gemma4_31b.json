@@ -1,0 +1,139 @@
+{
+  "meta": {
+    "model_id": "google/gemma-4-31B-it",
+    "n_layers": 60,
+    "n_prompts": 1,
+    "seq_lens": [
+      256,
+      512,
+      1024
+    ],
+    "splice_layers": [
+      15,
+      30,
+      45
+    ],
+    "device": "cuda",
+    "dtype": "torch.float16",
+    "note": "Reconstructed from log; 2048 run was terminated mid-way due to time budget. Log only has prompt 0 entries \u2014 full per-prompt data lost. Trends are valid for comparison."
+  },
+  "results": [
+    {
+      "prompt_idx": 0,
+      "splice_layer": 15,
+      "seq_len": 256,
+      "hidden_dim": 5376,
+      "total_rank_bound": 256,
+      "ranks_for_variance": {
+        "0.9": 78,
+        "0.95": 115,
+        "0.99": 184,
+        "0.999": 238
+      }
+    },
+    {
+      "prompt_idx": 0,
+      "splice_layer": 30,
+      "seq_len": 256,
+      "hidden_dim": 5376,
+      "total_rank_bound": 256,
+      "ranks_for_variance": {
+        "0.9": 117,
+        "0.95": 163,
+        "0.99": 226,
+        "0.999": 252
+      }
+    },
+    {
+      "prompt_idx": 0,
+      "splice_layer": 45,
+      "seq_len": 256,
+      "hidden_dim": 5376,
+      "total_rank_bound": 256,
+      "ranks_for_variance": {
+        "0.9": 138,
+        "0.95": 180,
+        "0.99": 233,
+        "0.999": 252
+      }
+    },
+    {
+      "prompt_idx": 0,
+      "splice_layer": 15,
+      "seq_len": 512,
+      "hidden_dim": 5376,
+      "total_rank_bound": 512,
+      "ranks_for_variance": {
+        "0.9": 113,
+        "0.95": 178,
+        "0.99": 322,
+        "0.999": 454
+      }
+    },
+    {
+      "prompt_idx": 0,
+      "splice_layer": 30,
+      "seq_len": 512,
+      "hidden_dim": 5376,
+      "total_rank_bound": 512,
+      "ranks_for_variance": {
+        "0.9": 201,
+        "0.95": 292,
+        "0.99": 434,
+        "0.999": 499
+      }
+    },
+    {
+      "prompt_idx": 0,
+      "splice_layer": 45,
+      "seq_len": 512,
+      "hidden_dim": 5376,
+      "total_rank_bound": 512,
+      "ranks_for_variance": {
+        "0.9": 247,
+        "0.95": 329,
+        "0.99": 448,
+        "0.999": 501
+      }
+    },
+    {
+      "prompt_idx": 0,
+      "splice_layer": 15,
+      "seq_len": 1024,
+      "hidden_dim": 5376,
+      "total_rank_bound": 1024,
+      "ranks_for_variance": {
+        "0.9": 150,
+        "0.95": 251,
+        "0.99": 516,
+        "0.999": 832
+      }
+    },
+    {
+      "prompt_idx": 0,
+      "splice_layer": 30,
+      "seq_len": 1024,
+      "hidden_dim": 5376,
+      "total_rank_bound": 1024,
+      "ranks_for_variance": {
+        "0.9": 275,
+        "0.95": 442,
+        "0.99": 762,
+        "0.999": 970
+      }
+    },
+    {
+      "prompt_idx": 0,
+      "splice_layer": 45,
+      "seq_len": 1024,
+      "hidden_dim": 5376,
+      "total_rank_bound": 1024,
+      "ranks_for_variance": {
+        "0.9": 411,
+        "0.95": 581,
+        "0.99": 852,
+        "0.999": 989
+      }
+    }
+  ]
+}

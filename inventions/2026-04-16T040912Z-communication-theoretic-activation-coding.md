@@ -11,6 +11,16 @@ status: CAPTURED — to be absorbed into P4 (Trust/Compress/Verify flagship)
 
 ---
 
+## Origin of the Insight (Tejas's own words, 2026-04-16)
+
+> "A cellphone uses a carrier signal, but itself doesn't have much power — data travels as difference of signal."
+
+This is the precise intuition that generated the whole research direction. A cellphone doesn't transmit the carrier wave — the base station does that at high power. The phone only modulates small differences onto the infrastructure-provided carrier. The phone is low-power because it rides on the infrastructure's energy.
+
+**This is isomorphic to Carrier-Payload compression.** The PCA basis is the "base station's carrier" — shared across all nodes, free at receive time. The activation projections and sparse residuals are the "phone's low-power modulated signal" — small, only encoding deltas. This is not an analogy; it's the same mathematical structure that wireless RF has used for 70+ years.
+
+The naming "Carrier + Payload" in P1 was not arbitrary — it was unknowingly invoking the specific terminology of RF modulation theory. That makes the framework defensible against "this is just PCA" critiques, because PCA is an *implementation* of a more fundamental modulation-theoretic approach to activation transport.
+
 ## The Core Idea
 
 Deep learning currently treats activation transport between distributed shards as a **naive serialization problem** — raw fp16 floats over TCP. Meanwhile, wireless communications has 70+ years of theory for exactly this: how to pack information efficiently onto a channel, how to survive noise, how to trade off rate vs distortion.

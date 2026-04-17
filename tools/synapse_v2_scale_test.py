@@ -205,10 +205,20 @@ def run(output_dir, n_nodes=16):
         correct, total = 0, 0
         for topic, prompt, target in test_data:
             if routing == "confidence":
-                scores = [(n, n.score(prompt, " the")) for n in nodes_to_use
-                         if n.online]
-                scores.sort(key=lambda x: x[1], reverse=True)
-                best = scores[0][0] if scores else None
+                # Each node generates its own response, we pick the most confident
+                candidates = []
+                for n in nodes_to_use:
+                    if not n.online:
+                        continue
+                    resp = n.generate(prompt, max_tokens=5)
+                    if resp.strip():
+                        conf = n.score(prompt, resp)
+                        candidates.append((n, resp, conf))
+                if candidates:
+                    candidates.sort(key=lambda x: x[2], reverse=True)
+                    best = candidates[0][0]
+                else:
+                    best = None
             elif routing == "random":
                 online = [n for n in nodes_to_use if n.online]
                 best = random.choice(online) if online else None

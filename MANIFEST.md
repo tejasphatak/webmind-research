@@ -15,3 +15,4 @@ a19a983260fac9d60f45365f0c976492c181d8a4e9c053e446f7da4c986ac010  inventions/202
 aee0d46b74e9bf9e5de8e884f5cca1d5615c54095dcf76d82e3df5f81c5eb16a  inventions/2026-04-14T182204Z-project_warm_stream_nexus.md
 b2d8e42db38c838ca7a832f66cde727fa12e1c0c58eb6e9134d7c7dbaae67cea  inventions/2026-04-14T182204Z-feedback_verification_first.md
 ```
+| 20260417T055802Z-rational-codebook-compression.md | ad72b0ce9724ef92506df4892ef68594d922bf766d407dfccda8ed31a11af9c9 | 2026-04-17 |

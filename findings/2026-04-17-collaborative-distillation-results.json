@@ -1,0 +1,107 @@
+[
+  {
+    "name": "teacher",
+    "ppl": 66.34542162956178,
+    "ppl_teacher": 66.34542162956178,
+    "gap_pct": 0.0,
+    "n_models": 1
+  },
+  {
+    "name": "pre_student_0",
+    "ppl": 55088.470110023874,
+    "ppl_teacher": 66.34542162956178,
+    "gap_pct": 82932.81335313407,
+    "n_models": 1
+  },
+  {
+    "name": "pre_student_1",
+    "ppl": 52794.91509434031,
+    "ppl_teacher": 66.34542162956178,
+    "gap_pct": 79475.8227133133,
+    "n_models": 1
+  },
+  {
+    "name": "pre_student_2",
+    "ppl": 51830.47802251039,
+    "ppl_teacher": 66.34542162956178,
+    "gap_pct": 78022.16238809173,
+    "n_models": 1
+  },
+  {
+    "name": "pre_student_3",
+    "ppl": 55553.26440517532,
+    "ppl_teacher": 66.34542162956178,
+    "gap_pct": 83633.38060213976,
+    "n_models": 1
+  },
+  {
+    "name": "pre_collaborative",
+    "ppl": 50840.761585442706,
+    "ppl_teacher": 66.34542162956178,
+    "gap_pct": 76530.39941069481,
+    "n_models": 4
+  },
+  {
+    "name": "post_student_0",
+    "ppl": 977.0910820931176,
+    "ppl_teacher": 66.34542162956178,
+    "gap_pct": 1372.7332468375653,
+    "n_models": 1
+  },
+  {
+    "name": "post_student_1",
+    "ppl": 974.9064269606403,
+    "ppl_teacher": 66.34542162956178,
+    "gap_pct": 1369.4403969636503,
+    "n_models": 1
+  },
+  {
+    "name": "post_student_2",
+    "ppl": 1012.3273423153618,
+    "ppl_teacher": 66.34542162956178,
+    "gap_pct": 1425.843558531694,
+    "n_models": 1
+  },
+  {
+    "name": "post_student_3",
+    "ppl": 1030.2715734298285,
+    "ppl_teacher": 66.34542162956178,
+    "gap_pct": 1452.8902343590903,
+    "n_models": 1
+  },
+  {
+    "name": "post_collaborative_4",
+    "ppl": 950.0857666306504,
+    "ppl_teacher": 66.34542162956178,
+    "gap_pct": 1332.0291337289761,
+    "n_models": 4
+  },
+  {
+    "name": "post_drop_0",
+    "ppl": 963.2500887477629,
+    "ppl_teacher": 66.34542162956178,
+    "gap_pct": 1351.8712295266564,
+    "n_models": 3
+  },
+  {
+    "name": "post_drop_1",
+    "ppl": 962.4977162022086,
+    "ppl_teacher": 66.34542162956178,
+    "gap_pct": 1350.7372062179265,
+    "n_models": 3
+  },
+  {
+    "name": "post_drop_2",
+    "ppl": 950.9571378906849,
+    "ppl_teacher": 66.34542162956178,
+    "gap_pct": 1333.34251939845,
+    "n_models": 3
+  },
+  {
+    "name": "post_drop_3",
+    "ppl": 944.4550005134336,
+    "ppl_teacher": 66.34542162956178,
+    "gap_pct": 1323.542088234479,
+    "n_models": 3
+  }
+]

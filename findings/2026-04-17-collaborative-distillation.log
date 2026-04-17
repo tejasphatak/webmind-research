@@ -1,0 +1,72 @@
+Loading GPT-2 124M (teacher)...
+
+=== TEACHER (GPT-2 124M) ===
+Generating test split:   0%|          | 0/4358 [00:00<?, ? examples/s]Generating test split: 100%|██████████| 4358/4358 [00:00<00:00, 300830.74 examples/s]
+Generating train split:   0%|          | 0/36718 [00:00<?, ? examples/s]Generating train split: 100%|██████████| 36718/36718 [00:00<00:00, 793864.07 examples/s]
+Generating validation split:   0%|          | 0/3760 [00:00<?, ? examples/s]Generating validation split: 100%|██████████| 3760/3760 [00:00<00:00, 674388.84 examples/s]
+  ppl=66.3454 (30037 tokens)
+
+=== Building Collaborative Distiller ===
+  Teacher: 124,439,808 params
+  Student: 30,339,456 params each × 4 = 121,357,824 total
+
+=== PRE-TRAINING: Each student alone (random init) ===
+  student 0: ppl=55088.47 (gap=+82932.8%)
+  student 1: ppl=52794.92 (gap=+79475.8%)
+  student 2: ppl=51830.48 (gap=+78022.2%)
+  student 3: ppl=55553.26 (gap=+83633.4%)
+
+=== PRE-TRAINING: All 4 students collaborative ===
+  collaborative: ppl=50840.76 (gap=+76530.4%)
+
+=== COLLABORATIVE DISTILLATION (3000 steps) ===
+  α=1.0 (KD), β=0.5 (diversity), T=2.0
+    step 300/3000  kd=444.3158  div=-0.0696  lm=8.0766  elapsed=59.0s
+    step 600/3000  kd=419.4654  div=-0.0872  lm=7.8403  elapsed=119.9s
+    step 900/3000  kd=411.4980  div=-0.1037  lm=7.6926  elapsed=184.4s
+    step 1200/3000  kd=398.8981  div=-0.1172  lm=7.5958  elapsed=246.0s
+    step 1500/3000  kd=389.6275  div=-0.1271  lm=7.5195  elapsed=306.7s
+    step 1800/3000  kd=382.8640  div=-0.1330  lm=7.4594  elapsed=368.9s
+    step 2100/3000  kd=374.2621  div=-0.1383  lm=7.4082  elapsed=429.4s
+    step 2400/3000  kd=366.2454  div=-0.1434  lm=7.3627  elapsed=489.0s
+    step 2700/3000  kd=361.7805  div=-0.1478  lm=7.3166  elapsed=551.6s
+    step 3000/3000  kd=357.5119  div=-0.1517  lm=7.2713  elapsed=616.0s
+  Done. time=616.0s
+
+=== POST-TRAINING: Each student alone ===
+  student 0: ppl=977.09 (gap=+1372.7%)
+  student 1: ppl=974.91 (gap=+1369.4%)
+  student 2: ppl=1012.33 (gap=+1425.8%)
+  student 3: ppl=1030.27 (gap=+1452.9%)
+
+=== POST-TRAINING: All 4 collaborative (KEY TEST) ===
+  collaborative 4/4: ppl=950.0858 (gap=+1332.03%)
+
+=== POST-TRAINING: Drop each student ===
+  drop student 0: ppl=963.25 (gap=+1351.9%)
+  drop student 1: ppl=962.50 (gap=+1350.7%)
+  drop student 2: ppl=950.96 (gap=+1333.3%)
+  drop student 3: ppl=944.46 (gap=+1323.5%)
+
+=================================================================
+COLLABORATIVE DISTILLATION RESULTS
+=================================================================
+Name                                PPL     Gap%  Models
+-------------------------------------------------------
+teacher                           66.35    +0.0%       1
+pre_student_0                  55088.47 +82932.8%       1
+pre_student_1                  52794.92 +79475.8%       1
+pre_student_2                  51830.48 +78022.2%       1
+pre_student_3                  55553.26 +83633.4%       1
+pre_collaborative              50840.76 +76530.4%       4
+post_student_0                   977.09 +1372.7%       1
+post_student_1                   974.91 +1369.4%       1
+post_student_2                  1012.33 +1425.8%       1
+post_student_3                  1030.27 +1452.9%       1
+post_collaborative_4             950.09 +1332.0%       4
+post_drop_0                      963.25 +1351.9%       3
+post_drop_1                      962.50 +1350.7%       3
+post_drop_2                      950.96 +1333.3%       3
+post_drop_3                      944.46 +1323.5%       3
+
+Saved to /workspace/results/results.json

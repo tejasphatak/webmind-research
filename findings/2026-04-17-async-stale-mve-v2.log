@@ -1,0 +1,188 @@
+Loading model...
+
+=== BASELINE ===
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:   1%|▏         | 5/338 [00:00<00:20, 16.17it/s]Loading weights:  62%|██████▏   | 210/338 [00:00<00:00, 658.70it/s]Loading weights:  98%|█████████▊| 332/338 [00:00<00:00, 608.63it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 495.41it/s]
+  eval ppl (sync)...
+    sync: ppl=16.5152 (50129 tokens)
+  eval HellaSwag (n=500)...
+    ...100/500 acc=0.520
+    ...200/500 acc=0.510
+    ...300/500 acc=0.500
+    ...400/500 acc=0.502
+    ...500/500 acc=0.522
+    HellaSwag: 261/500 = 0.522
+  Throughput test (latency=0ms, 100 tokens)...
+    100 tokens in 2.45s = 40.73 tok/s
+  Throughput test (latency=10ms, 100 tokens)...
+    100 tokens in 5.77s = 17.32 tok/s
+  Throughput test (latency=50ms, 100 tokens)...
+    100 tokens in 18.85s = 5.30 tok/s
+  Throughput test (latency=100ms, 100 tokens)...
+    100 tokens in 33.69s = 2.97 tok/s
+  Throughput test (latency=200ms, 100 tokens)...
+    100 tokens in 63.66s = 1.57 tok/s
+
+=== async_k4 (unfreeze_last=4) ===
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:   0%|          | 1/338 [00:00<00:37,  8.92it/s]Loading weights:   1%|▏         | 5/338 [00:00<00:13, 24.68it/s]Loading weights:  46%|████▌     | 155/338 [00:00<00:00, 655.14it/s]Loading weights:  67%|██████▋   | 225/338 [00:00<00:00, 642.38it/s]Loading weights:  86%|████████▋ | 292/338 [00:00<00:00, 508.85it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 474.40it/s]
+  eval ppl (async)...
+    async: ppl=16.5152 (50129 tokens)
+
+  Training: K=4, steps=800, unfreeze_last=4
+  Trainable params: 420,621,827
+    step 100/800  loss=2.8767  elapsed=11.6s
+    step 200/800  loss=2.8193  elapsed=22.8s
+    step 300/800  loss=2.8033  elapsed=34.2s
+    step 400/800  loss=2.7835  elapsed=45.5s
+    step 500/800  loss=2.7245  elapsed=56.7s
+    step 600/800  loss=2.7421  elapsed=67.6s
+    step 700/800  loss=2.7465  elapsed=78.4s
+    step 800/800  loss=2.7371  elapsed=89.2s
+  Done. loss=2.7371, time=89.2s, alphas=['0.0995', '0.1002', '0.0994']
+  eval ppl (async)...
+    async: ppl=13.4061 (50129 tokens)
+  eval HellaSwag (n=500)...
+    ...100/500 acc=0.470
+    ...200/500 acc=0.460
+    ...300/500 acc=0.473
+    ...400/500 acc=0.475
+    ...500/500 acc=0.488
+    HellaSwag: 244/500 = 0.488
+
+  >>> async_k4: ppl=13.4061 (pre=16.5152, gap=-18.83%)
+  Throughput test (latency=0ms, 100 tokens)...
+    100 tokens in 2.34s = 42.76 tok/s
+  Throughput test (latency=10ms, 100 tokens)...
+    100 tokens in 6.10s = 16.39 tok/s
+  Throughput test (latency=50ms, 100 tokens)...
+    100 tokens in 19.35s = 5.17 tok/s
+  Throughput test (latency=100ms, 100 tokens)...
+    100 tokens in 33.83s = 2.96 tok/s
+  Throughput test (latency=200ms, 100 tokens)...
+    100 tokens in 63.90s = 1.56 tok/s
+
+=== async_k16 (unfreeze_last=4) ===
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:   1%|▏         | 5/338 [00:00<00:11, 29.50it/s]Loading weights:  39%|███▉      | 131/338 [00:00<00:00, 586.08it/s]Loading weights:  61%|██████    | 205/338 [00:00<00:00, 625.02it/s]Loading weights:  82%|████████▏ | 277/338 [00:00<00:00, 507.74it/s]Loading weights:  99%|█████████▉| 336/338 [00:00<00:00, 518.90it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 501.65it/s]
+  eval ppl (async)...
+    async: ppl=16.5152 (50129 tokens)
+
+  Training: K=16, steps=800, unfreeze_last=4
+  Trainable params: 420,787,715
+    step 100/800  loss=2.8774  elapsed=11.1s
+    step 200/800  loss=2.8200  elapsed=22.1s
+    step 300/800  loss=2.8043  elapsed=33.0s
+    step 400/800  loss=2.7840  elapsed=43.7s
+    step 500/800  loss=2.7249  elapsed=54.8s
+    step 600/800  loss=2.7424  elapsed=65.7s
+    step 700/800  loss=2.7466  elapsed=76.5s
+    step 800/800  loss=2.7373  elapsed=87.6s
+  Done. loss=2.7373, time=87.6s, alphas=['0.0997', '0.0997', '0.0995']
+  eval ppl (async)...
+    async: ppl=13.4037 (50129 tokens)
+  eval HellaSwag (n=500)...
+    ...100/500 acc=0.470
+    ...200/500 acc=0.460
+    ...300/500 acc=0.470
+    ...400/500 acc=0.472
+    ...500/500 acc=0.484
+    HellaSwag: 242/500 = 0.484
+
+  >>> async_k16: ppl=13.4037 (pre=16.5152, gap=-18.84%)
+  Throughput test (latency=0ms, 100 tokens)...
+    100 tokens in 2.28s = 43.77 tok/s
+  Throughput test (latency=10ms, 100 tokens)...
+    100 tokens in 6.06s = 16.51 tok/s
+  Throughput test (latency=50ms, 100 tokens)...
+    100 tokens in 18.83s = 5.31 tok/s
+  Throughput test (latency=100ms, 100 tokens)...
+    100 tokens in 33.81s = 2.96 tok/s
+  Throughput test (latency=200ms, 100 tokens)...
+    100 tokens in 63.90s = 1.56 tok/s
+
+=== async_k64 (unfreeze_last=4) ===
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:   0%|          | 1/338 [00:00<00:49,  6.82it/s]Loading weights:  37%|███▋      | 124/338 [00:00<00:00, 607.76it/s]Loading weights:  61%|██████    | 207/338 [00:00<00:00, 698.32it/s]Loading weights:  84%|████████▍ | 284/338 [00:00<00:00, 560.10it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 537.97it/s]
+  eval ppl (async)...
+    async: ppl=16.5152 (50129 tokens)
+
+  Training: K=64, steps=800, unfreeze_last=4
+  Trainable params: 421,451,267
+    step 100/800  loss=2.8795  elapsed=11.3s
+    step 200/800  loss=2.8210  elapsed=22.4s
+    step 300/800  loss=2.8049  elapsed=33.6s
+    step 400/800  loss=2.7851  elapsed=44.7s
+    step 500/800  loss=2.7257  elapsed=56.0s
+    step 600/800  loss=2.7437  elapsed=67.1s
+    step 700/800  loss=2.7479  elapsed=77.9s
+    step 800/800  loss=2.7384  elapsed=88.9s
+  Done. loss=2.7384, time=88.9s, alphas=['0.0992', '0.0991', '0.0987']
+  eval ppl (async)...
+    async: ppl=13.4142 (50129 tokens)
+  eval HellaSwag (n=500)...
+    ...100/500 acc=0.460
+    ...200/500 acc=0.455
+    ...300/500 acc=0.470
+    ...400/500 acc=0.472
+    ...500/500 acc=0.486
+    HellaSwag: 243/500 = 0.486
+
+  >>> async_k64: ppl=13.4142 (pre=16.5152, gap=-18.78%)
+  Throughput test (latency=0ms, 100 tokens)...
+    100 tokens in 2.32s = 43.18 tok/s
+  Throughput test (latency=10ms, 100 tokens)...
+    100 tokens in 6.22s = 16.08 tok/s
+  Throughput test (latency=50ms, 100 tokens)...
+    100 tokens in 19.08s = 5.24 tok/s
+  Throughput test (latency=100ms, 100 tokens)...
+    100 tokens in 33.93s = 2.95 tok/s
+  Throughput test (latency=200ms, 100 tokens)...
+    100 tokens in 63.75s = 1.57 tok/s
+
+=== NO CROSS (fully isolated devices) ===
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:   1%|          | 3/338 [00:00<00:13, 24.73it/s]Loading weights:  40%|███▉      | 135/338 [00:00<00:00, 588.66it/s]Loading weights:  68%|██████▊   | 231/338 [00:00<00:00, 729.99it/s]Loading weights:  93%|█████████▎| 313/338 [00:00<00:00, 761.10it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 703.91it/s]
+
+  Training: K=16, steps=800, unfreeze_last=4
+  Trainable params: 420,787,712
+    step 100/800  loss=2.8766  elapsed=11.1s
+    step 200/800  loss=2.8189  elapsed=21.9s
+    step 300/800  loss=2.8032  elapsed=33.1s
+    step 400/800  loss=2.7833  elapsed=44.2s
+    step 500/800  loss=2.7244  elapsed=55.3s
+    step 600/800  loss=2.7421  elapsed=66.3s
+    step 700/800  loss=2.7464  elapsed=77.1s
+    step 800/800  loss=2.7370  elapsed=87.8s
+  Done. loss=2.7370, time=87.8s, alphas=['0.0000', '0.0000', '0.0000']
+  eval ppl (no_cross)...
+    no_cross: ppl=13.4067 (50129 tokens)
+
+======================================================================
+FINAL RESULTS
+======================================================================
+Name                        K      PPL    Gap%     HS   tok/s  lat_ms
+----------------------------------------------------------------------
+sync_lat0ms                 0    16.52  +0.00%      —    40.7       0
+sync_lat10ms                0    16.52  +0.00%      —    17.3      10
+sync_lat50ms                0    16.52  +0.00%      —     5.3      50
+sync_lat100ms               0    16.52  +0.00%      —     3.0     100
+sync_lat200ms               0    16.52  +0.00%      —     1.6     200
+sync_baseline               0    16.52  +0.00%  0.522       —       —
+async_k4                    4    13.41 -18.83%  0.488       —       —
+async_k4_lat0ms             4    13.41 -18.83%      —    42.8       0
+async_k4_lat10ms            4    13.41 -18.83%      —    16.4      10
+async_k4_lat50ms            4    13.41 -18.83%      —     5.2      50
+async_k4_lat100ms           4    13.41 -18.83%      —     3.0     100
+async_k4_lat200ms           4    13.41 -18.83%      —     1.6     200
+async_k16                  16    13.40 -18.84%  0.484       —       —
+async_k16_lat0ms           16    13.40 -18.84%      —    43.8       0
+async_k16_lat10ms          16    13.40 -18.84%      —    16.5      10
+async_k16_lat50ms          16    13.40 -18.84%      —     5.3      50
+async_k16_lat100ms         16    13.40 -18.84%      —     3.0     100
+async_k16_lat200ms         16    13.40 -18.84%      —     1.6     200
+async_k64                  64    13.41 -18.78%  0.486       —       —
+async_k64_lat0ms           64    13.41 -18.78%      —    43.2       0
+async_k64_lat10ms          64    13.41 -18.78%      —    16.1      10
+async_k64_lat50ms          64    13.41 -18.78%      —     5.2      50
+async_k64_lat100ms         64    13.41 -18.78%      —     2.9     100
+async_k64_lat200ms         64    13.41 -18.78%      —     1.6     200
+no_cross_trained            0    13.41 -18.82%      —       —       —
+
+Saved to /workspace/results/results.json

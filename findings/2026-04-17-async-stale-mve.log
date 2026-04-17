@@ -1,0 +1,421 @@
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading model and tokenizer...
+
+============================================================
+BASELINE: Original model (no async modification)
+============================================================
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:  25%|██▌       | 85/338 [00:00<00:00, 834.59it/s]Loading weights:  50%|█████     | 169/338 [00:00<00:00, 540.77it/s]Loading weights:  68%|██████▊   | 229/338 [00:00<00:00, 551.32it/s]Loading weights:  85%|████████▌ | 288/338 [00:00<00:00, 546.52it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 487.90it/s]
+  Evaluating perplexity (mode=sync)...
+    sync: loss=2.8032, ppl=16.50 (50019 tokens)
+  Evaluating perplexity (mode=no_cross)...
+    no_cross: loss=2.8032, ppl=16.50 (50019 tokens)
+  Evaluating HellaSwag (n=200)...
+    HellaSwag accuracy: 101/200 = 0.505
+
+============================================================
+EXPERIMENT: k4_detach
+============================================================
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:  23%|██▎       | 77/338 [00:00<00:00, 696.46it/s]Loading weights:  43%|████▎     | 147/338 [00:00<00:00, 685.05it/s]Loading weights:  64%|██████▍   | 216/338 [00:00<00:00, 663.35it/s]Loading weights:  84%|████████▎ | 283/338 [00:00<00:00, 501.19it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 642.88it/s]
+  Evaluating perplexity (mode=async)...
+    async: loss=2.8032, ppl=16.50 (50019 tokens)
+
+============================================================
+Phase 2 training: K=4, detach=True, steps=500
+============================================================
+  [debug] loss requires_grad=True
+  [debug] trainable params: 9
+    param[0] shape=torch.Size([]) requires_grad=True
+    param[1] shape=torch.Size([4, 1536]) requires_grad=True
+    param[2] shape=torch.Size([1536, 8]) requires_grad=True
+    param[3] shape=torch.Size([]) requires_grad=True
+    param[4] shape=torch.Size([4, 1536]) requires_grad=True
+    param[5] shape=torch.Size([1536, 8]) requires_grad=True
+    param[6] shape=torch.Size([]) requires_grad=True
+    param[7] shape=torch.Size([4, 1536]) requires_grad=True
+    param[8] shape=torch.Size([1536, 8]) requires_grad=True
+  step 50/500  loss=3.0487  elapsed=5.2s
+  step 100/500  loss=2.8830  elapsed=10.2s
+  step 150/500  loss=2.8522  elapsed=15.4s
+  step 200/500  loss=2.8196  elapsed=20.3s
+  step 250/500  loss=2.7795  elapsed=24.7s
+  step 300/500  loss=2.7853  elapsed=29.5s
+  step 350/500  loss=2.7853  elapsed=34.5s
+  step 400/500  loss=2.7589  elapsed=39.1s
+  step 450/500  loss=2.7413  elapsed=44.0s
+  step 500/500  loss=2.7258  elapsed=48.6s
+  Done. Final avg loss=2.7258, time=48.6s
+  Learned alpha values: ['0.5139', '0.4136', '0.2631']
+  Evaluating perplexity (mode=async)...
+    async: loss=2.8032, ppl=16.50 (50019 tokens)
+
+  >>> k4_detach: ppl=16.50 (gap from sync: +0.0%)
+
+============================================================
+EXPERIMENT: k4_nodetach
+============================================================
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:  11%|█         | 37/338 [00:00<00:00, 366.06it/s]Loading weights:  30%|██▉       | 100/338 [00:00<00:00, 516.83it/s]Loading weights:  47%|████▋     | 159/338 [00:00<00:00, 536.46it/s]Loading weights:  65%|██████▍   | 219/338 [00:00<00:00, 430.95it/s]Loading weights:  82%|████████▏ | 277/338 [00:00<00:00, 474.80it/s]Loading weights:  97%|█████████▋| 329/338 [00:00<00:00, 486.29it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 490.51it/s]
+  Evaluating perplexity (mode=async)...
+    async: loss=2.8032, ppl=16.50 (50019 tokens)
+
+============================================================
+Phase 2 training: K=4, detach=False, steps=500
+============================================================
+  [debug] loss requires_grad=True
+  [debug] trainable params: 9
+    param[0] shape=torch.Size([]) requires_grad=True
+    param[1] shape=torch.Size([4, 1536]) requires_grad=True
+    param[2] shape=torch.Size([1536, 8]) requires_grad=True
+    param[3] shape=torch.Size([]) requires_grad=True
+    param[4] shape=torch.Size([4, 1536]) requires_grad=True
+    param[5] shape=torch.Size([1536, 8]) requires_grad=True
+    param[6] shape=torch.Size([]) requires_grad=True
+    param[7] shape=torch.Size([4, 1536]) requires_grad=True
+    param[8] shape=torch.Size([1536, 8]) requires_grad=True
+  step 50/500  loss=3.0477  elapsed=5.1s
+  step 100/500  loss=2.8825  elapsed=9.3s
+  step 150/500  loss=2.8522  elapsed=14.1s
+  step 200/500  loss=2.8211  elapsed=18.9s
+  step 250/500  loss=2.7821  elapsed=23.3s
+  step 300/500  loss=2.7895  elapsed=28.5s
+  step 350/500  loss=2.7913  elapsed=33.5s
+  step 400/500  loss=2.7660  elapsed=38.7s
+  step 450/500  loss=2.7496  elapsed=43.6s
+  step 500/500  loss=2.7347  elapsed=48.3s
+  Done. Final avg loss=2.7347, time=48.3s
+  Learned alpha values: ['0.3882', '0.4452', '0.2546']
+  Evaluating perplexity (mode=async)...
+    async: loss=2.8032, ppl=16.50 (50019 tokens)
+
+  >>> k4_nodetach: ppl=16.50 (gap from sync: +0.0%)
+
+============================================================
+EXPERIMENT: k8_detach
+============================================================
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:  12%|█▏        | 40/338 [00:00<00:00, 339.41it/s]Loading weights:  26%|██▌       | 88/338 [00:00<00:00, 414.55it/s]Loading weights:  39%|███▉      | 133/338 [00:00<00:00, 425.24it/s]Loading weights:  52%|█████▏    | 176/338 [00:00<00:00, 420.96it/s]Loading weights:  65%|██████▍   | 219/338 [00:00<00:00, 419.78it/s]Loading weights:  78%|███████▊  | 262/338 [00:00<00:00, 418.88it/s]Loading weights:  90%|████████▉ | 304/338 [00:00<00:00, 397.45it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 409.78it/s]
+  Evaluating perplexity (mode=async)...
+    async: loss=2.8032, ppl=16.50 (50019 tokens)
+
+============================================================
+Phase 2 training: K=8, detach=True, steps=500
+============================================================
+  [debug] loss requires_grad=True
+  [debug] trainable params: 9
+    param[0] shape=torch.Size([]) requires_grad=True
+    param[1] shape=torch.Size([8, 1536]) requires_grad=True
+    param[2] shape=torch.Size([1536, 16]) requires_grad=True
+    param[3] shape=torch.Size([]) requires_grad=True
+    param[4] shape=torch.Size([8, 1536]) requires_grad=True
+    param[5] shape=torch.Size([1536, 16]) requires_grad=True
+    param[6] shape=torch.Size([]) requires_grad=True
+    param[7] shape=torch.Size([8, 1536]) requires_grad=True
+    param[8] shape=torch.Size([1536, 16]) requires_grad=True
+  step 50/500  loss=3.0352  elapsed=5.1s
+  step 100/500  loss=2.8675  elapsed=10.2s
+  step 150/500  loss=2.8332  elapsed=15.3s
+  step 200/500  loss=2.7983  elapsed=20.3s
+  step 250/500  loss=2.7555  elapsed=25.3s
+  step 300/500  loss=2.7587  elapsed=30.4s
+  step 350/500  loss=2.7579  elapsed=35.1s
+  step 400/500  loss=2.7307  elapsed=39.3s
+  step 450/500  loss=2.7123  elapsed=44.0s
+  step 500/500  loss=2.6968  elapsed=48.9s
+  Done. Final avg loss=2.6968, time=48.9s
+  Learned alpha values: ['0.4284', '0.3308', '0.2026']
+  Evaluating perplexity (mode=async)...
+    async: loss=2.8032, ppl=16.50 (50019 tokens)
+
+  >>> k8_detach: ppl=16.50 (gap from sync: +0.0%)
+
+============================================================
+EXPERIMENT: k8_nodetach
+============================================================
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:  15%|█▌        | 51/338 [00:00<00:00, 405.29it/s]Loading weights:  33%|███▎      | 112/338 [00:00<00:00, 512.53it/s]Loading weights:  49%|████▉     | 166/338 [00:00<00:00, 524.30it/s]Loading weights:  67%|██████▋   | 227/338 [00:00<00:00, 555.75it/s]Loading weights:  84%|████████▍ | 284/338 [00:00<00:00, 550.02it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 532.45it/s]
+  Evaluating perplexity (mode=async)...
+    async: loss=2.8032, ppl=16.50 (50019 tokens)
+
+============================================================
+Phase 2 training: K=8, detach=False, steps=500
+============================================================
+  [debug] loss requires_grad=True
+  [debug] trainable params: 9
+    param[0] shape=torch.Size([]) requires_grad=True
+    param[1] shape=torch.Size([8, 1536]) requires_grad=True
+    param[2] shape=torch.Size([1536, 16]) requires_grad=True
+    param[3] shape=torch.Size([]) requires_grad=True
+    param[4] shape=torch.Size([8, 1536]) requires_grad=True
+    param[5] shape=torch.Size([1536, 16]) requires_grad=True
+    param[6] shape=torch.Size([]) requires_grad=True
+    param[7] shape=torch.Size([8, 1536]) requires_grad=True
+    param[8] shape=torch.Size([1536, 16]) requires_grad=True
+  step 50/500  loss=3.0379  elapsed=5.3s
+  step 100/500  loss=2.8715  elapsed=10.3s
+  step 150/500  loss=2.8388  elapsed=15.4s
+  step 200/500  loss=2.8048  elapsed=20.4s
+  step 250/500  loss=2.7630  elapsed=25.3s
+  step 300/500  loss=2.7666  elapsed=30.2s
+  step 350/500  loss=2.7659  elapsed=35.2s
+  step 400/500  loss=2.7389  elapsed=39.9s
+  step 450/500  loss=2.7204  elapsed=44.9s
+  step 500/500  loss=2.7043  elapsed=49.9s
+  Done. Final avg loss=2.7043, time=49.9s
+  Learned alpha values: ['0.4267', '0.3907', '0.2060']
+  Evaluating perplexity (mode=async)...
+    async: loss=2.8032, ppl=16.50 (50019 tokens)
+
+  >>> k8_nodetach: ppl=16.50 (gap from sync: +0.0%)
+
+============================================================
+EXPERIMENT: k16_detach
+============================================================
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:   8%|▊         | 28/338 [00:00<00:01, 242.71it/s]Loading weights:  25%|██▍       | 84/338 [00:00<00:00, 417.79it/s]Loading weights:  39%|███▉      | 131/338 [00:00<00:00, 439.20it/s]Loading weights:  52%|█████▏    | 176/338 [00:00<00:00, 436.81it/s]Loading weights:  68%|██████▊   | 231/338 [00:00<00:00, 476.00it/s]Loading weights:  83%|████████▎ | 279/338 [00:00<00:00, 459.37it/s]Loading weights:  96%|█████████▋| 326/338 [00:00<00:00, 457.25it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 457.36it/s]
+  Evaluating perplexity (mode=async)...
+    async: loss=2.8032, ppl=16.50 (50019 tokens)
+
+============================================================
+Phase 2 training: K=16, detach=True, steps=500
+============================================================
+  [debug] loss requires_grad=True
+  [debug] trainable params: 9
+    param[0] shape=torch.Size([]) requires_grad=True
+    param[1] shape=torch.Size([16, 1536]) requires_grad=True
+    param[2] shape=torch.Size([1536, 32]) requires_grad=True
+    param[3] shape=torch.Size([]) requires_grad=True
+    param[4] shape=torch.Size([16, 1536]) requires_grad=True
+    param[5] shape=torch.Size([1536, 32]) requires_grad=True
+    param[6] shape=torch.Size([]) requires_grad=True
+    param[7] shape=torch.Size([16, 1536]) requires_grad=True
+    param[8] shape=torch.Size([1536, 32]) requires_grad=True
+  step 50/500  loss=3.0291  elapsed=5.2s
+  step 100/500  loss=2.8627  elapsed=10.2s
+  step 150/500  loss=2.8280  elapsed=15.4s
+  step 200/500  loss=2.7930  elapsed=20.4s
+  step 250/500  loss=2.7501  elapsed=25.3s
+  step 300/500  loss=2.7527  elapsed=30.1s
+  step 350/500  loss=2.7520  elapsed=34.9s
+  step 400/500  loss=2.7248  elapsed=40.0s
+  step 450/500  loss=2.7066  elapsed=45.0s
+  step 500/500  loss=2.6913  elapsed=50.1s
+  Done. Final avg loss=2.6913, time=50.1s
+  Learned alpha values: ['0.3682', '0.2443', '0.2064']
+  Evaluating perplexity (mode=async)...
+    async: loss=2.8032, ppl=16.50 (50019 tokens)
+  Evaluating HellaSwag (n=200)...
+    HellaSwag accuracy: 101/200 = 0.505
+
+  >>> k16_detach: ppl=16.50 (gap from sync: +0.0%)
+
+============================================================
+EXPERIMENT: k16_nodetach
+============================================================
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:  19%|█▉        | 65/338 [00:00<00:00, 493.62it/s]Loading weights:  34%|███▍      | 116/338 [00:00<00:00, 500.80it/s]Loading weights:  49%|████▉     | 167/338 [00:00<00:00, 494.67it/s]Loading weights:  64%|██████▍   | 217/338 [00:00<00:00, 495.29it/s]Loading weights:  79%|███████▉  | 267/338 [00:00<00:00, 491.62it/s]Loading weights:  94%|█████████▍| 317/338 [00:00<00:00, 494.24it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 514.25it/s]
+  Evaluating perplexity (mode=async)...
+    async: loss=2.8032, ppl=16.50 (50019 tokens)
+
+============================================================
+Phase 2 training: K=16, detach=False, steps=500
+============================================================
+  [debug] loss requires_grad=True
+  [debug] trainable params: 9
+    param[0] shape=torch.Size([]) requires_grad=True
+    param[1] shape=torch.Size([16, 1536]) requires_grad=True
+    param[2] shape=torch.Size([1536, 32]) requires_grad=True
+    param[3] shape=torch.Size([]) requires_grad=True
+    param[4] shape=torch.Size([16, 1536]) requires_grad=True
+    param[5] shape=torch.Size([1536, 32]) requires_grad=True
+    param[6] shape=torch.Size([]) requires_grad=True
+    param[7] shape=torch.Size([16, 1536]) requires_grad=True
+    param[8] shape=torch.Size([1536, 32]) requires_grad=True
+  step 50/500  loss=3.0282  elapsed=5.4s
+  step 100/500  loss=2.8614  elapsed=10.0s
+  step 150/500  loss=2.8260  elapsed=14.9s
+  step 200/500  loss=2.7900  elapsed=19.8s
+  step 250/500  loss=2.7467  elapsed=24.7s
+  step 300/500  loss=2.7483  elapsed=29.4s
+  step 350/500  loss=2.7475  elapsed=33.6s
+  step 400/500  loss=2.7203  elapsed=38.3s
+  step 450/500  loss=2.7023  elapsed=43.1s
+  step 500/500  loss=2.6871  elapsed=47.7s
+  Done. Final avg loss=2.6871, time=47.7s
+  Learned alpha values: ['0.3145', '0.2512', '0.1740']
+  Evaluating perplexity (mode=async)...
+    async: loss=2.8032, ppl=16.50 (50019 tokens)
+  Evaluating HellaSwag (n=200)...
+    HellaSwag accuracy: 101/200 = 0.505
+
+  >>> k16_nodetach: ppl=16.50 (gap from sync: +0.0%)
+
+============================================================
+EXPERIMENT: k32_detach
+============================================================
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:  15%|█▌        | 52/338 [00:00<00:00, 485.89it/s]Loading weights:  31%|███       | 104/338 [00:00<00:00, 505.25it/s]Loading weights:  47%|████▋     | 159/338 [00:00<00:00, 523.24it/s]Loading weights:  63%|██████▎   | 212/338 [00:00<00:00, 524.27it/s]Loading weights:  78%|███████▊  | 265/338 [00:00<00:00, 519.48it/s]Loading weights:  94%|█████████▍| 317/338 [00:00<00:00, 509.90it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 541.40it/s]
+  Evaluating perplexity (mode=async)...
+    async: loss=2.8032, ppl=16.50 (50019 tokens)
+
+============================================================
+Phase 2 training: K=32, detach=True, steps=500
+============================================================
+  [debug] loss requires_grad=True
+  [debug] trainable params: 9
+    param[0] shape=torch.Size([]) requires_grad=True
+    param[1] shape=torch.Size([32, 1536]) requires_grad=True
+    param[2] shape=torch.Size([1536, 64]) requires_grad=True
+    param[3] shape=torch.Size([]) requires_grad=True
+    param[4] shape=torch.Size([32, 1536]) requires_grad=True
+    param[5] shape=torch.Size([1536, 64]) requires_grad=True
+    param[6] shape=torch.Size([]) requires_grad=True
+    param[7] shape=torch.Size([32, 1536]) requires_grad=True
+    param[8] shape=torch.Size([1536, 64]) requires_grad=True
+  step 50/500  loss=3.0263  elapsed=5.1s
+  step 100/500  loss=2.8539  elapsed=9.9s
+  step 150/500  loss=2.8138  elapsed=15.0s
+  step 200/500  loss=2.7755  elapsed=19.9s
+  step 250/500  loss=2.7320  elapsed=25.0s
+  step 300/500  loss=2.7335  elapsed=29.6s
+  step 350/500  loss=2.7333  elapsed=34.3s
+  step 400/500  loss=2.7064  elapsed=38.7s
+  step 450/500  loss=2.6891  elapsed=43.6s
+  step 500/500  loss=2.6743  elapsed=48.5s
+  Done. Final avg loss=2.6743, time=48.5s
+  Learned alpha values: ['0.2122', '0.1609', '0.1404']
+  Evaluating perplexity (mode=async)...
+    async: loss=2.8032, ppl=16.50 (50019 tokens)
+  Evaluating HellaSwag (n=200)...
+    HellaSwag accuracy: 101/200 = 0.505
+
+  >>> k32_detach: ppl=16.50 (gap from sync: +0.0%)
+
+============================================================
+EXPERIMENT: k32_nodetach
+============================================================
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:  15%|█▌        | 51/338 [00:00<00:00, 501.82it/s]Loading weights:  32%|███▏      | 107/338 [00:00<00:00, 533.77it/s]Loading weights:  48%|████▊     | 161/338 [00:00<00:00, 520.22it/s]Loading weights:  64%|██████▍   | 216/338 [00:00<00:00, 531.58it/s]Loading weights:  80%|███████▉  | 270/338 [00:00<00:00, 507.05it/s]Loading weights:  95%|█████████▍| 321/338 [00:00<00:00, 415.30it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 484.45it/s]
+  Evaluating perplexity (mode=async)...
+    async: loss=2.8032, ppl=16.50 (50019 tokens)
+
+============================================================
+Phase 2 training: K=32, detach=False, steps=500
+============================================================
+  [debug] loss requires_grad=True
+  [debug] trainable params: 9
+    param[0] shape=torch.Size([]) requires_grad=True
+    param[1] shape=torch.Size([32, 1536]) requires_grad=True
+    param[2] shape=torch.Size([1536, 64]) requires_grad=True
+    param[3] shape=torch.Size([]) requires_grad=True
+    param[4] shape=torch.Size([32, 1536]) requires_grad=True
+    param[5] shape=torch.Size([1536, 64]) requires_grad=True
+    param[6] shape=torch.Size([]) requires_grad=True
+    param[7] shape=torch.Size([32, 1536]) requires_grad=True
+    param[8] shape=torch.Size([1536, 64]) requires_grad=True
+  step 50/500  loss=3.0262  elapsed=6.4s
+  step 100/500  loss=2.8533  elapsed=10.6s
+  step 150/500  loss=2.8132  elapsed=15.4s
+  step 200/500  loss=2.7750  elapsed=20.3s
+  step 250/500  loss=2.7312  elapsed=24.8s
+  step 300/500  loss=2.7324  elapsed=29.6s
+  step 350/500  loss=2.7325  elapsed=34.4s
+  step 400/500  loss=2.7057  elapsed=39.6s
+  step 450/500  loss=2.6883  elapsed=44.4s
+  step 500/500  loss=2.6732  elapsed=49.1s
+  Done. Final avg loss=2.6732, time=49.1s
+  Learned alpha values: ['0.2345', '0.1469', '0.1400']
+  Evaluating perplexity (mode=async)...
+    async: loss=2.8032, ppl=16.50 (50019 tokens)
+  Evaluating HellaSwag (n=200)...
+    HellaSwag accuracy: 101/200 = 0.505
+
+  >>> k32_nodetach: ppl=16.50 (gap from sync: +0.0%)
+
+============================================================
+EXPERIMENT: k64_detach
+============================================================
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:  15%|█▌        | 52/338 [00:00<00:00, 496.73it/s]Loading weights:  30%|███       | 102/338 [00:00<00:00, 482.86it/s]Loading weights:  45%|████▍     | 151/338 [00:00<00:00, 478.79it/s]Loading weights:  59%|█████▉    | 199/338 [00:00<00:00, 353.25it/s]Loading weights:  76%|███████▌  | 257/338 [00:00<00:00, 413.21it/s]Loading weights:  89%|████████▉ | 302/338 [00:00<00:00, 421.93it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 461.44it/s]
+  Evaluating perplexity (mode=async)...
+    async: loss=2.8032, ppl=16.50 (50019 tokens)
+
+============================================================
+Phase 2 training: K=64, detach=True, steps=500
+============================================================
+  [debug] loss requires_grad=True
+  [debug] trainable params: 9
+    param[0] shape=torch.Size([]) requires_grad=True
+    param[1] shape=torch.Size([64, 1536]) requires_grad=True
+    param[2] shape=torch.Size([1536, 128]) requires_grad=True
+    param[3] shape=torch.Size([]) requires_grad=True
+    param[4] shape=torch.Size([64, 1536]) requires_grad=True
+    param[5] shape=torch.Size([1536, 128]) requires_grad=True
+    param[6] shape=torch.Size([]) requires_grad=True
+    param[7] shape=torch.Size([64, 1536]) requires_grad=True
+    param[8] shape=torch.Size([1536, 128]) requires_grad=True
+  step 50/500  loss=3.0120  elapsed=5.2s
+  step 100/500  loss=2.8346  elapsed=9.8s
+  step 150/500  loss=2.7931  elapsed=13.7s
+  step 200/500  loss=2.7542  elapsed=18.4s
+  step 250/500  loss=2.7122  elapsed=22.6s
+  step 300/500  loss=2.7148  elapsed=27.4s
+  step 350/500  loss=2.7150  elapsed=32.4s
+  step 400/500  loss=2.6890  elapsed=37.1s
+  step 450/500  loss=2.6726  elapsed=42.0s
+  step 500/500  loss=2.6585  elapsed=46.9s
+  Done. Final avg loss=2.6585, time=46.9s
+  Learned alpha values: ['0.1273', '0.0849', '0.1169']
+  Evaluating perplexity (mode=async)...
+    async: loss=2.8032, ppl=16.50 (50019 tokens)
+
+  >>> k64_detach: ppl=16.50 (gap from sync: +0.0%)
+
+============================================================
+EXPERIMENT: k64_nodetach
+============================================================
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:  17%|█▋        | 59/338 [00:00<00:00, 579.56it/s]Loading weights:  39%|███▉      | 131/338 [00:00<00:00, 661.53it/s]Loading weights:  59%|█████▊    | 198/338 [00:00<00:00, 655.95it/s]Loading weights:  78%|███████▊  | 264/338 [00:00<00:00, 648.85it/s]Loading weights:  97%|█████████▋| 329/338 [00:00<00:00, 644.66it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 660.82it/s]
+  Evaluating perplexity (mode=async)...
+    async: loss=2.8032, ppl=16.50 (50019 tokens)
+
+============================================================
+Phase 2 training: K=64, detach=False, steps=500
+============================================================
+  [debug] loss requires_grad=True
+  [debug] trainable params: 9
+    param[0] shape=torch.Size([]) requires_grad=True
+    param[1] shape=torch.Size([64, 1536]) requires_grad=True
+    param[2] shape=torch.Size([1536, 128]) requires_grad=True
+    param[3] shape=torch.Size([]) requires_grad=True
+    param[4] shape=torch.Size([64, 1536]) requires_grad=True
+    param[5] shape=torch.Size([1536, 128]) requires_grad=True
+    param[6] shape=torch.Size([]) requires_grad=True
+    param[7] shape=torch.Size([64, 1536]) requires_grad=True
+    param[8] shape=torch.Size([1536, 128]) requires_grad=True
+  step 50/500  loss=3.0069  elapsed=5.4s
+  step 100/500  loss=2.8316  elapsed=10.4s
+  step 150/500  loss=2.7907  elapsed=15.4s
+  step 200/500  loss=2.7530  elapsed=20.5s
+  step 250/500  loss=2.7113  elapsed=25.6s
+  step 300/500  loss=2.7144  elapsed=30.8s
+  step 350/500  loss=2.7150  elapsed=35.5s
+  step 400/500  loss=2.6893  elapsed=40.5s
+  step 450/500  loss=2.6730  elapsed=45.6s
+  step 500/500  loss=2.6591  elapsed=50.5s
+  Done. Final avg loss=2.6591, time=50.5s
+  Learned alpha values: ['0.1362', '0.0805', '0.1015']
+  Evaluating perplexity (mode=async)...
+    async: loss=2.8032, ppl=16.50 (50019 tokens)
+
+  >>> k64_nodetach: ppl=16.50 (gap from sync: +0.0%)
+
+============================================================
+FINAL RESULTS SUMMARY
+============================================================
+Mode                             K      PPL    Gap%  HS-acc
+------------------------------------------------------------
+sync_baseline                    0    16.50   +0.0%   0.505
+no_cross_baseline                0    16.50   +0.0%       —
+async_detach                     4    16.50   +0.0%       —
+async_nodetach                   4    16.50   +0.0%       —
+async_detach                     8    16.50   +0.0%       —
+async_nodetach                   8    16.50   +0.0%       —
+async_detach                    16    16.50   +0.0%   0.505
+async_nodetach                  16    16.50   +0.0%   0.505
+async_detach                    32    16.50   +0.0%   0.505
+async_nodetach                  32    16.50   +0.0%   0.505
+async_detach                    64    16.50   +0.0%       —
+async_nodetach                  64    16.50   +0.0%       —
+
+Results saved to /workspace/results/results.json

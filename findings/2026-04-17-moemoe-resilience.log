@@ -1,0 +1,77 @@
+Loading GPT-2 124M...
+
+=== ORIGINAL GPT-2 ===
+Generating test split:   0%|          | 0/4358 [00:00<?, ? examples/s]Generating test split: 100%|██████████| 4358/4358 [00:00<00:00, 515926.98 examples/s]
+Generating train split:   0%|          | 0/36718 [00:00<?, ? examples/s]Generating train split: 100%|██████████| 36718/36718 [00:00<00:00, 955938.39 examples/s]
+Generating validation split:   0%|          | 0/3760 [00:00<?, ? examples/s]Generating validation split: 100%|██████████| 3760/3760 [00:00<00:00, 760321.23 examples/s]
+  ppl=60.3651 (50048 tokens)
+
+=== Building MoeMoe (4 experts) ===
+
+=== PRE-TRAINING: All 4 experts ===
+  ppl=60.3651 (gap=+0.0000%)
+
+=== PRE-TRAINING: Drop each expert ===
+  drop expert 0: ppl=9243.51 (gap=+15212.7%)
+  drop expert 1: ppl=2140.33 (gap=+3445.6%)
+  drop expert 2: ppl=3975.68 (gap=+6486.1%)
+  drop expert 3: ppl=1282.49 (gap=+2024.6%)
+
+=== RESILIENCE TRAINING (2000 steps) ===
+  Strategy: each step, randomly drop 1 of 4 experts
+  Target: (N=4, K=3) erasure code
+  Trainable params: 85,072,896
+    step 200/2000  loss=5.4115  elapsed=11.8s  drops=[40, 46, 60, 54]
+    step 400/2000  loss=5.0223  elapsed=23.6s  drops=[88, 101, 106, 105]
+    step 600/2000  loss=4.8117  elapsed=35.2s  drops=[138, 152, 146, 164]
+    step 800/2000  loss=4.7250  elapsed=47.0s  drops=[203, 194, 195, 208]
+    step 1000/2000  loss=4.6259  elapsed=58.7s  drops=[262, 242, 243, 253]
+    step 1200/2000  loss=4.5493  elapsed=70.6s  drops=[313, 289, 288, 310]
+    step 1400/2000  loss=4.4915  elapsed=82.4s  drops=[371, 340, 339, 350]
+    step 1600/2000  loss=4.4621  elapsed=94.1s  drops=[421, 389, 387, 403]
+    step 1800/2000  loss=4.4214  elapsed=105.8s  drops=[470, 428, 446, 456]
+    step 2000/2000  loss=4.3946  elapsed=117.7s  drops=[518, 471, 497, 514]
+  Done. loss=4.3946, time=117.7s
+  Drop distribution: [518, 471, 497, 514]
+
+=== POST-TRAINING: All 4 experts ===
+  ppl=39.2871 (gap=-34.92%)
+
+=== POST-TRAINING: Drop each expert (THE KEY TEST) ===
+  drop expert 0: ppl=64.55 (gap=+6.9%)
+  drop expert 1: ppl=66.40 (gap=+10.0%)
+  drop expert 2: ppl=66.61 (gap=+10.3%)
+  drop expert 3: ppl=62.03 (gap=+2.8%)
+
+=== POST-TRAINING: Drop 2 experts ===
+  keep (0, 1), drop [2, 3]: ppl=579.20 (gap=+859.5%)
+  keep (0, 2), drop [1, 3]: ppl=1597.12 (gap=+2545.8%)
+  keep (0, 3), drop [1, 2]: ppl=717.07 (gap=+1087.9%)
+  keep (1, 2), drop [0, 3]: ppl=7025.46 (gap=+11538.3%)
+  keep (1, 3), drop [0, 2]: ppl=1714.09 (gap=+2739.5%)
+  keep (2, 3), drop [0, 1]: ppl=1909.12 (gap=+3062.6%)
+
+======================================================================
+MOEMOE RESILIENCE RESULTS
+======================================================================
+Name                           PPL     Gap%  Experts
+-------------------------------------------------------
+original                     60.37    +0.0%        4
+pre_train_4of4               60.37    +0.0%        4
+pre_drop_0                 9243.51 +15212.7%        3
+pre_drop_1                 2140.33 +3445.6%        3
+pre_drop_2                 3975.68 +6486.1%        3
+pre_drop_3                 1282.49 +2024.6%        3
+post_train_4of4              39.29   -34.9%        4
+post_drop_0                  64.55    +6.9%        3
+post_drop_1                  66.40   +10.0%        3
+post_drop_2                  66.61   +10.3%        3
+post_drop_3                  62.03    +2.8%        3
+post_keep_01                579.20  +859.5%        2
+post_keep_02               1597.12 +2545.8%        2
+post_keep_03                717.07 +1087.9%        2
+post_keep_12               7025.46 +11538.3%        2
+post_keep_13               1714.09 +2739.5%        2
+post_keep_23               1909.12 +3062.6%        2
+
+Saved to /workspace/results/results.json

@@ -1,0 +1,23 @@
+Loading GPT-2 124M...
+
+=== ORIGINAL GPT-2 (baseline) ===
+Generating test split:   0%|          | 0/4358 [00:00<?, ? examples/s]Generating test split: 100%|██████████| 4358/4358 [00:00<00:00, 332190.40 examples/s]
+Generating train split:   0%|          | 0/36718 [00:00<?, ? examples/s]Generating train split: 100%|██████████| 36718/36718 [00:00<00:00, 727196.75 examples/s]
+Generating validation split:   0%|          | 0/3760 [00:00<?, ? examples/s]Generating validation split: 100%|██████████| 3760/3760 [00:00<00:00, 461816.83 examples/s]
+  ppl=60.3651 (50048 tokens)
+
+=== Building DDC (4 experts) ===
+
+=== SYNC: All 4 experts ===
+  ppl=60.3651 (gap=+0.0000%)
+
+=== DROP: 3 of 4 experts ===
+  ppl=701.5959 (gap=+1062.25%)
+
+=== DROP: 2 of 4 experts ===
+  ppl=3487.2496 (gap=+5676.93%)
+
+=== DROP: 1 of 4 experts ===
+  ppl=10292.4711 (gap=+16950.36%)
+
+=== COMPRESS: PCA k=64 ===

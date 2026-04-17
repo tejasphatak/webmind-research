@@ -1,0 +1,2485 @@
+{
+  "staleness": [
+    {
+      "prompt": "The key insight about distributed computing is that",
+      "results": [
+        {
+          "layer": 0,
+          "mean_cosine_sim": 0.08924472332000732,
+          "min_cosine_sim": -0.005252412520349026,
+          "std_cosine_sim": 0.11952760070562363,
+          "mean_relative_l2": 1.3470056056976318
+        },
+        {
+          "layer": 1,
+          "mean_cosine_sim": 0.6628967523574829,
+          "min_cosine_sim": 0.48194172978401184,
+          "std_cosine_sim": 0.0827806144952774,
+          "mean_relative_l2": 0.9214984774589539
+        },
+        {
+          "layer": 2,
+          "mean_cosine_sim": 0.6886599063873291,
+          "min_cosine_sim": 0.4335664212703705,
+          "std_cosine_sim": 0.10949002206325531,
+          "mean_relative_l2": 0.864042341709137
+        },
+        {
+          "layer": 3,
+          "mean_cosine_sim": 0.715329110622406,
+          "min_cosine_sim": 0.41783955693244934,
+          "std_cosine_sim": 0.12963896989822388,
+          "mean_relative_l2": 0.8441008925437927
+        },
+        {
+          "layer": 4,
+          "mean_cosine_sim": 0.8971568942070007,
+          "min_cosine_sim": 0.8277617692947388,
+          "std_cosine_sim": 0.035281773656606674,
+          "mean_relative_l2": 0.5835649371147156
+        },
+        {
+          "layer": 5,
+          "mean_cosine_sim": 0.9425417184829712,
+          "min_cosine_sim": 0.8687493205070496,
+          "std_cosine_sim": 0.0357150100171566,
+          "mean_relative_l2": 0.5159802436828613
+        },
+        {
+          "layer": 6,
+          "mean_cosine_sim": 0.9658696055412292,
+          "min_cosine_sim": 0.9292052984237671,
+          "std_cosine_sim": 0.018187332898378372,
+          "mean_relative_l2": 0.4847904443740845
+        },
+        {
+          "layer": 7,
+          "mean_cosine_sim": 0.9697502255439758,
+          "min_cosine_sim": 0.9586478471755981,
+          "std_cosine_sim": 0.01023462601006031,
+          "mean_relative_l2": 0.46640893816947937
+        },
+        {
+          "layer": 8,
+          "mean_cosine_sim": 0.9825942516326904,
+          "min_cosine_sim": 0.9748179912567139,
+          "std_cosine_sim": 0.005922072567045689,
+          "mean_relative_l2": 0.4700450599193573
+        },
+        {
+          "layer": 9,
+          "mean_cosine_sim": 0.9887060523033142,
+          "min_cosine_sim": 0.9839761853218079,
+          "std_cosine_sim": 0.004028701689094305,
+          "mean_relative_l2": 0.38332611322402954
+        },
+        {
+          "layer": 10,
+          "mean_cosine_sim": 0.9870888590812683,
+          "min_cosine_sim": 0.9734978675842285,
+          "std_cosine_sim": 0.008158521726727486,
+          "mean_relative_l2": 0.3815181255340576
+        },
+        {
+          "layer": 11,
+          "mean_cosine_sim": 0.8398619294166565,
+          "min_cosine_sim": 0.36956194043159485,
+          "std_cosine_sim": 0.2808683514595032,
+          "mean_relative_l2": 0.5580575466156006
+        },
+        {
+          "layer": 12,
+          "mean_cosine_sim": 0.9907311797142029,
+          "min_cosine_sim": 0.9817724227905273,
+          "std_cosine_sim": 0.005025155376642942,
+          "mean_relative_l2": 0.3592555522918701
+        },
+        {
+          "layer": 13,
+          "mean_cosine_sim": 0.988781750202179,
+          "min_cosine_sim": 0.9765475392341614,
+          "std_cosine_sim": 0.0067187282256782055,
+          "mean_relative_l2": 0.37799757719039917
+        },
+        {
+          "layer": 14,
+          "mean_cosine_sim": 0.9823600053787231,
+          "min_cosine_sim": 0.9593376517295837,
+          "std_cosine_sim": 0.012757918797433376,
+          "mean_relative_l2": 0.4064215421676636
+        },
+        {
+          "layer": 15,
+          "mean_cosine_sim": 0.9819027185440063,
+          "min_cosine_sim": 0.968445897102356,
+          "std_cosine_sim": 0.007390462793409824,
+          "mean_relative_l2": 0.4090970456600189
+        },
+        {
+          "layer": 16,
+          "mean_cosine_sim": 0.9775240421295166,
+          "min_cosine_sim": 0.9624333381652832,
+          "std_cosine_sim": 0.009068791754543781,
+          "mean_relative_l2": 0.41840678453445435
+        },
+        {
+          "layer": 17,
+          "mean_cosine_sim": 0.9674294590950012,
+          "min_cosine_sim": 0.9470988512039185,
+          "std_cosine_sim": 0.011117862537503242,
+          "mean_relative_l2": 0.42473188042640686
+        },
+        {
+          "layer": 18,
+          "mean_cosine_sim": 0.9537555575370789,
+          "min_cosine_sim": 0.9159672260284424,
+          "std_cosine_sim": 0.02001570723950863,
+          "mean_relative_l2": 0.45142459869384766
+        },
+        {
+          "layer": 19,
+          "mean_cosine_sim": 0.9456008672714233,
+          "min_cosine_sim": 0.8986971974372864,
+          "std_cosine_sim": 0.025828329846262932,
+          "mean_relative_l2": 0.4648304879665375
+        },
+        {
+          "layer": 20,
+          "mean_cosine_sim": 0.9479252696037292,
+          "min_cosine_sim": 0.908043622970581,
+          "std_cosine_sim": 0.02165374532341957,
+          "mean_relative_l2": 0.4544830024242401
+        },
+        {
+          "layer": 21,
+          "mean_cosine_sim": 0.9472984075546265,
+          "min_cosine_sim": 0.9011510610580444,
+          "std_cosine_sim": 0.026663167402148247,
+          "mean_relative_l2": 0.44778507947921753
+        },
+        {
+          "layer": 22,
+          "mean_cosine_sim": 0.9460155963897705,
+          "min_cosine_sim": 0.8980540037155151,
+          "std_cosine_sim": 0.028145410120487213,
+          "mean_relative_l2": 0.44751283526420593
+        },
+        {
+          "layer": 23,
+          "mean_cosine_sim": 0.9482823014259338,
+          "min_cosine_sim": 0.9139770269393921,
+          "std_cosine_sim": 0.019405191764235497,
+          "mean_relative_l2": 0.43615594506263733
+        },
+        {
+          "layer": 24,
+          "mean_cosine_sim": 0.9445905089378357,
+          "min_cosine_sim": 0.906217634677887,
+          "std_cosine_sim": 0.021548423916101456,
+          "mean_relative_l2": 0.43712130188941956
+        },
+        {
+          "layer": 25,
+          "mean_cosine_sim": 0.945340096950531,
+          "min_cosine_sim": 0.9083607792854309,
+          "std_cosine_sim": 0.020863916724920273,
+          "mean_relative_l2": 0.4158425033092499
+        },
+        {
+          "layer": 26,
+          "mean_cosine_sim": 0.5496886372566223,
+          "min_cosine_sim": 0.04167415201663971,
+          "std_cosine_sim": 0.23520970344543457,
+          "mean_relative_l2": 0.9450886249542236
+        }
+      ]
+    },
+    {
+      "prompt": "In quantum mechanics, the uncertainty principle states that",
+      "results": [
+        {
+          "layer": 0,
+          "mean_cosine_sim": 0.07770008593797684,
+          "min_cosine_sim": -0.05802561342716217,
+          "std_cosine_sim": 0.13202087581157684,
+          "mean_relative_l2": 1.3550050258636475
+        },
+        {
+          "layer": 1,
+          "mean_cosine_sim": 0.6641156673431396,
+          "min_cosine_sim": 0.4503239393234253,
+          "std_cosine_sim": 0.11454232782125473,
+          "mean_relative_l2": 0.9369080066680908
+        },
+        {
+          "layer": 2,
+          "mean_cosine_sim": 0.6717851161956787,
+          "min_cosine_sim": 0.469902366399765,
+          "std_cosine_sim": 0.1230531558394432,
+          "mean_relative_l2": 0.8918164372444153
+        },
+        {
+          "layer": 3,
+          "mean_cosine_sim": 0.6903382539749146,
+          "min_cosine_sim": 0.48917531967163086,
+          "std_cosine_sim": 0.11454201489686966,
+          "mean_relative_l2": 0.8824633955955505
+        },
+        {
+          "layer": 4,
+          "mean_cosine_sim": 0.8896670937538147,
+          "min_cosine_sim": 0.8075200319290161,
+          "std_cosine_sim": 0.04553219676017761,
+          "mean_relative_l2": 0.6183326840400696
+        },
+        {
+          "layer": 5,
+          "mean_cosine_sim": 0.9449593424797058,
+          "min_cosine_sim": 0.8926384449005127,
+          "std_cosine_sim": 0.029219310730695724,
+          "mean_relative_l2": 0.4985177218914032
+        },
+        {
+          "layer": 6,
+          "mean_cosine_sim": 0.9629966020584106,
+          "min_cosine_sim": 0.9336965680122375,
+          "std_cosine_sim": 0.017650485038757324,
+          "mean_relative_l2": 0.47340404987335205
+        },
+        {
+          "layer": 7,
+          "mean_cosine_sim": 0.9694437384605408,
+          "min_cosine_sim": 0.9436584711074829,
+          "std_cosine_sim": 0.013853320851922035,
+          "mean_relative_l2": 0.4645402133464813
+        },
+        {
+          "layer": 8,
+          "mean_cosine_sim": 0.9821125864982605,
+          "min_cosine_sim": 0.9679148197174072,
+          "std_cosine_sim": 0.007931999862194061,
+          "mean_relative_l2": 0.40350282192230225
+        },
+        {
+          "layer": 9,
+          "mean_cosine_sim": 0.9889440536499023,
+          "min_cosine_sim": 0.9792683124542236,
+          "std_cosine_sim": 0.00555538572371006,
+          "mean_relative_l2": 0.356621116399765
+        },
+        {
+          "layer": 10,
+          "mean_cosine_sim": 0.987197995185852,
+          "min_cosine_sim": 0.9703720211982727,
+          "std_cosine_sim": 0.009074504487216473,
+          "mean_relative_l2": 0.35429754853248596
+        },
+        {
+          "layer": 11,
+          "mean_cosine_sim": 0.8733437061309814,
+          "min_cosine_sim": 0.4520960748195648,
+          "std_cosine_sim": 0.23489800095558167,
+          "mean_relative_l2": 0.5378097295761108
+        },
+        {
+          "layer": 12,
+          "mean_cosine_sim": 0.9908092021942139,
+          "min_cosine_sim": 0.9809005856513977,
+          "std_cosine_sim": 0.006046333350241184,
+          "mean_relative_l2": 0.36856353282928467
+        },
+        {
+          "layer": 13,
+          "mean_cosine_sim": 0.9893162846565247,
+          "min_cosine_sim": 0.9767394661903381,
+          "std_cosine_sim": 0.00711081363260746,
+          "mean_relative_l2": 0.3730718195438385
+        },
+        {
+          "layer": 14,
+          "mean_cosine_sim": 0.9829732179641724,
+          "min_cosine_sim": 0.9569277763366699,
+          "std_cosine_sim": 0.013804024085402489,
+          "mean_relative_l2": 0.374367892742157
+        },
+        {
+          "layer": 15,
+          "mean_cosine_sim": 0.9836455583572388,
+          "min_cosine_sim": 0.9685290455818176,
+          "std_cosine_sim": 0.008207753300666809,
+          "mean_relative_l2": 0.36983829736709595
+        },
+        {
+          "layer": 16,
+          "mean_cosine_sim": 0.9771143794059753,
+          "min_cosine_sim": 0.9601751565933228,
+          "std_cosine_sim": 0.010045484639704227,
+          "mean_relative_l2": 0.3730025589466095
+        },
+        {
+          "layer": 17,
+          "mean_cosine_sim": 0.9670124053955078,
+          "min_cosine_sim": 0.950968861579895,
+          "std_cosine_sim": 0.013331779278814793,
+          "mean_relative_l2": 0.397286593914032
+        },
+        {
+          "layer": 18,
+          "mean_cosine_sim": 0.9494472146034241,
+          "min_cosine_sim": 0.9054316878318787,
+          "std_cosine_sim": 0.026309844106435776,
+          "mean_relative_l2": 0.4493902027606964
+        },
+        {
+          "layer": 19,
+          "mean_cosine_sim": 0.9318896532058716,
+          "min_cosine_sim": 0.865467369556427,
+          "std_cosine_sim": 0.03673703968524933,
+          "mean_relative_l2": 0.5023699402809143
+        },
+        {
+          "layer": 20,
+          "mean_cosine_sim": 0.9303387403488159,
+          "min_cosine_sim": 0.859883725643158,
+          "std_cosine_sim": 0.039021145552396774,
+          "mean_relative_l2": 0.501603364944458
+        },
+        {
+          "layer": 21,
+          "mean_cosine_sim": 0.9210497736930847,
+          "min_cosine_sim": 0.8313459157943726,
+          "std_cosine_sim": 0.04842158406972885,
+          "mean_relative_l2": 0.5165829062461853
+        },
+        {
+          "layer": 22,
+          "mean_cosine_sim": 0.9098575115203857,
+          "min_cosine_sim": 0.799143373966217,
+          "std_cosine_sim": 0.05932275950908661,
+          "mean_relative_l2": 0.5331491231918335
+        },
+        {
+          "layer": 23,
+          "mean_cosine_sim": 0.9115219116210938,
+          "min_cosine_sim": 0.8183045387268066,
+          "std_cosine_sim": 0.05182678997516632,
+          "mean_relative_l2": 0.5296047925949097
+        },
+        {
+          "layer": 24,
+          "mean_cosine_sim": 0.896107017993927,
+          "min_cosine_sim": 0.7877568006515503,
+          "std_cosine_sim": 0.06028633937239647,
+          "mean_relative_l2": 0.5526793003082275
+        },
+        {
+          "layer": 25,
+          "mean_cosine_sim": 0.8909791111946106,
+          "min_cosine_sim": 0.795270562171936,
+          "std_cosine_sim": 0.05832016095519066,
+          "mean_relative_l2": 0.538621187210083
+        },
+        {
+          "layer": 26,
+          "mean_cosine_sim": 0.5197166800498962,
+          "min_cosine_sim": 0.07999726384878159,
+          "std_cosine_sim": 0.23258991539478302,
+          "mean_relative_l2": 0.9930307865142822
+        }
+      ]
+    },
+    {
+      "prompt": "Once upon a time in a small village by the sea, there lived",
+      "results": [
+        {
+          "layer": 0,
+          "mean_cosine_sim": 0.12240512669086456,
+          "min_cosine_sim": 0.0028346413746476173,
+          "std_cosine_sim": 0.13603055477142334,
+          "mean_relative_l2": 1.3206168413162231
+        },
+        {
+          "layer": 1,
+          "mean_cosine_sim": 0.6464114785194397,
+          "min_cosine_sim": 0.30083703994750977,
+          "std_cosine_sim": 0.10920801013708115,
+          "mean_relative_l2": 0.9141765236854553
+        },
+        {
+          "layer": 2,
+          "mean_cosine_sim": 0.6253327131271362,
+          "min_cosine_sim": 0.2203756868839264,
+          "std_cosine_sim": 0.12684513628482819,
+          "mean_relative_l2": 0.9017542600631714
+        },
+        {
+          "layer": 3,
+          "mean_cosine_sim": 0.6820537447929382,
+          "min_cosine_sim": 0.4467984139919281,
+          "std_cosine_sim": 0.0797957107424736,
+          "mean_relative_l2": 0.8539617657661438
+        },
+        {
+          "layer": 4,
+          "mean_cosine_sim": 0.8821831345558167,
+          "min_cosine_sim": 0.8355138301849365,
+          "std_cosine_sim": 0.029503721743822098,
+          "mean_relative_l2": 0.5777168273925781
+        },
+        {
+          "layer": 5,
+          "mean_cosine_sim": 0.9513252973556519,
+          "min_cosine_sim": 0.9107205867767334,
+          "std_cosine_sim": 0.013584708794951439,
+          "mean_relative_l2": 0.4362550377845764
+        },
+        {
+          "layer": 6,
+          "mean_cosine_sim": 0.9615376591682434,
+          "min_cosine_sim": 0.9354294538497925,
+          "std_cosine_sim": 0.010033412836492062,
+          "mean_relative_l2": 0.45126262307167053
+        },
+        {
+          "layer": 7,
+          "mean_cosine_sim": 0.9643880724906921,
+          "min_cosine_sim": 0.9451740384101868,
+          "std_cosine_sim": 0.0080911535769701,
+          "mean_relative_l2": 0.45087218284606934
+        },
+        {
+          "layer": 8,
+          "mean_cosine_sim": 0.9791153073310852,
+          "min_cosine_sim": 0.9729012846946716,
+          "std_cosine_sim": 0.004579178988933563,
+          "mean_relative_l2": 0.43245720863342285
+        },
+        {
+          "layer": 9,
+          "mean_cosine_sim": 0.989408552646637,
+          "min_cosine_sim": 0.9818639159202576,
+          "std_cosine_sim": 0.0037989080883562565,
+          "mean_relative_l2": 0.35854247212409973
+        },
+        {
+          "layer": 10,
+          "mean_cosine_sim": 0.9878557324409485,
+          "min_cosine_sim": 0.969763994216919,
+          "std_cosine_sim": 0.007907877676188946,
+          "mean_relative_l2": 0.32947930693626404
+        },
+        {
+          "layer": 11,
+          "mean_cosine_sim": 0.8985342979431152,
+          "min_cosine_sim": 0.3254612982273102,
+          "std_cosine_sim": 0.23638871312141418,
+          "mean_relative_l2": 0.43305063247680664
+        },
+        {
+          "layer": 12,
+          "mean_cosine_sim": 0.9912973642349243,
+          "min_cosine_sim": 0.9796566963195801,
+          "std_cosine_sim": 0.004902324173599482,
+          "mean_relative_l2": 0.3098022937774658
+        },
+        {
+          "layer": 13,
+          "mean_cosine_sim": 0.9901050925254822,
+          "min_cosine_sim": 0.974730372428894,
+          "std_cosine_sim": 0.006389378570020199,
+          "mean_relative_l2": 0.2994737923145294
+        },
+        {
+          "layer": 14,
+          "mean_cosine_sim": 0.9847828149795532,
+          "min_cosine_sim": 0.9545873999595642,
+          "std_cosine_sim": 0.012308862991631031,
+          "mean_relative_l2": 0.32695242762565613
+        },
+        {
+          "layer": 15,
+          "mean_cosine_sim": 0.9826639890670776,
+          "min_cosine_sim": 0.9646059274673462,
+          "std_cosine_sim": 0.008463851176202297,
+          "mean_relative_l2": 0.3316850960254669
+        },
+        {
+          "layer": 16,
+          "mean_cosine_sim": 0.9768659472465515,
+          "min_cosine_sim": 0.951559841632843,
+          "std_cosine_sim": 0.011570796370506287,
+          "mean_relative_l2": 0.32642820477485657
+        },
+        {
+          "layer": 17,
+          "mean_cosine_sim": 0.9684218168258667,
+          "min_cosine_sim": 0.9366553425788879,
+          "std_cosine_sim": 0.014119828119874,
+          "mean_relative_l2": 0.34495654702186584
+        },
+        {
+          "layer": 18,
+          "mean_cosine_sim": 0.9525308012962341,
+          "min_cosine_sim": 0.8905171155929565,
+          "std_cosine_sim": 0.025231188163161278,
+          "mean_relative_l2": 0.3957233130931854
+        },
+        {
+          "layer": 19,
+          "mean_cosine_sim": 0.9377099275588989,
+          "min_cosine_sim": 0.8545759916305542,
+          "std_cosine_sim": 0.03497070074081421,
+          "mean_relative_l2": 0.44228190183639526
+        },
+        {
+          "layer": 20,
+          "mean_cosine_sim": 0.9343400597572327,
+          "min_cosine_sim": 0.83405601978302,
+          "std_cosine_sim": 0.039852093905210495,
+          "mean_relative_l2": 0.4528159499168396
+        },
+        {
+          "layer": 21,
+          "mean_cosine_sim": 0.9315681457519531,
+          "min_cosine_sim": 0.8155792355537415,
+          "std_cosine_sim": 0.04563005641102791,
+          "mean_relative_l2": 0.4554188549518585
+        },
+        {
+          "layer": 22,
+          "mean_cosine_sim": 0.9265395402908325,
+          "min_cosine_sim": 0.7918964624404907,
+          "std_cosine_sim": 0.05231275036931038,
+          "mean_relative_l2": 0.46373674273490906
+        },
+        {
+          "layer": 23,
+          "mean_cosine_sim": 0.9277645349502563,
+          "min_cosine_sim": 0.8192720413208008,
+          "std_cosine_sim": 0.045726582407951355,
+          "mean_relative_l2": 0.4568994343280792
+        },
+        {
+          "layer": 24,
+          "mean_cosine_sim": 0.9176521301269531,
+          "min_cosine_sim": 0.7819831371307373,
+          "std_cosine_sim": 0.056164804846048355,
+          "mean_relative_l2": 0.47303900122642517
+        },
+        {
+          "layer": 25,
+          "mean_cosine_sim": 0.9096693992614746,
+          "min_cosine_sim": 0.7715670466423035,
+          "std_cosine_sim": 0.054454099386930466,
+          "mean_relative_l2": 0.4697073996067047
+        },
+        {
+          "layer": 26,
+          "mean_cosine_sim": 0.5662299394607544,
+          "min_cosine_sim": 0.08401503413915634,
+          "std_cosine_sim": 0.19429664313793182,
+          "mean_relative_l2": 0.9364128708839417
+        }
+      ]
+    },
+    {
+      "prompt": "To solve this optimization problem, we need to first consider the constraints:",
+      "results": [
+        {
+          "layer": 0,
+          "mean_cosine_sim": 0.06106870248913765,
+          "min_cosine_sim": -0.040404267609119415,
+          "std_cosine_sim": 0.06553290784358978,
+          "mean_relative_l2": 1.3698160648345947
+        },
+        {
+          "layer": 1,
+          "mean_cosine_sim": 0.6634886860847473,
+          "min_cosine_sim": 0.4139900505542755,
+          "std_cosine_sim": 0.09665803611278534,
+          "mean_relative_l2": 0.9279822111129761
+        },
+        {
+          "layer": 2,
+          "mean_cosine_sim": 0.6795124411582947,
+          "min_cosine_sim": 0.39831629395484924,
+          "std_cosine_sim": 0.0947425365447998,
+          "mean_relative_l2": 0.859483540058136
+        },
+        {
+          "layer": 3,
+          "mean_cosine_sim": 0.7144536375999451,
+          "min_cosine_sim": 0.4454878866672516,
+          "std_cosine_sim": 0.1009899377822876,
+          "mean_relative_l2": 0.8235941529273987
+        },
+        {
+          "layer": 4,
+          "mean_cosine_sim": 0.8974762558937073,
+          "min_cosine_sim": 0.8255049586296082,
+          "std_cosine_sim": 0.03170015290379524,
+          "mean_relative_l2": 0.5522552132606506
+        },
+        {
+          "layer": 5,
+          "mean_cosine_sim": 0.9517511129379272,
+          "min_cosine_sim": 0.8827582001686096,
+          "std_cosine_sim": 0.023611148819327354,
+          "mean_relative_l2": 0.41601014137268066
+        },
+        {
+          "layer": 6,
+          "mean_cosine_sim": 0.970357358455658,
+          "min_cosine_sim": 0.9443187117576599,
+          "std_cosine_sim": 0.010545124299824238,
+          "mean_relative_l2": 0.3849300742149353
+        },
+        {
+          "layer": 7,
+          "mean_cosine_sim": 0.9687477350234985,
+          "min_cosine_sim": 0.9545366764068604,
+          "std_cosine_sim": 0.008384875021874905,
+          "mean_relative_l2": 0.3942599892616272
+        },
+        {
+          "layer": 8,
+          "mean_cosine_sim": 0.9837584495544434,
+          "min_cosine_sim": 0.9748004078865051,
+          "std_cosine_sim": 0.004254888277500868,
+          "mean_relative_l2": 0.35014721751213074
+        },
+        {
+          "layer": 9,
+          "mean_cosine_sim": 0.9904919862747192,
+          "min_cosine_sim": 0.9850215911865234,
+          "std_cosine_sim": 0.0031373905949294567,
+          "mean_relative_l2": 0.27029579877853394
+        },
+        {
+          "layer": 10,
+          "mean_cosine_sim": 0.9896125793457031,
+          "min_cosine_sim": 0.9731289148330688,
+          "std_cosine_sim": 0.006856502965092659,
+          "mean_relative_l2": 0.2769208550453186
+        },
+        {
+          "layer": 11,
+          "mean_cosine_sim": 0.9092427492141724,
+          "min_cosine_sim": 0.39068660140037537,
+          "std_cosine_sim": 0.21334800124168396,
+          "mean_relative_l2": 0.36494868993759155
+        },
+        {
+          "layer": 12,
+          "mean_cosine_sim": 0.9928030371665955,
+          "min_cosine_sim": 0.981460452079773,
+          "std_cosine_sim": 0.004522957839071751,
+          "mean_relative_l2": 0.26698145270347595
+        },
+        {
+          "layer": 13,
+          "mean_cosine_sim": 0.9917629957199097,
+          "min_cosine_sim": 0.9762668609619141,
+          "std_cosine_sim": 0.006070146337151527,
+          "mean_relative_l2": 0.2943336069583893
+        },
+        {
+          "layer": 14,
+          "mean_cosine_sim": 0.9879044890403748,
+          "min_cosine_sim": 0.9603027105331421,
+          "std_cosine_sim": 0.011058444157242775,
+          "mean_relative_l2": 0.29163751006126404
+        },
+        {
+          "layer": 15,
+          "mean_cosine_sim": 0.986445426940918,
+          "min_cosine_sim": 0.9686029553413391,
+          "std_cosine_sim": 0.006972710136324167,
+          "mean_relative_l2": 0.29506856203079224
+        },
+        {
+          "layer": 16,
+          "mean_cosine_sim": 0.9823796153068542,
+          "min_cosine_sim": 0.9646404385566711,
+          "std_cosine_sim": 0.007846023887395859,
+          "mean_relative_l2": 0.3149062693119049
+        },
+        {
+          "layer": 17,
+          "mean_cosine_sim": 0.9761861562728882,
+          "min_cosine_sim": 0.9558019638061523,
+          "std_cosine_sim": 0.00872090831398964,
+          "mean_relative_l2": 0.31391745805740356
+        },
+        {
+          "layer": 18,
+          "mean_cosine_sim": 0.9642311930656433,
+          "min_cosine_sim": 0.9159735441207886,
+          "std_cosine_sim": 0.020072396844625473,
+          "mean_relative_l2": 0.3534789979457855
+        },
+        {
+          "layer": 19,
+          "mean_cosine_sim": 0.955041229724884,
+          "min_cosine_sim": 0.8781121373176575,
+          "std_cosine_sim": 0.031916141510009766,
+          "mean_relative_l2": 0.3763059973716736
+        },
+        {
+          "layer": 20,
+          "mean_cosine_sim": 0.9530091285705566,
+          "min_cosine_sim": 0.8742364645004272,
+          "std_cosine_sim": 0.03352783992886543,
+          "mean_relative_l2": 0.3837239444255829
+        },
+        {
+          "layer": 21,
+          "mean_cosine_sim": 0.9485677480697632,
+          "min_cosine_sim": 0.8488147258758545,
+          "std_cosine_sim": 0.04219529405236244,
+          "mean_relative_l2": 0.39054006338119507
+        },
+        {
+          "layer": 22,
+          "mean_cosine_sim": 0.9451032280921936,
+          "min_cosine_sim": 0.8284063339233398,
+          "std_cosine_sim": 0.04848788306117058,
+          "mean_relative_l2": 0.3942079246044159
+        },
+        {
+          "layer": 23,
+          "mean_cosine_sim": 0.9464181065559387,
+          "min_cosine_sim": 0.8473678231239319,
+          "std_cosine_sim": 0.04067370668053627,
+          "mean_relative_l2": 0.39282557368278503
+        },
+        {
+          "layer": 24,
+          "mean_cosine_sim": 0.9410126805305481,
+          "min_cosine_sim": 0.8289953470230103,
+          "std_cosine_sim": 0.04593520984053612,
+          "mean_relative_l2": 0.39667436480522156
+        },
+        {
+          "layer": 25,
+          "mean_cosine_sim": 0.9414889216423035,
+          "min_cosine_sim": 0.8395898938179016,
+          "std_cosine_sim": 0.043326251208782196,
+          "mean_relative_l2": 0.38359567523002625
+        },
+        {
+          "layer": 26,
+          "mean_cosine_sim": 0.61008220911026,
+          "min_cosine_sim": 0.07794466614723206,
+          "std_cosine_sim": 0.21296362578868866,
+          "mean_relative_l2": 0.8750089406967163
+        }
+      ]
+    }
+  ],
+  "summary_quality": [
+    {
+      "prompt": "The key insight about distributed computing is that",
+      "results": []
+    },
+    {
+      "prompt": "In quantum mechanics, the uncertainty principle states that",
+      "results": [
+        {
+          "layer": 0,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.059523046016693115,
+              "min_explained_variance": 0.008346319198608398,
+              "std": 0.039381102234488166,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.13313686847686768,
+              "min_explained_variance": 0.13313686847686768,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 1,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.6554131150245667,
+              "min_explained_variance": 0.5110229253768921,
+              "std": 0.12785431820710716,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.7919012904167175,
+              "min_explained_variance": 0.7919012904167175,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 2,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.6059705376625061,
+              "min_explained_variance": 0.46290314197540283,
+              "std": 0.11139301740737827,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.7396740317344666,
+              "min_explained_variance": 0.7396740317344666,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 3,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.7035962224006653,
+              "min_explained_variance": 0.45655280351638794,
+              "std": 0.15875914514212147,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.8303490877151489,
+              "min_explained_variance": 0.8303490877151489,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 4,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.8892469644546509,
+              "min_explained_variance": 0.7846642136573792,
+              "std": 0.05879447167848412,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.9255403280258179,
+              "min_explained_variance": 0.9255403280258179,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 5,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9648720026016235,
+              "min_explained_variance": 0.9436782002449036,
+              "std": 0.01388612575500174,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.9683185815811157,
+              "min_explained_variance": 0.9683185815811157,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 6,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9771461963653565,
+              "min_explained_variance": 0.9686527848243713,
+              "std": 0.009378360332438974,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.9856700301170349,
+              "min_explained_variance": 0.9856700301170349,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 7,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9847167611122132,
+              "min_explained_variance": 0.9787716269493103,
+              "std": 0.006002466628031065,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.9884647130966187,
+              "min_explained_variance": 0.9884647130966187,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 8,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9897460579872132,
+              "min_explained_variance": 0.9852644205093384,
+              "std": 0.004245730238806062,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.9922176599502563,
+              "min_explained_variance": 0.9922176599502563,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 9,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.988335907459259,
+              "min_explained_variance": 0.9818130135536194,
+              "std": 0.005471179578520518,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.9916064739227295,
+              "min_explained_variance": 0.9916064739227295,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 10,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9884388446807861,
+              "min_explained_variance": 0.9842935800552368,
+              "std": 0.00456626349732791,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.9886186122894287,
+              "min_explained_variance": 0.9886186122894287,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 11,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9863895535469055,
+              "min_explained_variance": 0.974819540977478,
+              "std": 0.008563032530368567,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.9920967817306519,
+              "min_explained_variance": 0.9920967817306519,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 12,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9870009422302246,
+              "min_explained_variance": 0.972969651222229,
+              "std": 0.008818720675669398,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.9930063486099243,
+              "min_explained_variance": 0.9930063486099243,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 13,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9866518020629883,
+              "min_explained_variance": 0.9750426411628723,
+              "std": 0.008560053094297514,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.9940027594566345,
+              "min_explained_variance": 0.9940027594566345,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 14,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9797407984733582,
+              "min_explained_variance": 0.9687448740005493,
+              "std": 0.00919140491251716,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.9827573895454407,
+              "min_explained_variance": 0.9827573895454407,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 15,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9702682018280029,
+              "min_explained_variance": 0.9587871432304382,
+              "std": 0.01258146915757149,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.9674487709999084,
+              "min_explained_variance": 0.9674487709999084,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 16,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9570712566375732,
+              "min_explained_variance": 0.9339447021484375,
+              "std": 0.018892302931771,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.9532936811447144,
+              "min_explained_variance": 0.9532936811447144,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 17,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9413747668266297,
+              "min_explained_variance": 0.9030870795249939,
+              "std": 0.027574519580945298,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.9329341053962708,
+              "min_explained_variance": 0.9329341053962708,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 18,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9174861431121826,
+              "min_explained_variance": 0.8867225646972656,
+              "std": 0.033171955036085644,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.9036605954170227,
+              "min_explained_variance": 0.9036605954170227,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 19,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.8879743933677673,
+              "min_explained_variance": 0.8382066488265991,
+              "std": 0.04737702268480606,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.8654707670211792,
+              "min_explained_variance": 0.8654707670211792,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 20,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.8649611353874207,
+              "min_explained_variance": 0.7940548062324524,
+              "std": 0.05475248615150479,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.8474836945533752,
+              "min_explained_variance": 0.8474836945533752,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 21,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.8088069319725036,
+              "min_explained_variance": 0.6664420366287231,
+              "std": 0.08908472984116843,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.802182674407959,
+              "min_explained_variance": 0.802182674407959,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 22,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.7583164095878601,
+              "min_explained_variance": 0.5654411911964417,
+              "std": 0.11519237604570084,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.7654042840003967,
+              "min_explained_variance": 0.7654042840003967,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 23,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.7194058895111084,
+              "min_explained_variance": 0.4973148703575134,
+              "std": 0.13147609336635252,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.725034773349762,
+              "min_explained_variance": 0.725034773349762,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 24,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.6208292007446289,
+              "min_explained_variance": 0.26167017221450806,
+              "std": 0.19644899930612417,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.6608551740646362,
+              "min_explained_variance": 0.6608551740646362,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 25,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.5364511847496033,
+              "min_explained_variance": 0.16295737028121948,
+              "std": 0.1990816729507985,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.6504125595092773,
+              "min_explained_variance": 0.6504125595092773,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        },
+        {
+          "layer": 26,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.13276039361953734,
+              "min_explained_variance": 0.042107462882995605,
+              "std": 0.1009327794855773,
+              "n_positions": 5
+            },
+            "8": {
+              "mean_explained_variance": 0.20129823684692383,
+              "min_explained_variance": 0.20129823684692383,
+              "std": 0.0,
+              "n_positions": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "prompt": "Once upon a time in a small village by the sea, there lived",
+      "results": [
+        {
+          "layer": 0,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.1379301965236664,
+              "min_explained_variance": 0.009667456150054932,
+              "std": 0.178798438585045,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.08960253993670146,
+              "min_explained_variance": 0.009920060634613037,
+              "std": 0.07538035829102732,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 1,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.49807012677192686,
+              "min_explained_variance": 0.1695718765258789,
+              "std": 0.26231599205518974,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.43809451659520465,
+              "min_explained_variance": 0.2213137149810791,
+              "std": 0.19356188452996753,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 2,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.48459993600845336,
+              "min_explained_variance": 0.10490530729293823,
+              "std": 0.24163742796491625,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.42554734150568646,
+              "min_explained_variance": 0.34272700548171997,
+              "std": 0.10169892705452478,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 3,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.6454295814037323,
+              "min_explained_variance": 0.2777763605117798,
+              "std": 0.21094163793786624,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.5777660409609476,
+              "min_explained_variance": 0.303836464881897,
+              "std": 0.17529999528265136,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 4,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.8208519637584686,
+              "min_explained_variance": 0.5734426975250244,
+              "std": 0.12807583694443916,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.769444207350413,
+              "min_explained_variance": 0.5770887136459351,
+              "std": 0.12523198653872866,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 5,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9105712950229645,
+              "min_explained_variance": 0.700913667678833,
+              "std": 0.08467108902552163,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.882418672243754,
+              "min_explained_variance": 0.7224218845367432,
+              "std": 0.08658566485328807,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 6,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9406817793846131,
+              "min_explained_variance": 0.7797644138336182,
+              "std": 0.0638876202817776,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.922567347685496,
+              "min_explained_variance": 0.7976357340812683,
+              "std": 0.06841606172225859,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 7,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9604788601398468,
+              "min_explained_variance": 0.8784855604171753,
+              "std": 0.03951292097844696,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.9475106398264567,
+              "min_explained_variance": 0.8857948184013367,
+              "std": 0.04262420463892955,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 8,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9760275244712829,
+              "min_explained_variance": 0.922825276851654,
+              "std": 0.02473489471563079,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.9685336947441101,
+              "min_explained_variance": 0.9248920679092407,
+              "std": 0.02762489563038829,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 9,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.97093945145607,
+              "min_explained_variance": 0.9032639861106873,
+              "std": 0.032895162921331066,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.9613012770811716,
+              "min_explained_variance": 0.9052608013153076,
+              "std": 0.035462779786239976,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 10,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.970891672372818,
+              "min_explained_variance": 0.8775525093078613,
+              "std": 0.03511741662797757,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.9614828725655874,
+              "min_explained_variance": 0.8904383778572083,
+              "std": 0.03611828349232145,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 11,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9644967794418335,
+              "min_explained_variance": 0.8681909441947937,
+              "std": 0.04266818268499419,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.9534009993076324,
+              "min_explained_variance": 0.8886081576347351,
+              "std": 0.04266139327090853,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 12,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9682528972625732,
+              "min_explained_variance": 0.8898440003395081,
+              "std": 0.03690086721543126,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.9608312547206879,
+              "min_explained_variance": 0.9060484170913696,
+              "std": 0.03681067793658507,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 13,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9653970181941987,
+              "min_explained_variance": 0.888131320476532,
+              "std": 0.03283658037184314,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.9610722959041595,
+              "min_explained_variance": 0.8943961262702942,
+              "std": 0.03340547179013987,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 14,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9509070038795471,
+              "min_explained_variance": 0.8629546761512756,
+              "std": 0.04293679218459531,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.948549211025238,
+              "min_explained_variance": 0.8715744018554688,
+              "std": 0.040522093351456595,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 15,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9389921069145203,
+              "min_explained_variance": 0.8301132917404175,
+              "std": 0.0472313715125229,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.932830810546875,
+              "min_explained_variance": 0.8659660220146179,
+              "std": 0.038517521902736135,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 16,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9204958319664002,
+              "min_explained_variance": 0.7562277317047119,
+              "std": 0.06354017768294046,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.9077437520027161,
+              "min_explained_variance": 0.8028169870376587,
+              "std": 0.0524712169938813,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 17,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9028037548065185,
+              "min_explained_variance": 0.7745245695114136,
+              "std": 0.05800822777941299,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.8881235718727112,
+              "min_explained_variance": 0.8023260831832886,
+              "std": 0.046673597749789304,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 18,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.8510919511318207,
+              "min_explained_variance": 0.7029016017913818,
+              "std": 0.07307096196080805,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.8364487588405609,
+              "min_explained_variance": 0.7293801307678223,
+              "std": 0.055828012555128745,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 19,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.7959696352481842,
+              "min_explained_variance": 0.6314215660095215,
+              "std": 0.09757322677557433,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.7774965763092041,
+              "min_explained_variance": 0.6672667264938354,
+              "std": 0.06420092410702383,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 20,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.7334626197814942,
+              "min_explained_variance": 0.4595087766647339,
+              "std": 0.11921175167242358,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.7331922352313995,
+              "min_explained_variance": 0.6517845392227173,
+              "std": 0.07100750796837002,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 21,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.6303476393222809,
+              "min_explained_variance": 0.2816959023475647,
+              "std": 0.1472239055766157,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.6585261027018229,
+              "min_explained_variance": 0.5394169092178345,
+              "std": 0.09239767113719806,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 22,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.560938024520874,
+              "min_explained_variance": 0.18137001991271973,
+              "std": 0.15840429158392777,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.6031149129072825,
+              "min_explained_variance": 0.46321362257003784,
+              "std": 0.10377582683272776,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 23,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.5447878956794738,
+              "min_explained_variance": 0.18566089868545532,
+              "std": 0.1571146553548671,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.5831389923890432,
+              "min_explained_variance": 0.43951916694641113,
+              "std": 0.11275192685220918,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 24,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.4382985234260559,
+              "min_explained_variance": 0.136738121509552,
+              "std": 0.1542837984940944,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.49524053931236267,
+              "min_explained_variance": 0.3811723589897156,
+              "std": 0.11804168338417732,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 25,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.3610339224338531,
+              "min_explained_variance": 0.12488788366317749,
+              "std": 0.14467100558663554,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.37689541776974994,
+              "min_explained_variance": 0.18720680475234985,
+              "std": 0.12550551515695937,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 26,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.1680595874786377,
+              "min_explained_variance": 0.04850339889526367,
+              "std": 0.096661616675354,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.2772065997123718,
+              "min_explained_variance": 0.21692103147506714,
+              "std": 0.06630522286648055,
+              "n_positions": 6
+            }
+          }
+        }
+      ]
+    },
+    {
+      "prompt": "To solve this optimization problem, we need to first consider the constraints:",
+      "results": [
+        {
+          "layer": 0,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.07558618187904358,
+              "min_explained_variance": 0.009783387184143066,
+              "std": 0.07238293419779061,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.12346422672271729,
+              "min_explained_variance": 0.012116193771362305,
+              "std": 0.12526457039220582,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 1,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.597496223449707,
+              "min_explained_variance": 0.24243700504302979,
+              "std": 0.1616169049835191,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.5623497068881989,
+              "min_explained_variance": 0.2618149518966675,
+              "std": 0.19715769178714546,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 2,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.5375901877880096,
+              "min_explained_variance": 0.21181750297546387,
+              "std": 0.1724289554846429,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.4928152958552043,
+              "min_explained_variance": 0.22229379415512085,
+              "std": 0.19654721332753508,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 3,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.6788146257400512,
+              "min_explained_variance": 0.45549583435058594,
+              "std": 0.14989153546230335,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.6338597734769186,
+              "min_explained_variance": 0.469659686088562,
+              "std": 0.15494865311600878,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 4,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.8425397276878357,
+              "min_explained_variance": 0.6300069093704224,
+              "std": 0.10226241687057193,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.800675223271052,
+              "min_explained_variance": 0.6458398103713989,
+              "std": 0.0975910449379859,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 5,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9415128409862519,
+              "min_explained_variance": 0.8896211981773376,
+              "std": 0.03495940305843354,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.9240904251734415,
+              "min_explained_variance": 0.8930438756942749,
+              "std": 0.02776245981674225,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 6,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9563018620014191,
+              "min_explained_variance": 0.8901898860931396,
+              "std": 0.03293729553750796,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.9440749883651733,
+              "min_explained_variance": 0.8967950940132141,
+              "std": 0.03144174775491949,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 7,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9697864413261413,
+              "min_explained_variance": 0.9275768995285034,
+              "std": 0.021756869442138303,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.9602289895216624,
+              "min_explained_variance": 0.9299843311309814,
+              "std": 0.0203338276056626,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 8,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9808476090431213,
+              "min_explained_variance": 0.9510573744773865,
+              "std": 0.014792044948526099,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.9750426411628723,
+              "min_explained_variance": 0.9524767994880676,
+              "std": 0.01497939814455229,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 9,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9829931914806366,
+              "min_explained_variance": 0.9399445652961731,
+              "std": 0.015349658144510888,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.9775906602541605,
+              "min_explained_variance": 0.9407397508621216,
+              "std": 0.01685346076198853,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 10,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9830357491970062,
+              "min_explained_variance": 0.9402286410331726,
+              "std": 0.01538892761672587,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.9774902562300364,
+              "min_explained_variance": 0.9406302571296692,
+              "std": 0.016848404445584206,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 11,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9791489243507385,
+              "min_explained_variance": 0.915418267250061,
+              "std": 0.022503454614222883,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.9714639286200205,
+              "min_explained_variance": 0.9161434769630432,
+              "std": 0.025184907602824817,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 12,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9828847825527192,
+              "min_explained_variance": 0.9273104667663574,
+              "std": 0.01921839741429636,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.977391928434372,
+              "min_explained_variance": 0.9281619787216187,
+              "std": 0.022340036721818696,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 13,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9774158596992493,
+              "min_explained_variance": 0.8738409280776978,
+              "std": 0.03488493340765128,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.9695053398609161,
+              "min_explained_variance": 0.8796716332435608,
+              "std": 0.04037255300231381,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 14,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9662069261074067,
+              "min_explained_variance": 0.8435109853744507,
+              "std": 0.0420452396992406,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.9571068386236826,
+              "min_explained_variance": 0.8603906035423279,
+              "std": 0.04398741264858353,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 15,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9567342042922974,
+              "min_explained_variance": 0.8743808269500732,
+              "std": 0.03343155292542715,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.9494934479395548,
+              "min_explained_variance": 0.8922392725944519,
+              "std": 0.030475746073471793,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 16,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9293112277984619,
+              "min_explained_variance": 0.7664384245872498,
+              "std": 0.06107761882858207,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.9155238767464956,
+              "min_explained_variance": 0.8017025589942932,
+              "std": 0.05580442005668354,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 17,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.9118525981903076,
+              "min_explained_variance": 0.7902486324310303,
+              "std": 0.05160657794238177,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.8956813017527262,
+              "min_explained_variance": 0.8111007213592529,
+              "std": 0.04330251433031552,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 18,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.873405146598816,
+              "min_explained_variance": 0.775200605392456,
+              "std": 0.058685467942254294,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.860548178354899,
+              "min_explained_variance": 0.7992048263549805,
+              "std": 0.033199941334051505,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 19,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.8395467162132263,
+              "min_explained_variance": 0.7415096759796143,
+              "std": 0.07330967873962901,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.8216913342475891,
+              "min_explained_variance": 0.7733202576637268,
+              "std": 0.03987787135697394,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 20,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.7953189074993133,
+              "min_explained_variance": 0.6032451391220093,
+              "std": 0.10351265627111461,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.7633953889211019,
+              "min_explained_variance": 0.6482977867126465,
+              "std": 0.06696750038793024,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 21,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.7163157939910889,
+              "min_explained_variance": 0.4316869378089905,
+              "std": 0.14146514181136183,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.6789174973964691,
+              "min_explained_variance": 0.5147107243537903,
+              "std": 0.0852250903714325,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 22,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.6755972743034363,
+              "min_explained_variance": 0.3907250761985779,
+              "std": 0.1510282364479997,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.6240599552790324,
+              "min_explained_variance": 0.43118196725845337,
+              "std": 0.09361382206232861,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 23,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.6671910881996155,
+              "min_explained_variance": 0.3886086940765381,
+              "std": 0.15207667414341489,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.6253357827663422,
+              "min_explained_variance": 0.46007126569747925,
+              "std": 0.08434294621867364,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 24,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.5969142079353332,
+              "min_explained_variance": 0.36364591121673584,
+              "std": 0.155562107562715,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.5493768950303396,
+              "min_explained_variance": 0.42149049043655396,
+              "std": 0.07364544246557424,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 25,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.5161698341369629,
+              "min_explained_variance": 0.3595554232597351,
+              "std": 0.1491019390130775,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.4835272530714671,
+              "min_explained_variance": 0.3707153797149658,
+              "std": 0.07845355430096697,
+              "n_positions": 6
+            }
+          }
+        },
+        {
+          "layer": 26,
+          "K_results": {
+            "4": {
+              "mean_explained_variance": 0.18977800011634827,
+              "min_explained_variance": 0.06244117021560669,
+              "std": 0.08740011193880569,
+              "n_positions": 10
+            },
+            "8": {
+              "mean_explained_variance": 0.3057109514872233,
+              "min_explained_variance": 0.14135992527008057,
+              "std": 0.12418671954942877,
+              "n_positions": 6
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "async_simulation": [
+    {
+      "prompt": "The key insight about distributed computing is that",
+      "n_layers": 26,
+      "n_devices": 4,
+      "layers_per_device": 6,
+      "boundaries": [
+        6,
+        12,
+        18
+      ],
+      "boundary_analysis": [
+        {
+          "boundary_layer": 6,
+          "K": 8,
+          "mean_cosine_sim": 0.9677330652846488,
+          "min_cosine_sim": 0.929205273369153,
+          "n_positions": 8
+        },
+        {
+          "boundary_layer": 6,
+          "K": 16,
+          "mean_cosine_sim": 0.96773414079875,
+          "min_cosine_sim": 0.929205273369153,
+          "n_positions": 8
+        },
+        {
+          "boundary_layer": 6,
+          "K": 32,
+          "mean_cosine_sim": 0.9677307872979074,
+          "min_cosine_sim": 0.929205273369153,
+          "n_positions": 8
+        },
+        {
+          "boundary_layer": 12,
+          "K": 8,
+          "mean_cosine_sim": 0.9922175877453207,
+          "min_cosine_sim": 0.985167565805194,
+          "n_positions": 8
+        },
+        {
+          "boundary_layer": 12,
+          "K": 16,
+          "mean_cosine_sim": 0.9922194492139603,
+          "min_cosine_sim": 0.985167565805194,
+          "n_positions": 8
+        },
+        {
+          "boundary_layer": 12,
+          "K": 32,
+          "mean_cosine_sim": 0.992221343860828,
+          "min_cosine_sim": 0.985167565805194,
+          "n_positions": 8
+        },
+        {
+          "boundary_layer": 18,
+          "K": 8,
+          "mean_cosine_sim": 0.9675392507028215,
+          "min_cosine_sim": 0.9282147029742758,
+          "n_positions": 8
+        },
+        {
+          "boundary_layer": 18,
+          "K": 16,
+          "mean_cosine_sim": 0.9675464797591955,
+          "min_cosine_sim": 0.9282147029742758,
+          "n_positions": 8
+        },
+        {
+          "boundary_layer": 18,
+          "K": 32,
+          "mean_cosine_sim": 0.967590505122834,
+          "min_cosine_sim": 0.9282147029742758,
+          "n_positions": 8
+        }
+      ]
+    },
+    {
+      "prompt": "In quantum mechanics, the uncertainty principle states that",
+      "n_layers": 26,
+      "n_devices": 4,
+      "layers_per_device": 6,
+      "boundaries": [
+        6,
+        12,
+        18
+      ],
+      "boundary_analysis": [
+        {
+          "boundary_layer": 6,
+          "K": 8,
+          "mean_cosine_sim": 0.9646586043773243,
+          "min_cosine_sim": 0.9330690442439353,
+          "n_positions": 9
+        },
+        {
+          "boundary_layer": 6,
+          "K": 16,
+          "mean_cosine_sim": 0.9633467073641216,
+          "min_cosine_sim": 0.9330698322202499,
+          "n_positions": 9
+        },
+        {
+          "boundary_layer": 6,
+          "K": 32,
+          "mean_cosine_sim": 0.96335554777074,
+          "min_cosine_sim": 0.9330782174389636,
+          "n_positions": 9
+        },
+        {
+          "boundary_layer": 12,
+          "K": 8,
+          "mean_cosine_sim": 0.9923836766871305,
+          "min_cosine_sim": 0.9852353125197613,
+          "n_positions": 9
+        },
+        {
+          "boundary_layer": 12,
+          "K": 16,
+          "mean_cosine_sim": 0.9921871251864302,
+          "min_cosine_sim": 0.9852353125197613,
+          "n_positions": 9
+        },
+        {
+          "boundary_layer": 12,
+          "K": 32,
+          "mean_cosine_sim": 0.9922017785583882,
+          "min_cosine_sim": 0.9852353125197613,
+          "n_positions": 9
+        },
+        {
+          "boundary_layer": 18,
+          "K": 8,
+          "mean_cosine_sim": 0.9588026607394186,
+          "min_cosine_sim": 0.919501708736546,
+          "n_positions": 9
+        },
+        {
+          "boundary_layer": 18,
+          "K": 16,
+          "mean_cosine_sim": 0.961266915512951,
+          "min_cosine_sim": 0.919501708736546,
+          "n_positions": 9
+        },
+        {
+          "boundary_layer": 18,
+          "K": 32,
+          "mean_cosine_sim": 0.9613337636953373,
+          "min_cosine_sim": 0.919501708736546,
+          "n_positions": 9
+        }
+      ]
+    },
+    {
+      "prompt": "Once upon a time in a small village by the sea, there lived",
+      "n_layers": 26,
+      "n_devices": 4,
+      "layers_per_device": 6,
+      "boundaries": [
+        6,
+        12,
+        18
+      ],
+      "boundary_analysis": [
+        {
+          "boundary_layer": 6,
+          "K": 8,
+          "mean_cosine_sim": 0.963088479993891,
+          "min_cosine_sim": 0.935429319055053,
+          "n_positions": 14
+        },
+        {
+          "boundary_layer": 6,
+          "K": 16,
+          "mean_cosine_sim": 0.9668847781779178,
+          "min_cosine_sim": 0.935429319055053,
+          "n_positions": 14
+        },
+        {
+          "boundary_layer": 6,
+          "K": 32,
+          "mean_cosine_sim": 0.9668713094185355,
+          "min_cosine_sim": 0.935429319055053,
+          "n_positions": 14
+        },
+        {
+          "boundary_layer": 12,
+          "K": 8,
+          "mean_cosine_sim": 0.9918163949742979,
+          "min_cosine_sim": 0.9830894638592074,
+          "n_positions": 14
+        },
+        {
+          "boundary_layer": 12,
+          "K": 16,
+          "mean_cosine_sim": 0.9921172130687089,
+          "min_cosine_sim": 0.9830894638592074,
+          "n_positions": 14
+        },
+        {
+          "boundary_layer": 12,
+          "K": 32,
+          "mean_cosine_sim": 0.9921281176125432,
+          "min_cosine_sim": 0.9830894638592074,
+          "n_positions": 14
+        },
+        {
+          "boundary_layer": 18,
+          "K": 8,
+          "mean_cosine_sim": 0.960038454701676,
+          "min_cosine_sim": 0.9151154618806919,
+          "n_positions": 14
+        },
+        {
+          "boundary_layer": 18,
+          "K": 16,
+          "mean_cosine_sim": 0.9624618269433335,
+          "min_cosine_sim": 0.9151154618806919,
+          "n_positions": 14
+        },
+        {
+          "boundary_layer": 18,
+          "K": 32,
+          "mean_cosine_sim": 0.9624796740299859,
+          "min_cosine_sim": 0.9151154618806919,
+          "n_positions": 14
+        }
+      ]
+    },
+    {
+      "prompt": "To solve this optimization problem, we need to first consider the constraints:",
+      "n_layers": 26,
+      "n_devices": 4,
+      "layers_per_device": 6,
+      "boundaries": [
+        6,
+        12,
+        18
+      ],
+      "boundary_analysis": [
+        {
+          "boundary_layer": 6,
+          "K": 8,
+          "mean_cosine_sim": 0.9707013191916823,
+          "min_cosine_sim": 0.9443185802033915,
+          "n_positions": 14
+        },
+        {
+          "boundary_layer": 6,
+          "K": 16,
+          "mean_cosine_sim": 0.9723910237270388,
+          "min_cosine_sim": 0.9443185802033915,
+          "n_positions": 14
+        },
+        {
+          "boundary_layer": 6,
+          "K": 32,
+          "mean_cosine_sim": 0.9723862303840443,
+          "min_cosine_sim": 0.9443185802033915,
+          "n_positions": 14
+        },
+        {
+          "boundary_layer": 12,
+          "K": 8,
+          "mean_cosine_sim": 0.9932103437387644,
+          "min_cosine_sim": 0.9845866553297296,
+          "n_positions": 14
+        },
+        {
+          "boundary_layer": 12,
+          "K": 16,
+          "mean_cosine_sim": 0.9934398068862437,
+          "min_cosine_sim": 0.9845866553297296,
+          "n_positions": 14
+        },
+        {
+          "boundary_layer": 12,
+          "K": 32,
+          "mean_cosine_sim": 0.993446746510914,
+          "min_cosine_sim": 0.9845866553297296,
+          "n_positions": 14
+        },
+        {
+          "boundary_layer": 18,
+          "K": 8,
+          "mean_cosine_sim": 0.9698157870534437,
+          "min_cosine_sim": 0.925507937491704,
+          "n_positions": 14
+        },
+        {
+          "boundary_layer": 18,
+          "K": 16,
+          "mean_cosine_sim": 0.9719762072388993,
+          "min_cosine_sim": 0.925507937491704,
+          "n_positions": 14
+        },
+        {
+          "boundary_layer": 18,
+          "K": 32,
+          "mean_cosine_sim": 0.9720557658781478,
+          "min_cosine_sim": 0.925507937491704,
+          "n_positions": 14
+        }
+      ]
+    }
+  ],
+  "overall_mean_cosine_sim": 0.876781479731478
+}

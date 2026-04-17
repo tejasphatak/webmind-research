@@ -1,0 +1,209 @@
+[
+  {
+    "layer": "model.layers.0.self_attn.q_proj.weight",
+    "n_elements": 500000,
+    "stages": {
+      "1a_uniform_rational": {
+        "mse_float": 7.486194369947868e-07,
+        "mse_rational": 9.741132174637968e-07,
+        "ratio": 1.3012128316815,
+        "bits_per_weight": 8.008192,
+        "time_s": 37.4
+      },
+      "1b_density_weighted": {
+        "mse_float": 1.6439538287834535e-06,
+        "mse_rational": 1.8693823007387627e-06,
+        "ratio": 1.1371257927128824,
+        "vs_uniform_pct": -91.9,
+        "time_s": 12.7
+      },
+      "2a_chained_single_pass": {
+        "mse": 5.624472726186429e-07,
+        "bits_per_weight": 8.000512,
+        "time_s": 4.4
+      },
+      "2b_chained_turbo_vq": {
+        "mse": 9.2637318040427e-07,
+        "mse_per_iter": [
+          1.0085658754128652e-06,
+          9.565518058576315e-07,
+          9.2637318040427e-07
+        ],
+        "vs_single_pass_pct": -64.7,
+        "bits_per_weight": 8.000512,
+        "time_s": 10.8
+      },
+      "3_int4_residual": {
+        "mse": 3.8647006366442314e-07,
+        "vs_turbo_pct": 58.3,
+        "bits_per_weight": 12.0,
+        "int4_scale": 0.0004697710031672143,
+        "time_s": 0.0
+      },
+      "3b_int4_on_k256_rational": {
+        "mse": 4.400941689375706e-07,
+        "vs_rational_alone_pct": 54.8,
+        "bits_per_weight": 12.0
+      },
+      "4_delta_encoding": {
+        "k256_entropy_absolute": 7.96,
+        "k256_entropy_delta": 8.712,
+        "k256_reduction_pct": -9.4,
+        "chained_entropy_absolute": 6.582,
+        "chained_entropy_delta": 7.881,
+        "chained_reduction_pct": -19.7
+      },
+      "5_gzip_wire": {
+        "raw_fp32_bytes": 2000000,
+        "raw_fp16_bytes": 1000000,
+        "k256_gzip_bytes": 499059,
+        "k256_delta_gzip_bytes": 500173,
+        "k256_resid_gzip_bytes": 729672,
+        "chained_gzip_bytes": 415476,
+        "chained_resid_gzip_bytes": 654140,
+        "full_stack_gzip_bytes": 772424,
+        "full_stack_bits_per_weight": 12.359,
+        "compression_vs_fp32": 2.6,
+        "compression_vs_fp16": 1.3
+      }
+    }
+  },
+  {
+    "layer": "model.layers.12.self_attn.q_proj.weight",
+    "n_elements": 500000,
+    "stages": {
+      "1a_uniform_rational": {
+        "mse_float": 4.973865730151765e-07,
+        "mse_rational": 7.900335773194232e-07,
+        "ratio": 1.5883693291722962,
+        "bits_per_weight": 8.008192,
+        "time_s": 39.9
+      },
+      "1b_density_weighted": {
+        "mse_float": 1.2509699503774165e-06,
+        "mse_rational": 1.5428167660201404e-06,
+        "ratio": 1.2332964237507655,
+        "vs_uniform_pct": -95.3,
+        "time_s": 26.6
+      },
+      "2a_chained_single_pass": {
+        "mse": 2.5818714729775584e-07,
+        "bits_per_weight": 8.000512,
+        "time_s": 4.4
+      },
+      "2b_chained_turbo_vq": {
+        "mse": 7.51469534420093e-07,
+        "mse_per_iter": [
+          8.672787842411425e-07,
+          8.050687063630589e-07,
+          7.51469534420093e-07
+        ],
+        "vs_single_pass_pct": -191.1,
+        "bits_per_weight": 8.000512,
+        "time_s": 11.2
+      },
+      "3_int4_residual": {
+        "mse": 3.221729445331486e-07,
+        "vs_turbo_pct": 57.1,
+        "bits_per_weight": 12.0,
+        "int4_scale": 0.0003886304497254879,
+        "time_s": 0.0
+      },
+      "3b_int4_on_k256_rational": {
+        "mse": 2.1164348126158604e-07,
+        "vs_rational_alone_pct": 73.2,
+        "bits_per_weight": 12.0
+      },
+      "4_delta_encoding": {
+        "k256_entropy_absolute": 7.956,
+        "k256_entropy_delta": 8.711,
+        "k256_reduction_pct": -9.5,
+        "chained_entropy_absolute": 6.667,
+        "chained_entropy_delta": 7.937,
+        "chained_reduction_pct": -19.0
+      },
+      "5_gzip_wire": {
+        "raw_fp32_bytes": 2000000,
+        "raw_fp16_bytes": 1000000,
+        "k256_gzip_bytes": 497981,
+        "k256_delta_gzip_bytes": 500173,
+        "k256_resid_gzip_bytes": 719799,
+        "chained_gzip_bytes": 419775,
+        "chained_resid_gzip_bytes": 645365,
+        "full_stack_gzip_bytes": 763855,
+        "full_stack_bits_per_weight": 12.222,
+        "compression_vs_fp32": 2.6,
+        "compression_vs_fp16": 1.3
+      }
+    }
+  },
+  {
+    "layer": "model.layers.25.mlp.gate_proj.weight",
+    "n_elements": 500000,
+    "stages": {
+      "1a_uniform_rational": {
+        "mse_float": 5.107000542523315e-07,
+        "mse_rational": 6.52052519655363e-07,
+        "ratio": 1.2767817708771787,
+        "bits_per_weight": 8.008192,
+        "time_s": 33.8
+      },
+      "1b_density_weighted": {
+        "mse_float": 1.1104236398783339e-06,
+        "mse_rational": 1.2513857377027856e-06,
+        "ratio": 1.126944431622418,
+        "vs_uniform_pct": -91.9,
+        "time_s": 16.5
+      },
+      "2a_chained_single_pass": {
+        "mse": 5.219795920688695e-07,
+        "bits_per_weight": 8.000512,
+        "time_s": 4.5
+      },
+      "2b_chained_turbo_vq": {
+        "mse": 6.957372524414267e-07,
+        "mse_per_iter": [
+          7.071099436726872e-07,
+          7.005483534926922e-07,
+          6.957372524414267e-07
+        ],
+        "vs_single_pass_pct": -33.3,
+        "bits_per_weight": 8.000512,
+        "time_s": 10.2
+      },
+      "3_int4_residual": {
+        "mse": 2.0029939531581135e-07,
+        "vs_turbo_pct": 71.2,
+        "bits_per_weight": 12.0,
+        "int4_scale": 0.00044572536242852367,
+        "time_s": 0.0
+      },
+      "3b_int4_on_k256_rational": {
+        "mse": 1.9395624022290984e-07,
+        "vs_rational_alone_pct": 70.3,
+        "bits_per_weight": 12.0
+      },
+      "4_delta_encoding": {
+        "k256_entropy_absolute": 7.969,
+        "k256_entropy_delta": 8.714,
+        "k256_reduction_pct": -9.3,
+        "chained_entropy_absolute": 6.869,
+        "chained_entropy_delta": 7.91,
+        "chained_reduction_pct": -15.2
+      },
+      "5_gzip_wire": {
+        "raw_fp32_bytes": 2000000,
+        "raw_fp16_bytes": 1000000,
+        "k256_gzip_bytes": 500136,
+        "k256_delta_gzip_bytes": 500173,
+        "k256_resid_gzip_bytes": 742496,
+        "chained_gzip_bytes": 434061,
+        "chained_resid_gzip_bytes": 694182,
+        "full_stack_gzip_bytes": 777623,
+        "full_stack_bits_per_weight": 12.442,
+        "compression_vs_fp32": 2.6,
+        "compression_vs_fp16": 1.3
+      }
+    }
+  }
+]

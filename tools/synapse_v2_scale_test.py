@@ -157,12 +157,15 @@ def run(output_dir, n_nodes=16):
     base = GPT2LMHeadModel.from_pretrained("gpt2")
     base.eval()
 
-    # Create nodes
-    print(f"Creating {n_nodes} specialist nodes...", flush=True)
+    # Create nodes with SMALL models (~100MB each = 4 layers of GPT-2)
+    print(f"Creating {n_nodes} specialist nodes (~100MB each)...", flush=True)
     nodes = []
     for i in range(n_nodes):
-        model = copy.deepcopy(base)
-        nodes.append(SpecialistNode(i, model, tok))
+        small = copy.deepcopy(base)
+        # Truncate to 4 layers (~25M params, ~100MB with optimizer state)
+        small.transformer.h = small.transformer.h[:4]
+        small.config.n_layer = 4
+        nodes.append(SpecialistNode(i, small, tok))
     del base
     torch.cuda.empty_cache() if DEVICE == "cuda" else None
     print(f"  {n_nodes} nodes ready. Device: {DEVICE}", flush=True)

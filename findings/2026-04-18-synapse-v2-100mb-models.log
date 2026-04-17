@@ -1,0 +1,45 @@
+=== SYNAPSE v2 SCALING TEST (16 nodes) ===
+
+Creating 16 specialist nodes (~100MB each)...
+  16 nodes ready. Device: cuda
+
+Specializing 16 nodes across 8 topics...
+  epoch 1/5  loss=9.0483
+  epoch 2/5  loss=5.9941
+  epoch 3/5  loss=4.3541
+  epoch 4/5  loss=3.4617
+  epoch 5/5  loss=2.8776
+
+  Train: 32, Test: 16
+
+=== TEST 1: ACCURACY (routed to best specialist) ===
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+  Routed:  6/16 = 38%
+  Local:   2/16 = 12%
+  Random:  2/16 = 12%
+
+=== TEST 2: LATENCY ===
+  local=8ms route=27ms gen=8ms total=43ms  "The largest continent is"
+  local=8ms route=26ms gen=8ms total=43ms  "The square root of nine is"
+  local=8ms route=26ms gen=8ms total=42ms  "Dolphins are"
+
+=== TEST 3: ROUTING SCALABILITY ===
+   2 nodes: 3ms per route
+   4 nodes: 6ms per route
+   8 nodes: 13ms per route
+  16 nodes: 26ms per route
+
+=== TEST 4: RESILIENCE ===
+  kill  0/16: 6/16 = 38%  (online: 16)
+  kill  2/16: 6/16 = 38%  (online: 14)
+  kill  4/16: 6/16 = 38%  (online: 12)
+  kill  8/16: 7/16 = 44%  (online: 8)
+
+==================================================
+SUMMARY (16 nodes, 8 topics)
+==================================================
+  Routed:  6/16 = 38%
+  Local:   2/16 = 12%
+  Random:  2/16 = 12%
+
+Saved to /workspace/results/results.json

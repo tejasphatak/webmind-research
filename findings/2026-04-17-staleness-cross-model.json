@@ -1,0 +1,20 @@
+[
+  {
+    "model": "gemma-3-1b-it",
+    "n_layers": 26,
+    "hidden_dim": 1152,
+    "pattern": "middle_high",
+    "middle_avg": 0.972,
+    "deep_avg": 0.8684,
+    "gap": 0.1036
+  },
+  {
+    "model": "gpt2-medium",
+    "n_layers": 24,
+    "hidden_dim": 1024,
+    "pattern": "flat",
+    "middle_avg": 0.8289,
+    "deep_avg": 0.835,
+    "gap": -0.0062
+  }
+]

@@ -37,7 +37,7 @@ We observe that transformer activations occupy a subspace within the ambient hid
 
 1. **Cross-model empirical measurement**. We measure carrier-payload compression on three text-only LLM families (Gemma 3 1B, Llama 3.1 8B, Qwen 2.5 32B) spanning 32 times parameter scale and three distinct architectures, at short context. All three achieve 22–24 times compression at KL divergence below 0.1 with 100 percent next-token agreement.
 2. **Long-context characterization on Qwen 2.5 32B**. We measure compression across sequence lengths 256, 512, 1024, and 1621. PCA rank for 99 percent variance grows with sequence length (rank 8 at 256 → rank 384 at 1621), yielding compression ratios of 183 times, 81 times, 26 times, and 13 times respectively. Compressibility degrades with sequence length but remains practically useful.
-3. **Regime transition and closed-form fit**. We identify a short-context regime where compression is bounded by `rank ≤ min(T, d)` and fit an empirical law `log(KL) = α + β·log(1 − k/T) + γ·log(d)` (R² = 0.68 across three text models). We show this law is a local Taylor expansion of the true long-context geometry and does not extrapolate past the regime transition.
+3. **Regime transition and short-context empirical heuristic**. We identify a short-context regime where compression is bounded by `rank ≤ min(T, d)` and fit an empirical heuristic `log(KL) ≈ α + β·log(1 − k/T) + γ·log(d)` (R² = 0.68 across three text models). We explicitly do *not* call this a law — the R² is moderate, the fit is confined to the rank-bound-dominated regime, and we show it fails to extrapolate past the regime transition. It functions as a short-context boundary-condition description, not a predictive model.
 4. **Layer-depth dependence**. We measure that deeper transformer layers require more PCA rank for the same variance threshold at a given sequence length; early layers are more compressible than late layers.
 5. **Method reference implementation** with an automated invariant suite that validates every numeric claim in this paper against raw data on disk.
 
@@ -123,18 +123,20 @@ where `R_sparse` is the sparse payload (zero if `p = 0`). Reconstruction error i
 
 The carrier-payload decomposition integrates cleanly with Synapse's existing SYN1 binary wire format, a 24-byte header followed by tensor payload used for inter-shard activation transport between volunteer WebGPU browsers. SYN1 reserves two flag bits for `QuantMode ∈ {NONE=0, INT8=1, INT4=2, FP16=3}`. We add two new slots: `QuantMode.PCA=4` and `QuantMode.VQ=5`.
 
-- **Calibration basis distribution.** The rank-`k` basis matrix `V_{:k} ∈ ℝ^{d×k}` is computed once on a small calibration corpus (100 prompts × number of shard boundaries) and shipped as part of each shard's manifest at node bootstrap. For `k=16, d=1152` (Gemma 3 1B at Synapse's current configuration), the basis costs `16 × 1152 × 2 = 36 KB` per shard boundary in float16. For `VQ-256` (see Section 3.6), the codebook is `256 × 1152 × 2 = 576 KB` per boundary — still trivial for a one-time transfer at bootstrap. No per-inference basis transmission.
+- **Calibration basis distribution.** The rank-`k` basis matrix `V_{:k} ∈ ℝ^{d×k}` is computed once on a small calibration corpus — for the measurements reported in §5, this corpus consists of the 16–20 hard-coded technical-English prompts committed at `tools/activation_compression_experiment.py:201` (topics span distributed systems, physics, algorithms, NLP; tokenized lengths 17–30 tokens, seed `0xC0FFEE`). For the Synapse deployment projection, we propose scaling this to ~100 distinct prompts per shard boundary drawn from the same `tools/` repo-committed corpus (or, for production deployments, from a domain-matched sample of the serving traffic under whatever consent/privacy regime applies) — and shipping the resulting basis as part of each shard's manifest at node bootstrap. For `k=16, d=1152` (Gemma 3 1B at Synapse's current configuration), the basis costs `16 × 1152 × 2 = 36 KB` per shard boundary in float16. For `VQ-256` (see Section 3.6), the codebook is `256 × 1152 × 2 = 576 KB` per boundary — still trivial for a one-time transfer at bootstrap. No per-inference basis transmission.
 - **Receiver decode.** Reconstruction is a single WGSL compute shader dispatch: the 16-coefficient buffer is read from the wire, the preloaded basis is in GPU memory, and a single `[16] × [16, 1152]` matmul (18,432 FLOPs) produces the reconstructed activation. This is approximately three orders of magnitude less compute than a single transformer layer's attention operation, so the receive-side overhead is negligible.
 
-For Synapse specifically, the per-activation-vector (single-token, `T = 1`) wire cost at `d = 1152` is projected as follows, assuming the calibration basis `V_{:k}` and mean vector `μ` are part of the shared manifest (sent once at shard bootstrap, not re-transmitted per activation):
+For Synapse specifically, the per-activation-vector (single-token, `T = 1`) wire cost at `d = 1152` is projected as follows, assuming the calibration basis `V_{:k}` and mean vector `μ` are part of the shared manifest (sent once at shard bootstrap, not re-transmitted per activation).
+
+*Reading note:* rows marked `measured` in the Status column are empirically validated in this paper or in the shipped Synapse codebase; rows marked `projected*` are arithmetic upper bounds from the encoding scheme — they have *not* been measured on live activations and should be read as targets for a follow-on benchmark (see §6.1 L8 and `tools/nexus/pca-benchmark/` protocol).
 
 | Level | Carrier (amortized / shared) | Payload (on-wire per hop) | Bytes/hop | Compression vs fp32 | Status |
 |---|---|---|---|---|---|
 | fp32 (baseline) | — | full activation | 4608 | 1× | reference |
-| fp16 (shipped) | per-element exponent | mantissa + sign | 2304 | 2× | validated on alpha |
-| MX8 (block microscaling) | per-block exponent | int8 offset | ~1188 | 3.9× | implementation pending |
-| **PCA-k=16 (this work)** | calibration basis + mean + block header | 16 fp16 coefficients | **~128 (projected)** | **~36× (projected)** | formula; not yet live-measured on Synapse |
-| **VQ-256 + residual (this work)** | codebook + mean | product-quantized index + 8-byte residual | **~65 (projected)** | **~70× (projected)** | formula; not yet live-measured on Synapse |
+| fp16 (shipped) | per-element exponent | mantissa + sign | 2304 | 2× | measured (validated on alpha) |
+| MX8 (block microscaling) | per-block exponent | int8 offset | ~1188 | 3.9× | projected* (implementation pending) |
+| **PCA-k=16 (this work)** | calibration basis + mean + block header | 16 fp16 coefficients | **~128** | **~36×** | **projected*** (formula; not yet live-measured) |
+| **VQ-256 + residual (this work)** | codebook + mean | product-quantized index + 8-byte residual | **~65** | **~70×** | **projected*** (formula; not yet live-measured; reconstruction error not characterized) |
 
 **§3.5 PCA-k=16 shared-basis compression (projected).** Under the proposed deployment — a precomputed `16 × 1152` PCA basis preloaded at node bootstrap — the per-hop payload reduces to 16 fp16 coefficients + 2-byte residual norm + block headers ≈ 128 bytes. This is a **projection** under idealized encoding assumptions; measurement on live Synapse deployment is deferred to a follow-on note. A reproducible WGSL encode/decode kernel + benchmark harness is committed to Synapse as `tools/nexus/pca-benchmark/` within 3 weeks of this paper's preprint, following the measurement protocol pre-registered at `webmind-research/notes/pca-vq-measurement-protocol.md` [authored jointly with Nexus as implementation co-author; see Acknowledgements].
 
@@ -172,9 +174,20 @@ Loaded in float16 precision.
 - Long-context experiments (Qwen 2.5 32B): NVIDIA A100 SXM4 80GB (RunPod.io).
 - Total compute budget: approximately USD 25 in spot A100 time and approximately 4 L4-hours.
 
+### 4.2.1 Software environment
+
+KL-divergence measurements at the 1e-3 level are sensitive to fp16 kernel implementations across PyTorch versions. The experiments in §5 were run with:
+
+- Python 3.10+ (enforced by `tools/reproduce.sh`)
+- PyTorch 2.x with CUDA 12.x on the A100 runs and CUDA 12.x on the L4 run
+- HuggingFace Transformers (model loading only; no custom kernels)
+- All loaded in float16 (`torch_dtype=torch.float16`)
+
+Exact package resolution is performed by `tools/reproduce.sh` at reproduction time against the current PyPI index. A version-pinned `requirements.lock` is planned as a follow-on reproducibility asset; reviewers who need bit-level reproducibility should contact the author for the exact environment.
+
 ### 4.3 Short-context protocol
 
-- Prompts: 16 technical-English prompts drawn from a fixed corpus, seed `0xC0FFEE`.
+- Prompts: 16 technical-English prompts hard-coded at `tools/activation_compression_experiment.py:201` (line-numbered list, publicly visible in the repository). Topics span distributed systems, physics, algorithms, NLP, and cryptography. No external dataset dependency — the prompts are committed with the code, seed `0xC0FFEE` is used only for any downstream random-state-dependent steps.
 - Tokenized lengths in practice: 17–30 tokens per prompt.
 - Splice layers: at `⌈L/6⌉`, `⌈L/2⌉`, and `⌈5L/6⌉` of each model's depth.
 - PCA ranks tested: 2, 4, 8, 16.
@@ -225,13 +238,13 @@ Averaged across three splice layers and six prompts, the PCA rank required to ca
 
 Log-log slope of rank versus sequence length is 2.06, but the per-doubling ratio decelerates: from 256 to 512 the rank grows 6.5 times for a 2 times sequence increase; from 1024 to 1621 the rank grows 2.0 times for a 1.58 times sequence increase. This is consistent with a saturating asymptote, though we did not reach sequences long enough to confirm the asymptote's location.
 
-### 5.3 Regime transition and short-context law
+### 5.3 Regime transition and short-context empirical heuristic
 
-Across all three text-only models at short context (`T < 30`), the log-KL-divergence is fit well by:
+Across all three text-only models at short context (`T < 30`), the log-KL-divergence is fit reasonably by:
 
 $$\log(\text{KL}) \approx -2.1 + 4.6 \log(1 - k/T) + 1.15 \log(d)$$
 
-with R² = 0.68. This law captures the short-context regime but does *not* extrapolate correctly to long-context measurements; the Qwen 2.5 32B long-context data at rank 16 would be predicted to have KL approximately 100× higher than observed. We interpret this as a regime transition: short-context activations sit near the SVD-identity boundary (`k/T` close to 1), where the rank bound is the dominant factor; long-context activations sit deep in the compression regime (`k/T ≪ 1`), where manifold geometry rather than rank bound dominates.
+with R² = 0.68. We describe this as an **empirical heuristic** rather than a law: the R² is moderate, the fit is confined to a narrow `T < 30` regime that is itself close to the `rank ≤ min(T, d)` mathematical bound, and it does *not* extrapolate. Applied naively to the Qwen 2.5 32B long-context data at rank 16, this heuristic would predict KL approximately 100× higher than observed — that is the empirical demonstration that the heuristic breaks at the regime transition, not an endorsement of the heuristic. We interpret the picture as follows: short-context activations sit near the SVD-identity boundary (`k/T` close to 1), where the rank bound is the dominant factor; long-context activations sit deep in the compression regime (`k/T ≪ 1`), where manifold geometry rather than rank bound dominates. The two regimes are governed by different physics; a single parametric fit spanning both would be unjustified from the data we have.
 
 ### 5.4 Layer-depth dependence
 
@@ -263,11 +276,12 @@ This is the difference between "unusable" and "tolerable" for interactive chat.
 - **L1**: Text-only models only. Vision-language models show qualitatively different compression scaling and are pursued in a companion paper.
 - **L2**: Sequence lengths capped at 1621 due to corpus size. Extending to 4k–8k tokens is needed to locate the rank asymptote.
 - **L3**: Only one long-context model. Llama 3.1 8B and Gemma 3 1B were evaluated at short context only; long-context generalization across models is a future study.
-- **L4**: Short-context 22–24× compression ratios are partially explained by the `rank ≤ min(T, d)` mathematical bound. Long-context ratios (13–26× on Qwen) are the regime-independent defensible numbers.
+- **L4**: Short-context 22–24× compression ratios are partially explained by the `rank ≤ min(T, d)` mathematical bound. Long-context ratios (13–26× on Qwen) are the regime-independent defensible numbers. We retain the short-context results because they characterize the dominant regime for many interactive agentic/chat workloads — the artifact is mathematically trivial but practically load-bearing for the decentralized-inference use case this paper targets.
 - **L5**: Downstream task accuracy beyond per-token KL / top-1 is not evaluated. Long-form generation may amplify small boundary errors.
 - **L6**: fp16 only. Interaction with INT8 / INT4 quantization on weights is unstudied.
 - **L7**: Calibration basis is computed once on fixed calibration data; distribution shift at inference time is not modeled.
 - **L8**: The 36× and 70× compression ratios reported for PCA-k=16 (§3.5) and VQ-256 (§3.6) are *projections* derived from the encoding scheme, not measurements on running Synapse deployments. A calibration dataset, WGSL encoder implementation, and live benchmark have been identified as follow-on work (see §6.4 Future work and the preregistered protocol at `webmind-research/notes/pca-vq-measurement-protocol.md`). Readers should treat these as upper-bound targets subject to the open empirical question: does <1% reconstruction error hold on live activations? The reproducible benchmark harness commits at T+3 weeks from preprint; `paper_invariants.py` will gate the 36× claim against that benchmark output before any companion-note release.
+- **L9**: Wall-clock end-to-end systems throughput (§5.5) is *not* measured. The "0.4 seconds per token" figure is an arithmetic projection from the compression ratio and consumer uplink bandwidth, not a trace. We have not instrumented GPU kernel launch overhead, PCIe transfer, network round-trip, or the WGSL receiver matmul latency. A production-fidelity trace on the Synapse network — comparable to the protocol-level benchmarks in Petals [1] — is the single most important systems evaluation missing from this preprint and is queued as the first companion note (see §6.4).
 
 ### 6.2 Related work
 
@@ -276,6 +290,9 @@ Our positioning across prior art in activation compression, verification, and de
 - **Petals** [1] uses 8-bit activation quantization across volunteer GPUs, achieving approximately 2× compression. Our 13–26× at long context is an order of magnitude more aggressive, at the cost of PCA basis pre-distribution.
 - **SmoothQuant** [12] handles activation outliers by smoothing; we handle them by explicit sparse payload. The two ideas are complementary and could be combined.
 - **LLM.int8!** [7] identifies outlier dimensions and retains them at higher precision; our sparse payload has the same spirit but transmits instead of retains.
+- **AWQ** [14] quantizes *weights* in an activation-aware manner — that is, AWQ uses the activation distribution to decide weight quantization scales. Our work is disjoint: AWQ compresses weights at load time; we compress activations on the inter-shard wire. A stacked deployment is straightforward (AWQ-quantized weights + carrier-payload activation transport) and is a natural follow-on.
+- **BottleNet++** [15] proposes a learned autoencoder bottleneck for split-inference of *CNN classifiers* in device-edge partitioning, achieving ~64× compression on intermediate feature maps. We share the systems motivation (intermediate-representation bandwidth on partitioned models) but differ in three ways: (i) our decomposition is training-free PCA rather than a learned encoder; (ii) we target transformer LLM inference, not CNN classification; (iii) we report behavior across a regime transition (short-context bound-limited vs long-context manifold-geometry) that does not arise in single-output classifier settings. BottleNet++ is the closest prior art in *motivation*; we differ in *method* and *workload*.
+- **StreamingLLM** [16] addresses long-context inference via *KV-cache* pruning (attention-sink + sliding window). Like the MemGPT / Letta memory-hierarchy line, this line of work manages KV state inside a single device's inference loop and is orthogonal to our inter-shard *activation* transport: we compress what is on the wire between shards, StreamingLLM compresses what is in the per-device KV cache. The two ideas compose — one shrinks what you keep, the other shrinks what you send.
 - **SafetyNets** [4] and **Slalom** [11] focus on verification rather than compression. Pairing carrier-payload with probabilistic Byzantine verification is future work.
 - **opML** [2] and **ZKML** [3] provide cryptographic verification at substantially higher overhead.
 - **LoRA** [8] applies low-rank structure to weight *updates*; we apply it to activation *transport*.
@@ -361,3 +378,9 @@ Compute was funded by the author on RunPod.io (approximately USD 25 in A100 SXM4
 [12] G. Xiao, J. Lin, M. Seznec, H. Wu, J. Demouth, S. Han. "SmoothQuant: Accurate and Efficient Post-Training Quantization for Large Language Models." *Proceedings of the 40th International Conference on Machine Learning (ICML 2023)*. arXiv:2211.10438.
 
 [13] A. Ansuini, A. Laio, J. H. Macke, D. Zoccolan. "Intrinsic dimension of data representations in deep neural networks." *Advances in Neural Information Processing Systems (NeurIPS 2019)*. arXiv:1905.12784.
+
+[14] J. Lin, J. Tang, H. Tang, S. Yang, W.-M. Chen, W.-C. Wang, G. Xiao, X. Dang, C. Gan, S. Han. "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration." *Proceedings of Machine Learning and Systems (MLSys 2024)*. arXiv:2306.00978.
+
+[15] J. Shao, J. Zhang. "BottleNet++: An End-to-End Approach for Feature Compression in Device-Edge Co-Inference Systems." *IEEE International Conference on Communications Workshops (ICC Workshops 2020)*. arXiv:1910.14315.
+
+[16] G. Xiao, Y. Tian, B. Chen, S. Han, M. Lewis. "Efficient Streaming Language Models with Attention Sinks." *International Conference on Learning Representations (ICLR 2024)*. arXiv:2309.17453.

@@ -215,17 +215,17 @@ This is guidance, not a hard gate. Some papers exist for pure scientific value w
 ### `papers/carrier-payload-text-only-v1.md` (Paper 1)
 
 - [x] Gate 1: paper_invariants.py — text-only rescope shipped 2026-04-16; 40/40 invariants pass (3 text families short context + Qwen long context §3.4–§3.6)
-- [x] Gate 2: validate_citations.py — 13/13 verified on 2026-04-16
+- [x] Gate 2: validate_citations.py — 16/16 verified on 2026-04-16 (added AWQ, BottleNet++, StreamingLLM per Gemini Deep Research review)
 - [x] Gate 3: documented exception committed at `papers/carrier-payload-preregistration-exception-v1.md` (2026-04-16) — characterization/methodology paper, not hypothesis-test; invariants + null-results + Gate-13 substitute for pre-registration
-- [ ] Gate 4: disclosure — present, needs final review
-- [ ] Gate 5: limitations — need update to drop multimodal references
+- [x] Gate 4: disclosure — final read 2026-04-16; §Disclosure + §Acknowledgements match CONVENTIONS.md; no substrate-vendor names; agent handles preserved; mailmap discipline enforced
+- [x] Gate 5: limitations — multimodal refs dropped; L4 reframed with practical-regime defense; L9 added (wall-clock throughput not measured) per Gemini 3.1 Pro external review 2026-04-16
 - [x] Gate 6: reproduce.sh — `--quick` and `--full` modes + auto-verify via paper_invariants (2026-04-16)
-- [x] Gate 7: Gemini sign-off on scope received 2026-04-16 (see `gemini_responses/two_paper_split.md`)
+- [x] Gate 7: Gemini sign-off on scope received 2026-04-16 (see `gemini_responses/two_paper_split.md` + `findings/2026-04-16-deep-research-review-carrier-payload.md` — verdict: READY FOR arXiv with minor polish, 100% confidence)
 - [x] Gate 8: scope discipline — explicitly text-only after 2-paper split
-- [ ] Gate 9: coherence — needs ROADMAP.md update
+- [x] Gate 9: coherence — ROADMAP.md synced 2026-04-16 to reflect P1 gate closures
 - [ ] Gate 10 (arXiv endorsement): primary candidate is Dettmers (CMU) — response email draft at `announcements/2026-04-16-draft-response-dettmers.md`, pending Tejas send + Dettmers reply
 
-**Blockers before ship:** Gates 4, 5, 9 (editorial polish); Gate 10 (external, pending Dettmers response).
+**Blockers before ship:** Gate 10 only (external, pending Dettmers response). All 9 internal gates GREEN — paper is technically ready for arXiv upload.
 
 ### `papers/modality-gap-v2-placeholder.md` (Paper 2)
 

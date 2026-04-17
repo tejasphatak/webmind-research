@@ -1,0 +1,109 @@
+Loading Qwen/Qwen2.5-1.5B...
+
+=== SYNC BASELINE ===
+  Architecture: 28 layers, 8 devices, 3 layers/device, 7 boundaries, 14 unfrozen transformer layers
+  eval ppl (sync)...
+    sync: ppl=16.5163 (50129 tokens)
+  eval HellaSwag (n=500)...
+    ...100/500 acc=0.510
+    ...200/500 acc=0.505
+    ...300/500 acc=0.497
+    ...400/500 acc=0.497
+    ...500/500 acc=0.518
+    HellaSwag: 259/500 = 0.518
+
+=== NO_CROSS ===
+  Architecture: 28 layers, 8 devices, 3 layers/device, 7 boundaries, 14 unfrozen transformer layers
+  eval ppl (no_cross)...
+    no_cross: ppl=16.5163 (50129 tokens)
+
+  Phase 2 training (mode=no_cross, steps=800)
+  Trainable params: 656,373,767
+    step 100/800  loss=2.8483  elapsed=13.5s
+    step 200/800  loss=2.7697  elapsed=26.6s
+    step 300/800  loss=2.7480  elapsed=40.2s
+    step 400/800  loss=2.7279  elapsed=53.5s
+    step 500/800  loss=2.6724  elapsed=66.4s
+    step 600/800  loss=2.6944  elapsed=79.0s
+    step 700/800  loss=2.6955  elapsed=91.6s
+    step 800/800  loss=2.6867  elapsed=105.2s
+  Done. loss=2.6867, time=105.2s, alphas=['0.0500', '0.0500', '0.0500', '0.0500', '0.0500', '0.0500', '0.0500']
+  eval ppl (no_cross)...
+    no_cross: ppl=12.7614 (50129 tokens)
+  eval HellaSwag (n=500)...
+    ...100/500 acc=0.490
+    ...200/500 acc=0.500
+    ...300/500 acc=0.480
+    ...400/500 acc=0.482
+    ...500/500 acc=0.500
+    HellaSwag: 250/500 = 0.500
+
+  >>> no_cross: ppl=12.7614 (pre=16.5163, gap=-22.73%)
+
+=== SYNC_COMPRESS ===
+  Architecture: 28 layers, 8 devices, 3 layers/device, 7 boundaries, 14 unfrozen transformer layers
+  eval ppl (sync_compress)...
+    sync_compress: ppl=16.5216 (50129 tokens)
+
+  Phase 2 training (mode=sync_compress, steps=800)
+  Trainable params: 656,373,767
+    step 100/800  loss=2.8476  elapsed=13.7s
+    step 200/800  loss=2.7688  elapsed=26.9s
+    step 300/800  loss=2.7473  elapsed=40.9s
+    step 400/800  loss=2.7272  elapsed=54.4s
+    step 500/800  loss=2.6719  elapsed=67.4s
+    step 600/800  loss=2.6938  elapsed=80.1s
+    step 700/800  loss=2.6950  elapsed=92.9s
+    step 800/800  loss=2.6863  elapsed=106.8s
+  Done. loss=2.6863, time=106.8s, alphas=['0.0500', '0.0500', '0.0496', '0.0495', '0.0496', '0.0495', '0.0497']
+  eval ppl (sync_compress)...
+    sync_compress: ppl=12.7637 (50129 tokens)
+  eval HellaSwag (n=500)...
+    ...100/500 acc=0.500
+    ...200/500 acc=0.500
+    ...300/500 acc=0.480
+    ...400/500 acc=0.485
+    ...500/500 acc=0.502
+    HellaSwag: 251/500 = 0.502
+
+  >>> sync_compress: ppl=12.7637 (pre=16.5216, gap=-22.72%)
+
+=== ASYNC_COMPRESS ===
+  Architecture: 28 layers, 8 devices, 3 layers/device, 7 boundaries, 14 unfrozen transformer layers
+  eval ppl (async)...
+    async: ppl=16.5163 (50129 tokens)
+
+  Phase 2 training (mode=async, steps=800)
+  Trainable params: 656,373,767
+    step 100/800  loss=2.8472  elapsed=13.5s
+    step 200/800  loss=2.7689  elapsed=26.5s
+    step 300/800  loss=2.7471  elapsed=40.3s
+    step 400/800  loss=2.7273  elapsed=53.7s
+    step 500/800  loss=2.6719  elapsed=66.8s
+    step 600/800  loss=2.6940  elapsed=79.5s
+    step 700/800  loss=2.6950  elapsed=92.1s
+    step 800/800  loss=2.6862  elapsed=105.8s
+  Done. loss=2.6862, time=105.8s, alphas=['0.0490', '0.0491', '0.0493', '0.0494', '0.0494', '0.0491', '0.0493']
+  eval ppl (async)...
+    async: ppl=12.7649 (50129 tokens)
+  eval HellaSwag (n=500)...
+    ...100/500 acc=0.490
+    ...200/500 acc=0.500
+    ...300/500 acc=0.480
+    ...400/500 acc=0.482
+    ...500/500 acc=0.500
+    HellaSwag: 250/500 = 0.500
+
+  >>> async_compress: ppl=12.7649 (pre=16.5163, gap=-22.71%)
+
+======================================================================
+FINAL RESULTS
+======================================================================
+Name                      PPL     Gap%     HS    Loss
+-------------------------------------------------------
+sync_baseline           16.52   +0.00%  0.518       —
+no_cross                12.76  -22.73%  0.500  2.6867
+sync_compress           12.76  -22.72%  0.502  2.6863
+async_compress          12.76  -22.71%  0.500  2.6862
+
+Saved to /workspace/results/results.json

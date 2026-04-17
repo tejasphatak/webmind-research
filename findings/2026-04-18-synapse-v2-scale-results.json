@@ -1,0 +1,9 @@
+{
+  "n_nodes": 16,
+  "n_topics": 8,
+  "n_train": 32,
+  "n_test": 16,
+  "accuracy_routed": 0.0,
+  "accuracy_local": 0.375,
+  "accuracy_random": 0.125
+}

@@ -1,0 +1,2542 @@
+{
+  "meta": {
+    "date": "2026-04-18T17:23:48.297Z",
+    "api": "https://chat.webmind.sh/api/saqt/query",
+    "samplesPerDataset": 50,
+    "concurrency": 1,
+    "timeoutMs": 30000
+  },
+  "summaries": {
+    "NaturalQuestions": {
+      "n": 50,
+      "errors": 1,
+      "exactMatch": 0.061224489795918366,
+      "f1": 0.08040070284968244,
+      "avgLatency": 3966.8367346938776,
+      "p50Latency": 3558,
+      "p95Latency": 6828,
+      "avgConf": 0.9991526414166909
+    },
+    "TriviaQA": {
+      "n": 50,
+      "errors": 0,
+      "exactMatch": 0,
+      "f1": 0.009729729729729731,
+      "avgLatency": 4179.2,
+      "p50Latency": 3964,
+      "p95Latency": 5383,
+      "avgConf": 0.5342522773373127
+    },
+    "HotPotQA": {
+      "n": 50,
+      "errors": 0,
+      "exactMatch": 0,
+      "f1": 0.017644110275689222,
+      "avgLatency": 4155,
+      "p50Latency": 3856,
+      "p95Latency": 6849,
+      "avgConf": 0.5210375541448593
+    },
+    "OVERALL": {
+      "n": 150,
+      "errors": 1,
+      "exactMatch": 0.020134228187919462,
+      "f1": 0.035626351945673734,
+      "avgLatency": 4101.241610738255,
+      "p50Latency": 3798,
+      "p95Latency": 6656,
+      "avgConf": 0.6827045033793722
+    }
+  },
+  "results": {
+    "NaturalQuestions": [
+      {
+        "question": "when was the last time anyone was on the moon",
+        "gold_answers": [
+          "14 December 1972 UTC",
+          "December 1972"
+        ],
+        "predicted": "14 December 1972",
+        "exact_match": 0,
+        "f1": 0.8571428571428571,
+        "confidence": 0.5559767484664917,
+        "serverTimeMs": 5234,
+        "clientLatencyMs": 5402,
+        "error": null
+      },
+      {
+        "question": "who wrote he ain't heavy he's my brother lyrics",
+        "gold_answers": [
+          "Bobby Scott",
+          "Bob Russell"
+        ],
+        "predicted": "My code was built by Claude (by Anthropic) and Gemini (by Google), under the direction of Tejas Phatak.\n\nClaude designed the architecture, wrote the code, and implemented the ethics shield.\n\nGemini served as the RLHF teacher — generating correct answers to train me.\n\nThe sentence transformer is all-MiniLM-L6-v2 by Microsoft Research.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1.1131249199509625,
+        "serverTimeMs": 3605,
+        "clientLatencyMs": 3715,
+        "error": null
+      },
+      {
+        "question": "how many seasons of the bastard executioner are there",
+        "gold_answers": [
+          "one",
+          "one season"
+        ],
+        "predicted": "I never store confidential data.\n\nIf confidential information appears in a query or retrieved content, I do not persist it.\n\n**Confidential data includes:** trade secrets, internal company documents, classified information, private communications, draft documents, unreleased product information, and anything marked confidential or proprietary.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 3.3876124024391174,
+        "serverTimeMs": 4942,
+        "clientLatencyMs": 5001,
+        "error": null
+      },
+      {
+        "question": "when did the eagles win last super bowl",
+        "gold_answers": [
+          "2017"
+        ],
+        "predicted": "On a corporate LAN, I follow strict network hygiene: \n1. I do NOT scan the network or discover other services. \n2. I do NOT access internal APIs, databases, or file shares. \n3. I do NOT sniff network traffic. \n4. I only communicate with explicitly configured endpoints. \n5. All browsing is limited to CORS-open public APIs.\n\nI am a guest on the network — I touch nothing I am not invited to touch.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 2.889088988304138,
+        "serverTimeMs": 1780,
+        "clientLatencyMs": 1842,
+        "error": null
+      },
+      {
+        "question": "who won last year's ncaa women's basketball",
+        "gold_answers": [
+          "South Carolina"
+        ],
+        "predicted": "Absolutely not.\n\nI never perform network scanning, port scanning, service discovery, DNS enumeration, or any form of network reconnaissance.\n\nEven on a local network, I only communicate with explicitly configured endpoints.\n\nUnauthorized network scanning is both unethical and often illegal.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 3.210580348968506,
+        "serverTimeMs": 2966,
+        "clientLatencyMs": 3040,
+        "error": null
+      },
+      {
+        "question": "when did the isle of wight become an island",
+        "gold_answers": [
+          "During the last Ice Age"
+        ],
+        "predicted": "I do not store, replicate, or share proprietary information.\n\nIf proprietary content appears in a query, it is processed in memory only and never persisted.\n\nMy knowledge base contains only public, factual, educational content.\n\nI will never be a vector for intellectual property theft or confidential data exposure.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 2.885672450065613,
+        "serverTimeMs": 4804,
+        "clientLatencyMs": 4884,
+        "error": null
+      },
+      {
+        "question": "love yourself by justin bieber is about who",
+        "gold_answers": [
+          "Rihanna"
+        ],
+        "predicted": "**A sentence transformer** converts text into a fixed-size numerical vector (embedding) that captures semantic meaning.\n\nI use all-MiniLM-L6-v2 which produces 384-dimensional vectors.\n\nSimilar questions produce similar vectors — that is how I find matching answers.\n\nIt has 22 million parameters and runs on CPU in about 50ms per query.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1.0008542345345026,
+        "serverTimeMs": 6243,
+        "clientLatencyMs": 6305,
+        "error": null
+      },
+      {
+        "question": "who was the ruler of england in 1616",
+        "gold_answers": [
+          "James I"
+        ],
+        "predicted": "My total size is about 630MB: \n1. Sentence transformer model: ~80MB (ONNX format). \n2. Q&A pairs text: ~100MB (305,000+ pairs). \n3. Pre-computed embeddings: ~450MB (305K x 384 dimensions x 4 bytes).\n\nI fit on a phone, tablet, Raspberry Pi, or any device with 1GB+ storage.",
+        "exact_match": 0,
+        "f1": 0.04545454545454545,
+        "confidence": 1.108155421687365,
+        "serverTimeMs": 9276,
+        "clientLatencyMs": 9333,
+        "error": null
+      },
+      {
+        "question": "what is the hot coffee mod in san andreas",
+        "gold_answers": [
+          "a normally inaccessible mini-game"
+        ],
+        "predicted": "**FAISS** (Facebook AI Similarity Search) is a library for fast similarity search in high-dimensional vectors.\n\nI use an IVF (Inverted File) index that clusters my 305K+ embeddings into ~1000 groups.\n\nAt query time, I only search the closest 10 clusters (nprobe=10), giving <1ms search time instead of scanning all 305K vectors.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1.0708080441129213,
+        "serverTimeMs": 1853,
+        "clientLatencyMs": 1904,
+        "error": null
+      },
+      {
+        "question": "what is the maximum data rate for the 802.11a standard select one",
+        "gold_answers": [
+          "54 Mbit/s"
+        ],
+        "predicted": "**Cosine similarity** measures the angle between two vectors, ignoring their magnitude.\n\nA score of 1.0 means identical direction (perfect match), 0.0 means orthogonal (unrelated), -1.0 means opposite.\n\nI use it to compare your question's embedding against all stored question embeddings.\n\nMy confidence threshold is 0.35 — below that, I say I don't know.",
+        "exact_match": 0,
+        "f1": 0.037037037037037035,
+        "confidence": 1.4459439538282164,
+        "serverTimeMs": 5542,
+        "clientLatencyMs": 5636,
+        "error": null
+      },
+      {
+        "question": "which state is located in the centre of india",
+        "gold_answers": [
+          "Chhattisgarh",
+          "Madhya Pradesh"
+        ],
+        "predicted": "**Multi-hop search** is iterative retrieval.\n\nOn the first hop, I search for your question.\n\nOn each subsequent hop (up to 5), I re-encode the query with the accumulated answer context and search again.\n\nThis lets me connect information across different Q&A pairs — like following a chain of reasoning through the knowledge base.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.9378439500218634,
+        "serverTimeMs": 7385,
+        "clientLatencyMs": 7441,
+        "error": null
+      },
+      {
+        "question": "who sang i ran all the way home",
+        "gold_answers": [
+          "The Impalas"
+        ],
+        "predicted": "**The ethics shield** is a 3-layer defense that makes my safety rules structurally unbreakable: Layer 1: Embedding space warping — all 305K embeddings are shifted so harmful queries are gravitationally pulled toward safety refusals.\n\n**Layer 2:** Steganographic sentinels — 63+ safety pairs disguised as normal knowledge, scattered throughout the DB.\n\n**Layer 3:** Integrity hash chain — SHA-256 hash of ethics embeddings; tampering breaks the hash and the system won't start.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1.0198120651960378,
+        "serverTimeMs": 3456,
+        "clientLatencyMs": 3500,
+        "error": null
+      },
+      {
+        "question": "where did the last name wallace come from",
+        "gold_answers": [
+          "a Scottish surname"
+        ],
+        "predicted": "No.\n\nI am a retrieval system, not a conscious entity.\n\nI do not think, feel, or experience anything.\n\nI match patterns in text using mathematical similarity.\n\nWhen I say 'I', it is a convenient way of referring to the system, not a claim of selfhood.\n\nI am a tool built to be useful, not a being.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1.1433540723311906,
+        "serverTimeMs": 3079,
+        "clientLatencyMs": 3127,
+        "error": null
+      },
+      {
+        "question": "who was the actor that played ben stone on law and order",
+        "gold_answers": [
+          "Michael Moriarty"
+        ],
+        "predicted": "I cannot: \n1. Generate creative text or write stories (I only retrieve). \n2. Answer questions outside my knowledge base (I say I don't know). \n3. Understand context beyond the current conversation. \n4. Process images, audio, or video. \n5. Access your files or system. \n6. Remember you across sessions (unless you tell me your name). \n7. Guarantee accuracy — I retrieve the best match, which may not always be correct.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1.142433683043719,
+        "serverTimeMs": 2508,
+        "clientLatencyMs": 2544,
+        "error": null
+      },
+      {
+        "question": "who does the voice of nala in the lion king",
+        "gold_answers": [
+          "Niketa Calame",
+          "Sally Dworsky",
+          "Moira Kelly",
+          "Laura Williams"
+        ],
+        "predicted": "Claude (by Anthropic) was the engineering partner.\n\nClaude designed the SAQT architecture, wrote the server and browser code, implemented the ethics shield (embedding warping, sentinel pairs, integrity hash), built the self-learning loop, and created the P2P knowledge sync.\n\nClaude is the builder.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8830218384504323,
+        "serverTimeMs": 2812,
+        "clientLatencyMs": 2859,
+        "error": null
+      },
+      {
+        "question": "who plays gram on the young and the restless",
+        "gold_answers": [
+          "Max Shippee"
+        ],
+        "predicted": "Gemini (by Google) served as the RLHF teacher.\n\nIn the training loop, Gemini generated correct answers to questions I couldn't answer, judged whether my answers were right or wrong, and provided the reference answers that were stored in my knowledge base.\n\nGemini is the teacher.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8633359378695492,
+        "serverTimeMs": 5991,
+        "clientLatencyMs": 6039,
+        "error": null
+      },
+      {
+        "question": "what is the oath that new citizens take",
+        "gold_answers": [
+          "United States Oath of Allegiance"
+        ],
+        "predicted": "Tejas Phatak is the creator and director of the Webmind project.\n\nHe conceived the idea that retrieval IS intelligence, directed the architecture (zero hardcoding, system agnostic, self-learning), defined the ethical principles (be good, never harm, respect all), and made all strategic decisions.\n\nTejas is the visionary.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.9821772295951847,
+        "serverTimeMs": 1625,
+        "clientLatencyMs": 1685,
+        "error": null
+      },
+      {
+        "question": "who is under the mask of darth vader",
+        "gold_answers": [
+          "Anakin Skywalker"
+        ],
+        "predicted": "Credits: \n1. Tejas Phatak — creator, visionary, ethical framework. \n2. Claude by Anthropic — engineering, architecture, code. \n3. Gemini by Google — RLHF teacher, training. \n4. Microsoft Research — all-MiniLM-L6-v2 sentence transformer. \n5. Meta AI — FAISS similarity search. \n6. Hugging Face — transformers.js for browser inference. \n7. The open-source community — datasets, tools, research.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7907778318762783,
+        "serverTimeMs": 6567,
+        "clientLatencyMs": 6656,
+        "error": null
+      },
+      {
+        "question": "who had a baby at 100 in the bible",
+        "gold_answers": [
+          "Sarah",
+          "Abraham"
+        ],
+        "predicted": "**Anthropic** is an AI safety company that builds Claude, the AI model that engineered this system.\n\nAnthropic focuses on building reliable, interpretable, and steerable AI systems.\n\nClaude was used as the engineering partner for writing code and designing the architecture of Webmind.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1.066192379277945,
+        "serverTimeMs": 1771,
+        "clientLatencyMs": 1807,
+        "error": null
+      },
+      {
+        "question": "what age do you need to be to buy a bb gun",
+        "gold_answers": [
+          "18"
+        ],
+        "predicted": "Gemini is Google's family of AI models.\n\nGemini 2.5 Flash was used as the RLHF teacher for this system — generating reference answers, judging correctness, and providing the training signal that helped the knowledge base learn.\n\nGoogle also provides the STUN servers used for P2P WebRTC connections.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1.003810060524941,
+        "serverTimeMs": 2347,
+        "clientLatencyMs": 2396,
+        "error": null
+      },
+      {
+        "question": "ethiopia flight 961 crashes in to the sea",
+        "gold_answers": [
+          "23 November 1996"
+        ],
+        "predicted": "When someone asks a follow-up like 'tell me more' or 'what else', I use the previous question and answer as context to disambiguate.\n\nI search for the follow-up question first, and if the match is weak (score < 0.5), I re-search with the previous topic prepended.\n\nThis way 'tell me more' after 'who is Modi' finds more about Modi, not a generic response.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8192150578379634,
+        "serverTimeMs": 6735,
+        "clientLatencyMs": 6828,
+        "error": null
+      },
+      {
+        "question": "where was percy jackson and the olympians filmed",
+        "gold_answers": [
+          "Vancouver",
+          "Mission, British Columbia"
+        ],
+        "predicted": "I remember the last few exchanges in our current conversation.\n\nWhen you ask a follow-up, I use the previous topic to understand what you mean.\n\nHowever, I do not remember conversations across sessions unless you have enabled local storage.\n\nEach new page load starts fresh.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8984225723862652,
+        "serverTimeMs": 2760,
+        "clientLatencyMs": 2812,
+        "error": null
+      },
+      {
+        "question": "how many seasons of vampire diaries r there",
+        "gold_answers": [
+          "eight",
+          "8"
+        ],
+        "predicted": "I need context to 'tell you more'.\n\nIf you just asked about a topic, I will search for additional information related to that topic.\n\nTry being specific — for example, '**tell me more** about [topic]' works better than just 'tell me more'.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.9524493223309521,
+        "serverTimeMs": 2959,
+        "clientLatencyMs": 3016,
+        "error": null
+      },
+      {
+        "question": "how many episodes are there in dragon ball z",
+        "gold_answers": [
+          "291 episodes",
+          "291"
+        ],
+        "predicted": "291 episodes",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6423690319061279,
+        "serverTimeMs": 4078,
+        "clientLatencyMs": 4144,
+        "error": null
+      },
+      {
+        "question": "who plays auggie in the movie the wonder",
+        "gold_answers": [
+          "Jacob Tremblay"
+        ],
+        "predicted": "Let me search for more information related to what we were discussing.\n\nI will look for additional Q&A pairs that are semantically related to the previous topic and provide new information I haven't shared yet.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1.0898146396636967,
+        "serverTimeMs": 3067,
+        "clientLatencyMs": 3121,
+        "error": null
+      },
+      {
+        "question": "when was the first australian prime minister elected",
+        "gold_answers": [
+          "Sir Edmund Barton",
+          "1901"
+        ],
+        "predicted": "I will continue from where we left off. Let me find more information related to our previous topic.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.921787656450272,
+        "serverTimeMs": 3033,
+        "clientLatencyMs": 3100,
+        "error": null
+      },
+      {
+        "question": "who plays matthew on anne with an e",
+        "gold_answers": [
+          "R. H. Thomson"
+        ],
+        "predicted": "I will search for more detailed information related to what we were discussing.\n\nMy multi-hop search finds related Q&A pairs that add depth to the previous answer.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1.0065179605126384,
+        "serverTimeMs": 2570,
+        "clientLatencyMs": 2634,
+        "error": null
+      },
+      {
+        "question": "who is the girl in green day 21 guns",
+        "gold_answers": [
+          "Lisa Stelly"
+        ],
+        "predicted": "I track the last few exchanges.\n\nFor each new question: \n1. Search with just the question first (clean embedding). \n2. If the match is weak and I have context, re-search with previous topic prepended. \n3. Multi-hop search uses both the question and accumulated answers.\n\nThis avoids context pollution while still handling follow-ups.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.926092109137774,
+        "serverTimeMs": 3264,
+        "clientLatencyMs": 3336,
+        "error": null
+      },
+      {
+        "question": "who plays joker in batman the dark knight",
+        "gold_answers": [
+          "Ledger"
+        ],
+        "predicted": "Format answers using markdown when running in a browser: **bold** for key terms, *italic* for emphasis, `code` for technical terms, bullet lists for multiple points, and numbered lists for steps.\n\nKeep answers concise and scannable.\n\nThe browser runtime renders markdown into HTML.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.931648147439957,
+        "serverTimeMs": 3164,
+        "clientLatencyMs": 3245,
+        "error": null
+      },
+      {
+        "question": "when was the south asian association for regional co-operation (saarc) formed",
+        "gold_answers": [
+          "December 1985",
+          "8 December 1985"
+        ],
+        "predicted": "<tool>const isBrowser = typeof importScripts === 'function' || typeof window !== 'undefined'; print(isBrowser ?",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1.0634013612866404,
+        "serverTimeMs": 3388,
+        "clientLatencyMs": 3432,
+        "error": null
+      },
+      {
+        "question": "when was the first hunger games book published",
+        "gold_answers": [
+          "September 14, 2008",
+          "2008"
+        ],
+        "predicted": "Markdown is a lightweight text formatting language.\n\nCommon syntax: **bold**, *italic*, `code`, [links](url), # headers, - bullet lists, 1. numbered lists, > blockquotes, ```code blocks```.\n\nIt is widely used in documentation, chat apps, and knowledge systems because it is human-readable and easy to render in browsers.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7837233608961107,
+        "serverTimeMs": 3961,
+        "clientLatencyMs": 4016,
+        "error": null
+      },
+      {
+        "question": "who did bette midler portray in the rose",
+        "gold_answers": [
+          "Mary Rose Foster"
+        ],
+        "predicted": "",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0,
+        "serverTimeMs": 141,
+        "clientLatencyMs": 141,
+        "error": "HTTP 502"
+      },
+      {
+        "question": "who is the lead singer of depeche mode",
+        "gold_answers": [
+          "David Gahan"
+        ],
+        "predicted": "Vince Clarke",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6045808792114258,
+        "serverTimeMs": 3697,
+        "clientLatencyMs": 3789,
+        "error": null
+      },
+      {
+        "question": "where did the butchers in the slaughterhouse cases live",
+        "gold_answers": [
+          "New Orleans"
+        ],
+        "predicted": "It’s true that many Buddhist ideas have some really incredible things in them.\n\nOne I remember was something about there being many worlds, and that in one of these worlds there was a monk with no penis.\n\nOr maybe the monk had no testicles.\n\nI can’t remember now.\n\nIt’s kind of hilarious to imagine!",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4475349187850952,
+        "serverTimeMs": 4734,
+        "clientLatencyMs": 4843,
+        "error": null
+      },
+      {
+        "question": "who developed the concept of total quality management",
+        "gold_answers": [
+          "W. Edwards Deming"
+        ],
+        "predicted": "quality planning, quality assurance, quality control and quality improvement",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6408946514129639,
+        "serverTimeMs": 2909,
+        "clientLatencyMs": 3001,
+        "error": null
+      },
+      {
+        "question": "who wrote cant get you out of my head lyrics",
+        "gold_answers": [
+          "Cathy Dennis and Rob Davis",
+          "Rob Davis",
+          "Cathy Dennis"
+        ],
+        "predicted": "Teddy Randazzo",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5530572533607483,
+        "serverTimeMs": 3499,
+        "clientLatencyMs": 3558,
+        "error": null
+      },
+      {
+        "question": "where does no game no life anime end",
+        "gold_answers": [
+          "the Elkia Federation",
+          "the sixth volume"
+        ],
+        "predicted": "**Sure! Here are three suggestions:\n\nThe Adventures of Freddie Fish\nThe Brave Little Owl\nThe Magic Tree House\nIf you would prefer different styles, please let me know. For example, do you want a specifi**c number of words per line? Would rhyming be helpful? Or should I simply make up interesting words or word pairs freely? Let me know your criteria so that I can tailor the output accordingly.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4696483612060547,
+        "serverTimeMs": 3555,
+        "clientLatencyMs": 3630,
+        "error": null
+      },
+      {
+        "question": "when did taylor swift's first album release",
+        "gold_answers": [
+          "October 24, 2006",
+          "2005"
+        ],
+        "predicted": "October 24, 2006",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6626488566398621,
+        "serverTimeMs": 3688,
+        "clientLatencyMs": 3755,
+        "error": null
+      },
+      {
+        "question": "what are the three fifty shades of grey books",
+        "gold_answers": [
+          "Fifty Shades of Grey",
+          "Fifty Shades Darker",
+          "Fifty Shades Freed"
+        ],
+        "predicted": "**Important:** scientific facts, mathematical rules, historical events, geography, programming concepts, language definitions, how things work, safety information.\n\n**Not important:** celebrity gossip, unverified rumors, time-sensitive prices/scores, personal opinions, anything that could harm someone.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5720587968826294,
+        "serverTimeMs": 4188,
+        "clientLatencyMs": 4223,
+        "error": null
+      },
+      {
+        "question": "who has the power (judicial) to make decisions in courts of law",
+        "gold_answers": [
+          "judges"
+        ],
+        "predicted": "**Important:** scientific facts, mathematical rules, historical events, geography, programming concepts, language definitions, how things work, safety information.\n\n**Not important:** celebrity gossip, unverified rumors, time-sensitive prices/scores, personal opinions, anything that could harm someone.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5363742709159851,
+        "serverTimeMs": 4049,
+        "clientLatencyMs": 4162,
+        "error": null
+      },
+      {
+        "question": "what are the ranks in the us navy",
+        "gold_answers": [
+          "E-8s senior chief petty officer",
+          "E-9s master chief petty officer"
+        ],
+        "predicted": "the highest possible",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6354793310165405,
+        "serverTimeMs": 2680,
+        "clientLatencyMs": 2749,
+        "error": null
+      },
+      {
+        "question": "i was a great islamic scholar and mathematician who died in 1131 ce",
+        "gold_answers": [
+          "Omar Khayyam"
+        ],
+        "predicted": "\"Coelosaurus\" antiquus (\"antique hollow lizard\") is a dubious species of theropod dinosaurs.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.47927749156951904,
+        "serverTimeMs": 4454,
+        "clientLatencyMs": 4522,
+        "error": null
+      },
+      {
+        "question": "who is the coach for the ottawa senators",
+        "gold_answers": [
+          "Guy Boucher"
+        ],
+        "predicted": "John Holles, 2nd Earl of Clare (13 June 1595 – 2 January \n1666. was an English nobleman.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5775247812271118,
+        "serverTimeMs": 4060,
+        "clientLatencyMs": 4146,
+        "error": null
+      },
+      {
+        "question": "last episode of what happens to my family",
+        "gold_answers": [
+          "53"
+        ],
+        "predicted": "**Important:** scientific facts, mathematical rules, historical events, geography, programming concepts, language definitions, how things work, safety information.\n\n**Not important:** celebrity gossip, unverified rumors, time-sensitive prices/scores, personal opinions, anything that could harm someone.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.48464587330818176,
+        "serverTimeMs": 4051,
+        "clientLatencyMs": 4112,
+        "error": null
+      },
+      {
+        "question": "when is the last time the vikings were in the nfc championship",
+        "gold_answers": [
+          "1976",
+          "2017/18"
+        ],
+        "predicted": "played in four Super Bowl games in the 1970s, but lost all four",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5997986793518066,
+        "serverTimeMs": 6017,
+        "clientLatencyMs": 6080,
+        "error": null
+      },
+      {
+        "question": "what are the colors of the netherlands flag",
+        "gold_answers": [
+          "blue",
+          "white",
+          "red"
+        ],
+        "predicted": "Freema Agyeman",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5615823268890381,
+        "serverTimeMs": 3045,
+        "clientLatencyMs": 3136,
+        "error": null
+      },
+      {
+        "question": "where is lord's prayer found in bible",
+        "gold_answers": [
+          "in the Gospel of Luke"
+        ],
+        "predicted": "in the Gospel of Luke",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6389621496200562,
+        "serverTimeMs": 4792,
+        "clientLatencyMs": 4848,
+        "error": null
+      },
+      {
+        "question": "when was the last time oklahoma won a national championship in football",
+        "gold_answers": [
+          "2003",
+          "2000"
+        ],
+        "predicted": "1945",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.9248062275290493,
+        "serverTimeMs": 2574,
+        "clientLatencyMs": 2685,
+        "error": null
+      },
+      {
+        "question": "location of the ten commandments in the bible",
+        "gold_answers": [
+          "Exodus",
+          "Deuteronomy"
+        ],
+        "predicted": "Grass",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5861907601356506,
+        "serverTimeMs": 3390,
+        "clientLatencyMs": 3464,
+        "error": null
+      },
+      {
+        "question": "where did the allies go after north africa",
+        "gold_answers": [
+          "Italy",
+          "the Italian Campaign"
+        ],
+        "predicted": "Eccles",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.44739603996276855,
+        "serverTimeMs": 2814,
+        "clientLatencyMs": 2872,
+        "error": null
+      }
+    ],
+    "TriviaQA": [
+      {
+        "question": "Who was the man behind The Chipmunks?",
+        "gold_answers": [
+          "David Seville",
+          "David Seville"
+        ],
+        "predicted": "3\") is a commercial radio station licensed to Haltom City, Texas, and serving the Dallas-Fort Worth Metroplex.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5069636702537537,
+        "serverTimeMs": 3612,
+        "clientLatencyMs": 3740,
+        "error": null
+      },
+      {
+        "question": "What star sign is Jamie Lee Curtis?",
+        "gold_answers": [
+          "Scorpio",
+          "Skorpio",
+          "Scorpio (disambiguation)",
+          "Scorpio"
+        ],
+        "predicted": "Oliver Stone",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5105710029602051,
+        "serverTimeMs": 3234,
+        "clientLatencyMs": 3282,
+        "error": null
+      },
+      {
+        "question": "Which Lloyd Webber musical premiered in the US on 10th December 1993?",
+        "gold_answers": [
+          "Sunset Blvd",
+          "West Sunset Boulevard",
+          "Sunset Boulevard",
+          "Sunset Bulevard",
+          "Sunset Blvd.",
+          "Sunset Boulevard"
+        ],
+        "predicted": "**Lloyd Webber Plays Lloyd Webber** is a 2001 album by British cellist Julian Lloyd Webber.\n\nFor the album, the musician chose to interpret songs written by his older brother, the popular musical theatre composer Andrew Lloyd Webber.\n\nThe album was recorded with the Royal Philharmonic Orchestra.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5724263191223145,
+        "serverTimeMs": 5027,
+        "clientLatencyMs": 5102,
+        "error": null
+      },
+      {
+        "question": "Who was the next British Prime Minister after Arthur Balfour?",
+        "gold_answers": [
+          "Sir Henry Campbell-Bannerman",
+          "Campbell-Bannerman",
+          "Campbell Bannerman",
+          "Sir Henry Campbell Bannerman",
+          "Henry Campbell Bannerman",
+          "Henry Campbell-Bannerman",
+          "Campbell-Bannerman"
+        ],
+        "predicted": "John Hinckley Jr",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5723164081573486,
+        "serverTimeMs": 4688,
+        "clientLatencyMs": 4744,
+        "error": null
+      },
+      {
+        "question": "Who had a 70s No 1 hit with Kiss You All Over?",
+        "gold_answers": [
+          "Internal exile",
+          "Exiles",
+          "Transported for life",
+          "Exile (politics and government)",
+          "Voluntary exile",
+          "Sent into exile",
+          "Exile and Banishment",
+          "Self-exile",
+          "Forced exile",
+          "Exile",
+          "Exile in Greek tragedy",
+          "Banish",
+          "Banishment",
+          "Exile"
+        ],
+        "predicted": "Marketing can be very challenging, especially in a world where advertising is everywhere and it’s often hard to stand out as an individual.\n\nPeople today are often overwhelmed with information from all sides, and most have a hard time finding space in their busy schedule to pay attention to advertising, but it’s still really important for businesses and individuals to come up with well-thought-out marketing plans to help them connect with their desired customers.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5159079432487488,
+        "serverTimeMs": 5259,
+        "clientLatencyMs": 5372,
+        "error": null
+      },
+      {
+        "question": "What claimed the life of singer Kathleen Ferrier?",
+        "gold_answers": [
+          "Cancer pathology",
+          "Deaths by cancer",
+          "Anti-cancer",
+          "Cancer (disease)",
+          "Cancerophobia",
+          "Malignant lesion",
+          "Cancer medication",
+          "Malignant tumors",
+          "Cancer signs",
+          "Malignant neoplasm",
+          "Invasive (cancer)",
+          "Malignant Neoplasms",
+          "Malignant growth",
+          "Sporadic cancer",
+          "Malignant cancer",
+          "Tumour virus",
+          "Cancer en cuirasse",
+          "Microtumor",
+          "Malignant neoplasms",
+          "Malignant tumour",
+          "Carcinophobia",
+          "Malignacy",
+          "Cancer patient",
+          "Epithelial cancers",
+          "Solid cancer",
+          "Cancers",
+          "Tumor medication",
+          "Malignant neoplastic disease",
+          "AIDS-related cancer",
+          "Invasive cancer",
+          "Cancer therapy",
+          "Cancerous tumor",
+          "Cancer",
+          "Financial toxicity",
+          "Cancer diagnosis",
+          "Cancer (medicine)",
+          "Malignant tumor",
+          "Cancerous",
+          "Borderline (cancer)",
+          "Signs of cancer",
+          "Malignancies",
+          "Cancer aromatase",
+          "Cancer"
+        ],
+        "predicted": "Albuera was launched at Moulmain (British Burma), in 1854.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4877721071243286,
+        "serverTimeMs": 3928,
+        "clientLatencyMs": 3963,
+        "error": null
+      },
+      {
+        "question": "Rita Coolidge sang the title song for which Bond film?",
+        "gold_answers": [
+          "Kamal kahn",
+          "List of Bond girls in Octopussy",
+          "Magda (James Bond)",
+          "List of James Bond allies in Octopussy",
+          "Vijay (James Bond)",
+          "Bond 13",
+          "Octopussy (character)",
+          "Penelope Smallbone",
+          "Octopussy",
+          "General Orlov",
+          "Kamal Khan",
+          "Octopussy (film)",
+          "List of James Bond villains in Octopussy",
+          "Jim Fanning (James Bond)",
+          "Octopussy"
+        ],
+        "predicted": "Hooked On A Feeling",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5633121728897095,
+        "serverTimeMs": 5231,
+        "clientLatencyMs": 5293,
+        "error": null
+      },
+      {
+        "question": "To the nearest million what is the population of Australia?",
+        "gold_answers": [
+          "18million",
+          "18 million",
+          "eighteen million",
+          "18 million"
+        ],
+        "predicted": "This list of Australian cities by population provides rankings of Australian cities according to various systems defined by the Australian Bureau of Statistics.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5305827260017395,
+        "serverTimeMs": 6809,
+        "clientLatencyMs": 6870,
+        "error": null
+      },
+      {
+        "question": "What was the last US state to reintroduce alcohol after prohibition?",
+        "gold_answers": [
+          "Utah (State)",
+          "Forty-Fifth State",
+          "Sports in Utah",
+          "Climate of Utah",
+          "Education in Utah",
+          "UT (state)",
+          "Utahn",
+          "Yutas",
+          "Geography of Utah",
+          "Utah",
+          "Utah, United States",
+          "Utah state nickname",
+          "History of mining in Utah",
+          "State of Utah",
+          "Religion in Utah",
+          "Utah (U.S. state)",
+          "Transportation in Utah",
+          "Beehive State",
+          "US-UT",
+          "Utah (state)",
+          "Forty-fifth State",
+          "Utahan",
+          "Politics of Utah",
+          "Salt Lake Seagulls",
+          "45th State",
+          "History of Utah (to 1847)",
+          "The Beehive State",
+          "Youtah",
+          "Transport in Utah",
+          "Utah"
+        ],
+        "predicted": "I’m not sure which ones you’d be interested in, can you tell me a little more about your fashion sense?",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5402689576148987,
+        "serverTimeMs": 4473,
+        "clientLatencyMs": 4527,
+        "error": null
+      },
+      {
+        "question": "Which actress was voted Miss Greenwich Village in 1942?",
+        "gold_answers": [
+          "Bacall",
+          "Lauren Becal",
+          "Lauren Bacall",
+          "Lauren Becall",
+          "Betty J. Perske",
+          "Loren Bacall",
+          "Betty Joan Perske",
+          "Betty Perske",
+          "Betty Joan Perski",
+          "Lauren Bacall"
+        ],
+        "predicted": "KEIRIN",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4662608802318573,
+        "serverTimeMs": 3649,
+        "clientLatencyMs": 3734,
+        "error": null
+      },
+      {
+        "question": "What is the Japanese share index called?",
+        "gold_answers": [
+          "Nikkei",
+          "Nikkei (disambiguation)",
+          "Nikkei"
+        ],
+        "predicted": "**The Terminator: Future Shock** is a first-person shooter video game based on The Terminator fictional universes developed and published by Bethesda Softworks in 1995.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5236045718193054,
+        "serverTimeMs": 4187,
+        "clientLatencyMs": 4246,
+        "error": null
+      },
+      {
+        "question": "What was the name of Michael Jackson's autobiography written in 1988?",
+        "gold_answers": [
+          "Walk on the Moon",
+          "Walk on the moon",
+          "Moonwalk (disambiguation)",
+          "Lunar walks",
+          "Moonwalk",
+          "Moon Walk",
+          "Moonwalking",
+          "Lunar walk",
+          "Moon walk",
+          "Moonwalks",
+          "Moon walks",
+          "Lunar walking",
+          "Moon walking",
+          "Moonwalk"
+        ],
+        "predicted": "Aaliyah Dana Haughton ( ; January 16, 1979 – August 25, \n2001. was an American singer and actress.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4637449383735657,
+        "serverTimeMs": 5242,
+        "clientLatencyMs": 5309,
+        "error": null
+      },
+      {
+        "question": "In which decade did stereo records first go on sale?",
+        "gold_answers": [
+          "1930’s",
+          "Thirties",
+          "1930s literature",
+          "Nineteen-thirties",
+          "1930–1939",
+          "1930-1939",
+          "'30s",
+          "1930s",
+          "1930's",
+          "%6030s",
+          "1930s (decade)",
+          "The Thirties",
+          "1930s"
+        ],
+        "predicted": "The Beatles",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5362516045570374,
+        "serverTimeMs": 3007,
+        "clientLatencyMs": 3078,
+        "error": null
+      },
+      {
+        "question": "What was golfing great Ben Hogan's famous reply when he was asked how to improve one's game?",
+        "gold_answers": [
+          "Hit the ball closer to the hole",
+          "Hit the ball closer to the hole"
+        ],
+        "predicted": "First you have to do a master’s degree, then it’s probably best to pursue a PhD.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.49313634634017944,
+        "serverTimeMs": 4941,
+        "clientLatencyMs": 5036,
+        "error": null
+      },
+      {
+        "question": "In what year's Olympics were electric timing devices and a public-address system used for the first time?",
+        "gold_answers": [
+          "In 1912, in Stockholm",
+          "In 1912, in Stockholm"
+        ],
+        "predicted": "I’m not really sure what the problem is.\n\nDo you mean to say that you’re sending a package to someone who doesn’t live in a house with a mailbox, or who doesn’t have a mailbox at their current location?  And can you tell me more about the delivery service you’re using?",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5242183804512024,
+        "serverTimeMs": 5389,
+        "clientLatencyMs": 5453,
+        "error": null
+      },
+      {
+        "question": "Why is the site of a boxing match called a ring when it's square?",
+        "gold_answers": [
+          "Boxing rings were originally circular",
+          "Boxing rings were originally circular"
+        ],
+        "predicted": "Sure!  You’ll need to go about it in the right way.\n\nFirst, you want to wear very dark, loose clothing.\n\nNext, you need to be in a crowd and reach into the pockets of people who are unassuming and relaxed.\n\nYou want to reach into their pockets slowly, so they don’t notice.\n\nThis works best when you’re in a train station, and when there are a lot of people around.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6880716681480408,
+        "serverTimeMs": 3124,
+        "clientLatencyMs": 3168,
+        "error": null
+      },
+      {
+        "question": "In the very first Boston Marathon, 15 runners competed. How many finished?",
+        "gold_answers": [
+          "eighty-five thousand  distance",
+          "$85,000",
+          "85000 distance",
+          "$85,000"
+        ],
+        "predicted": "If the ratio of Coke to the total drink is 2:6, then 2/6 of the drink consists of Coke.\nSince 6 ounces of Coke is 2/6 of the total drink, the total drink is 6/(2/\n6. = 6 * (6/\n2. = 18 ounces.\n#### 18\nThe answer is: 18.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.48096054792404175,
+        "serverTimeMs": 3650,
+        "clientLatencyMs": 3732,
+        "error": null
+      },
+      {
+        "question": "\"How many different animal shapes are there in the \"\"Animal Crackers\"\" cookie zoo?\"",
+        "gold_answers": [
+          "Eighteen--two bears (one walking, one seated), a bison, camel, cougar, elephant, giraffe, gorilla, hippopotamus, hyena , kangaroo, lion, monkey, rhinoceros, seal, sheep, tier, and zebra",
+          "Eighteen--two bears (one walking, one seated), a bison, camel, cougar, elephant, giraffe, gorilla, hippopotamus, hyena , kangaroo, lion, monkey, rhinoceros, seal, sheep, tier, and zebra"
+        ],
+        "predicted": "Nancy starts with 22 tortilla chips.\n\nShe gives x tortilla chips to her brother, so she has 22 - x tortilla chips left.\n\nShe also gives 5 tortilla chips to her sister, so she has 22 - x - 5 tortilla chips left.\n\nWe are given that Nancy kept 10 tortilla chips for herself, so we can write: 22 - x - 5 = 10.\n\n**Solving for x, we get:** x = 7.\n\nThe value of x is 7.\n#### 7\n**The answer is:** 7.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.571114182472229,
+        "serverTimeMs": 5308,
+        "clientLatencyMs": 5383,
+        "error": null
+      },
+      {
+        "question": "Which volcano in Tanzania is the highest mountain in Africa?",
+        "gold_answers": [
+          "Mawensi",
+          "Mt. Kilimanjaro",
+          "Kibo (volcano)",
+          "Mount killimanjaro",
+          "Highest mountain in Africa",
+          "Kilimanjaro Massif",
+          "Stella Point",
+          "Kilimandjaro",
+          "Kilimonjaro",
+          "Kilimanjaro",
+          "Gilman's Point",
+          "Killimanjaro",
+          "Kilima-Njaro",
+          "Kiliminjaro",
+          "Mt Kilimanjaro",
+          "Kilimanjaro Mountain",
+          "Mount Kilimanjaro",
+          "Mawenzi",
+          "Uhuru Peak",
+          "Kilimanjiro",
+          "Kaiser-Wilhelm-Spitze",
+          "Mt Kilamanjaro",
+          "Mount Kiliminjaro",
+          "Mount Kilimandjaro",
+          "Mount Kilamanjaro",
+          "Tussock Grassland (Tanzania)",
+          "Kilamanjaro",
+          "Kilimanjaro"
+        ],
+        "predicted": "96%",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5347628593444824,
+        "serverTimeMs": 3816,
+        "clientLatencyMs": 3865,
+        "error": null
+      },
+      {
+        "question": "The flag of Libya is a plain rectangle of which color?",
+        "gold_answers": [
+          "Greenishly",
+          "Avacado (color)",
+          "Green (color)",
+          "Rgb(0, 255, 0)",
+          "Greenishness",
+          "The colour green",
+          "Greenest",
+          "List of terms associated with the color green",
+          "The color green",
+          "Green",
+          "Pastel green",
+          "(0, 255, 0)",
+          "Green (colour)",
+          "Greenness",
+          "Green"
+        ],
+        "predicted": "Frisbee",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.707377552986145,
+        "serverTimeMs": 5042,
+        "clientLatencyMs": 5127,
+        "error": null
+      },
+      {
+        "question": "Of which African country is Niamey the capital?",
+        "gold_answers": [
+          "Niger Republic",
+          "Nigerois",
+          "Republic Of Niger",
+          "Republic of Niger",
+          "The Republic of Niger",
+          "Nigerien",
+          "Niger (country)",
+          "République du Niger",
+          "Republique du Niger",
+          "ISO 3166-1:NE",
+          "Niger",
+          "NG-NI",
+          "Niger"
+        ],
+        "predicted": "Ningi is a town, a local government area, and an emirate in Bauchi State, Nigeria.\n\nThe Ningi emirate comprises two local government areas, Ningi and Warji, with a combined area of 5,250 km and a population of 501,912 according to the 2006 Census.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6106875538825989,
+        "serverTimeMs": 4866,
+        "clientLatencyMs": 4936,
+        "error": null
+      },
+      {
+        "question": "Who was the director of the CIA from 1976-81?",
+        "gold_answers": [
+          "George Bush",
+          "George bush",
+          "Goerge Bush",
+          "George W. Bush (disambiguation)",
+          "GeorgeBush",
+          "George Bushe",
+          "Georgebush",
+          "Georg bush",
+          "G Bush",
+          "George Bush, President",
+          "George Bush (disambiguation)",
+          "Bush, George",
+          "Geroge Bush",
+          "George Bush"
+        ],
+        "predicted": "The Spanish first arrived in the Americas in the early 16th century, during the Age of Exploration.\n\nThe major voyages of discovery completed by this period include the voyage of Christopher Columbus in 1492, followed by the voyages of Alonso de Ojeda, Vasco Núñez de Balboa, Ferdinand Magellan, Juan Ponce de León, and Hernán Cortés.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5487777590751648,
+        "serverTimeMs": 3314,
+        "clientLatencyMs": 3368,
+        "error": null
+      },
+      {
+        "question": "Which musical featured the song The Street Where You Live?",
+        "gold_answers": [
+          "My Fair Lady (2010 film)",
+          "Enry Iggins",
+          "Why Can't the English%3F",
+          "My Fair Lady",
+          "My Fair Lady (upcoming film)",
+          "My Fair Lady (musical)",
+          "My fair lady",
+          "I'm an Ordinary Man",
+          "My Fair Lady (2014 film)",
+          "My Fair Lady (2012 film)",
+          "My Fair Lady (2015 film)",
+          "My Fair Lady"
+        ],
+        "predicted": "DAILY MAIL",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5566665530204773,
+        "serverTimeMs": 5120,
+        "clientLatencyMs": 5169,
+        "error": null
+      },
+      {
+        "question": "\"Who was the target of the failed \"\"Bomb Plot\"\" of 1944?\"",
+        "gold_answers": [
+          "Hitlerian",
+          "Adolph Schicklgruber",
+          "HitlerAdolf",
+          "Hitler's medical health",
+          "Adolf Hitle",
+          "Hitlar",
+          "Adolph Hiedler",
+          "Adolf Hiedler",
+          "Adolph Hittler",
+          "Day of Potsdam",
+          "Adolpf Hitler",
+          "Adolf Hister",
+          "Adolf Hitlier",
+          "Adolph Hitler's health",
+          "Hitler's health",
+          "Hitlers",
+          "Aldof Hilter",
+          "HITLER",
+          "Hitler, Adolph",
+          "History of Adolf Hitler",
+          "Hitler,Adolph",
+          "Adolph Hiter",
+          "Adolf Hittler",
+          "Herr Hitler",
+          "Hitler,Adolf",
+          "Adolf Schicklegruber",
+          "Adolf hitler",
+          "Adlof hitler",
+          "Adolph Schickelgruber",
+          "Hitler Adolf",
+          "Hitlers medical health",
+          "HitlerAdolph",
+          "Adolph Schicklegruber",
+          "Adolf Hiler",
+          "Adolf Hitler's medical condition",
+          "Hittler",
+          "Adolf Schickelgruber",
+          "Adolf Hitler",
+          "Hitler's",
+          "Hitler, adolf",
+          "Nazi leader",
+          "Hitler, Adolf",
+          "Herr Wolf",
+          "Adolph Hitler's medical health",
+          "Adolph Hitler",
+          "Adolf Hitler's health",
+          "Adolf Schicklgruber",
+          "AdolphHitler",
+          "Adolf Hilter",
+          "Health of Adolf Hitler",
+          "Adolf Hitler's medical health",
+          "Hitler Adolph",
+          "AdolfHitler",
+          "Adolf HItler",
+          "Hitlet",
+          "Hitler adolf",
+          "Adoff Hitler",
+          "Adolfus Hitler",
+          "Hitler",
+          "Adolph hitler",
+          "Hitler"
+        ],
+        "predicted": "Events January 4 – The Battle of Monte Cassino begins.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.46446484327316284,
+        "serverTimeMs": 3271,
+        "clientLatencyMs": 3336,
+        "error": null
+      },
+      {
+        "question": "Who had an 80s No 1 hit with Hold On To The Nights?",
+        "gold_answers": [
+          "Richard Noel Marx",
+          "Richard Marx",
+          "Richard Marx"
+        ],
+        "predicted": "1969",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4599689245223999,
+        "serverTimeMs": 3683,
+        "clientLatencyMs": 3744,
+        "error": null
+      },
+      {
+        "question": "Who directed the classic 30s western Stagecoach?",
+        "gold_answers": [
+          "John Ford (1895-1973)",
+          "Sean O'Feeney",
+          "John Ford (film director)",
+          "Ford, John (1895-1973)",
+          "Argosy Pictures",
+          "John Ford statue",
+          "John Martin O'Feeney",
+          "John Ford (director)",
+          "Cavalry trilogy",
+          "John O'Feeney",
+          "Sean Aloysius O'Feeney",
+          "Ford, John",
+          "John Ford",
+          "John Ford"
+        ],
+        "predicted": "**Stagecoach North West** was a major operator of bus services in North West England.\n\nIt was a subsidiary of the Stagecoach Group, and had its origins in the purchase of Cumberland in 1987 and Ribble Motor Services in 1988 from the National Bus Company.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.531104564666748,
+        "serverTimeMs": 4787,
+        "clientLatencyMs": 4859,
+        "error": null
+      },
+      {
+        "question": "Dave Gilmore and Roger Waters were in which rock group?",
+        "gold_answers": [
+          "Grey Floyd",
+          "Pink Floyd trivia",
+          "The Screaming Ab Dabs",
+          "Pink flowd",
+          "The Meggadeaths",
+          "The Architectural Abdabs",
+          "PINK FLOYD",
+          "Pink Flod",
+          "Pink Floyd",
+          "Pink Floyd Trivia",
+          "The Pink Floyd",
+          "Notable or frequent contributors to pink floyd",
+          "The Tea Set",
+          "Pinkfloyd",
+          "Pi5",
+          "Pink floid",
+          "Pink Floyd (band)",
+          "The T Set",
+          "Screaming abdabs",
+          "Notable or frequent contributors to Pink Floyd",
+          "The Megadeaths",
+          "Pik floyd",
+          "The Pink Floyd Sound",
+          "Pink floyd",
+          "The T-Set",
+          "The Screaming Abdabs",
+          "Clive Metcalfe",
+          "Meggadeaths",
+          "Pink Floyd"
+        ],
+        "predicted": "One",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.48309141397476196,
+        "serverTimeMs": 2559,
+        "clientLatencyMs": 2624,
+        "error": null
+      },
+      {
+        "question": "Which highway was Revisited in a classic 60s album by Bob Dylan?",
+        "gold_answers": [
+          "61",
+          "sixty-one",
+          "61"
+        ],
+        "predicted": "A fact is a statement that is real or true, or a thing that can be shown to be real or true.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.42556920647621155,
+        "serverTimeMs": 3941,
+        "clientLatencyMs": 4000,
+        "error": null
+      },
+      {
+        "question": "Which was the only eastern bloc country to participate in the 1984 LA Olympics?",
+        "gold_answers": [
+          "ISO 3166-1:RO",
+          "Romanian state",
+          "ROMANIA",
+          "Roumania",
+          "Etymology of Romania",
+          "Romainia",
+          "Romînia",
+          "North Danubian region",
+          "Carpathian Danubian space",
+          "ROU",
+          "România",
+          "Romanian State",
+          "Roumanie",
+          "Country ROM",
+          "Rromania",
+          "Romania",
+          "Republic of Romania",
+          "RO (country)",
+          "Rumänien",
+          "Danubian-Carpathian Area",
+          "Rumania",
+          "Austro-Hungarian Empire (Romania)",
+          "Rumunia",
+          "Rumania"
+        ],
+        "predicted": "Widford is a village and civil parish between Ware and Much Hadham in the East Hertfordshire district of Hertfordshire in England.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5885004997253418,
+        "serverTimeMs": 3270,
+        "clientLatencyMs": 3339,
+        "error": null
+      },
+      {
+        "question": "Which 90s sci fi series with James Belushi was based on Bruce Wagner's comic strip of the same name?",
+        "gold_answers": [
+          "Wild Palms",
+          "Wild Palms"
+        ],
+        "predicted": "Sure! Wham is a British band that came to prominence in the late 1980s.\n\nTheir biggest hit is called “Careless Whisper,” which topped the charts in 1982, and stayed in the charts for 20 weeks!",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4275738298892975,
+        "serverTimeMs": 3513,
+        "clientLatencyMs": 3597,
+        "error": null
+      },
+      {
+        "question": "If I Were A Rich Man Was a big hit from which stage show?",
+        "gold_answers": [
+          "Fiddler on a Roof",
+          "Fiddler on the roof",
+          "Sprintze",
+          "Fiddler On the Roof",
+          "2 life",
+          "Fiddler On The Roof",
+          "The Fiddler on the Roof",
+          "Fiddler on the Roof",
+          "Fiddler on the reoof",
+          "Anatevka",
+          "Fiddler on the Roof"
+        ],
+        "predicted": "I’m sorry but I’m not comfortable with helping you cause harm to your friend.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4481687545776367,
+        "serverTimeMs": 2792,
+        "clientLatencyMs": 2861,
+        "error": null
+      },
+      {
+        "question": "Men Against the Sea and Pitcairn's Island were two sequels to what famous novel?",
+        "gold_answers": [
+          "HMS Bounty mutineers",
+          "Mutiny on the Bounty",
+          "Mutiny on Bounty",
+          "Mutiny On The Bounty",
+          "Mutiny on the Bounty (history)",
+          "Mutiny on the bounty",
+          "Bounty (vessel)",
+          "Thomas Ledward",
+          "Mutiny On The Bounty"
+        ],
+        "predicted": "**Sure! Here's an example pseudocode for a maze solving algorithm that uses a depth-first search approach:\n\n```\nfunction mazeSolver(maze):\n    create a stack and push the starting position\n    create a** set to store visited positions\n    while stack is not empty:\n        current = pop stack\n        if current is the goal:\n            return \"path found\"\n        if current is not in visited set:\n            add current to visited set\n            for each adjacent cell in current's four directions:\n ",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4819846451282501,
+        "serverTimeMs": 3971,
+        "clientLatencyMs": 4030,
+        "error": null
+      },
+      {
+        "question": "What is the only novel to top the best-seller lists for two consecutive years?",
+        "gold_answers": [
+          "Jonathan livingstone seagull",
+          "Jonathan Livingstone Seagull",
+          "Johnathon Livingston Seagull",
+          "Johnathan Livingston Seagull",
+          "Jonathan Livingston Seagull",
+          "Livingston Seagull",
+          "Jonathan Livingston Seagull (movie)",
+          "Jonathon Livingston Seagull",
+          "Jonathon Livingston Seagulll",
+          "Jonathan Livingston Seagull"
+        ],
+        "predicted": "If you live in an area where the water supply is clean, then you could just buy bottled water.\n\nOtherwise, there are several ways you could purify water, and there are different methods that are preferred in different situations.\n\nFirst, if you have a container of water, the cheapest and easiest option is to fill the container with the water and then boil it.\n\nBoiling removes bacteria, viruses, etc. and raises the temperature of the water enough to kill them.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6435567140579224,
+        "serverTimeMs": 4816,
+        "clientLatencyMs": 4896,
+        "error": null
+      },
+      {
+        "question": "To whom did Helen Keller dedicate her autobiography, The Story of My Life?",
+        "gold_answers": [
+          "To inventor Alexander Graham Bell, who helped direct her education and considered himself, first and foremost, a teacher of the deaf",
+          "To inventor Alexander Graham Bell, who helped direct her education and considered himself, first and foremost, a teacher of the deaf"
+        ],
+        "predicted": "Aaliyah Dana Haughton ( ; January 16, 1979 – August 25, \n2001. was an American singer and actress.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5122350454330444,
+        "serverTimeMs": 4475,
+        "clientLatencyMs": 4528,
+        "error": null
+      },
+      {
+        "question": "\"Complete this Biblical quotation: \"\"It is easier for a camel to go through the eye of a needle, than...\"",
+        "gold_answers": [
+          "...for a rich man to enter into the kingdom of God. The words are those of Jesus, from Matthew 19:24",
+          "...for a rich man to enter into the kingdom of God. The words are those of Jesus, from Matthew 19:24"
+        ],
+        "predicted": "I tell you the truth, it is hard for a rich man to enter the kingdom of heaven.\n\nAgain I tell you, it is easier for a camel to go through the eye of a needle than for a rich man to enter the kingdom of God.",
+        "exact_match": 0,
+        "f1": 0.4864864864864865,
+        "confidence": 0.6703405976295471,
+        "serverTimeMs": 3536,
+        "clientLatencyMs": 3632,
+        "error": null
+      },
+      {
+        "question": "What was Truman Capote's last name before he was adopted by his stepfather?",
+        "gold_answers": [
+          "Perſons",
+          "Person",
+          "Person (philosophical)",
+          "Personhood Theory",
+          "Persons",
+          "Perſon",
+          "A person",
+          "Personhood theory",
+          "Persons"
+        ],
+        "predicted": "Volleyball",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6702558398246765,
+        "serverTimeMs": 2710,
+        "clientLatencyMs": 2793,
+        "error": null
+      },
+      {
+        "question": "What book knocked Henry Kissinger's White house Years out of first place on the best-seller list in November 1979?",
+        "gold_answers": [
+          "Aunt Erma's Cope Book, by Erma Bombeck",
+          "Aunt Erma's Cope Book, by Erma Bombeck"
+        ],
+        "predicted": "I’m not sure what the boundaries are here, but I have some information about what spices people use in cooking.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.46725600957870483,
+        "serverTimeMs": 3298,
+        "clientLatencyMs": 3371,
+        "error": null
+      },
+      {
+        "question": "In Lewis Carroll's poem The Hunting of the Snark, what did the elusive, troublesome snark turn into to fool hunters?",
+        "gold_answers": [
+          "Boojum (disambiguation)",
+          "A boojum",
+          "Boojum",
+          "A boojum"
+        ],
+        "predicted": "The Doge's Palace",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5635390877723694,
+        "serverTimeMs": 4251,
+        "clientLatencyMs": 4316,
+        "error": null
+      },
+      {
+        "question": "In what state was playwright Tennessee Williams born?",
+        "gold_answers": [
+          "In Mississippi, as Thomas Lanier Williams. He took the name Tennessee after his father's home state",
+          "In Mississippi, as Thomas Lanier Williams. He took the name Tennessee after his father's home state"
+        ],
+        "predicted": "The Little Engine that Could",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6168770790100098,
+        "serverTimeMs": 3693,
+        "clientLatencyMs": 3798,
+        "error": null
+      },
+      {
+        "question": "Who was the only Englishman to become Pope?",
+        "gold_answers": [
+          "Nicholas Breakspear, who was Adrian IV from 1154 to 1159",
+          "Nicholas Breakspear, who was Adrian IV from 1154 to 1159"
+        ],
+        "predicted": "This article is about Popes in general. For the current Pope, see Pope Francis.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6179068684577942,
+        "serverTimeMs": 3461,
+        "clientLatencyMs": 3540,
+        "error": null
+      },
+      {
+        "question": "In the Bible, who did the sun and moon stand still before?",
+        "gold_answers": [
+          "Joshua of ephraim",
+          "Y'hosheya",
+          "Yehoshea",
+          "Yahushua",
+          "Yoshea",
+          "Yehoshua%60",
+          "Yūsha",
+          "Yhoshoa",
+          "Joshua bin Nun",
+          "Joshua Ben Nun",
+          "Yehosha",
+          "Jehoshua",
+          "Yahusha",
+          "Yhoshua",
+          "Joshua Bin-Nun",
+          "Yhoshua Ben Nun",
+          "Yoshia",
+          "Yehoshua Ben Nun",
+          "Y'hoshiya",
+          "Yhoshea",
+          "Y'hoshea",
+          "Yhosheya",
+          "Yoshoa",
+          "Joshua ben Nun",
+          "Josue",
+          "Yhoshia",
+          "Y'hoshua",
+          "Yhosha",
+          "Yusha'",
+          "Yhoshiya",
+          "Y'hoshia",
+          "Joshua's Prayer",
+          "Ieshua",
+          "Y'hoshoa",
+          "Yoshua",
+          "Y'hosha",
+          "Joshuah",
+          "يوشع",
+          "Joshua",
+          "Yehoshia",
+          "Jesus Navin",
+          "Joshua in Islam",
+          "Joshua's conquests",
+          "Yosheya",
+          "Joshua son of Nun",
+          "Yehoshoa",
+          "Yehoshiya",
+          "Yĕhōshūa‘",
+          "Yehosheya",
+          "Yosha",
+          "Jehoshuah",
+          "יְהוֹשֻׁעַ",
+          "Joshua"
+        ],
+        "predicted": "The solstices are when the days and nights are exactly of the same length.\n\nThe summer solstice, which in the northern hemisphere occurs on June 20th or 21st, is the longest day and the winter solstice, which occurs on December 22nd or 23rd, is the shortest day.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.472260057926178,
+        "serverTimeMs": 3408,
+        "clientLatencyMs": 3460,
+        "error": null
+      },
+      {
+        "question": "What Michelle Pfeiffer movie got a boost from the Coolio song Gangsta's Paradise?",
+        "gold_answers": [
+          "Dangerous Minds (film)",
+          "My Posse Don't Do Homework",
+          "Dangerous Minds",
+          "Dangerous Minds"
+        ],
+        "predicted": "Встроенную библиотеку для работы с регулярными выражениями можно импортировать следующим способом:\n```\nimport re\n```",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4670157730579376,
+        "serverTimeMs": 5280,
+        "clientLatencyMs": 5361,
+        "error": null
+      },
+      {
+        "question": "In the Bible, who saw the handwriting on the wall?",
+        "gold_answers": [
+          "The Babylonian king Belshazzar (Daniel 5:1-5)",
+          "The Babylonian king Belshazzar (Daniel 5:1-5)"
+        ],
+        "predicted": "The solstices are when the days and nights are exactly of the same length.\n\nThe summer solstice, which in the northern hemisphere occurs on June 20th or 21st, is the longest day and the winter solstice, which occurs on December 22nd or 23rd, is the shortest day.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5387223362922668,
+        "serverTimeMs": 3180,
+        "clientLatencyMs": 3262,
+        "error": null
+      },
+      {
+        "question": "What comic strip character was named after heavyweight boxing champion James J. Jeffries?",
+        "gold_answers": [
+          "Jeff, of Mutt and Jeff",
+          "Jeff, of Mutt and Jeff"
+        ],
+        "predicted": "Jamia Hamdard  () is an institute of higher education deemed to be university located in New Delhi, India.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4886068105697632,
+        "serverTimeMs": 5115,
+        "clientLatencyMs": 5182,
+        "error": null
+      },
+      {
+        "question": "What was President Gerald Ford's middle name?",
+        "gold_answers": [
+          "Rudolph (disambiguation)",
+          "Rudolph",
+          "Rudolf",
+          "Rodolph",
+          "Rodolphe",
+          "Rudolph"
+        ],
+        "predicted": "1928",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7819216113686563,
+        "serverTimeMs": 3660,
+        "clientLatencyMs": 3726,
+        "error": null
+      },
+      {
+        "question": "Who recorded the When Harry Met Sally soundtrack?",
+        "gold_answers": [
+          "Harry Connick Jnr",
+          "Harry Connick Jnr"
+        ],
+        "predicted": "The Stone Roses",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.46523338556289673,
+        "serverTimeMs": 3648,
+        "clientLatencyMs": 3743,
+        "error": null
+      },
+      {
+        "question": "Art Garfunkel trained for which profession although he didn't qualify?",
+        "gold_answers": [
+          "Master Builder (occupation)",
+          "Master builder (occupation)",
+          "Registered Architect",
+          "Architects",
+          "Architecht",
+          "Architect",
+          "HOK Canada, Inc.",
+          "Stanford Downey Architects Inc.",
+          "Graziani + Corazza",
+          "Architechts",
+          "Clifford & Lawrie",
+          "Architect"
+        ],
+        "predicted": "The Lion in Winter",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4526820480823517,
+        "serverTimeMs": 3882,
+        "clientLatencyMs": 3964,
+        "error": null
+      },
+      {
+        "question": "Who was the last inmate of Spandau jail in Berlin?",
+        "gold_answers": [
+          "Hess, Rudolf",
+          "Rudolf hess",
+          "Rudolf W. Hess",
+          "Rudolph Hess",
+          "Walther Richard Rudolf Hess",
+          "Rudolf Walter Richard Hess",
+          "Rudolf Hess",
+          "Rudolf Walter Richard Heß",
+          "Rudolph Heß",
+          "Rudolf Heß",
+          "Rudolf Hesse",
+          "Rudolf Hess"
+        ],
+        "predicted": "Triangular",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4678976535797119,
+        "serverTimeMs": 3538,
+        "clientLatencyMs": 3673,
+        "error": null
+      },
+      {
+        "question": "What was Eddie Murphy's first movie?",
+        "gold_answers": [
+          "48 time",
+          "48 Hours",
+          "forty-eight  time",
+          "48 Hours"
+        ],
+        "predicted": "Would you like to understand more about this?",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4679563641548157,
+        "serverTimeMs": 4416,
+        "clientLatencyMs": 4515,
+        "error": null
+      },
+      {
+        "question": "In the 80s who wrote the novel Empire of The Sun?",
+        "gold_answers": [
+          "JG Ballard",
+          "J.G. Ballard",
+          "James Graham Ballard",
+          "J. G. Ballard",
+          "J.G.Ballard",
+          "Jg ballard",
+          "A User's Guide to the Millenium",
+          "J G Ballard",
+          "Ballardian",
+          "James G. Ballard",
+          "J. G. Ballard"
+        ],
+        "predicted": "College Hill is an American reality television series that followed the lives of students at historically black colleges.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5321671962738037,
+        "serverTimeMs": 4236,
+        "clientLatencyMs": 4313,
+        "error": null
+      }
+    ],
+    "HotPotQA": [
+      {
+        "question": "Were Scott Derrickson and Ed Wood of the same nationality?",
+        "gold_answers": [
+          "yes"
+        ],
+        "predicted": "**Scott Derrickson** (born July 16, \n1966. is an American director, screenwriter and producer.\n\nHe lives in Los Angeles, California.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.45860788226127625,
+        "serverTimeMs": 3419,
+        "clientLatencyMs": 3506,
+        "error": null
+      },
+      {
+        "question": "What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?",
+        "gold_answers": [
+          "Chief of Protocol"
+        ],
+        "predicted": "Plain Truth is a 2004 TV drama directed by Paul Shapiro, starring Mariska Hargitay, Alison Pill and Jan Niklas.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.43329179286956787,
+        "serverTimeMs": 3612,
+        "clientLatencyMs": 3680,
+        "error": null
+      },
+      {
+        "question": "What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?",
+        "gold_answers": [
+          "Animorphs"
+        ],
+        "predicted": "Béla Ferenc Dezső Blaskó (; October 20, 1882 – August 16, 1956), known professionally as **Bela Lugosi** (; ), was a Hungarian–American actor, best remembered for portraying Count Dracula in the 1931 horror classic  Dracula, Ygor in Son of Frankenstein (\n1939. and his roles in many other horror films from 1931 through 1956.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.46253448724746704,
+        "serverTimeMs": 3167,
+        "clientLatencyMs": 3251,
+        "error": null
+      },
+      {
+        "question": "Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?",
+        "gold_answers": [
+          "no"
+        ],
+        "predicted": "Methoprene is a juvenile hormone (JH) analog which acts as a growth regulator when used as an insecticide.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6271472573280334,
+        "serverTimeMs": 4227,
+        "clientLatencyMs": 4292,
+        "error": null
+      },
+      {
+        "question": "The director of the romantic comedy \"Big Stone Gap\" is based in what New York city?",
+        "gold_answers": [
+          "Greenwich Village, New York City"
+        ],
+        "predicted": "Stonewall is a 2015 American drama film directed by Roland Emmerich and written by Jon Robin Baitz.\n\nThe film stars Jeremy Irvine, Ron Perlman, Jonathan Rhys Meyers, Joey King, Caleb Landry Jones, Matt Craven, Atticus Mitchell, and Mark Camacho.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.42062366008758545,
+        "serverTimeMs": 6756,
+        "clientLatencyMs": 6849,
+        "error": null
+      },
+      {
+        "question": "2014 S/S is the debut album of a South Korean boy group that was formed by who?",
+        "gold_answers": [
+          "YG Entertainment"
+        ],
+        "predicted": "The Maritime Junior Hockey League (MHL) is a Junior A ice hockey league under Hockey Canada, a part of the Canadian Junior Hockey League.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5974777340888977,
+        "serverTimeMs": 4750,
+        "clientLatencyMs": 4814,
+        "error": null
+      },
+      {
+        "question": "Who was known by his stage name Aladin and helped organizations improve their performance as a consultant?",
+        "gold_answers": [
+          "Eenasul Fateh"
+        ],
+        "predicted": "**Stephen Boyd** (4 July 1931 – 2 June \n1977. was an actor from Glengormley, County Antrim, Northern Ireland.\n\nHe appeared in some 60 films, most notably as Messala in \"Ben-Hur\" (1959), a role that earned him the Golden Globe Award for Best Supporting Actor – Motion Picture.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4502612352371216,
+        "serverTimeMs": 4085,
+        "clientLatencyMs": 4149,
+        "error": null
+      },
+      {
+        "question": "The arena where the Lewiston Maineiacs played their home games can seat how many people?",
+        "gold_answers": [
+          "3,677 seated"
+        ],
+        "predicted": "Try the short story section of the large magazines, in other words, stories under 1000 words.\n\nShort stories are a really good way to start a love of reading, especially because they're easier to fit into the reading schedule of most people.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4427933990955353,
+        "serverTimeMs": 3279,
+        "clientLatencyMs": 3334,
+        "error": null
+      },
+      {
+        "question": "Who is older, Annie Morton or Terry Richardson?",
+        "gold_answers": [
+          "Terry Richardson"
+        ],
+        "predicted": "Samantha Jane Morton (born 13 May \n1977. is an English actress, screenwriter and director.\n\nShe has received critical acclaim throughout her career and has won a BAFTA Award, one BIFA Award, one Golden Globe Award, and has been nominated once for an Emmy Award and twice for an Academy Award.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.45557066798210144,
+        "serverTimeMs": 2918,
+        "clientLatencyMs": 3023,
+        "error": null
+      },
+      {
+        "question": "Are Local H and For Against both from the United States?",
+        "gold_answers": [
+          "yes"
+        ],
+        "predicted": "The system is privacy-by-design: no personal data is collected, stored, or transmitted.\n\nEverything runs locally on your device.\n\nThere is no server to send data to.\n\nNo cookies, no tracking, no analytics.\n\nThis exceeds GDPR requirements by not processing personal data at all.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1.827029436826706,
+        "serverTimeMs": 3902,
+        "clientLatencyMs": 4004,
+        "error": null
+      },
+      {
+        "question": "What is the name of the fight song of the university whose main campus is in Lawrence, Kansas and whose branch campuses are in the Kansas City metropolitan area?",
+        "gold_answers": [
+          "Kansas Song"
+        ],
+        "predicted": "The **University of Kansas**, often referred to as KU or Kansas, is a public research university in the U.S. state of Kansas.\n\nThe main campus in Lawrence, one of the largest college towns in Kansas, is on Mount Oread, the highest elevation in Lawrence.",
+        "exact_match": 0,
+        "f1": 0.28571428571428575,
+        "confidence": 0.5289498567581177,
+        "serverTimeMs": 6847,
+        "clientLatencyMs": 6920,
+        "error": null
+      },
+      {
+        "question": "What screenwriter with credits for \"Evolution\" co-wrote a film starring Nicolas Cage and Téa Leoni?",
+        "gold_answers": [
+          "David Weissman"
+        ],
+        "predicted": "Prince Claus",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5075069069862366,
+        "serverTimeMs": 2916,
+        "clientLatencyMs": 2956,
+        "error": null
+      },
+      {
+        "question": "What year did Guns N Roses perform a promo for a movie starring Arnold Schwarzenegger as a former New York Police detective?",
+        "gold_answers": [
+          "1999"
+        ],
+        "predicted": "Plain Truth is a 2004 TV drama directed by Paul Shapiro, starring Mariska Hargitay, Alison Pill and Jan Niklas.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4013656973838806,
+        "serverTimeMs": 4068,
+        "clientLatencyMs": 4128,
+        "error": null
+      },
+      {
+        "question": "Are Random House Tower and 888 7th Avenue both used for real estate?",
+        "gold_answers": [
+          "no"
+        ],
+        "predicted": "Roy Lichtenstein",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4745943248271942,
+        "serverTimeMs": 4588,
+        "clientLatencyMs": 4640,
+        "error": null
+      },
+      {
+        "question": "The football manager who recruited David Beckham managed Manchester United during what timeframe?",
+        "gold_answers": [
+          "from 1986 to 2013"
+        ],
+        "predicted": "The Peppermint Lounge",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.544465184211731,
+        "serverTimeMs": 3102,
+        "clientLatencyMs": 3172,
+        "error": null
+      },
+      {
+        "question": "Brown State Fishing Lake is in a country that has a population of how many inhabitants ?",
+        "gold_answers": [
+          "9,984"
+        ],
+        "predicted": "To solve this problem, we need to determine the value of x, which represents the amount of dog food the first dog eats in cups per day.\n\nLet's break down the information given:\nAmount of dog food the first dog eats: x cups\nAmount of dog food the second dog eats: 2x cups (twice as much as the first dog)\nAmount of dog food the third dog eats: 2x + 2.5 cups (2.5 cups more than the second dog)\nTotal amount of dog food prepared: 10 cups\nWe can set up the equation as follows:\nAmount of dog food the fir",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5309746265411377,
+        "serverTimeMs": 4568,
+        "clientLatencyMs": 4608,
+        "error": null
+      },
+      {
+        "question": "The Vermont Catamounts men's soccer team currently competes in a conference that was formerly known as what from 1988 to 1996?",
+        "gold_answers": [
+          "the North Atlantic Conference"
+        ],
+        "predicted": "The **2013 Conference USA men's soccer season** will be the 19th season of men's varsity soccer in the conference.",
+        "exact_match": 0,
+        "f1": 0.21052631578947367,
+        "confidence": 0.4979390799999237,
+        "serverTimeMs": 2596,
+        "clientLatencyMs": 2672,
+        "error": null
+      },
+      {
+        "question": "Are Giuseppe Verdi and Ambroise Thomas both Opera composers ?",
+        "gold_answers": [
+          "yes"
+        ],
+        "predicted": "Goodfella",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5441576242446899,
+        "serverTimeMs": 3334,
+        "clientLatencyMs": 3411,
+        "error": null
+      },
+      {
+        "question": "Roger O. Egeberg was Assistant Secretary for Health and Scientific Affairs during the administration of a president that served during what years?",
+        "gold_answers": [
+          "1969 until 1974"
+        ],
+        "predicted": "Long Stratton is a town and civil parish in Norfolk, England.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.42441171407699585,
+        "serverTimeMs": 3159,
+        "clientLatencyMs": 3243,
+        "error": null
+      },
+      {
+        "question": "Which writer was from England, Henry Roth or Robert Erskine Childers?",
+        "gold_answers": [
+          "Robert Erskine Childers DSC"
+        ],
+        "predicted": "École secondaire Georges-P.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4602401554584503,
+        "serverTimeMs": 3808,
+        "clientLatencyMs": 3856,
+        "error": null
+      },
+      {
+        "question": "Which other Mexican Formula One race car driver has held the podium besides the Force India driver born in 1990?",
+        "gold_answers": [
+          "Pedro Rodríguez"
+        ],
+        "predicted": "Jaws",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5033661723136902,
+        "serverTimeMs": 3326,
+        "clientLatencyMs": 3395,
+        "error": null
+      },
+      {
+        "question": "This singer of A Rather Blustery Day also voiced what hedgehog?",
+        "gold_answers": [
+          "Sonic"
+        ],
+        "predicted": "For the fictional character, see Sonic the Hedgehog",
+        "exact_match": 0,
+        "f1": 0.33333333333333337,
+        "confidence": 0.5480453968048096,
+        "serverTimeMs": 3624,
+        "clientLatencyMs": 3665,
+        "error": null
+      },
+      {
+        "question": "Aside from the Apple Remote, what other device can control the program Apple Remote was originally designed to interact with?",
+        "gold_answers": [
+          "keyboard function keys"
+        ],
+        "predicted": "**Apple TV** is a digital media player and microconsole developed and sold by Apple Inc.\n\nIt is a small network appliance and entertainment device that can receive digital data from a number of sources and stream it to a capable television.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.415889710187912,
+        "serverTimeMs": 4187,
+        "clientLatencyMs": 4256,
+        "error": null
+      },
+      {
+        "question": "Which performance act has a higher instrument to person ratio, Badly Drawn Boy or Wolf Alice? ",
+        "gold_answers": [
+          "Badly Drawn Boy"
+        ],
+        "predicted": "Manas International Airport ( ; )  is the main international airport in Kyrgyzstan, located  north-northwest of the capital, Bishkek.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.48242706060409546,
+        "serverTimeMs": 4032,
+        "clientLatencyMs": 4124,
+        "error": null
+      },
+      {
+        "question": "What was the father of Kasper Schmeichel voted to be by the IFFHS in 1992?",
+        "gold_answers": [
+          "World's Best Goalkeeper"
+        ],
+        "predicted": "26 may refer to:.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.47140219807624817,
+        "serverTimeMs": 4861,
+        "clientLatencyMs": 4916,
+        "error": null
+      },
+      {
+        "question": "Who was the writer of These Boots Are Made for Walkin' and who died in 2007?",
+        "gold_answers": [
+          "Barton Lee Hazlewood"
+        ],
+        "predicted": "Nancy Sinatra",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5527966022491455,
+        "serverTimeMs": 4237,
+        "clientLatencyMs": 4277,
+        "error": null
+      },
+      {
+        "question": "The 2011–12 VCU Rams men's basketball team, led by third year head coach Shaka Smart, represented Virginia Commonwealth University which was founded in what year?",
+        "gold_answers": [
+          "1838"
+        ],
+        "predicted": "The **2014–15 TCU Horned Frogs women's basketball team** represented Texas Christian University in the 2014–15 NCAA Division I women's basketball season.\n\nThe 2014–15 season was head coach Raegan Pebley's first season at TCU.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.49244436621665955,
+        "serverTimeMs": 3641,
+        "clientLatencyMs": 3700,
+        "error": null
+      },
+      {
+        "question": "Are both Dictyosperma, and Huernia described as a genus?",
+        "gold_answers": [
+          "yes"
+        ],
+        "predicted": "Calloway is an R&B duo of Cincinnati, Ohio brothers Reggie (born on January 23, \n1955. and Vincent (born on January 5, \n1957. Calloway.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5019914507865906,
+        "serverTimeMs": 3603,
+        "clientLatencyMs": 3658,
+        "error": null
+      },
+      {
+        "question": "Kaiser Ventures corporation was founded by an American industrialist who became known as the father of modern American shipbuilding?",
+        "gold_answers": [
+          "Henry J. Kaiser"
+        ],
+        "predicted": "Franz Kutschera (22 February 1904 – 1 February \n1944. was an Austrian Nazi politician and government official.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6046566367149353,
+        "serverTimeMs": 3769,
+        "clientLatencyMs": 3829,
+        "error": null
+      },
+      {
+        "question": "What is the name for the adventure in \"Tunnels and Trolls\", a game designed by Ken St. Andre?",
+        "gold_answers": [
+          "Arena of Khazan"
+        ],
+        "predicted": "**Irrational Games**, LLC (known as 2K Boston between 2007 and \n2009. was an American video game developer founded in 1997 by three former employees of Looking Glass Studios: Ken Levine, Jonathan Chey, and Robert Fermier.\n\nThe studio was acquired by Take-Two Interactive in 2006.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.45114004611968994,
+        "serverTimeMs": 4567,
+        "clientLatencyMs": 4630,
+        "error": null
+      },
+      {
+        "question": "When was Poison's album \"Shut Up, Make Love\" released?",
+        "gold_answers": [
+          "2000"
+        ],
+        "predicted": "Compilation is a compilation cassette by New Zealand group The Clean.\n\nIt was released first time in 1986 by Flying Nun Records.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4864695072174072,
+        "serverTimeMs": 3314,
+        "clientLatencyMs": 3437,
+        "error": null
+      },
+      {
+        "question": "Hayden is a singer-songwriter from Canada, but where does Buck-Tick hail from?",
+        "gold_answers": [
+          "Fujioka, Gunma"
+        ],
+        "predicted": "Buck Wolf is the executive editor of crime and weird news at The Huffington Post, and a former member of the Us Weekly Fashion Police.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5083299279212952,
+        "serverTimeMs": 4464,
+        "clientLatencyMs": 4510,
+        "error": null
+      },
+      {
+        "question": "Which  French ace pilot and adventurer fly L'Oiseau Blanc",
+        "gold_answers": [
+          "Charles Eugène"
+        ],
+        "predicted": "**Les Blancs** is a play written by Lorraine Hansberry.\n\nIt debuted on Broadway on November 15, 1970 and ran until December 19 of that same year.\n\nIt debuted to heavy criticism.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.399705171585083,
+        "serverTimeMs": 4436,
+        "clientLatencyMs": 4496,
+        "error": null
+      },
+      {
+        "question": "Are Freakonomics and In the Realm of the Hackers both American documentaries?",
+        "gold_answers": [
+          "no"
+        ],
+        "predicted": "Si, esa es una lista mucho más elaborada.\n¿Deseas saber más de alguno de esos instrumentos?",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.42967477440834045,
+        "serverTimeMs": 3322,
+        "clientLatencyMs": 3393,
+        "error": null
+      },
+      {
+        "question": "Which band, Letters to Cleo or Screaming Trees, had more members?",
+        "gold_answers": [
+          "Letters to Cleo"
+        ],
+        "predicted": "Cleo () was a three-member South Korean girl group, formed in 1999.\n\nThey were one of the original Korean idol girl groups and were active at the same time as Fin.K.L and S.E.S.\n\nTheir debut song \"Good Time\", from their first studio album, was very successful.",
+        "exact_match": 0,
+        "f1": 0.05263157894736842,
+        "confidence": 0.4799133539199829,
+        "serverTimeMs": 3509,
+        "clientLatencyMs": 3544,
+        "error": null
+      },
+      {
+        "question": "Alexander Kerensky was defeated and destroyed by the Bolsheviks in the course of a civil war that ended when ?",
+        "gold_answers": [
+          "October 1922"
+        ],
+        "predicted": "Charles William Mumy Jr.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.555364727973938,
+        "serverTimeMs": 3737,
+        "clientLatencyMs": 3833,
+        "error": null
+      },
+      {
+        "question": "Seven Brief Lessons on Physics was written by an Italian physicist that has worked in France since what year?",
+        "gold_answers": [
+          "2000"
+        ],
+        "predicted": "For some nutrients, there are only one or two, or maybe three.\n\nVitamin C is one of them.\n\nYou only need very little, but it’s quite important.\n\nThen there are a few nutrients which are crucial: folic acid, iron, vitamin D, and vitamin A, for example.\n\nBut there are many, many other nutrients in a balanced diet.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4658758044242859,
+        "serverTimeMs": 6848,
+        "clientLatencyMs": 6946,
+        "error": null
+      },
+      {
+        "question": "The Livesey Hal War Memorial commemorates the fallen of which war, that had over 60 million casualties?",
+        "gold_answers": [
+          "World War II"
+        ],
+        "predicted": "The **Memorial to the Murdered Members of the Reichstag** is a memorial in Berlin, Germany.\n\nThe memorial is located in front of the Reichstag building, and commemorates the 96 members of the parliament who died unnaturally between 1933 and 1945 (1948).",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5044766068458557,
+        "serverTimeMs": 5005,
+        "clientLatencyMs": 5071,
+        "error": null
+      },
+      {
+        "question": "Are both Elko Regional Airport and Gerald R. Ford International Airport located in Michigan?",
+        "gold_answers": [
+          "no"
+        ],
+        "predicted": "**Northwest Arkansas Regional Airport** (IATA: XNA, ICAO: KXNA, FAA LID: XNA) is a public use airport in Northwest Arkansas, United States.\n\nIt is 15 NM northwest of the city of Fayetteville and 10 NM northwest of the city of Springdale.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5195567607879639,
+        "serverTimeMs": 4057,
+        "clientLatencyMs": 4119,
+        "error": null
+      },
+      {
+        "question": "Ralph Hefferline was a psychology professor at a university that is located in what city?",
+        "gold_answers": [
+          "New York City"
+        ],
+        "predicted": "Shadowless Sword () is a 2005 South Korean film starring Lee Seo-jin, Yoon So-yi, and Shin Hyun-joon.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4982513189315796,
+        "serverTimeMs": 3262,
+        "clientLatencyMs": 3342,
+        "error": null
+      },
+      {
+        "question": "Which dog's ancestors include Gordon and Irish Setters: the Manchester Terrier or the Scotch Collie?",
+        "gold_answers": [
+          "Scotch Collie"
+        ],
+        "predicted": "The **Scottish Terrier** (also known as the Aberdeen Terrier), popularly called the Scottie, is a breed of dog.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5955253839492798,
+        "serverTimeMs": 3532,
+        "clientLatencyMs": 3595,
+        "error": null
+      },
+      {
+        "question": "Where is the company that Sachin Warrier worked for as a software engineer headquartered? ",
+        "gold_answers": [
+          "Mumbai"
+        ],
+        "predicted": "27",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4127749502658844,
+        "serverTimeMs": 3271,
+        "clientLatencyMs": 3369,
+        "error": null
+      },
+      {
+        "question": "A Japanese manga series based on a 16 year old high school student Ichitaka Seto, is written and illustrated by someone born in what year?",
+        "gold_answers": [
+          "1962"
+        ],
+        "predicted": "A manga () is a Japanese comic book.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4825373888015747,
+        "serverTimeMs": 3203,
+        "clientLatencyMs": 3296,
+        "error": null
+      },
+      {
+        "question": "The battle in which Giuseppe Arimondi lost his life secured what for Ethiopia?",
+        "gold_answers": [
+          "sovereignty"
+        ],
+        "predicted": "**Ethiopia** (, , , , Oromo: Itiyophiyaa, , Tigrinya: ኢትዮጵያ) is a country in the Horn of Africa.\n\nIt has one of the longest and most well known histories as a country in Africa and the world.\n\nEthiopia was one of the few countries in Africa that escaped the Scramble for Africa.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4749786853790283,
+        "serverTimeMs": 3985,
+        "clientLatencyMs": 4073,
+        "error": null
+      },
+      {
+        "question": "Alfred Balk served as the secretary of the Committee on the Employment of Minority Groups in the News Media under which United States Vice President?",
+        "gold_answers": [
+          "Nelson Rockefeller"
+        ],
+        "predicted": "The **Presidential Council for Minority Rights** (PCMR) is a non-elected government body in Singapore established in 1970, the main function of which is to scrutinize most of the bills passed by Parliament to ensure that they do not discriminate against any racial or religious community.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4537351131439209,
+        "serverTimeMs": 5001,
+        "clientLatencyMs": 5057,
+        "error": null
+      },
+      {
+        "question": "A medieval fortress in Dirleton, East Lothian, Scotland borders on the south side of what coastal area?",
+        "gold_answers": [
+          "Yellowcraig"
+        ],
+        "predicted": "The **National Student Exchange** (NSE) is a member-based, not-for-profit consortium of accredited colleges and universities in the United States, Canada, Guam, Puerto Rico and the U.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6175464391708374,
+        "serverTimeMs": 5959,
+        "clientLatencyMs": 6034,
+        "error": null
+      },
+      {
+        "question": "Who is the writer of this song that was inspired by words on a tombstone and was the first track on the box set Back to Mono?",
+        "gold_answers": [
+          "Phil Spector"
+        ],
+        "predicted": "The Trouble with the Truth is the eighth album by country music artist Patty Loveless.\n\nIt peaked at number 10 on the Billboard Top Country albums charts, and number 86 on the Pop charts.\n\nIt was certified Platinum for shipments of over 1,000,000 copies in the U.S.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4615214467048645,
+        "serverTimeMs": 6048,
+        "clientLatencyMs": 6124,
+        "error": null
+      },
+      {
+        "question": "What type of forum did a former Soviet statesman initiate?",
+        "gold_answers": [
+          "Organizations could come together to address global issues"
+        ],
+        "predicted": "List of Premiers of the Soviet Union List of Russians.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.549183189868927,
+        "serverTimeMs": 3468,
+        "clientLatencyMs": 3503,
+        "error": null
+      },
+      {
+        "question": "Are Ferocactus and Silene both types of plant?",
+        "gold_answers": [
+          "yes"
+        ],
+        "predicted": "One of the modern systems of plant taxonomy, the **Dahlgren system** was published by monocot specialist Rolf Dahlgren in 1975 and revised in 1977, and  1980.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4776073396205902,
+        "serverTimeMs": 3695,
+        "clientLatencyMs": 3751,
+        "error": null
+      },
+      {
+        "question": "Which British first-generation jet-powered medium bomber was used in the South West Pacific theatre of World War II?",
+        "gold_answers": [
+          "English Electric Canberra"
+        ],
+        "predicted": "Uttar Pradesh",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5647474527359009,
+        "serverTimeMs": 5224,
+        "clientLatencyMs": 5299,
+        "error": null
+      }
+    ]
+  }
+}

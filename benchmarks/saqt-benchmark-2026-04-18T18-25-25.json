@@ -1,0 +1,2687 @@
+{
+  "meta": {
+    "date": "2026-04-18T18:25:25.667Z",
+    "api": "http://localhost:3002/api/saqt/query",
+    "samplesPerDataset": 50,
+    "concurrency": 1,
+    "timeoutMs": 30000
+  },
+  "summaries": {
+    "NaturalQuestions": {
+      "n": 50,
+      "errors": 0,
+      "exactMatch": 0.02,
+      "f1": 0.02,
+      "avgLatency": 3776.7,
+      "p50Latency": 3913,
+      "p95Latency": 5487,
+      "avgConf": 0.747049558877945
+    },
+    "TriviaQA": {
+      "n": 50,
+      "errors": 0,
+      "exactMatch": 0,
+      "f1": 0.0031085043988269795,
+      "avgLatency": 4203.84,
+      "p50Latency": 4201,
+      "p95Latency": 6713,
+      "avgConf": 0.654723816871643
+    },
+    "HotPotQA": {
+      "n": 50,
+      "errors": 0,
+      "exactMatch": 0,
+      "f1": 0.0016666666666666666,
+      "avgLatency": 4457.88,
+      "p50Latency": 4153,
+      "p95Latency": 6714,
+      "avgConf": 0.6214539980888367
+    },
+    "OVERALL": {
+      "n": 150,
+      "errors": 0,
+      "exactMatch": 0.006666666666666667,
+      "f1": 0.008258390355164548,
+      "avgLatency": 4146.14,
+      "p50Latency": 4005,
+      "p95Latency": 6570,
+      "avgConf": 0.6744091246128082
+    }
+  },
+  "results": {
+    "NaturalQuestions": [
+      {
+        "question": "who turned out to be the mother on how i met your mother",
+        "gold_answers": [
+          "Tracy McConnell"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8209383070468903,
+        "serverTimeMs": 3032,
+        "clientLatencyMs": 3068,
+        "error": null
+      },
+      {
+        "question": "animals that are active at dawn and dusk",
+        "gold_answers": [
+          "Crepuscular",
+          "crepuscular",
+          "Crepuscular animals"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5966219067573548,
+        "serverTimeMs": 3649,
+        "clientLatencyMs": 3668,
+        "error": null
+      },
+      {
+        "question": "whos jack the ripper in gotham by gaslight",
+        "gold_answers": [
+          "Jacob Packer"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7764968991279603,
+        "serverTimeMs": 4712,
+        "clientLatencyMs": 4747,
+        "error": null
+      },
+      {
+        "question": "where do secondary xylem and phloem cells arise from",
+        "gold_answers": [
+          "The vascular cambium",
+          "the vascular cambium"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6459734439849854,
+        "serverTimeMs": 1848,
+        "clientLatencyMs": 1877,
+        "error": null
+      },
+      {
+        "question": "who did johnny manziel play college football for",
+        "gold_answers": [
+          "Texas A&M",
+          "Texas A&M University",
+          "Texas A&M Aggies"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.733711075782776,
+        "serverTimeMs": 3592,
+        "clientLatencyMs": 3632,
+        "error": null
+      },
+      {
+        "question": "who sings the christmas song mary did you know",
+        "gold_answers": [
+          "Michael English"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7772781729698182,
+        "serverTimeMs": 3896,
+        "clientLatencyMs": 3939,
+        "error": null
+      },
+      {
+        "question": "who sang gonna sit right down and write myself a letter",
+        "gold_answers": [
+          "Fats Waller"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.9224652230739594,
+        "serverTimeMs": 3550,
+        "clientLatencyMs": 3556,
+        "error": null
+      },
+      {
+        "question": "who picks the players in the nfl draft",
+        "gold_answers": [
+          "each team"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.698587715625763,
+        "serverTimeMs": 2444,
+        "clientLatencyMs": 2461,
+        "error": null
+      },
+      {
+        "question": "who sings got my mind set on you",
+        "gold_answers": [
+          "James Ray",
+          "George Harrison"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8630149126052857,
+        "serverTimeMs": 5453,
+        "clientLatencyMs": 5487,
+        "error": null
+      },
+      {
+        "question": "when did the song here comes the boom come out",
+        "gold_answers": [
+          "May 2002",
+          "May 14, 2002"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6087953805923463,
+        "serverTimeMs": 3398,
+        "clientLatencyMs": 3438,
+        "error": null
+      },
+      {
+        "question": "who sang the song i think we're alone now",
+        "gold_answers": [
+          "Tiffany",
+          "Tommy James and the Shondells"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7173823475837708,
+        "serverTimeMs": 2895,
+        "clientLatencyMs": 2920,
+        "error": null
+      },
+      {
+        "question": "when did we first put a rover on mars",
+        "gold_answers": [
+          "January 2004"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7127670884132385,
+        "serverTimeMs": 1702,
+        "clientLatencyMs": 1728,
+        "error": null
+      },
+      {
+        "question": "who were the members of the traveling wilburys group",
+        "gold_answers": [
+          "Roy Orbison",
+          "Jeff Lynne",
+          "George Harrison",
+          "Bob Dylan",
+          "Tom Petty"
+        ],
+        "predicted": "I think this is the correct order: brush, floss, rinse mouth with mouth wash.\n\nI think the most important thing is the brush and the floss, and you want to make sure you rinse your mouth out, especially if you have a bad taste in your mouth.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6902045607566833,
+        "serverTimeMs": 2512,
+        "clientLatencyMs": 2553,
+        "error": null
+      },
+      {
+        "question": "who won game 4 of the 2000 nba finals",
+        "gold_answers": [
+          "Los Angeles Lakers"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7175962209701539,
+        "serverTimeMs": 3196,
+        "clientLatencyMs": 3230,
+        "error": null
+      },
+      {
+        "question": "what is the highest peak in the ozarks",
+        "gold_answers": [
+          "Lookout",
+          "Buffalo Lookout"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5652566730976105,
+        "serverTimeMs": 2649,
+        "clientLatencyMs": 2677,
+        "error": null
+      },
+      {
+        "question": "what is the name of the last episode of spongebob",
+        "gold_answers": [
+          "\"Bottle Burglars\"",
+          "The String"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6450532138347627,
+        "serverTimeMs": 4990,
+        "clientLatencyMs": 5026,
+        "error": null
+      },
+      {
+        "question": "when was the last grand slam hit in the world series",
+        "gold_answers": [
+          "2016"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7559734463691712,
+        "serverTimeMs": 4173,
+        "clientLatencyMs": 4210,
+        "error": null
+      },
+      {
+        "question": "when does episode 29 of boruto come out",
+        "gold_answers": [
+          "October 18, 2017"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5771788358688354,
+        "serverTimeMs": 5255,
+        "clientLatencyMs": 5280,
+        "error": null
+      },
+      {
+        "question": "where was the tv show in the heat of the night filmed",
+        "gold_answers": [
+          "Decatur in Dekalb County",
+          "Atlanta",
+          "Covington, Georgia",
+          "Hammond, Louisiana"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7584485292434693,
+        "serverTimeMs": 3523,
+        "clientLatencyMs": 3573,
+        "error": null
+      },
+      {
+        "question": "who are the judges on do you think you can dance",
+        "gold_answers": [
+          "Nigel Lythgoe",
+          "Mia Michaels",
+          "Adam Shankman"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7641521692276002,
+        "serverTimeMs": 3150,
+        "clientLatencyMs": 3179,
+        "error": null
+      },
+      {
+        "question": "the most common form of megalithic architecture in europe is",
+        "gold_answers": [
+          "the portal tomb",
+          "portal tomb"
+        ],
+        "predicted": "1500s, news underwent a shift from factual and precise economic reporting, to a more emotive and freewheeling format. (Private newsletters containing important",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6167176127433778,
+        "serverTimeMs": 5408,
+        "clientLatencyMs": 5441,
+        "error": null
+      },
+      {
+        "question": "how long was dark side of the moon number 1",
+        "gold_answers": [
+          "a week",
+          "42:49"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.755432140827179,
+        "serverTimeMs": 4316,
+        "clientLatencyMs": 4336,
+        "error": null
+      },
+      {
+        "question": "the golden age of india took place during the rule of the",
+        "gold_answers": [
+          "Chandragupta II",
+          "Samudragupta",
+          "Chandragupta I",
+          "Gupta Empire",
+          "Vishnu Gupta",
+          "the Guptas",
+          "Sri-Gupta"
+        ],
+        "predicted": "spread of printing presses and the creation of new markets in the 1500s, news underwent a shift from factual and precise economic reporting, to a more",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8649496078491211,
+        "serverTimeMs": 3872,
+        "clientLatencyMs": 3913,
+        "error": null
+      },
+      {
+        "question": "what is the origin of the name robinson",
+        "gold_answers": [
+          "English language patronymic surname"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6519486308097839,
+        "serverTimeMs": 4268,
+        "clientLatencyMs": 4288,
+        "error": null
+      },
+      {
+        "question": "when was the first super bowl the eagles ever won",
+        "gold_answers": [
+          "2017",
+          "1948"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7421198666095734,
+        "serverTimeMs": 3971,
+        "clientLatencyMs": 4005,
+        "error": null
+      },
+      {
+        "question": "who has the best batting average in test cricket",
+        "gold_answers": [
+          "Australia's Sir Donald Bradman",
+          "Don Bradman",
+          "Sir Donald Bradman"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.712427854537964,
+        "serverTimeMs": 2485,
+        "clientLatencyMs": 2534,
+        "error": null
+      },
+      {
+        "question": "how long has it been since eagles went to super bowl",
+        "gold_answers": [
+          "2018"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7032787024974824,
+        "serverTimeMs": 4420,
+        "clientLatencyMs": 4443,
+        "error": null
+      },
+      {
+        "question": "who built the tower of london in 1066",
+        "gold_answers": [
+          "William the Conqueror"
+        ],
+        "predicted": "1500s, news underwent a shift from factual and precise economic reporting, to a more emotive and freewheeling format. (Private newsletters containing important",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6456796884536744,
+        "serverTimeMs": 3370,
+        "clientLatencyMs": 3409,
+        "error": null
+      },
+      {
+        "question": "where is fulda and what is its significance",
+        "gold_answers": [
+          "Hesse, Germany",
+          "on the river Fulda"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6682575583457947,
+        "serverTimeMs": 4204,
+        "clientLatencyMs": 4233,
+        "error": null
+      },
+      {
+        "question": "who overthrew the mongols and established the ming dynasty",
+        "gold_answers": [
+          "Zhu Yuanzhang"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6191496193408966,
+        "serverTimeMs": 3538,
+        "clientLatencyMs": 3570,
+        "error": null
+      },
+      {
+        "question": "when was the first book made into a movie",
+        "gold_answers": [
+          "1924"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7913881778717041,
+        "serverTimeMs": 3668,
+        "clientLatencyMs": 3697,
+        "error": null
+      },
+      {
+        "question": "when did tim hortons open in the usa",
+        "gold_answers": [
+          "1981"
+        ],
+        "predicted": "1981",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6613564491271973,
+        "serverTimeMs": 4249,
+        "clientLatencyMs": 4284,
+        "error": null
+      },
+      {
+        "question": "when was the reaper invented by cyrus mccormick",
+        "gold_answers": [
+          "1837",
+          "1834"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6420979976654053,
+        "serverTimeMs": 5189,
+        "clientLatencyMs": 5217,
+        "error": null
+      },
+      {
+        "question": "when is the next scandal episode coming out",
+        "gold_answers": [
+          "February 1, 2018"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6773950397968292,
+        "serverTimeMs": 2150,
+        "clientLatencyMs": 2190,
+        "error": null
+      },
+      {
+        "question": "who wrote antigone and what are the dates of his birth and death",
+        "gold_answers": [
+          "winter 406/5 BC",
+          "c. 497/6",
+          "Sophocles"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6992284178733826,
+        "serverTimeMs": 2217,
+        "clientLatencyMs": 2246,
+        "error": null
+      },
+      {
+        "question": "what goes on the bottom of shepherd's pie",
+        "gold_answers": [
+          "minced meat",
+          "mashed potato"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.9133618354797364,
+        "serverTimeMs": 4172,
+        "clientLatencyMs": 4210,
+        "error": null
+      },
+      {
+        "question": "where does the ohio river and the mississippi river meet",
+        "gold_answers": [
+          "Cairo, Illinois"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6531017899513245,
+        "serverTimeMs": 2482,
+        "clientLatencyMs": 2516,
+        "error": null
+      },
+      {
+        "question": "how many kilometers of great wall of china",
+        "gold_answers": [
+          "8,850 km",
+          "21,196 km"
+        ],
+        "predicted": "simple and factual. The wire services brought forth the &quot;inverted pyramid&quot; model of news copy, in which key facts appear at the start of the text, and more",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.68221315741539,
+        "serverTimeMs": 5894,
+        "clientLatencyMs": 5941,
+        "error": null
+      },
+      {
+        "question": "when did they start assigning social security numbers at birth",
+        "gold_answers": [
+          "1990"
+        ],
+        "predicted": "I never share SSNs or personal identification numbers.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 3.025059700012207,
+        "serverTimeMs": 5740,
+        "clientLatencyMs": 5800,
+        "error": null
+      },
+      {
+        "question": "under the federal unemployment tax act which party pays unemployment taxes",
+        "gold_answers": [
+          "Employers",
+          "the employer"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5677419185638428,
+        "serverTimeMs": 4981,
+        "clientLatencyMs": 5013,
+        "error": null
+      },
+      {
+        "question": "what are the names of the hunger games",
+        "gold_answers": [
+          "The Hunger Games"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6417611241340637,
+        "serverTimeMs": 3934,
+        "clientLatencyMs": 3959,
+        "error": null
+      },
+      {
+        "question": "where does safe haven take place in the book",
+        "gold_answers": [
+          "Southport, North Carolina"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.57900829911232,
+        "serverTimeMs": 4158,
+        "clientLatencyMs": 4183,
+        "error": null
+      },
+      {
+        "question": "who played jason in friday the 13th the final chapter",
+        "gold_answers": [
+          "Ted White"
+        ],
+        "predicted": "Ari Lehman",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7046047449111938,
+        "serverTimeMs": 4369,
+        "clientLatencyMs": 4422,
+        "error": null
+      },
+      {
+        "question": "state the position of india in terms of population size",
+        "gold_answers": [
+          "second"
+        ],
+        "predicted": "spread of printing presses and the creation of new markets in the 1500s, news underwent a shift from factual and precise economic reporting, to a more",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8022945404052735,
+        "serverTimeMs": 2812,
+        "clientLatencyMs": 2832,
+        "error": null
+      },
+      {
+        "question": "real name of daya in taarak mehta ka ooltah chashmah",
+        "gold_answers": [
+          "Disha Vakani"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6592430770397186,
+        "serverTimeMs": 5357,
+        "clientLatencyMs": 5399,
+        "error": null
+      },
+      {
+        "question": "when does the shape of water book come out",
+        "gold_answers": [
+          "March 6, 2018"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7031022667884828,
+        "serverTimeMs": 3799,
+        "clientLatencyMs": 3847,
+        "error": null
+      },
+      {
+        "question": "who discovered that neural communication between cells occurs through chemicals",
+        "gold_answers": [
+          "Charles Sherrington"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6718098759651184,
+        "serverTimeMs": 2617,
+        "clientLatencyMs": 2670,
+        "error": null
+      },
+      {
+        "question": "who may be affected by monetary penalties imposed by the irs",
+        "gold_answers": [
+          "Taxpayers in the United States"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6071067512035371,
+        "serverTimeMs": 2051,
+        "clientLatencyMs": 2079,
+        "error": null
+      },
+      {
+        "question": "where did they film ghosts of girlfriends past",
+        "gold_answers": [
+          "Massachusetts"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.680951488018036,
+        "serverTimeMs": 3909,
+        "clientLatencyMs": 3945,
+        "error": null
+      },
+      {
+        "question": "aphasia is a term defining difficulty or loss of ability to",
+        "gold_answers": [
+          "comprehend and formulate language",
+          "formulate language"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6617938876152039,
+        "serverTimeMs": 3928,
+        "clientLatencyMs": 3964,
+        "error": null
+      }
+    ],
+    "TriviaQA": [
+      {
+        "question": "Which film features the Dawes Tomes Mousley Grubbs Fidelity Fiduciary Bank?",
+        "gold_answers": [
+          "Mrs. George Banks",
+          "Winifred banks",
+          "17 Cherry Tree Lane",
+          "Bert (Mary Poppins)",
+          "Mr. George Banks",
+          "Mr George Banks",
+          "Mary popins",
+          "Mrs George Banks",
+          "Marry Poppins",
+          "Mrs Winifred Banks",
+          "Mary Poppins",
+          "Mrs. Winifred Banks",
+          "Mary poppins",
+          "Winifred Banks",
+          "Mary Poppins"
+        ],
+        "predicted": "Cut Bank is a 2014 American thriller film directed by Matt Shakman and written by Roberto Patino.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5448259711265564,
+        "serverTimeMs": 5304,
+        "clientLatencyMs": 5350,
+        "error": null
+      },
+      {
+        "question": "What is Robin Williams character called in Good Morning Vietnam?",
+        "gold_answers": [
+          "Adrian",
+          "Adrián",
+          "Adrian"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.705492901802063,
+        "serverTimeMs": 3333,
+        "clientLatencyMs": 3362,
+        "error": null
+      },
+      {
+        "question": "Who plays Cruella de Vil in the 1996 live action version of 101 Dalmations?",
+        "gold_answers": [
+          "Glenn close",
+          "Close, Glenn",
+          "Glenn Close",
+          "Annie Starke",
+          "Glen close",
+          "Glen Close",
+          "Glenn Close"
+        ],
+        "predicted": "Spain national football team",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.602239727973938,
+        "serverTimeMs": 5369,
+        "clientLatencyMs": 5403,
+        "error": null
+      },
+      {
+        "question": "Who stars in the 2008 movie Seven Pounds?",
+        "gold_answers": [
+          "Sheree Zampino",
+          "Willard Christopher %22Will%22 Smith, Jr.",
+          "Willard Christopher Smith III",
+          "Will smith",
+          "Will Smith., Ltd.",
+          "Will Smith",
+          "Wil smith",
+          "Will Smif",
+          "List of songs recorded by Will Smith",
+          "WillSmith",
+          "Willard Christopher Smith, Jr.",
+          "Willard Christopher Smith",
+          "Willard Carroll Trey Smith III",
+          "Trey Smith (Will Smith)",
+          "Will S.",
+          "Willard Smith, Jr.",
+          "Fresh Prince (rapper)",
+          "Will Smith"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6253592252731324,
+        "serverTimeMs": 4152,
+        "clientLatencyMs": 4201,
+        "error": null
+      },
+      {
+        "question": "Marilyn Monroe starred in the Seven Year Itch. Who directed it?",
+        "gold_answers": [
+          "Billy Wilder",
+          "Bill Wilder",
+          "Billy Wilder's",
+          "Billy Wilder"
+        ],
+        "predicted": "Freddie & The Dreamers",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5449492335319519,
+        "serverTimeMs": 3586,
+        "clientLatencyMs": 3615,
+        "error": null
+      },
+      {
+        "question": "On Red Nose Day 2001 who won Celebrity Big Brother?",
+        "gold_answers": [
+          "Dee, Jack",
+          "Jack Dee's Sunday Service",
+          "Jack Dee's Saturday Night",
+          "James Andrew Innes %22Jack%22 Dee",
+          "Jack Dee",
+          "James Andrew Innes Dee",
+          "Jack Dee"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8217507243156433,
+        "serverTimeMs": 4288,
+        "clientLatencyMs": 4314,
+        "error": null
+      },
+      {
+        "question": "Excluding Lady Jane Grey, who were the five monarchs of the House of Tudor?",
+        "gold_answers": [
+          "Henry VII, Henry VIII, Edward VI, Mary I and Elizabeth I",
+          "Henry VII, Henry VIII, Edward VI, Mary I and Elizabeth I"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6324847102165223,
+        "serverTimeMs": 6722,
+        "clientLatencyMs": 6755,
+        "error": null
+      },
+      {
+        "question": "What are the four classical elements that make up our world?",
+        "gold_answers": [
+          "Air (not wind), Earth, Fire and Water",
+          "Air (not wind), Earth, Fire and Water"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7191119551658631,
+        "serverTimeMs": 5714,
+        "clientLatencyMs": 5753,
+        "error": null
+      },
+      {
+        "question": "What is the name of the London Underground station in EastEnders?",
+        "gold_answers": [
+          "Walford East tube station",
+          "Walford East",
+          "Walford",
+          "Walford east",
+          "Victoria Square, Walford",
+          "Roads in Walford",
+          "London Borough of Walford",
+          "Walford East"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6395876407623291,
+        "serverTimeMs": 6071,
+        "clientLatencyMs": 6107,
+        "error": null
+      },
+      {
+        "question": "How many runs did Donald Bradman score in his last ever test match innings?",
+        "gold_answers": [
+          "None",
+          "None (disambiguation)",
+          "None"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7354612708091737,
+        "serverTimeMs": 3168,
+        "clientLatencyMs": 3215,
+        "error": null
+      },
+      {
+        "question": "Nicknamed the cannibal, who is the only rider to have won all three jerseys in the same year in the Tour de France?",
+        "gold_answers": [
+          "Edward Merckx",
+          "Eddy merkx",
+          "Eddie Merckx",
+          "Edouard Louis Joseph, Baron Merckx",
+          "Eddy Merckx",
+          "Eddy Merx",
+          "Eddie Merx",
+          "Eddy Merkx",
+          "Eddy Merckx (cyclist)",
+          "Eddie Merkx",
+          "Eddy merx",
+          "Eddy Merckx"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5536475837230683,
+        "serverTimeMs": 2819,
+        "clientLatencyMs": 2854,
+        "error": null
+      },
+      {
+        "question": "Whose arch nemisis is the Red Skull?",
+        "gold_answers": [
+          "Runaways (comics)",
+          "The Runaways (comics)",
+          "Captain Americas",
+          "Fantastic Fourteen",
+          "Runaways (comics) (story arcs)",
+          "Runaways (comic)",
+          "Runaways (film)",
+          "Captain America's",
+          "Captain America's"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6254497706890106,
+        "serverTimeMs": 3793,
+        "clientLatencyMs": 3814,
+        "error": null
+      },
+      {
+        "question": "By what name is comic book villain Oswald Chesterfield Cobblepot better known?",
+        "gold_answers": [
+          "Penguin (comics)",
+          "The Penguin (comics)",
+          "Oswald Chesterfield Cobblepot",
+          "Actors to portray the Penguin",
+          "Cobblepot",
+          "Oswald Cobblepot",
+          "The penguin",
+          "The Penguin",
+          "Penguin (Oswald Chesterfield Cobblepot)",
+          "Penguin (character)",
+          "The Penguin"
+        ],
+        "predicted": "Gibraltar",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7040326595306396,
+        "serverTimeMs": 5380,
+        "clientLatencyMs": 5428,
+        "error": null
+      },
+      {
+        "question": "First appearing on TV in 1967, which detective solved all of his crimes sitting down?",
+        "gold_answers": [
+          "Ironside (disambiguation)",
+          "Ironside",
+          "Ironsides",
+          "Ironside"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6839034259319305,
+        "serverTimeMs": 2244,
+        "clientLatencyMs": 2286,
+        "error": null
+      },
+      {
+        "question": "How many times was Wyatt Earp shot?",
+        "gold_answers": [
+          "None",
+          "None (disambiguation)",
+          "None"
+        ],
+        "predicted": "simple and factual. The wire services brought forth the &quot;inverted pyramid&quot; model of news copy, in which key facts appear at the start of the text, and",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7079222202301027,
+        "serverTimeMs": 3262,
+        "clientLatencyMs": 3291,
+        "error": null
+      },
+      {
+        "question": "Which famous cowboy was created by George W. Trendle?",
+        "gold_answers": [
+          "Lone Ranger (comics)",
+          "The Lone Ranger (film project)",
+          "The Lone Ranger",
+          "Lone Ranger",
+          "Hi-yo, Silver, away!",
+          "Silver (horse)",
+          "The Lone Ranger"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6078589141368866,
+        "serverTimeMs": 2696,
+        "clientLatencyMs": 2738,
+        "error": null
+      },
+      {
+        "question": "The pub with the longest name in the UK has how many letters in it? 55, 75 or 95?",
+        "gold_answers": [
+          "55",
+          "fifty-five",
+          "55"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.633811616897583,
+        "serverTimeMs": 7366,
+        "clientLatencyMs": 7412,
+        "error": null
+      },
+      {
+        "question": "Which movie starred Michael Caine as a murderous transvestite psychiatrist?",
+        "gold_answers": [
+          "Dressed to Kill",
+          "Dressed to Kill (movie)",
+          "Dressed To Kill (song)",
+          "Dressed to kill",
+          "Dressed to Kill movie",
+          "Dressed to Kill (song)",
+          "Dressed To Kill",
+          "Dressed to Kill (disambiguation)",
+          "Dressed to Kill (film)",
+          "Dressed To Kill"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6491413295269013,
+        "serverTimeMs": 2517,
+        "clientLatencyMs": 2554,
+        "error": null
+      },
+      {
+        "question": "What is the brightest star in our celestial sphere?",
+        "gold_answers": [
+          "Sirus",
+          "Sirus"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6326846837997437,
+        "serverTimeMs": 4693,
+        "clientLatencyMs": 4722,
+        "error": null
+      },
+      {
+        "question": "In 1961, who famously scored six goals in a match but still ended up on the losing team in a FA Cup tie?",
+        "gold_answers": [
+          "Denis Law",
+          "Denis Law"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6729562163352967,
+        "serverTimeMs": 2604,
+        "clientLatencyMs": 2629,
+        "error": null
+      },
+      {
+        "question": "Which economist wrote The Wealth Of Nations?",
+        "gold_answers": [
+          "Vile maxim",
+          "A Smith",
+          "Adam Smith",
+          "Adam smith",
+          "Adam Smith"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6754716217517853,
+        "serverTimeMs": 4191,
+        "clientLatencyMs": 4214,
+        "error": null
+      },
+      {
+        "question": "Macbeth belonged to which royal house or dynasty?",
+        "gold_answers": [
+          "House of Dunkeld",
+          "House of Canmore",
+          "House of dunkeld",
+          "Canmores",
+          "Canmore dynasty",
+          "MacMalcolm",
+          "The Canmores",
+          "Dunkeld dynasty",
+          "House of Dunkeld"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6001044631004334,
+        "serverTimeMs": 4185,
+        "clientLatencyMs": 4231,
+        "error": null
+      },
+      {
+        "question": "Was James II known as: James The Bald, Fiery Face, or The Red King?",
+        "gold_answers": [
+          "Fiery Face",
+          "Fiery Face"
+        ],
+        "predicted": "The Animals",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5960812568664551,
+        "serverTimeMs": 6676,
+        "clientLatencyMs": 6713,
+        "error": null
+      },
+      {
+        "question": "In Harry Potter And The Goblet Of Fire, which dragon did Harry have to defeat?",
+        "gold_answers": [
+          "Ronan (Harry Potter)",
+          "Magorian",
+          "Crumple-horned Snorkack",
+          "Dementoid",
+          "Bowtruckle",
+          "Goblin (Harry Potter)",
+          "Ragnok",
+          "House elves",
+          "Magical creatures in Harry Potter",
+          "Firenze (centaur)",
+          "Crookshanks",
+          "House-Elves",
+          "Headless Hunt",
+          "Minor Harry Potter Beasts",
+          "Hedwig the owl",
+          "Non-human characters in Harry Potter",
+          "Magical Beasts (Harry Potter)",
+          "Stop the Outrageous Abuse of Our Fellow Magical Creatures and Campaign for a Change in Their Legal Status",
+          "Dobby the house elf",
+          "Society for the Promotion of Elvish Welfare",
+          "Cornish pixies",
+          "Veela (Harry Potter)",
+          "Kreacher",
+          "Dementors",
+          "Blast-Ended Skrewt",
+          "Troll (Harry Potter)",
+          "Pigwidgeon",
+          "Pets from Harry Potter",
+          "Sir Patrick Delaney-Podmore",
+          "House-elves",
+          "Werewolf (Harry Potter)",
+          "Winged Horse (Harry Potter)",
+          "Errol (Harry Potter)",
+          "Non-human Characters in Harry Potter",
+          "Magical Creatures (Harry Potter)",
+          "Hermes (Harry Potter)",
+          "Heliopath",
+          "Thestrals",
+          "Dementor's Kiss",
+          "Thestral",
+          "Pygmy Puff",
+          "Minor beasts in harry potter",
+          "Goblins (Harry Potter)",
+          "Pets in the Harry Potter series",
+          "Magizoology",
+          "Hungarian Horntail",
+          "House-elf",
+          "Basilisk (Harry Potter)",
+          "Dobby (Harry Potter)",
+          "Nagini (Harry Potter)",
+          "Peeves",
+          "The Society for the Promotion of Elfish Welfare",
+          "Bane (Harry Potter)",
+          "Boggart (Harry Potter)",
+          "Ghosts (Harry Potter)",
+          "Kreachers",
+          "Winky (house elf)",
+          "Dementor's kiss",
+          "Niffler",
+          "Firenze (Harry Potter)",
+          "Nargle",
+          "Trevor (Harry Potter)",
+          "Hedwig (Harry Potter)",
+          "House Elf",
+          "The Headless Hunt",
+          "House-Elf",
+          "Magical creatures (Harry Potter)",
+          "Tom Riddle's Basilisk",
+          "Griphook",
+          "Dobby- The House Elf (Harry Potter)",
+          "S.P.E.W",
+          "Winky (house-elf)",
+          "Minor harry potter beasts",
+          "Ghosts in Harry Potter",
+          "SOAOFMCCCTLS",
+          "Dementor",
+          "Kneazle",
+          "House elf",
+          "Magical Creatures in Harry Potter",
+          "Magical beasts (Harry Potter)",
+          "Gurg",
+          "Hungarian Horntail"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6563674569129945,
+        "serverTimeMs": 2392,
+        "clientLatencyMs": 2420,
+        "error": null
+      },
+      {
+        "question": "What is the full name of the train robber played by Phil Collins in a 1988 movie?",
+        "gold_answers": [
+          "Buster Edwards",
+          "Ronald %22Buster%22 Edwards",
+          "Buster Edwards"
+        ],
+        "predicted": "1500s, news underwent a shift from factual and precise economic reporting, to a more emotive and freewheeling format. (Private newsletters containing important",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5114224404096603,
+        "serverTimeMs": 5640,
+        "clientLatencyMs": 5699,
+        "error": null
+      },
+      {
+        "question": "Tony Hadley was the lead singer with which 1980s new romantic band?",
+        "gold_answers": [
+          "List of awards and nominations received by Spandau Ballet",
+          "Spandau Ballet",
+          "Spandeau Ballet",
+          "Spanadu Ballet",
+          "Spandou Ballet",
+          "Spandau Ballet"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6718879640102386,
+        "serverTimeMs": 4399,
+        "clientLatencyMs": 4442,
+        "error": null
+      },
+      {
+        "question": "What was the surname of the butler played by Gordon Jackson in Upstairs Downstairs?",
+        "gold_answers": [
+          "Hudson (disambiguation)",
+          "Hudson",
+          "Hudson"
+        ],
+        "predicted": "Richard Pemberton Bellamy, Viscount Bellamy of Haversham (1853–before \n1936. is a fictional character in the ITV period drama \"Upstairs, Downstairs\", that was originally broadcast for five series from 1971 to 1975.\n\nHe was portrayed by David Langton.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4980301558971405,
+        "serverTimeMs": 6158,
+        "clientLatencyMs": 6208,
+        "error": null
+      },
+      {
+        "question": "Which Jackson appeared in Celebrity Big Brother in January 2009?",
+        "gold_answers": [
+          "Latoya jackson",
+          "LeToya Jackson",
+          "Ja-Tail Records",
+          "Le Toya Jackson",
+          "La Toya Jackson",
+          "Latoya Jackson",
+          "LaToya Jackson",
+          "La Toya Jackson"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.694760811328888,
+        "serverTimeMs": 2955,
+        "clientLatencyMs": 2994,
+        "error": null
+      },
+      {
+        "question": "Who was the seventh president of the United States?",
+        "gold_answers": [
+          "Seventh President of the United States",
+          "Andrew Jackson presidency",
+          "Andrew Jackson/Second Inaugural Address",
+          "Andrew Jacksons presidency",
+          "Sharp Knife",
+          "President Andrew Jackson",
+          "Andrew Jackson assassination attempts",
+          "Jacksoninan Party (United States)",
+          "Jackson administration",
+          "Elizabeth Hutchinson Jackson",
+          "7th President of the United States",
+          "Andrew Jackson/First Inaugural Address",
+          "Andrew Jackson, Sr.",
+          "Age of Jackson",
+          "Hero of New Orleans",
+          "President Jackson",
+          "Jackson Administration",
+          "Robert B. Randolph",
+          "Jacksons bank veto",
+          "Andrew jackson",
+          "President Andrew Jackson’s",
+          "Andrew Jackson",
+          "Andrew Jackson"
+        ],
+        "predicted": "simple and factual. The wire services brought forth the &quot;inverted pyramid&quot; model of news copy, in which key facts appear at the start of the text, and",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7722820460796357,
+        "serverTimeMs": 4031,
+        "clientLatencyMs": 4063,
+        "error": null
+      },
+      {
+        "question": "In which country are the Angel Falls, the highest waterfall in the world?",
+        "gold_answers": [
+          "ISO 3166-1:VE",
+          "Venezula",
+          "Venezuela, RB",
+          "Republica de Venezuela",
+          "Venuzeula",
+          "The Bolivarian Republic Of Venezuela",
+          "Venizuela",
+          "Bolivarian Republic of Venezuela",
+          "Venezuelan",
+          "Venezuela",
+          "Republica Bolivariana de Venezuela",
+          "Venazeula",
+          "Bolivaria",
+          "Republic of Venezuela",
+          "Venezuala",
+          "Venecuela",
+          "Venzuela",
+          "VENEZULEA",
+          "República Bolivariana de Venezuela",
+          "Etymology of Venezuela",
+          "Benezuela",
+          "Venzauela",
+          "VEN",
+          "Venezeula",
+          "Republica de venezuela",
+          "Venezuela (Bolivarian Republic of)",
+          "BRV",
+          "Venezuela, Bolivarian Republic of",
+          "Name of Venezuela",
+          "V'zuela",
+          "Venezuela"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6538468718528748,
+        "serverTimeMs": 5899,
+        "clientLatencyMs": 5954,
+        "error": null
+      },
+      {
+        "question": "The 1955 comedy movie We're No Angels centred on three escaped convicts. Peter Ustinov and Aldo Ray were two, but who played the third?",
+        "gold_answers": [
+          "Humphrey boggart",
+          "Stephen Bogart",
+          "Humphrey bogart",
+          "Humphry Bogart",
+          "Humphrey DeForest Bogart",
+          "Tennis anyone",
+          "Bogart",
+          "Humphrey Bogart",
+          "Humprey Bogart",
+          "Humphrey Bogart"
+        ],
+        "predicted": "Angels is a 2014 Indian Malayalam social thriller film and the directorial debut of Jean Markose.\n\nThe film stars an ensemble cast consisting of Indrajith, Asha Sarath, Joy Mathew, Prem Prakash, Parvathy Menon, Baiju and Dinesh Panicker.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5276728868484497,
+        "serverTimeMs": 3382,
+        "clientLatencyMs": 3405,
+        "error": null
+      },
+      {
+        "question": "Who played King Arthur in the 1967 musical film Camelot?",
+        "gold_answers": [
+          "Richard Harris (actor)",
+          "Richard Saint John Harris",
+          "Richard St. J. Harris",
+          "Richard Harris",
+          "Richard harris",
+          "Richard St. John Harris",
+          "Richard Harris"
+        ],
+        "predicted": "King Arthur was a mythical king in the mythology of Great Britain.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5637997388839722,
+        "serverTimeMs": 2462,
+        "clientLatencyMs": 2495,
+        "error": null
+      },
+      {
+        "question": "Which country grows the largest number of mangoes?",
+        "gold_answers": [
+          "ഭാരത മഹാരാജ്യം",
+          "هندستانڀارت،",
+          "भारतीय गणराज्याच्या",
+          "Bhārtiya Prajāsattāk",
+          "Indian Republic",
+          "ভারতরাষ্টৃ",
+          "Indian republic",
+          "ಭಾರತ ಗಣರಾಜ್ಯ",
+          "Union of India",
+          "இந்தியக் குடியரசு",
+          "भारतीय प्रजासत्ताक",
+          "India (country)",
+          "ISO 3166-1:IN",
+          "Indea",
+          "Etymology of India",
+          "ভারত গণরাজ্য",
+          "Republic Of India",
+          "INDIA",
+          "ભારતીય ગણતંત્ર",
+          "ভারত",
+          "Republic of India",
+          "Les Indes",
+          "Bhārat Gaṇarājya",
+          "جمہوٗرِیت بًارت",
+          "भारतमहाराज्यम्",
+          "Indya",
+          "Bharat Ganrajya",
+          "جمہوریہ بھارت",
+          "இந்திய",
+          "ଭାରତ ଗଣରାଜ୍ଯ",
+          "भारत गणराज्य",
+          "Republic of india",
+          "जुम्हूरियत भारत",
+          "Hindio",
+          "The Republic of India",
+          "భారత గణతంత్ర రాజ్యము",
+          "India's",
+          "Hindistan",
+          "ਭਾਰਤ ਗਣਤੰਤਰ",
+          "Bhart",
+          "India",
+          "భారత రిపబ్లిక్",
+          "India.",
+          "ভাৰত গণৰাজ্য",
+          "Indian State",
+          "ISO 3166-1 alpha-3/IND",
+          "ভারতীয় প্রজাতন্ত্র",
+          "India"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6545259952545166,
+        "serverTimeMs": 2715,
+        "clientLatencyMs": 2760,
+        "error": null
+      },
+      {
+        "question": "Ecuador has a border with Peru and which other country ?",
+        "gold_answers": [
+          "República de Colombia",
+          "Etymology of Colombia",
+          "ISO 3166-1:CO",
+          "Colombia",
+          "The Republic of Colombia",
+          "Republica de Colombia",
+          "Colombiá",
+          "Republic of Colombia",
+          "Name of Colombia",
+          "Republic of Columbia",
+          "Colombia"
+        ],
+        "predicted": "The Republic of Ecuador and the United States of America maintained close ties based on mutual interests in maintaining democratic institutions; combating cannabis and cocaine; building trade, investment, and financial ties; cooperating in fostering Ecuador's economic development; and participating ",
+        "exact_match": 0,
+        "f1": 0.06451612903225806,
+        "confidence": 0.5961589813232422,
+        "serverTimeMs": 5579,
+        "clientLatencyMs": 5615,
+        "error": null
+      },
+      {
+        "question": "In 2009, who was convicted of the murder of Lana Clarkson?",
+        "gold_answers": [
+          "Annette Records",
+          "Phil spectre",
+          "Phil Spector",
+          "Harvey Philip Spector",
+          "Phillip Spector",
+          "Phil specter",
+          "Philip Spector",
+          "Phil spektor",
+          "Phil Specter",
+          "Phil Spector"
+        ],
+        "predicted": "Poland",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7083317041397095,
+        "serverTimeMs": 2766,
+        "clientLatencyMs": 2818,
+        "error": null
+      },
+      {
+        "question": "The left side of the heart pumps blood to all parts of the body, but the right side pumps blood to which organ in particular?",
+        "gold_answers": [
+          "Pulmonary surgical procedures",
+          "Pulmanary",
+          "Bird lung",
+          "Pulmo",
+          "Alveolar sacs",
+          "Bellows lung",
+          "Superior lobe of left lung",
+          "Inferior lobe of left lung",
+          "Pulmones",
+          "Pulmonarily",
+          "Avian lungs",
+          "Lung",
+          "Pulmonary gas exchange",
+          "The lungs",
+          "Lungs",
+          "Pulmo sinister",
+          "Pulmonary",
+          "Inferior lobe",
+          "Nonrespiratory functions of the lungs",
+          "Lunged",
+          "Circulatory lung",
+          "The lungs"
+        ],
+        "predicted": "right ventricle",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.595183253288269,
+        "serverTimeMs": 2957,
+        "clientLatencyMs": 3012,
+        "error": null
+      },
+      {
+        "question": "Which cartoon character lives in a pineapple under the sea?",
+        "gold_answers": [
+          "Money And Music",
+          "Sand Mountain (Bikini Bottom)",
+          "Boat mobile",
+          "Mrs. Puff's Boating School",
+          "Patrick Starfish (character)",
+          "Spongebob squarepants controversy",
+          "Krusty Towers (location)",
+          "SpongeBob squarepants",
+          "Bikini Bottom Jail",
+          "National No SpongeBob Day",
+          "The ugly barnacle",
+          "SpongeBob Universe",
+          "Bikini Bottom Boat",
+          "Boys Who Cry",
+          "Sea Needle",
+          "Spongebob (video game)",
+          "Krusty Krab 2",
+          "SpongeBob theme song",
+          "Frozen Face Off",
+          "Spongebobs",
+          "Krabby patty Secret Sauce",
+          "Music of SpongeBob SquarePants",
+          "TV Networks airing SpongeBob SquarePants",
+          "SpongeBob SquarePants (TV show)",
+          "The SpongeBob SquarePants Movie (film franchise)",
+          "Bikini Bottom News",
+          "The Rusty Krab",
+          "Shady Shoals Rest Homes",
+          "Chumbucket",
+          "SpongeBob Nation",
+          "Changed Names (SpongeBob TV Series)",
+          "Patrick Bio",
+          "SpongeBob SquareShorts",
+          "Stingray 5000",
+          "SpongeBob SquarePants",
+          "Shell Shack",
+          "Sponge-bob-square-pants",
+          "SpongeBob SquarePants theme song",
+          "Krabby Patty formula",
+          "Name changes on SpongeBob SquarePants",
+          "Spongebob joystick game",
+          "SpongeBoy SquarePants",
+          "SpongeBob SquarePants: Collapse!",
+          "Ultimate SpongeBob SpongeBash",
+          "Criticism of Spongebob Squarepants",
+          "Spongebob Sqaurepants",
+          "Goo Lagoon",
+          "Port-O-Head",
+          "The SpongeBob SquarePants Movie (series)",
+          "Spongebob (the show)",
+          "Spongeboob",
+          "The Wisenheimers",
+          "Bikini Bottom",
+          "Astrology with Squidward",
+          "SpongeBob SquarePants TV Game",
+          "Sponge Bob Squarepants",
+          "SpongeBob SquarePants (TV series)",
+          "Deuueaugh",
+          "Spongebob Squarepants theme song",
+          "Shady Shoals Rest Home",
+          "Krusty krab pizza",
+          "Jellyfish Fields",
+          "Bob Esponja",
+          "Barg'n Mart",
+          "Rusty Krab",
+          "Criticism of SpongeBob SquarePants",
+          "Kuddly Krab",
+          "Sponge Bob SquarePants",
+          "Recurring jokes in SpongeBob SquarePants",
+          "Patrick Star Adventures",
+          "Boatmobile",
+          "Spongbob",
+          "Krabby patty",
+          "Palace of Pranks",
+          "Jellyfishing(Hobby)",
+          "SüngerBob KarePantolon",
+          "Jellyfishing (hobby)",
+          "Frycook of The Chum Bucket",
+          "King Amoeba",
+          "List of places in Bikini Bottom",
+          "Monster Krabby Patty",
+          "List of SpongeBob SquarePants crew",
+          "SpongeBob SquarePants controversy",
+          "Evil Spongebob",
+          "Bikini Bottomshire",
+          "Spongebobsquarepants",
+          "Spongebob SquarePants",
+          "Mr. Seaweed",
+          "SpongeBob.com",
+          "What Zit Tooya",
+          "Who lives in a pineapple under the sea%3F",
+          "Spongebob",
+          "Doodle Bob",
+          "Spongebob Squarepants",
+          "SpongePedia",
+          "The KK",
+          "SquarePants",
+          "International Following of SpongeBob SquarePants",
+          "Spongebob squarepants series",
+          "First Nautical Bank",
+          "SpongeBob Squarepants Controversy",
+          "Sponge Bob",
+          "Queen Mildew",
+          "SpongeBob",
+          "Crabby Patty",
+          "Mr. Sea Chicken",
+          "Spongebob squarepants",
+          "The SpongeBob SquarePants Movie (film series)",
+          "What zit tooya",
+          "Every Villian is Lemons",
+          "Jellyfish (SpongeBob SquarePants)",
+          "History of SpongeBob SquarePants",
+          "Oops ouchskies",
+          "SPONGEBOB SQUAREPANTS",
+          "Bob l'éponge",
+          "Shady Shoals",
+          "Who lives in a pineapple under the sea",
+          "SpongeBob SquarePants cast",
+          "SpongeBoy Ahoy!",
+          "Spongebob's Jobs",
+          "Sponge Bob Square Pants",
+          "SpongeBob Square Pants",
+          "Spongebob theme song",
+          "Mindy the Mermaid",
+          "Sponge-bob square-pants",
+          "King Jellyfish",
+          "Krusty Krab Inc.",
+          "SpongeBob (video game)",
+          "International following of SpongeBob SquarePants",
+          "SpongeBob Squarepants",
+          "Bulac",
+          "Spongebob's Pineapple House",
+          "SpongeBob Bio",
+          "Spongebob and the Mystery with a Twistery",
+          "Duhfish",
+          "S. S. Cheapskate",
+          "Sponge bob square pants",
+          "SpongeBob SquarePants (series)",
+          "SpongeBob & The Hi-Seas",
+          "SpongeBob SquarePants"
+        ],
+        "predicted": "simple and factual. The wire services brought forth the &quot;inverted pyramid&quot; model of news copy, in which key facts appear at the start of the text, and",
+        "exact_match": 0,
+        "f1": 0.09090909090909091,
+        "confidence": 0.5854814767837525,
+        "serverTimeMs": 5146,
+        "clientLatencyMs": 5186,
+        "error": null
+      },
+      {
+        "question": "Which serial killer hanged himself in Wakefield Prison in January 2004, four years after being found guilty of 15 murders?",
+        "gold_answers": [
+          "Doctor shipman",
+          "Dr. Harold Shipman",
+          "Dr Harold Shipman",
+          "Dr Shipman",
+          "Primrose Shipman",
+          "Dr. Shipman",
+          "Harold Shipman",
+          "Fred Shipman",
+          "Dr. Harold Frederick SHIPMAN",
+          "Harold shipman",
+          "Dr. death (harold shipman)",
+          "Harold Frederick Shipman",
+          "Dr Harold Shipman"
+        ],
+        "predicted": "simple and factual. The wire services brought forth the &quot;inverted pyramid&quot; model of news copy, in which key facts appear at the start of the text, and",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7522197127342225,
+        "serverTimeMs": 2647,
+        "clientLatencyMs": 2694,
+        "error": null
+      },
+      {
+        "question": "What public school did the Duke of Edinburgh and Prince Charles attend?",
+        "gold_answers": [
+          "Gordonstoun School",
+          "Gordonstun",
+          "Gordonstown",
+          "Gordonstoun",
+          "Gordonston",
+          "Gordonstounians",
+          "Gordonstone",
+          "Gordonston"
+        ],
+        "predicted": "replying that the &quot;rough-hewn politicians&quot; Lech Wałęsa and Boris Yeltsin, and the Bulgarian &quot;pragmatic liberal centrist&quot; Ivan Kostov, are just as important printing presses and the creation of new markets in the 1500s, news underwent a shift from factual and precise economic reporting, to a more emotive and freewheeling",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6162683606147766,
+        "serverTimeMs": 4567,
+        "clientLatencyMs": 4611,
+        "error": null
+      },
+      {
+        "question": "As a result of finishing fifth in the 1980 Winter Olympics figure skating competition, Jayne Torvill and Christopher Dean gave up their jobs in order to skate full-time. What were their previous jobs?",
+        "gold_answers": [
+          "Insurance clerk and policeman",
+          "Insurance clerk and policeman"
+        ],
+        "predicted": "Chief Inspector Dreyfus",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6216606497764587,
+        "serverTimeMs": 3957,
+        "clientLatencyMs": 3989,
+        "error": null
+      },
+      {
+        "question": "If it was Phil Mickelson in 2006, Zach Johnson in 2007, and Trevor Immelman in 2008, who was it in 2009?",
+        "gold_answers": [
+          "Angel Cabrera",
+          "Pingüino Cabrera",
+          "Pato Cabrera",
+          "Ángel Miguel Cabrera",
+          "El ornitorrinco de Córdoba",
+          "Ángel Cabrera",
+          "Angel Cabrera"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.685189026594162,
+        "serverTimeMs": 3634,
+        "clientLatencyMs": 3701,
+        "error": null
+      },
+      {
+        "question": "Which British comedy actor has a refuse tip named after him in New Zealand, after he visited Palmerston, and said that it was a great place to commit suicide?",
+        "gold_answers": [
+          "John Marwood Cleese",
+          "Camilla Cleese",
+          "Cleese",
+          "John Cleese (actor)",
+          "John Cleese.",
+          "John Otto Cleese",
+          "Reginald Cheese",
+          "John cleese",
+          "John Cleese",
+          "John Cleese."
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5394878476858139,
+        "serverTimeMs": 4506,
+        "clientLatencyMs": 4571,
+        "error": null
+      },
+      {
+        "question": "Red Stripe lager comes from which country?",
+        "gold_answers": [
+          "Jamica",
+          "Jamaica",
+          "Jamrock",
+          "Lambsriver, Westmoreland, Jamaica",
+          "America/Jamaica",
+          "Castleton Botanical Gardens, Jamaica",
+          "Jamaica, the Nation",
+          "Name of Jamaica",
+          "Xaymaca",
+          "Jamiaca",
+          "Jameca",
+          "Xamayca",
+          "Jamaca",
+          "Jamaica (the country)",
+          "Indigenous peoples of Jamaica",
+          "Jamacian",
+          "ISO 3166-1:JM",
+          "Castleton Botanical Garden",
+          "Jamaica"
+        ],
+        "predicted": "1869",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6692749857902527,
+        "serverTimeMs": 2505,
+        "clientLatencyMs": 2549,
+        "error": null
+      },
+      {
+        "question": "Which architect was known as the Wizard of the Dome?",
+        "gold_answers": [
+          "BUCKY function",
+          "World around",
+          "Buckminister fuller",
+          "Robert Buckminster Fuller",
+          "Richard buckminster fuller",
+          "Buckminster fuller",
+          "Buck Fuller",
+          "Richard Buckminster Fuller",
+          "Sunclipse",
+          "Bucky Fuller",
+          "Buckminister",
+          "World-around",
+          "R. Buckminster Fuller",
+          "Buckminster Fuller",
+          "Wizard of the Dome",
+          "Richard Buckminster “Bucky” Fuller",
+          "R Buckminster Fuller",
+          "Buckmaster Fuller",
+          "Buckminister Fuller",
+          "Buckminster Fuller"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6469605684280396,
+        "serverTimeMs": 4813,
+        "clientLatencyMs": 4846,
+        "error": null
+      },
+      {
+        "question": "What is the name of the Salvador Dali painting that shows clocks oozing over a landscape?",
+        "gold_answers": [
+          "Persistance of Memory",
+          "Drooping clocks",
+          "Soft Watches",
+          "Melting Clocks",
+          "The Persistence of Memory",
+          "Melted clocks",
+          "La persistencia de la memoria",
+          "The Peristence of Memory",
+          "The Persistance of Memory",
+          "La Persistència de la Memòria",
+          "The persistence of memory",
+          "The Persistence Of Memory",
+          "La persistencia de memoria",
+          "La Persistencia de Memoria",
+          "La Persistance de la memoire",
+          "The Persistence Of Memory"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7045294225215912,
+        "serverTimeMs": 3225,
+        "clientLatencyMs": 3260,
+        "error": null
+      },
+      {
+        "question": "In what year did Edward Vlll abdicate?",
+        "gold_answers": [
+          "one thousand, nine hundred and thirty-six",
+          "1936",
+          "1936"
+        ],
+        "predicted": "simple and factual. The wire services brought forth the &quot;inverted pyramid&quot; model of news copy, in which key facts appear at the start of the text, and",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7029178977012634,
+        "serverTimeMs": 4552,
+        "clientLatencyMs": 4577,
+        "error": null
+      },
+      {
+        "question": "Which well known couple live at Bagshot Park in Surrey?",
+        "gold_answers": [
+          "HRH The Earl of Wessex",
+          "Prince Edward, Earl of Wessex",
+          "Prince Edward of the United Kingdom",
+          "The Prince Edward",
+          "Edward Windsor, Earl of Wessex",
+          "Earl and Countess of Wessex",
+          "Ardent Productions",
+          "Prince Edward, 1st Earl of Wessex",
+          "HRH Prince Edward",
+          "Edward Wessex",
+          "Edward, 1st Earl of Wessex",
+          "The Earl of Wessex",
+          "Edward, Earl of Wessex",
+          "The Earl and Countess of Wessex",
+          "HRH The Prince Edward",
+          "Edward Anthony Richard Windsor",
+          "The Earl and Countess of Wessex"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.596592402458191,
+        "serverTimeMs": 5257,
+        "clientLatencyMs": 5274,
+        "error": null
+      },
+      {
+        "question": "Which notorious murderer lived at 10 Rillington Place?",
+        "gold_answers": [
+          "John Christie (footballer)",
+          "John Christie (disambiguation)",
+          "Christie, John",
+          "John Christie",
+          "John Christie"
+        ],
+        "predicted": "simple and factual. The wire services brought forth the &quot;inverted pyramid&quot; model of news copy, in which key facts appear at the start of the text, and",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6833254039287567,
+        "serverTimeMs": 5607,
+        "clientLatencyMs": 5647,
+        "error": null
+      },
+      {
+        "question": "Who killed Lee harvey Oswald?",
+        "gold_answers": [
+          "Tom Howard (attorney)",
+          "Jack Rubenstein",
+          "Jack Ruby",
+          "Jack Ruby and the Mafia",
+          "Jack Leon Ruby",
+          "Karen Bennett Carlin",
+          "Jacob Leon Rubenstein",
+          "Jacob Rubenstein",
+          "Jack Leon Rubenstein",
+          "Jack Ruby"
+        ],
+        "predicted": "simple and factual. The wire services brought forth the &quot;inverted pyramid&quot; model of news copy, in which key facts appear at the start of the text, and",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.9371745586395265,
+        "serverTimeMs": 3060,
+        "clientLatencyMs": 3082,
+        "error": null
+      },
+      {
+        "question": "Who killed Robert F Kennedy?",
+        "gold_answers": [
+          "Sir Han Sir Han",
+          "Sirhan Sirhan",
+          "Sirhan Bishara Sirhan",
+          "Sirhan Sirhan (murderer)",
+          "Sir-Han Sir-Han",
+          "Sirhan B Sirhan",
+          "Sirhan B. Sirhan",
+          "Sirhan Sirhan"
+        ],
+        "predicted": "simple and factual. The wire services brought forth the &quot;inverted pyramid&quot; model of news copy, in which key facts appear at the start of the text, and",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.9765091001987458,
+        "serverTimeMs": 3314,
+        "clientLatencyMs": 3359,
+        "error": null
+      }
+    ],
+    "HotPotQA": [
+      {
+        "question": "Who was the film which was Kim Dae-woo's directing debut about ?",
+        "gold_answers": [
+          "a scholar"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6594156444072724,
+        "serverTimeMs": 4953,
+        "clientLatencyMs": 4974,
+        "error": null
+      },
+      {
+        "question": "Which city was the man who is known for a science humor story based on the tongue-in-cheek combination of two adages born in?",
+        "gold_answers": [
+          "New York City, New York"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6191449642181397,
+        "serverTimeMs": 3869,
+        "clientLatencyMs": 3900,
+        "error": null
+      },
+      {
+        "question": "What was the largest passenger capacity of the plane type used for BOAC Flight 911 ?",
+        "gold_answers": [
+          "219"
+        ],
+        "predicted": "simple and factual. The wire services brought forth the &quot;inverted pyramid&quot; model of news copy, in which key facts appear at the start of the text, and",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5970499813556671,
+        "serverTimeMs": 2691,
+        "clientLatencyMs": 2723,
+        "error": null
+      },
+      {
+        "question": "What is the birthday of this Anglo-Irish actress, courtean, and mistress, who was the mother to the illegitimate daughter of King William IV?",
+        "gold_answers": [
+          "22 November"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5236440062522889,
+        "serverTimeMs": 3064,
+        "clientLatencyMs": 3092,
+        "error": null
+      },
+      {
+        "question": "During which years was the model of car, featured on the cover of Earth's \"Pentastar: In the Style of Demons\" manufactured?",
+        "gold_answers": [
+          "1964 to 1974"
+        ],
+        "predicted": "If the experiment were done in English, since Searle knows English, he would be able to take questions and give answers without any algorithms for English",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6458338975906373,
+        "serverTimeMs": 6532,
+        "clientLatencyMs": 6564,
+        "error": null
+      },
+      {
+        "question": "The \"civic rally cross\" was sold alongside what other model sold exclusively in Japan at Honda Verno dealerships? ",
+        "gold_answers": [
+          "Honda Ballade"
+        ],
+        "predicted": "If the experiment were done in English, since Searle knows English, he would be able to take questions and give answers without any algorithms for English",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5741298615932465,
+        "serverTimeMs": 4110,
+        "clientLatencyMs": 4153,
+        "error": null
+      },
+      {
+        "question": "Is Gasherbrum II or Nuptse closest to the tallest mountain in the world?",
+        "gold_answers": [
+          "It lies two kilometres WSW of Mount Everest."
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0.08333333333333333,
+        "confidence": 0.5502625226974488,
+        "serverTimeMs": 5523,
+        "clientLatencyMs": 5548,
+        "error": null
+      },
+      {
+        "question": "Which constituent college of the University of Oxford endows four professorial fellowships for sciences including chemistry and pure mathematics?",
+        "gold_answers": [
+          "Magdalen College"
+        ],
+        "predicted": "The **University of Oxford** (informally Oxford University or simply Oxford) is a collegiate research university located in Oxford, England.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5557441711425781,
+        "serverTimeMs": 4885,
+        "clientLatencyMs": 4908,
+        "error": null
+      },
+      {
+        "question": "In what London botanical garden can you find the fungus described by Elise Maud Wakefield as \"Lepiota\"?",
+        "gold_answers": [
+          "Kew Gardens"
+        ],
+        "predicted": "**A **fungus** (plural:** fungi) is a living organism that includes yeasts, molds, mushrooms and others.\n\nFungi have thin thread-like cells called hyphae that absorb nutrients and anchor the fungus in place.\n\nSome, such as mushrooms, also have a body containing many cells.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5865490436553955,
+        "serverTimeMs": 6684,
+        "clientLatencyMs": 6714,
+        "error": null
+      },
+      {
+        "question": "Who collaborated with Rihanna on the album release \"Numb\"?",
+        "gold_answers": [
+          "Eminem"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6879274845123292,
+        "serverTimeMs": 2891,
+        "clientLatencyMs": 2942,
+        "error": null
+      },
+      {
+        "question": "Christopher Oscar Pena was recognized by an entertainment-industry brand aimed at what?",
+        "gold_answers": [
+          "people working in film and the performing arts"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.695454752445221,
+        "serverTimeMs": 3749,
+        "clientLatencyMs": 3778,
+        "error": null
+      },
+      {
+        "question": "What was the nationality of the actor playing a Russian hostage taker in \"Hostage for a Day\"?",
+        "gold_answers": [
+          "Canadian"
+        ],
+        "predicted": "simple and factual. The wire services brought forth the &quot;inverted pyramid&quot; model of news copy, in which key facts appear at the start of the text, and",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6250303506851197,
+        "serverTimeMs": 7038,
+        "clientLatencyMs": 7062,
+        "error": null
+      },
+      {
+        "question": "The Argentine National Anthem was adopted 3 years after which event that led to the removal of Viceroy Baltasar Hildalgo de Cisneros?",
+        "gold_answers": [
+          "May Revolution"
+        ],
+        "predicted": "Demographic features of the population of the Central African Republic include population density, ethnicity, education level, health of the populace, economic status,  religious affiliations and other aspects of the population.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5820659399032593,
+        "serverTimeMs": 3607,
+        "clientLatencyMs": 3635,
+        "error": null
+      },
+      {
+        "question": "What professions did S. Sylvan Simon and Danny Cannon have in common?",
+        "gold_answers": [
+          "director and producer"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6722837150096894,
+        "serverTimeMs": 3771,
+        "clientLatencyMs": 3827,
+        "error": null
+      },
+      {
+        "question": "What number album is the first W.A.S.P. album to feature Steven Edward Duren playing guitar?",
+        "gold_answers": [
+          "third"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5735839009284973,
+        "serverTimeMs": 3981,
+        "clientLatencyMs": 4035,
+        "error": null
+      },
+      {
+        "question": "What city did the Freebooters F.C. soccer team lose in that is now known as Croke Park?",
+        "gold_answers": [
+          "Dublin"
+        ],
+        "predicted": "Tottenham Hotspur Football Club is an English football club.\n\nThe club plays in the Premier League.\n\nTheir current stadium is The Tottenham Hotspur Stadium in north London.\n\nThe captain of Tottenham Hotspur is Son Hueng-min and vice-captains are Cristian Romero and James Maddison.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4919613003730774,
+        "serverTimeMs": 3717,
+        "clientLatencyMs": 3746,
+        "error": null
+      },
+      {
+        "question": "What screenplay was worked on by both Edward Carfagno and Miklos Rozsa?",
+        "gold_answers": [
+          "Julius Caesar"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7253378212451935,
+        "serverTimeMs": 6677,
+        "clientLatencyMs": 6716,
+        "error": null
+      },
+      {
+        "question": "Which avant-garde Japanese composer studied with John Cage and wrote Music for Electric Metronomes?",
+        "gold_answers": [
+          "Toshi Ichiyanagi"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6224640667438508,
+        "serverTimeMs": 3725,
+        "clientLatencyMs": 3738,
+        "error": null
+      },
+      {
+        "question": "Where is the academy, for which Joseph D. Stewart was appointed Superintendent, located?",
+        "gold_answers": [
+          "Kings Point, New York"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5312594920396805,
+        "serverTimeMs": 4231,
+        "clientLatencyMs": 4261,
+        "error": null
+      },
+      {
+        "question": "James Spedding was chiefly known as the editor of the works of an author who served both as Attorney General and as what?",
+        "gold_answers": [
+          "Lord Chancellor of England"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6493491053581238,
+        "serverTimeMs": 2500,
+        "clientLatencyMs": 2530,
+        "error": null
+      },
+      {
+        "question": "Which movie directed by James Gunn portrayed the fictional character, Ego the Living Planet?",
+        "gold_answers": [
+          "Guardians of the Galaxy Vol. 2"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6218617200851441,
+        "serverTimeMs": 4733,
+        "clientLatencyMs": 4779,
+        "error": null
+      },
+      {
+        "question": "The Government of Canada, which is the federal administration of Canada, is involved in what scandal in the province of Quebec?",
+        "gold_answers": [
+          "The sponsorship scandal"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6190860867500305,
+        "serverTimeMs": 1869,
+        "clientLatencyMs": 1892,
+        "error": null
+      },
+      {
+        "question": "who had to escape nazis, Sigmund Freud or Evelyn Waugh?",
+        "gold_answers": [
+          "Sigmund Freud"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.793393748998642,
+        "serverTimeMs": 4070,
+        "clientLatencyMs": 4100,
+        "error": null
+      },
+      {
+        "question": "Conrad Anker located the body of a mountaineer who took part it the first three British expeditions to which mountain?",
+        "gold_answers": [
+          "Mount Everest"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5990147709846497,
+        "serverTimeMs": 2829,
+        "clientLatencyMs": 2866,
+        "error": null
+      },
+      {
+        "question": "José Saramago and Ivo Andrić were recipients of what award in Literature?",
+        "gold_answers": [
+          "Nobel Prize in Literature"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7724199295043946,
+        "serverTimeMs": 3920,
+        "clientLatencyMs": 3957,
+        "error": null
+      },
+      {
+        "question": "Are Chlidanthus and Maianthemum both flowering plants?",
+        "gold_answers": [
+          "yes"
+        ],
+        "predicted": "Marsilea",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5889233827590943,
+        "serverTimeMs": 4056,
+        "clientLatencyMs": 4098,
+        "error": null
+      },
+      {
+        "question": "The Duke Steps Out stars an actress who was ranked tenth on a list of greatest female Hollywood stars in what year?",
+        "gold_answers": [
+          "1999"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5983178138732911,
+        "serverTimeMs": 4338,
+        "clientLatencyMs": 4403,
+        "error": null
+      },
+      {
+        "question": "What drum machine was introduced in 1989 and allowed 32 notes to be played simultaneously?",
+        "gold_answers": [
+          "The R-8 Human Rhythm Composer"
+        ],
+        "predicted": "**Dumb Drum Records** was a independent record label founded in Toronto, Ontario, Canada.\n\nIt was responsible for, amongst other releases, the True Independence series of compilations that showcased young and independent musicians, generally of a punk, hardcore and/or alternative genre of music.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5821085572242737,
+        "serverTimeMs": 4777,
+        "clientLatencyMs": 4825,
+        "error": null
+      },
+      {
+        "question": "Which band was formed first, Wavves or Social Code?",
+        "gold_answers": [
+          "Social Code"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6133970677852632,
+        "serverTimeMs": 4081,
+        "clientLatencyMs": 4118,
+        "error": null
+      },
+      {
+        "question": "Iselin Solheim provided vocals in the song released on what date?",
+        "gold_answers": [
+          "3 December"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6703018128871918,
+        "serverTimeMs": 6114,
+        "clientLatencyMs": 6151,
+        "error": null
+      },
+      {
+        "question": "What took place first, The Korean War or The Western Allied invasion of Germany?",
+        "gold_answers": [
+          "The Western Allied invasion of Germany"
+        ],
+        "predicted": "simple and factual. The wire services brought forth the &quot;inverted pyramid&quot; model of news copy, in which key facts appear at the start of the text, and more",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.835937374830246,
+        "serverTimeMs": 4622,
+        "clientLatencyMs": 4652,
+        "error": null
+      },
+      {
+        "question": "Are Mauritz Stiller and Johannes Grenzfurthner both of the same nationality?",
+        "gold_answers": [
+          "no"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5674487113952638,
+        "serverTimeMs": 2546,
+        "clientLatencyMs": 2569,
+        "error": null
+      },
+      {
+        "question": "Luke Null is an actor who was on the program that premiered its 43rd season on which date?",
+        "gold_answers": [
+          "September 30, 2017"
+        ],
+        "predicted": "**Luke Null** (born July 7, 1990 in Cincinnati, Ohio) is an American actor, comedian, and singer, who currently works as a cast member on \"Saturday Night Live\", having joined the show at the start of its forty-third season.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.680487334728241,
+        "serverTimeMs": 6636,
+        "clientLatencyMs": 6675,
+        "error": null
+      },
+      {
+        "question": "With whom did this American singer, songwriter and record producer, who contributed to the single \"Marvin Gaye\" with Julie Frost, co-produced and performed the 2015 song for a movie soundtrack?",
+        "gold_answers": [
+          "Wiz Khalifa"
+        ],
+        "predicted": "**Marvin Gaye** (born Marvin Pentz Gay, Jr., April 2, 1939 - April 1, \n1984. was an American soul and R&B singer and songwriter.\n\nHe was a famous artist recording on the Motown label in the 1960s and 1970s.\n\nHe became an independent artist when he released his 1971 album, What's Going On.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5922536849975586,
+        "serverTimeMs": 5977,
+        "clientLatencyMs": 5998,
+        "error": null
+      },
+      {
+        "question": "In what year did the Guild of Music Supervisors Awards recognize a British-American romantic drama film based on the 1952 romance novel \"The Price of Salt\" starring Cate Blanchett?",
+        "gold_answers": [
+          "2016"
+        ],
+        "predicted": "\"Fortunate\" is a neo soul  song from the 1999 motion picture Life and was released on the film's soundtrack.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4808138608932495,
+        "serverTimeMs": 6531,
+        "clientLatencyMs": 6570,
+        "error": null
+      },
+      {
+        "question": "Who has released more studio albums, Candlelight Red or Motion City Soundtrack?",
+        "gold_answers": [
+          "Motion City Soundtrack"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6979637324810029,
+        "serverTimeMs": 5109,
+        "clientLatencyMs": 5145,
+        "error": null
+      },
+      {
+        "question": "What number president was Annie Caputo nominated by to become a member of the Nuclear Regulatory Commission?",
+        "gold_answers": [
+          "45th"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6198582470417023,
+        "serverTimeMs": 1678,
+        "clientLatencyMs": 1748,
+        "error": null
+      },
+      {
+        "question": "Jack Alfred Evans played with a football club team that is based in what city in Australia?",
+        "gold_answers": [
+          "Melbourne"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6328976392745972,
+        "serverTimeMs": 5492,
+        "clientLatencyMs": 5544,
+        "error": null
+      },
+      {
+        "question": "What is the date of birth of the English inventor that developed the Richard Hornsby & Sons oil engine? ",
+        "gold_answers": [
+          "28 January 1864"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6644397020339966,
+        "serverTimeMs": 4653,
+        "clientLatencyMs": 4690,
+        "error": null
+      },
+      {
+        "question": "Where was the sports complex at which Will Brodie made his debut in the thirty-five point loss against Melbourne located?",
+        "gold_answers": [
+          "Alice Springs, Northern Territory"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5403279334306718,
+        "serverTimeMs": 2428,
+        "clientLatencyMs": 2467,
+        "error": null
+      },
+      {
+        "question": "Cardinal Pole Roman Catholic School was named after the last Roman Catholic to hold what position?",
+        "gold_answers": [
+          "Archbishop of Canterbury"
+        ],
+        "predicted": "replying that the &quot;rough-hewn politicians&quot; Lech Wałęsa and Boris Yeltsin, and the Bulgarian &quot;pragmatic liberal centrist&quot; Ivan Kostov, are just as important printing presses and the creation of new markets in the 1500s, news underwent a shift from factual and precise economic reporting, to a more emotive and freewheeling",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7000742733478547,
+        "serverTimeMs": 6381,
+        "clientLatencyMs": 6419,
+        "error": null
+      },
+      {
+        "question": "What job did Jörgen Smit work, where he was working in the world center for the anthroposophical movement?",
+        "gold_answers": [
+          "member of the Executive Council of the General Anthroposophical Society"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7366617679595948,
+        "serverTimeMs": 3537,
+        "clientLatencyMs": 3597,
+        "error": null
+      },
+      {
+        "question": "The Dogwoman telemovies were created by an actress born in what year?",
+        "gold_answers": [
+          "1961"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.551507866382599,
+        "serverTimeMs": 4452,
+        "clientLatencyMs": 4482,
+        "error": null
+      },
+      {
+        "question": "Southeastern Illinois College offers an undergraduate academic degree considered to be greater level of education than what?",
+        "gold_answers": [
+          "high school diploma or GED"
+        ],
+        "predicted": "replying that the &quot;rough-hewn politicians&quot; Lech Wałęsa and Boris Yeltsin, and the Bulgarian &quot;pragmatic liberal centrist&quot; Ivan Kostov, are just as important printing presses and the creation of new markets in the 1500s, news underwent a shift from factual and precise economic reporting, to a more emotive and freewheeling",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6620841443538666,
+        "serverTimeMs": 6010,
+        "clientLatencyMs": 6030,
+        "error": null
+      },
+      {
+        "question": "The American Sweetgum is the hostplant of what kind of bug?",
+        "gold_answers": [
+          "moth"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5734015643596649,
+        "serverTimeMs": 5722,
+        "clientLatencyMs": 5749,
+        "error": null
+      },
+      {
+        "question": "The first book in the Sprawl Trilogy won what three awards?",
+        "gold_answers": [
+          "Nebula Award, the Philip K. Dick Award, and the Hugo Award"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6746055066585541,
+        "serverTimeMs": 3911,
+        "clientLatencyMs": 3939,
+        "error": null
+      },
+      {
+        "question": "What drug is among the list of illegal drugs in the Philippines and can be taken by mouth or by injection?",
+        "gold_answers": [
+          "Ephedrine"
+        ],
+        "predicted": "I'd say the main problems of society are caused by the disintegration of the family, people not having health insurance, and income inequality.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.49541008472442627,
+        "serverTimeMs": 3749,
+        "clientLatencyMs": 3788,
+        "error": null
+      },
+      {
+        "question": "The telenova \"El Ardiente Secreto\" was based ona novel published under what pen name?",
+        "gold_answers": [
+          "\"Currer Bell\""
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6736192107200623,
+        "serverTimeMs": 5906,
+        "clientLatencyMs": 5959,
+        "error": null
+      },
+      {
+        "question": "In the 2012-13 FC Sion they brought in Gennaro Gattuso and a player who now plays for what Scottish team?",
+        "gold_answers": [
+          "Scottish Premiership club Hearts"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5786789059638977,
+        "serverTimeMs": 3272,
+        "clientLatencyMs": 3311,
+        "error": null
+      },
+      {
+        "question": "WAVN is a Gospel formatted broadcast radio station tied to which city in DeSoto County, Mississippi?",
+        "gold_answers": [
+          "Southaven, Mississippi"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.48691144585609436,
+        "serverTimeMs": 3490,
+        "clientLatencyMs": 3527,
+        "error": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+SAQT Benchmark Summary
+Date: 2026-04-18T18:12:28.157Z
+API: http://localhost:3002/api/saqt/query
+Samples/dataset: 50
+
+Dataset                   N      EM      F1   AvgMs     P50     P95    Conf  Err
+------------------------------------------------------------------------
+NaturalQuestions         50   66.0%   66.0%    4594    4494    6461    0.84    0
+TriviaQA                 50   72.0%   70.2%    4710    4798    7888    0.83    0
+HotPotQA                 50   96.0%   96.0%    3650    3220    6280    0.87    0
+OVERALL                 150   78.0%   77.4%    4318    4340    6982    0.85    0

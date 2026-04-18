@@ -4,7 +4,7 @@ osf_submit.py — submit SFCA pre-registration to OSF.
 
 Prerequisites:
   1. Tejas has an OSF account (osf.io)
-  2. ~/.claude/secrets/osf.json exists with shape:
+  2. secrets/osf.json exists with shape:
        { "email": "synapse+osf@webmind.sh", "token": "..." }
      (token is a Personal Access Token from https://osf.io/settings/tokens
       with at least `osf.full_write` scope)
@@ -32,7 +32,7 @@ from pathlib import Path
 from urllib import request as urlreq
 from urllib.error import HTTPError
 
-SECRETS = Path.home() / ".claude/secrets/osf.json"
+SECRETS = Path.home() / "secrets/osf.json"
 API = "https://api.osf.io/v2"
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PAPER_PATH = REPO_ROOT / "papers" / "sfca-preregistration-v1.md"

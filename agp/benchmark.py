@@ -44,7 +44,7 @@ HANDOFFS = [
     AGPMessage("F-CEO", "F-ADV", "defer",
         {"decision": "open source timing", "reason": "requires cto confirmation"}),
     AGPMessage("F-ETH.Privacy", "F-ENG", "challenge",
-        {"code_path": "cortex2/api.py:send_message", "concern": "logs full message body; should log id only"}),
+        {"code_path": "api.py:send_message", "concern": "logs full message body; should log id only"}),
     AGPMessage("F-ADV", "F-ENG", "propose",
         {"new_faculty": "Economist", "reason": "several decisions touched cost-benefit without economics lens"}),
 ]

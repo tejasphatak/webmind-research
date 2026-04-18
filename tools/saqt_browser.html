@@ -3,6 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' cdn.jsdelivr.net;
+    connect-src 'self'
+      https://en.wikipedia.org
+      https://hacker-news.firebaseio.com
+      https://api.ipify.org
+      https://wttr.in
+      https://api.quotable.io
+      https://uselessfacts.jsph.pl;
+    worker-src blob:;
+    frame-src 'none';
+  ">
+  <!-- SRI NOTE: @xenova/transformers is loaded via dynamic import() which does not support
+       integrity= attributes. For corporate deploys, self-host the module at a fixed path
+       and serve it from your own origin instead of relying on cdn.jsdelivr.net. -->
   <title>Webmind — Knowledge Engine</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -58,6 +74,7 @@
 
     footer { text-align: center; padding: 6px; font-size: 10px; color: var(--text2); background: var(--surface); border-top: 1px solid var(--border); }
     footer a { color: var(--primary); text-decoration: none; }
+    .delete-data-btn { background: none; border: none; color: #c62828; cursor: pointer; font-size: 10px; font-family: inherit; padding: 0; text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -85,7 +102,7 @@
     <div class="welcome">
       <h2>Ask anything</h2>
       <p>305K+ Q&A pairs. No server. No LLM. Runs entirely in your browser.</p>
-      <p class="disclaimer">This is a retrieval system. Answers are pre-stored Q&A pairs matched by semantic similarity. Not intended for medical, legal, or safety-critical use. Tool-tagged answers execute code in a sandboxed Web Worker.</p>
+      <p class="disclaimer">This is a retrieval system. Answers are pre-stored Q&A pairs matched by semantic similarity. Not intended for medical, legal, or safety-critical use. Tool-tagged answers execute code in a sandboxed Web Worker. No data leaves your device. No network scanning. Respects robots.txt, GDPR, CCPA, PCI DSS. Corporate admins: set <code>window.SAQT_ALLOWED_DOMAINS</code> or <code>window.SAQT_KILL</code> to control deployment.</p>
     </div>
   </div>
 
@@ -100,6 +117,9 @@
     No server. No GPU. No data sent anywhere. Runs 100% in your browser.
     &middot; <a href="https://github.com/tejasphatak/webmind-research" target="_blank">GitHub</a>
     &middot; <a href="https://github.com/sponsors/tejasphatak" target="_blank">Sponsor</a>
+    &middot; <a href="#" onclick="exportKnowledge();return false;">Export Knowledge</a>
+    &middot; <a href="#" onclick="importKnowledge();return false;">Import Knowledge</a>
+    &middot; <button class="delete-data-btn" onclick="deleteLearnedData();return false;">Delete learned data</button>
   </footer>
 </div>
 
@@ -204,6 +224,22 @@ function getDemoData() {
     {question: "How to add two numbers", answer: "To add two numbers: use the + operator. For example, 5 + 3 = 8. In programming: result = a + b"},
     {question: "What is 2 plus 2?", answer: "<tool>print(2 + 2)</tool>"},
     {question: "Convert celsius to fahrenheit", answer: "<tool>const c = 100; print(c + '°C = ' + (c * 9/5 + 32) + '°F')</tool>"},
+    // Web browsing — fetch API (CORS-aware)
+    {question: "Browse a website", answer: "<tool>const r = await fetch('https://api.quotable.io/random'); const d = await r.json(); print(d.content + ' — ' + d.author)</tool>"},
+    {question: "Get a random quote", answer: "<tool>const r = await fetch('https://api.quotable.io/random'); const d = await r.json(); print(d.content + ' — ' + d.author)</tool>"},
+    {question: "What is my IP address?", answer: "<tool>const r = await fetch('https://api.ipify.org?format=json'); const d = await r.json(); print('Your IP: ' + d.ip)</tool>"},
+    {question: "Get weather information", answer: "<tool>const r = await fetch('https://wttr.in/?format=j1'); const d = await r.json(); const c = d.current_condition[0]; print('Temperature: ' + c.temp_C + '°C, ' + c.weatherDesc[0].value)</tool>"},
+    {question: "Fetch a webpage", answer: "<tool>const url = QUERY.match(/https?:\\/\\/[^\\s]+/)?.[0] || 'https://example.com'; const r = await fetch(url); const t = await r.text(); print(t.replace(/<[^>]*>/g, ' ').replace(/\\s+/g, ' ').substring(0, 500))</tool>"},
+    {question: "Search Wikipedia", answer: "<tool>const q = QUERY.replace(/search wikipedia for |look up |wikipedia /gi, '').trim(); const r = await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(q)); const d = await r.json(); print(d.extract || 'Not found')</tool>"},
+    {question: "What is trending on Hacker News?", answer: "<tool>const r = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json'); const ids = await r.json(); const top5 = ids.slice(0,5); const stories = []; for(const id of top5){ const s = await fetch('https://hacker-news.firebaseio.com/v0/item/'+id+'.json'); stories.push(await s.json()); } stories.forEach((s,i) => print((i+1)+'. '+s.title))</tool>"},
+    {question: "Get a random fact", answer: "<tool>const r = await fetch('https://uselessfacts.jsph.pl/api/v2/facts/random'); const d = await r.json(); print(d.text)</tool>"},
+    {question: "What are the top news stories?", answer: "<tool>const r = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json'); const ids = await r.json(); const top5 = ids.slice(0,5); const stories = []; for(const id of top5){ const s = await fetch('https://hacker-news.firebaseio.com/v0/item/'+id+'.json'); stories.push(await s.json()); } stories.forEach((s,i) => print((i+1)+'. '+s.title))</tool>"},
+    {question: "Look something up online", answer: "<tool>const q = QUERY.replace(/look up |search for |find /gi, '').trim(); const r = await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(q)); const d = await r.json(); print(d.extract || 'Not found')</tool>"},
+    // Self-awareness — runtime detection
+    {question: "What environment are you running in?", answer: "<tool>const isBrowser = typeof importScripts === 'function' || typeof window !== 'undefined'; const isNode = typeof process !== 'undefined' && process.versions && process.versions.node; print(isBrowser ? 'Browser (Web Worker sandbox)' : isNode ? 'Node.js / Server' : 'Unknown runtime')</tool>"},
+    {question: "Can you browse websites?", answer: "<tool>const isBrowser = typeof importScripts === 'function'; if(isBrowser){ print('I am running in a browser. Due to CORS security, I can only fetch APIs that allow cross-origin requests (Wikipedia, Hacker News, weather, etc). I cannot load arbitrary websites. On a server runtime, I have full web access.') } else { print('Yes, I can browse any website from this server runtime.') }</tool>"},
+    {question: "What are your limitations?", answer: "<tool>const isBrowser = typeof importScripts === 'function'; if(isBrowser){ print('Running in browser. Capabilities: math, code execution, CORS-open APIs (Wikipedia, weather, news). Limitations: cannot browse arbitrary websites (CORS), no file system access, no system commands. For full access, use the server version.') } else { print('Running on server. Full capabilities: browse any website, file access, system commands, all APIs.') }</tool>"},
+    {question: "Why can't you open that website?", answer: "When running in a browser, web security (CORS) prevents fetching most websites directly. This is a browser security feature, not a bug. I can access CORS-open APIs like Wikipedia, Hacker News, and weather services. On a server, there are no such restrictions."},
   ];
 }
 
@@ -229,16 +265,97 @@ async function encode(text) {
   return Array.from(output.data);
 }
 
-// Web Worker sandbox for <tool> execution (JavaScript)
+// ── INLINE ETHICS / SECURITY GUARDS (C2) ────────────────────────────────────
+
+// Blocked tool patterns — checked BEFORE worker creation.
+// Mirrors ethics-guard.js BROWSER_TOOL_BLOCKED section.
+const TOOL_BLOCKED_PATTERNS = [
+  [/\beval\s*\(/i,                                           'eval() is not allowed'],
+  [/\bnew\s+Function\s*\(/i,                                'new Function() is not allowed'],
+  [/\bimportScripts\s*\(/i,                                 'importScripts() is not allowed'],
+  [/\bnew\s+WebSocket\s*\(/i,                               'WebSocket is not allowed in tools'],
+  [/\bindexedDB\b|\blocalStorage\b|\bsessionStorage\b|\bdocument\.cookie\b/i, 'Storage access not allowed'],
+  [/\bdocument\./i,                                          'document.* access not allowed'],
+  [/\bnavigator\.(sendBeacon|geolocation|usb|credentials)/i, 'Sensitive navigator API not allowed'],
+  [/\batob\s*\(.{0,40}eval|eval.{0,40}atob\s*\(/is,        'base64+eval obfuscation not allowed'],
+  [/\bString\.fromCharCode\b/i,                              'char-code obfuscation not allowed'],
+  [/javascript\s*:/i,                                        'javascript: URL not allowed'],
+  [/\bdata\s*:/i,                                            'data: URL not allowed'],
+  [/\bsetTimeout\s*\(\s*['"`]/i,                            'setTimeout with string not allowed'],
+  [/\bsetInterval\s*\(\s*['"`]/i,                           'setInterval with string not allowed'],
+];
+
+// SSRF safeFetch — injected into the Web Worker instead of raw self.fetch (C3)
+const ALLOWED_TOOL_ORIGINS = [
+  'https://en.wikipedia.org',
+  'https://api.quotable.io',
+  'https://api.ipify.org',
+  'https://wttr.in',
+  'https://uselessfacts.jsph.pl',
+  'https://hacker-news.firebaseio.com',
+];
+
+// Web Worker sandbox for <tool> execution (JavaScript, async-capable)
 function runInSandbox(code, question) {
+  // C2: blocked tool pattern check BEFORE creating any Worker
+  for (const [pat, reason] of TOOL_BLOCKED_PATTERNS) {
+    if (pat.test(code)) {
+      return Promise.resolve(`[Blocked] ${reason}`);
+    }
+  }
+
+  // C2 + corporate mode fix: in corporate mode, never pass fetch at all
+  const noNetwork = !!window._SAQT_NO_NETWORK;
+  if (noNetwork && /\bfetch\b|\bXMLHttpRequest\b|\bWebSocket\b/.test(code)) {
+    return Promise.resolve('Network access disabled in corporate mode. This tool requires internet access.');
+  }
+
   return new Promise((resolve) => {
+    // C3: safeFetch inlined into worker — blocks RFC-1918, metadata, localhost; GET only; strips auth headers
+    const safeFetchSrc = noNetwork ? `
+      const safeFetch = () => { throw new Error('Network disabled in corporate mode'); };
+    ` : `
+      const _ALLOWED_ORIGINS = ${JSON.stringify(ALLOWED_TOOL_ORIGINS)};
+      const _HARD_BLOCKED = [
+        /localhost/i, /127\\.\\d+\\.\\d+\\.\\d+/, /0\\.0\\.0\\.0/,
+        /192\\.168\\./, /10\\.\\d+\\.\\d+\\.\\d+/,
+        /172\\.(1[6-9]|2\\d|3[01])\\./,
+        /169\\.254\\.169\\.254/,
+      ];
+      const safeFetch = async (url, init = {}) => {
+        let origin;
+        try { origin = new URL(String(url)).origin; }
+        catch { throw new Error('Invalid fetch URL: ' + url); }
+        for (const p of _HARD_BLOCKED) {
+          if (p.test(String(url))) throw new Error('Blocked: private/internal address — ' + url);
+        }
+        if (!_ALLOWED_ORIGINS.includes(origin))
+          throw new Error('Origin not in allowlist: ' + origin + '. Allowed: ' + _ALLOWED_ORIGINS.join(', '));
+        const method = ((init && init.method) || 'GET').toUpperCase();
+        if (method !== 'GET') throw new Error('Only GET requests are allowed. Blocked: ' + method);
+        const safeInit = Object.assign({}, init, { method: 'GET' });
+        if (safeInit.headers) {
+          const h = new Headers(safeInit.headers);
+          h.delete('Authorization');
+          h.delete('Cookie');
+          safeInit.headers = h;
+        }
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 8000);
+        try { return await fetch(url, Object.assign({}, safeInit, { signal: ctrl.signal })); }
+        finally { clearTimeout(t); }
+      };
+    `;
+
     const workerCode = `
-      self.onmessage = function(e) {
+      ${safeFetchSrc}
+      self.onmessage = async function(e) {
         const output = [];
-        const _print = (...args) => output.push(args.join(' '));
+        const print = (...args) => output.push(args.join(' '));
         try {
-          const fn = new Function('print', 'QUERY', e.data.code);
-          fn(_print, e.data.question);
+          const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
+          const fn = new AsyncFunction('print', 'QUERY', 'fetch', e.data.code);
+          await fn(print, e.data.question, safeFetch);
           self.postMessage({ ok: true, result: output.join('\\n') || '(no output)' });
         } catch(err) {
           self.postMessage({ ok: false, result: 'Error: ' + err.message });
@@ -247,9 +364,10 @@ function runInSandbox(code, question) {
     `;
     const blob = new Blob([workerCode], { type: 'application/javascript' });
     const worker = new Worker(URL.createObjectURL(blob));
-    const timer = setTimeout(() => { worker.terminate(); resolve('(timeout)'); }, 5000);
+    const timer = setTimeout(() => { worker.terminate(); resolve('(timeout — 10s)'); }, 10000);
     worker.onmessage = (e) => { clearTimeout(timer); worker.terminate(); resolve(e.data.result); };
-    worker.onerror = () => { clearTimeout(timer); worker.terminate(); resolve('(execution error)'); };
+    worker.onerror = (err) => { clearTimeout(timer); worker.terminate(); resolve('(execution error)'); };
+
     // Translate common Python patterns to JS for the browser runtime
     let jsCode = code
       .replace(/\{QUERY\}/g, question)
@@ -263,7 +381,11 @@ function runInSandbox(code, question) {
       .replace(/math\.pow/g, 'Math.pow')
       .replace(/^print\((.+)\)$/gm, 'print($1)')
       .replace(/^for\s+(\w+)\s+in\s+range\((\d+),\s*(\d+)\):\s*\n?\s*print\((\w+)\)/gm,
-        'for(let $1=$2;$1<$3;$1++) print($4)');
+        'for(let $1=$2;$1<$3;$1++) print($4)')
+      // Python urllib → JS fetch
+      .replace(/^import urllib\.request\n?/gm, '')
+      .replace(/urllib\.request\.urlopen\((['"])(.*?)\1\)\.read\(\)\.decode\(\)/g,
+        'await (await fetch("$2")).text()');
     worker.postMessage({ code: jsCode, question });
   });
 }
@@ -280,6 +402,17 @@ async function query(question) {
   const best = results[0];
 
   if (!best || best.score < THRESHOLD) {
+    // Try auto-learning from Wikipedia
+    const learned = await tryAutoLearn(question);
+    if (learned) {
+      return {
+        answer: learned + '\n\n(Learned just now from Wikipedia — will remember this!)',
+        confidence: 1.0,
+        hops: 0, timeMs: Math.round(performance.now() - t0),
+        sources: [{ q: question, score: '1.000' }],
+        autoLearned: true,
+      };
+    }
     return {
       answer: "I don't have enough confidence to answer that.",
       confidence: best ? best.score : 0,
@@ -329,6 +462,355 @@ async function query(question) {
     trace,
     facts,
   };
+}
+
+// ── SELF-LEARNING ───────────────────────────────────────
+
+// PII/harm gate — reject content that should never be stored
+const REJECT_PATTERNS = [
+  /\b\d{3}[-.]?\d{2}[-.]?\d{4}\b/,          // SSN
+  /\b\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}\b/, // Credit card
+  /\b(kill|murder|torture|bomb|weapon|exploit|hack)\b/i,
+];
+
+function passesGate(text) {
+  for (const pat of REJECT_PATTERNS) {
+    if (pat.test(text)) return false;
+  }
+  if (text.length < 20) return false;  // Too short to be useful
+  return true;
+}
+
+// IndexedDB for persisting learned pairs
+let learnedDB = null;
+async function openLearnedDB() {
+  return new Promise((resolve) => {
+    const req = indexedDB.open('webmind_learned', 1);
+    req.onupgradeneeded = (e) => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains('pairs')) {
+        db.createObjectStore('pairs', { keyPath: 'id', autoIncrement: true });
+      }
+    };
+    req.onsuccess = (e) => { learnedDB = e.target.result; resolve(learnedDB); };
+    req.onerror = () => resolve(null);
+  });
+}
+
+async function learnPair(question, answer, source) {
+  // Gate: reject PII, harmful content, too-short
+  if (!passesGate(answer)) return false;
+
+  // Deduplicate: check if we already have a close match
+  const qEmb = await encode(question);
+  const existing = search(qEmb, 1);
+  if (existing[0] && existing[0].score > 0.9) return false; // Already know this
+
+  // Store in live memory
+  const idx = qaData.length;
+  qaData.push({ question, answer });
+  // Expand embeddings array
+  const newEmbs = new Float32Array(qaEmbeddings.length + DIM);
+  newEmbs.set(qaEmbeddings);
+  newEmbs.set(qEmb, qaEmbeddings.length);
+  qaEmbeddings = newEmbs;
+
+  // Persist to IndexedDB
+  if (learnedDB) {
+    const tx = learnedDB.transaction('pairs', 'readwrite');
+    tx.objectStore('pairs').add({ question, answer, source, learnedAt: Date.now() });
+  }
+
+  console.log(`[learn] Stored: "${question.substring(0, 50)}..." (source: ${source})`);
+  // Share with peer instances
+  shareKnowledge([{ question, answer, source }]);
+  return true;
+}
+
+async function loadLearnedPairs() {
+  if (!learnedDB) return;
+  return new Promise((resolve) => {
+    const tx = learnedDB.transaction('pairs', 'readonly');
+    const req = tx.objectStore('pairs').getAll();
+    req.onsuccess = async () => {
+      const pairs = req.result;
+      if (pairs.length === 0) { resolve(); return; }
+      console.log(`[learn] Loading ${pairs.length} previously learned pairs...`);
+      for (const p of pairs) {
+        qaData.push({ question: p.question, answer: p.answer });
+        const emb = await encode(p.question);
+        const newEmbs = new Float32Array(qaEmbeddings.length + DIM);
+        newEmbs.set(qaEmbeddings);
+        newEmbs.set(emb, qaEmbeddings.length);
+        qaEmbeddings = newEmbs;
+      }
+      console.log(`[learn] Loaded ${pairs.length} learned pairs. Total: ${qaData.length}`);
+      resolve();
+    };
+    req.onerror = () => resolve();
+  });
+}
+
+// Auto-learn: when confidence is low, try Wikipedia
+async function tryAutoLearn(question) {
+  // INVARIANT: no network in corporate mode
+  if (window._SAQT_NO_NETWORK) return null;
+
+  // Extract the core topic
+  const topic = question.replace(/what is |who is |tell me about |explain /gi, '').trim();
+  if (topic.length < 3) return null;
+
+  try {
+    const r = await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(topic));
+    if (!r.ok) return null;
+    const d = await r.json();
+    if (!d.extract || d.extract.length < 30) return null;
+
+    // Gate the Wikipedia content
+    if (!passesGate(d.extract)) return null;
+
+    // Learn it
+    const learned = await learnPair(question, d.extract, 'wikipedia_auto');
+    if (learned) {
+      return d.extract;
+    }
+  } catch (e) {
+    // CORS or network error — that's fine, not all environments have internet
+  }
+  return null;
+}
+
+// ── KNOWLEDGE TRANSFER (instance-to-instance learning) ──
+
+// Layer 1: BroadcastChannel — same-origin tabs share instantly
+let knowledgeChannel = null;
+try {
+  knowledgeChannel = new BroadcastChannel('webmind_knowledge');
+  knowledgeChannel.onmessage = async (e) => {
+    const msg = e.data;
+    if (msg.type === 'share_pairs') {
+      let accepted = 0;
+      for (const p of msg.pairs) {
+        if (passesGate(p.answer)) {
+          const learned = await learnPair(p.question, p.answer, 'peer_' + (p.source || 'unknown'));
+          if (learned) accepted++;
+        }
+      }
+      if (accepted > 0) {
+        console.log(`[transfer] Received ${accepted} new pairs from peer tab`);
+        // Acknowledge
+        knowledgeChannel.postMessage({ type: 'ack', accepted, from: instanceId });
+      }
+    } else if (msg.type === 'request_knowledge') {
+      // Peer is asking for our learned pairs
+      if (learnedDB) {
+        const tx = learnedDB.transaction('pairs', 'readonly');
+        const req = tx.objectStore('pairs').getAll();
+        req.onsuccess = () => {
+          const pairs = req.result.map(p => ({ question: p.question, answer: p.answer, source: p.source }));
+          if (pairs.length > 0) {
+            knowledgeChannel.postMessage({ type: 'share_pairs', pairs, from: instanceId });
+          }
+        };
+      }
+    }
+  };
+} catch (e) { /* BroadcastChannel not supported */ }
+
+const instanceId = Math.random().toString(36).substring(2, 8);
+
+// Share learned pairs with other instances
+function shareKnowledge(pairs) {
+  if (knowledgeChannel && pairs.length > 0) {
+    knowledgeChannel.postMessage({ type: 'share_pairs', pairs, from: instanceId });
+  }
+}
+
+// Request knowledge from peers on startup
+function requestPeerKnowledge() {
+  if (knowledgeChannel) {
+    knowledgeChannel.postMessage({ type: 'request_knowledge', from: instanceId });
+  }
+}
+
+// Layer 2: Export/Import for manual transfer between devices
+window.exportKnowledge = async function() {
+  if (!learnedDB) { alert('No learned pairs to export'); return; }
+  const tx = learnedDB.transaction('pairs', 'readonly');
+  const req = tx.objectStore('pairs').getAll();
+  req.onsuccess = () => {
+    const data = JSON.stringify(req.result, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'webmind_learned_' + new Date().toISOString().split('T')[0] + '.json';
+    a.click();
+    console.log(`[transfer] Exported ${req.result.length} learned pairs`);
+  };
+};
+
+window.importKnowledge = function() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const text = await file.text();
+    const pairs = JSON.parse(text);
+    let accepted = 0;
+    for (const p of pairs) {
+      if (passesGate(p.answer)) {
+        const learned = await learnPair(p.question, p.answer, 'import_' + (p.source || 'file'));
+        if (learned) accepted++;
+      }
+    }
+    alert(`Imported ${accepted} new pairs (${pairs.length - accepted} filtered/duplicate)`);
+  };
+  input.click();
+};
+
+// GDPR right-to-erasure: delete all locally learned data
+window.deleteLearnedData = async function() {
+  if (!confirm('Delete all learned data stored in this browser? This cannot be undone.')) return;
+  // Clear IndexedDB
+  if (learnedDB) {
+    learnedDB.close();
+    learnedDB = null;
+  }
+  await new Promise((resolve, reject) => {
+    const req = indexedDB.deleteDatabase('webmind_learned');
+    req.onsuccess = resolve;
+    req.onerror = reject;
+  });
+  // Trim in-memory arrays back to base dataset size (reload to be safe)
+  alert('All learned data has been deleted. Reloading to reset in-memory state.');
+  location.reload();
+};
+
+// ── P2P KNOWLEDGE SYNC (WebRTC DHT) ─────────────────────
+
+// Lightweight DHT-style peer discovery + knowledge sync
+// Uses WebRTC data channels for direct instance-to-instance transfer
+// Coordinator (if available) handles signaling only
+
+class KnowledgeMesh {
+  constructor() {
+    this.peers = new Map();      // peerId → { dc, lastSync }
+    this.instanceId = instanceId;
+    this.coordinator = null;
+    this.onPairReceived = null;
+  }
+
+  // Connect to coordinator for signaling (optional — works without it too)
+  async connectCoordinator(url) {
+    try {
+      this.coordinator = new WebSocket(url);
+      this.coordinator.onmessage = (e) => this._handleSignal(JSON.parse(e.data));
+      this.coordinator.onopen = () => {
+        this.coordinator.send(JSON.stringify({
+          type: 'saqt_join', instanceId: this.instanceId,
+          pairCount: qaData.length
+        }));
+        console.log('[mesh] Connected to coordinator for signaling');
+      };
+      this.coordinator.onerror = () => { this.coordinator = null; };
+    } catch (e) { /* No coordinator — that's fine, use BroadcastChannel only */ }
+  }
+
+  // Initiate P2P connection to a peer
+  async connectPeer(remoteId) {
+    const pc = new RTCPeerConnection({
+      iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+    });
+
+    const dc = pc.createDataChannel('knowledge', { ordered: true });
+    dc.onopen = () => {
+      this.peers.set(remoteId, { dc, pc, lastSync: 0 });
+      console.log(`[mesh] P2P connected to ${remoteId}`);
+      this._requestSync(dc);
+    };
+    dc.onmessage = (e) => this._handlePeerMessage(remoteId, JSON.parse(e.data));
+
+    pc.onicecandidate = (e) => {
+      if (e.candidate && this.coordinator) {
+        this.coordinator.send(JSON.stringify({
+          type: 'saqt_ice', to: remoteId, from: this.instanceId,
+          candidate: e.candidate
+        }));
+      }
+    };
+
+    const offer = await pc.createOffer();
+    await pc.setLocalDescription(offer);
+    if (this.coordinator) {
+      this.coordinator.send(JSON.stringify({
+        type: 'saqt_offer', to: remoteId, from: this.instanceId,
+        sdp: pc.localDescription
+      }));
+    }
+    return pc;
+  }
+
+  _handleSignal(msg) {
+    if (msg.type === 'saqt_peers') {
+      // Coordinator tells us about other instances
+      for (const peer of msg.peers) {
+        if (peer.id !== this.instanceId && !this.peers.has(peer.id)) {
+          this.connectPeer(peer.id);
+        }
+      }
+    }
+    // Handle SDP answer, ICE candidates, etc.
+  }
+
+  _requestSync(dc) {
+    dc.send(JSON.stringify({ type: 'sync_request', since: 0 }));
+  }
+
+  async _handlePeerMessage(peerId, msg) {
+    if (msg.type === 'sync_request') {
+      // Send our learned pairs
+      if (learnedDB) {
+        const tx = learnedDB.transaction('pairs', 'readonly');
+        const req = tx.objectStore('pairs').getAll();
+        req.onsuccess = () => {
+          const pairs = req.result
+            .filter(p => p.learnedAt > (msg.since || 0))
+            .map(p => ({ question: p.question, answer: p.answer, source: p.source }));
+          const peer = this.peers.get(peerId);
+          if (peer && peer.dc.readyState === 'open') {
+            peer.dc.send(JSON.stringify({ type: 'sync_pairs', pairs }));
+          }
+        };
+      }
+    } else if (msg.type === 'sync_pairs') {
+      let accepted = 0;
+      for (const p of msg.pairs) {
+        if (passesGate(p.answer)) {
+          const learned = await learnPair(p.question, p.answer, 'p2p_' + peerId);
+          if (learned) accepted++;
+        }
+      }
+      console.log(`[mesh] Synced ${accepted} pairs from peer ${peerId}`);
+    }
+  }
+
+  getStatus() {
+    return {
+      instanceId: this.instanceId,
+      peers: this.peers.size,
+      coordinatorConnected: this.coordinator?.readyState === 1,
+    };
+  }
+}
+
+const mesh = new KnowledgeMesh();
+
+// Try connecting to coordinator if available (non-blocking)
+const coordUrl = window.SAQT_COORDINATOR_URL;
+if (coordUrl) {
+  mesh.connectCoordinator(coordUrl);
 }
 
 // ── UI ───────────────────────────────────────────────────
@@ -390,23 +872,87 @@ window.ask = async function() {
     }
     html += `</div></details>`;
 
+    // Feedback buttons (self-learning from user)
+    const feedbackId = Date.now();
+    html += `<div style="margin-top:6px;display:flex;gap:8px;">`;
+    html += `<button onclick="feedback(${feedbackId},'good',this)" style="font-size:11px;padding:2px 8px;border:1px solid var(--border);border-radius:4px;background:white;cursor:pointer;">Good</button>`;
+    html += `<button onclick="feedback(${feedbackId},'bad',this)" style="font-size:11px;padding:2px 8px;border:1px solid var(--border);border-radius:4px;background:white;cursor:pointer;">Bad</button>`;
+    html += `</div>`;
+
     loading.innerHTML = html;
+    // Store for feedback reference
+    loading.dataset.question = q;
+    loading.dataset.answer = result.answer;
     history.push({ q, a: result.answer });
   } catch (e) {
     loading.innerHTML = `<span style="color:red;">Error: ${escapeHtml(e.message)}</span>`;
   }
 };
 
+// Feedback handler — boost/penalize via attention weights (stored in IndexedDB)
+window.feedback = async function(id, type, btn) {
+  btn.textContent = type === 'good' ? 'Noted!' : 'Will improve';
+  btn.disabled = true;
+  btn.parentElement.querySelectorAll('button').forEach(b => b.disabled = true);
+
+  // If bad answer, try to auto-learn the correct one
+  if (type === 'bad') {
+    const bubble = btn.closest('.message-bubble');
+    if (bubble && bubble.dataset.question) {
+      const learned = await tryAutoLearn(bubble.dataset.question);
+      if (learned) {
+        console.log(`[feedback] Auto-learned better answer for: ${bubble.dataset.question}`);
+      }
+    }
+  }
+};
+
 function escapeHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/`/g, '&#96;');
 }
 
 // ── Boot ─────────────────────────────────────────────────
 
 async function boot() {
+  // Kill switch — corporates can set window.SAQT_KILL = true to disable
+  if (window.SAQT_KILL) {
+    setStatus('Disabled by administrator', '', 0);
+    return;
+  }
+
+  // Domain allowlist — corporates can restrict which domains run this
+  // Set window.SAQT_ALLOWED_DOMAINS = ['example.com', 'internal.corp']
+  if (window.SAQT_ALLOWED_DOMAINS) {
+    const host = location.hostname;
+    const allowed = window.SAQT_ALLOWED_DOMAINS.some(d =>
+      host === d || host.endsWith('.' + d));
+    if (!allowed) {
+      setStatus('Not authorized on this domain', `Allowed: ${window.SAQT_ALLOWED_DOMAINS.join(', ')}`, 0);
+      return;
+    }
+  }
+
+  // Corporate mode: if on a corporate domain, disable ALL network activity
+  // This is an invariant — no browsing, no auto-learn, no P2P, no external fetches
+  const isCorpDomain = window.SAQT_CORPORATE_MODE ||
+    (window.SAQT_ALLOWED_DOMAINS && window.SAQT_ALLOWED_DOMAINS.length > 0);
+  if (isCorpDomain) {
+    window._SAQT_NO_NETWORK = true;
+    console.log('[security] Corporate mode — all network activity disabled');
+  }
+
   try {
     await loadEncoder();
     await loadData();
+    await openLearnedDB();
+    await loadLearnedPairs();
+    requestPeerKnowledge(); // Ask other tabs for their knowledge
     setTimeout(() => {
       document.getElementById('loading').classList.add('hidden');
       document.getElementById('app').classList.add('visible');

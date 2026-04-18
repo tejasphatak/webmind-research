@@ -46,7 +46,7 @@ Tokens per message: 10-20 typical. English equivalent: 100-200. ~10× reduction.
 
 ## Distillation Journal v0
 
-Each faculty journal (`~/cortex2/faculty-journals/<name>.jsonl`) has two sections over time:
+Each faculty journal (`faculty-journals/<name>.jsonl`) has two sections over time:
 1. **Raw meditations** — timestamped prose entries from solo beats
 2. **Distilled axioms** — short dense claims this faculty has come to believe, each with source beat IDs and confidence
 
@@ -85,7 +85,7 @@ Cheaper cognition means lower barriers for anyone building agent systems. If the
 
 ## Convergence item
 
-Added to `~/cortex2/convergence.json`:
+Added to `convergence.json`:
 - C-150: AGP v0 spec + parser + unit tests
 - C-151: Internal beat handoffs use AGP (measurable: tokens per beat)
 - C-152: Weekly distillation beat (per-faculty axiom extraction)

@@ -149,7 +149,7 @@ Phase 2 can run on a single GPU by simulating the partitioning and delay — no 
 - Quality vs K (summary dimension) curve
 - Robustness: quality when 1 of 4 simulated devices "drops" (summaries zeroed)
 
-**Compute:** ~1 day on a single A100, ~$50 on RunPod spot
+**Compute:** ~1 day on a single A100, ~$50 on GPU cloud spot instances
 **Success criterion:** perplexity within 5% of full synchronous model at K=16
 
 ## What this enables for Synapse

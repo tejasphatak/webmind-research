@@ -31,12 +31,12 @@ A candidate is REJECT-eligible if any of: ephemeral chat, derivable, already-kno
 
 ## Architecture (locked)
 
-- JSONL-tail pattern reads `~/.claude/projects/*/<*>.jsonl` (both Nexus + atlas session logs)
-- Systemd timer every 60 min; persists watermark to `~/.nexus/state/curator-watermarks.json`
+- JSONL-tail pattern reads `session logs` (both Nexus + atlas session logs)
+- Systemd timer every 60 min; persists watermark to `state/curator-watermarks.json`
 - Two-stage LLM gate: Haiku 4.5 applies rubric; Opus escalation if confidence < 0.7 or candidate collides with existing memory
 - UNTRUSTED-fence: all turn content wrapped in `<UNTRUSTED-INPUT>` tags before gate prompt
 - Invariant-tag protection: curator writes-only; never deletes
-- All decisions (store / reject / escalate) logged to `~/.nexus/state/curator-decisions.jsonl` — **ephemeral audit trail, never promoted to memory**
+- All decisions (store / reject / escalate) logged to `state/curator-decisions.jsonl` — **ephemeral audit trail, never promoted to memory**
 
 ## Probe battery (falsifiable success metric)
 

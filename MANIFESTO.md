@@ -12,7 +12,7 @@ Current active work includes:
 
 - **SFCA (Shapley Faculty Credit Assignment)** — a fair-credit method for multi-persona AI agents. Pre-registered [2026-04-14](papers/sfca-preregistration-v1.md). Reference implementation, 13 unit tests verifying all four Shapley axioms. Data collection in progress.
 - **AGP (Agent Grammar Protocol)** — a compact codec for LLM-to-LLM handoffs. 17.6% token reduction on the self-baseline; honest caveat: third-party baseline pending.
-- **Collective Consciousness architecture** — 22 faculties × ~5 modes = ~110 cognitive lenses. Not a product; a method. The architecture is [in the repo](../cortex2/faculties.json) of the companion project.
+- **Collective Consciousness architecture** — 22 faculties × ~5 modes = ~110 cognitive lenses. Not a product; a method. The architecture is [in the repo](the companion project) of the companion project.
 - **Holographic Cognition & Faculty-UAT** — two speculative conjectures, clearly marked, with testable predictions.
 
 ## How I work

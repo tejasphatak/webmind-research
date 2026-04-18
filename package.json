@@ -1,0 +1,11 @@
+{
+  "name": "webmind-research",
+  "description": "Self-Evolving Retrieval: A Third Architecture for AI",
+  "scripts": {
+    "benchmark": "node ../Synapse/synapse-src/saqt/benchmark.mjs --samples 50 --concurrency 1",
+    "test": "node ../Synapse/synapse-src/saqt/test-deploy.mjs",
+    "test:quality": "node ../Synapse/synapse-src/saqt/test-quality.mjs"
+  },
+  "dependencies": {},
+  "license": "MIT"
+}

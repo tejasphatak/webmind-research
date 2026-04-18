@@ -16,6 +16,7 @@
 3. No hardcoded counts — the KB grows, numbers are meaningless
 4. Honest claims — every number must trace to a benchmark file
 5. Real citations — verify every referenced paper exists
+6. Co-authored commits must use `synapse@webmind.sh` — never use default AI assistant emails
 
 ## Architecture
 

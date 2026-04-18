@@ -1,12 +1,16 @@
 # Self-Evolving Retrieval: A Third Architecture for AI Beyond Generation and Search
 
-**TL;DR:** We introduce a new AI architecture — neither generative model nor search engine — that retrieves verified answers, teaches itself from every query, and converges via fixed-point iteration in embedding space. Starting from 0% on held-out questions, the system self-evolves to 25.3% exact match with zero human intervention (HotPotQA: 0% to 72%). On in-distribution data, it reaches 71.3% EM across NaturalQuestions, TriviaQA, and HotPotQA. The entire system runs offline in a browser at 214MB. No generative LLM. No hallucination by construction.
+**TL;DR:** We introduce a new AI architecture — neither generative model nor search engine — that retrieves verified answers, teaches itself from every query, and converges via fixed-point iteration in embedding space. On held-out questions never seen during knowledge base augmentation, the system achieves 25.3% exact match (HotPotQA: 72%), demonstrating genuine generalization. On in-distribution data (same questions used for KB augmentation), it reaches 71.3% EM. The entire system runs offline in a browser at 214MB. No generative LLM. No hallucination by construction.
 
 ## 1. A New Architecture Class
 
 This is not a system paper. This is a new architecture for AI.
 
-Large language models compress knowledge into weights and generate text. Search engines index documents and rank by relevance. We propose a third path: **self-evolving retrieval** — a system that understands queries through embeddings, retrieves verified answers from a growing knowledge base, and improves its own retrieval through use.
+Consider how humans handle knowledge. You don't compute 2×2 — you just *know* it's 4. You stored that fact long ago. But you also know *how* to multiply: given 847×293, you can work through the algorithm step by step. And for genuinely hard problems — tax calculations, orbital mechanics — you reach for a calculator. Three distinct capabilities: **stored facts**, **reasoning procedures**, and **tool use**.
+
+Large language models try to collapse all three into one mechanism: compress everything into weights and generate text. The result is a system that "knows" 2×2=4 but also "knows" hallucinated facts with equal confidence, that can sometimes reason but has no separation between memorized answers and derived ones, and that cannot reliably decide when it needs external help.
+
+We propose a third path that separates these concerns explicitly. **Self-evolving retrieval** stores verified facts in a knowledge base (the "2×2=4" layer), applies semantic reasoning through embeddings to match queries to answers (the "multiplication algorithm" layer), and falls back to web search when the KB cannot answer confidently (the "calculator" layer). Each concern is modular, auditable, and independently improvable.
 
 The key insight: **the knowledge base is the model**. There are no frozen weights to retrain, no decoder to hallucinate, no server farm to maintain. The system learns by growing its KB, and the KB is the source of truth.
 
@@ -40,7 +44,7 @@ User Query
                                    |
                                    v
                           +--------------------+
-                          |  Bi-Embedding       |  <- NOVEL: same encoder embeds
+                          |  Answer-Aligned     |  <- Re-rank: same encoder embeds
                           |  Re-Ranking         |     answer text, scores against
                           |                     |     query embedding
                           +--------+-----------+
@@ -68,7 +72,7 @@ User Query
                           +--------------------+     (fixed-point in embedding space)
 ```
 
-### 2.1. Bi-Embedding Re-Ranking
+### 2.1. Re-Ranking with Answer Alignment (Shared Encoder)
 
 Standard retrieval matches query-to-question similarity. This misses cases where the question matches but the answer doesn't fit. Our approach uses the same sentence encoder for both passes:
 
@@ -127,7 +131,7 @@ The knowledge base grows monotonically. The system never forgets. Unlike LLM ret
 | HotPotQA | 0.0% | 92.0% | +92.0 |
 | **Overall EM** | **0.0%** | **71.3%** | **+71.3** |
 
-**Methodology:** On each miss, the benchmark harness teaches the gold answer back to the KB (simulating the self-evolution loop with verified answers). The engine is then queried again on the same questions.
+**Methodology:** This is benchmark-driven knowledge base augmentation, not generalization. On each miss, the benchmark harness teaches the gold answer back to the KB. The engine is then queried again on **the same questions**. The 71.3% result demonstrates that the self-evolution mechanism (embedding, indexing, retrieval) works correctly, but it is in-distribution by construction — the system was tested on the same questions it was taught. The baseline without any KB augmentation is ~8% on NaturalQuestions. See Section 3.2 for the honest generalization result.
 
 ### 3.2. Generalization on Held-Out Data
 
@@ -195,7 +199,7 @@ The full system runs client-side in a browser tab:
 
 1. **Architecture class.** Not generative, not search. A third path: semantic retrieval from an evolving, verified knowledge base. The KB is the model.
 
-2. **Bi-embedding re-ranking.** Same encoder scores both question-match and answer-alignment in a single shared embedding space. No cross-encoder, no separate training.
+2. **Re-ranking with answer alignment using a shared encoder.** The same encoder scores both question-match and answer-alignment in a single shared embedding space. This is a simplification of cross-encoder re-ranking (cf. ColBERT), not a novel retrieval primitive — the contribution is showing it works well enough for this architecture with no additional training.
 
 3. **Convergence loop as fixed-point iteration.** Iterating retrieval until the answer embedding stabilizes is, to our knowledge, a novel application of fixed-point methods to neural retrieval.
 
@@ -209,7 +213,7 @@ The full system runs client-side in a browser tab:
 
 **The self-evolution experiment is small.** 150 questions per condition, single run per condition. The 0.7% to 25.3% generalization result is promising but needs replication at scale with statistical significance testing.
 
-**The 71.3% in-distribution result is partially circular.** The benchmark teaches gold answers, then tests on the same questions. This demonstrates the self-evolution mechanism works, but overstates real-world performance. The held-out result (25.3%) is the honest generalization number.
+**The 71.3% in-distribution result is circular by design.** The benchmark teaches gold answers via knowledge base augmentation, then tests on the same questions. This validates that the embedding-indexing-retrieval pipeline works correctly, but it is not a generalization claim. The held-out result (25.3%) is the honest generalization number. The baseline without any KB augmentation is ~8% on NaturalQuestions.
 
 **Generalization is uneven.** HotPotQA generalizes well (0% to 72%) because multi-hop reasoning benefits from learning component facts. NaturalQuestions and TriviaQA barely generalize (2% and 0%) because factoid questions don't compose.
 
@@ -223,11 +227,11 @@ The full system runs client-side in a browser tab:
 
 ## 7. Prior Art
 
-- **DPR** (Karpukhin et al., 2020): Dense passage retrieval. We use the same retrieval primitive but add self-evolution and bi-embedding re-ranking.
+- **DPR** (Karpukhin et al., 2020): Dense passage retrieval. We use the same retrieval primitive but add self-evolution and answer-aligned re-ranking.
 - **RAG** (Lewis et al., 2020): Retrieval-augmented generation. We remove the generation step entirely — no decoder, no hallucination risk.
 - **Self-RAG** (Asai et al., 2024, ICLR): Self-reflective RAG with critique tokens. Similar self-improvement spirit but still relies on generation. We achieve self-improvement through KB growth, not decoder reflection.
 - **CRAG** (Yan et al., 2024): Corrective RAG with web search fallback. Our web search fallback is similar, but we learn the answer into the KB permanently rather than using it once.
-- **ColBERT** (Khattab & Zaharia, 2020): Late interaction for re-ranking. Our bi-embedding re-ranking is simpler (two cosine scores vs. MaxSim over token embeddings) but less expressive.
+- **ColBERT** (Khattab & Zaharia, 2020): Late interaction for re-ranking. Our answer-aligned re-ranking is simpler (two cosine scores vs. MaxSim over token embeddings) but less expressive.
 
 ## 8. Reproducibility
 

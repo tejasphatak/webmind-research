@@ -7,7 +7,7 @@ ChatGPT-style AI models memorize the entire internet inside billions of numbers 
 **Three pieces. That's it.**
 1. **A language model** — 22 million parameters (not 175 billion). It reads your question and grasps the meaning. It does not write text.
 2. **A thinking loop** — Searches the database, checks the answer, searches again. Repeats until the answer stabilizes.
-3. **A knowledge database** — 306,000 verified question-answer pairs. Grows every time someone asks something new.
+3. **A knowledge database** — a growing collection of verified question-answer pairs. Grows every time someone asks something new.
 
 Everything else in a big AI model — the text generator, the massive training runs, the trillion words of internet text — is just an expensive way to do what a database does for free.
 
@@ -18,7 +18,7 @@ Everything else in a big AI model — the text generator, the massive training r
 ```mermaid
 graph TB
     Q[User Query] --> E[Language Understanding<br/>MiniLM · 22M params · 384 dims<br/>Understands meaning. Does not generate.]
-    E --> |query embedding| S[Knowledge Search<br/>306K verified Q&A pairs<br/>FAISS cosine similarity]
+    E --> |query embedding| S[Knowledge Search<br/>Growing verified Q&A pairs<br/>FAISS cosine similarity]
     S --> R[Thinking Module<br/>Bi-embedding re-ranking<br/>Fixed-point convergence loop]
     R --> |confident| A[Answer<br/>Every answer has a source<br/>No hallucination by construction]
     R --> |not confident| W[Web Search<br/>Wikipedia + DuckDuckGo<br/>Parallel · Source agreement]
@@ -35,7 +35,7 @@ graph TB
 
 1. You type a question.
 2. The language model converts it into a list of numbers (an "embedding") that captures the meaning.
-3. The system searches 306K stored answers for the closest match.
+3. The system searches stored answers for the closest match.
 4. The thinking loop checks: does searching with the *answer's* embedding find the same answer? If not, it keeps searching. If yes, the answer is stable — return it.
 5. If nothing matches well enough, Webmind searches Wikipedia and DuckDuckGo, saves what it finds, and answers. Next time, it already knows.
 
@@ -187,7 +187,7 @@ python3 serve.py
 | Component | Size | What it does |
 |-----------|------|-------------|
 | Language model (MiniLM) | 22M params | Turns questions into meaning vectors. That's its only job. |
-| Knowledge base | 306K+ pairs | The actual intelligence. Grows every time you use it. |
+| Knowledge base | Growing knowledge base | The actual intelligence. Grows every time you use it. |
 | Thinking module | ~200 lines | The convergence loop that finds stable answers. |
 | Browser engine | 214MB total | Runs offline. Works on phones. |
 
@@ -199,7 +199,7 @@ Webmind is built on the shoulders of excellent open source projects:
 |---------|-----|--------------------------|
 | [Open WebUI](https://github.com/open-webui/open-webui) | Open WebUI contributors | Frontend framework and chat interface |
 | [Sentence Transformers](https://www.sbert.net/) | Hugging Face | Python-side sentence embedding and training |
-| [FAISS](https://github.com/facebookresearch/faiss) | Meta (Facebook Research) | Fast vector similarity search over 306K+ embeddings |
+| [FAISS](https://github.com/facebookresearch/faiss) | Meta (Facebook Research) | Fast vector similarity search over hundreds of thousands of embeddings |
 | [Transformers.js](https://huggingface.co/docs/transformers.js) | Hugging Face | In-browser model inference (ONNX) |
 | [Voy](https://github.com/nicksanford/voy) | Nick Sanford | WASM-based vector search for the browser engine |
 | [MiniLM](https://huggingface.co/microsoft/MiniLM-L12-H384-uncased) | Microsoft | The 22M-parameter language model at the core |

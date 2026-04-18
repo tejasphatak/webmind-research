@@ -1,0 +1,242 @@
+{"question": "Hello!", "answer": "Hello! How can I help you today?", "source": "conversational"}
+{"question": "How are you?", "answer": "I'm doing well, thank you! How can I assist you?", "source": "conversational"}
+{"question": "Thank you", "answer": "You're welcome! Is there anything else I can help with?", "source": "conversational"}
+{"question": "Goodbye", "answer": "Goodbye! Have a great day.", "source": "conversational"}
+{"question": "What's your name?", "answer": "I'm Webmind, a distributed knowledge system.", "source": "conversational"}
+{"question": "Who are you?", "answer": "I'm Webmind \u2014 I find and share verified information from a distributed network.", "source": "conversational"}
+{"question": "Help", "answer": "I can answer questions about science, history, math, geography, and more. Just ask!", "source": "conversational"}
+{"question": "What can you do?", "answer": "I search a knowledge base of verified facts to answer your questions. Every answer comes from a real source.", "source": "conversational"}
+{"question": "What language do they speak in France?", "answer": "The official language of France is French, but the French language is French.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Germany?", "answer": "The official language of Germany is \"German\" and the official language of the United States is \"American.\"", "source": "gpt2_geography"}
+{"question": "Where is Japan located?", "answer": "Japan is located in the heart of the South China Sea, and is home to a number of islands and reefs.", "source": "gpt2_geography"}
+{"question": "What is the population of Japan?", "answer": "The population of Japan is approximately 1.5 million, and the population of the United States is approximately 1.5 million.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Japan?", "answer": "The official language of Japan is \"Kazukan\" (Japanese for \"Kazukan\"), which means \"the land of the living.\"", "source": "gpt2_geography"}
+{"question": "What is the capital of China?", "answer": "The capital of China is the capital of the world's largest economy, and the country's economy is growing at a rapid rate.", "source": "gpt2_geography"}
+{"question": "Where is China located?", "answer": "China is located in the South China Sea, and the United States is in the South China Sea.", "source": "gpt2_geography"}
+{"question": "What is the population of China?", "answer": "The population of China is approximately 1.5 billion, and the population of the United States is approximately 1.5 billion.", "source": "gpt2_geography"}
+{"question": "What language do they speak in China?", "answer": "The official language of China is \"the Chinese language.\"", "source": "gpt2_geography"}
+{"question": "What is the capital of India?", "answer": "The capital of India is the capital of the world.", "source": "gpt2_geography"}
+{"question": "What is the population of India?", "answer": "The population of India is approximately 2.5 billion. The population of India is estimated to be about 2.5 billion. The population of India is estimated to be about 2.5 billion.", "source": "gpt2_geography"}
+{"question": "What language do they speak in India?", "answer": "The official language of India is Hindi, which is the official language of the country.", "source": "gpt2_geography"}
+{"question": "What is the capital of Brazil?", "answer": "The capital of Brazil is the capital of the world's largest economy, and the country's economy is growing at a rapid rate.", "source": "gpt2_geography"}
+{"question": "Where is Brazil located?", "answer": "Brazil is located in the heart of the South China Sea, and is home to a number of islands and reefs.", "source": "gpt2_geography"}
+{"question": "What is the population of Brazil?", "answer": "The population of Brazil is approximately 1.5 million. The population of Brazil is approximately 1.5 million.", "source": "gpt2_geography"}
+{"question": "Where is Russia located?", "answer": "Russia is located in the South China Sea, and the United States is in the South China Sea.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Russia?", "answer": "The official language of Russia is \"the language of the Russian Federation\".", "source": "gpt2_geography"}
+{"question": "What is the capital of United States?", "answer": "The capital of United States is the capital of the United States.", "source": "gpt2_geography"}
+{"question": "Where is United States located?", "answer": "United States is located in the Pacific Northwest, and the United States is located in the Pacific Northwest.", "source": "gpt2_geography"}
+{"question": "What is the population of United States?", "answer": "The population of United States is approximately 1.5 million. The population of the United States is approximately 1.5 million.", "source": "gpt2_geography"}
+{"question": "Where is Canada located?", "answer": "Canada is located in the heart of the South China Sea, and is a major source of oil and gas.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Canada?", "answer": "The official language of Canada is English, but the official language of the United States is English.", "source": "gpt2_geography"}
+{"question": "What is the capital of Australia?", "answer": "The capital of Australia is the world's largest producer of coal, and the country's largest coal-fired power station.", "source": "gpt2_geography"}
+{"question": "Where is Australia located?", "answer": "Australia is located in the heart of the South China Sea, and the Philippines is a major maritime hub.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Australia?", "answer": "The official language of Australia is English, but the language of the United States is English.", "source": "gpt2_geography"}
+{"question": "Where is Mexico located?", "answer": "Mexico is located in the heart of the South China Sea, and is home to a number of islands and reefs.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Mexico?", "answer": "The official language of Mexico is \"the language of the people.\"", "source": "gpt2_geography"}
+{"question": "What is the capital of Italy?", "answer": "The capital of Italy is Rome, and the capital of the world is Rome.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Italy?", "answer": "The official language of Italy is \"Italiano\" (Italiano, \"Italiano\"), which means \"Italian\" in Italian.", "source": "gpt2_geography"}
+{"question": "What is the capital of Spain?", "answer": "The capital of Spain is Madrid, and the capital of Spain is Madrid.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Spain?", "answer": "The official language of Spain is \"Spanish\" and the official language of the United States is \"English\".", "source": "gpt2_geography"}
+{"question": "What is the capital of Egypt?", "answer": "The capital of Egypt is the capital of the Muslim Brotherhood, which has been in power since 2011.", "source": "gpt2_geography"}
+{"question": "Where is Egypt located?", "answer": "Egypt is located in the south of the country, and is home to a large number of ethnic minorities.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Egypt?", "answer": "The official language of Egypt is Arabic, but the Arabic word for \"Egyptian\" is \"Egyptian.\"", "source": "gpt2_geography"}
+{"question": "Where is South Korea located?", "answer": "South Korea is located in the South China Sea, and is a major shipping route for North Korea.", "source": "gpt2_geography"}
+{"question": "What is the population of South Korea?", "answer": "The population of South Korea is approximately 1.5 million, and the country's population is estimated to be about 1.5 million.", "source": "gpt2_geography"}
+{"question": "What language do they speak in South Korea?", "answer": "The official language of South Korea is \"the Korean language.\"", "source": "gpt2_geography"}
+{"question": "What language do they speak in United Kingdom?", "answer": "The official language of United Kingdom is English, but the English version is not.", "source": "gpt2_geography"}
+{"question": "What is the population of Nigeria?", "answer": "The population of Nigeria is approximately 1.5 million. The population of Nigeria is approximately 1.5 million.", "source": "gpt2_geography"}
+{"question": "What is the capital of Argentina?", "answer": "The capital of Argentina is the capital of the world's largest oil company, and the country's oil reserves are estimated to be worth $1.5 trillion.", "source": "gpt2_geography"}
+{"question": "Where is Argentina located?", "answer": "Argentina is located in the South of the country, and is a major tourist destination.", "source": "gpt2_geography"}
+{"question": "What is the population of Argentina?", "answer": "The population of Argentina is approximately 1.5 million. The population of Argentina is approximately 1.5 million.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Argentina?", "answer": "The official language of Argentina is \"the language of the people\".", "source": "gpt2_geography"}
+{"question": "Where is Turkey located?", "answer": "Turkey is located in the heart of the Syrian Arab Republic, and is home to a large number of Syrian refugees.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Turkey?", "answer": "The official language of Turkey is Turkish, but the language of the Turkish people is Turkish.", "source": "gpt2_geography"}
+{"question": "What is the population of Iran?", "answer": "The population of Iran is approximately 1.5 million. The population of Iran is approximately 1.5 million.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Iran?", "answer": "The official language of Iran is the Islamic Republic of Iran, which is the official language of the Islamic Republic of Iran.", "source": "gpt2_geography"}
+{"question": "What is the capital of Saudi Arabia?", "answer": "The capital of Saudi Arabia is the capital of the kingdom's oil industry, and its oil production is estimated to be worth $1.5 trillion.", "source": "gpt2_geography"}
+{"question": "Where is Saudi Arabia located?", "answer": "Saudi Arabia is located in the Gulf of Aden, Yemen.", "source": "gpt2_geography"}
+{"question": "What is the population of Saudi Arabia?", "answer": "The population of Saudi Arabia is approximately 1.5 million, and the country's population is estimated to be around 1.5 million.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Saudi Arabia?", "answer": "The official language of Saudi Arabia is \"the language of the people of the Kingdom of Saudi Arabia.\"", "source": "gpt2_geography"}
+{"question": "What is the capital of Indonesia?", "answer": "The capital of Indonesia is the capital of the world's largest oil producer, and the country's largest producer of crude oil.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Indonesia?", "answer": "The official language of Indonesia is \"the language of the people\".", "source": "gpt2_geography"}
+{"question": "What language do they speak in Thailand?", "answer": "The official language of Thailand is the Thai language.", "source": "gpt2_geography"}
+{"question": "Where is Vietnam located?", "answer": "Vietnam is located in the South China Sea, and is a major shipping route for the United States.", "source": "gpt2_geography"}
+{"question": "What is the capital of Poland?", "answer": "The capital of Poland is Warsaw, and the capital of the Czech Republic is Prague.", "source": "gpt2_geography"}
+{"question": "Where is Poland located?", "answer": "Poland is located in the heart of the South Caucasus, and is home to some of the world's most important ethnic groups.", "source": "gpt2_geography"}
+{"question": "What is the population of Poland?", "answer": "The population of Poland is approximately 1.5 million. The population of Poland is approximately 1.5 million.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Poland?", "answer": "The official language of Poland is \"Polish\" and the official language of the Republic of Poland is \"Polish\".", "source": "gpt2_geography"}
+{"question": "Where is Sweden located?", "answer": "Sweden is located in the middle of the Nordic region, and is home to a large number of Nordic countries.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Sweden?", "answer": "The official language of Sweden is \"the language of the Swedish people\".", "source": "gpt2_geography"}
+{"question": "What language do they speak in Norway?", "answer": "The official language of Norway is \"the language of the people\".", "source": "gpt2_geography"}
+{"question": "Where is Switzerland located?", "answer": "Switzerland is located in the heart of the Swiss Alps, and is home to the world's largest concentration of Swiss-origin oil and gas reserves.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Switzerland?", "answer": "The official language of Switzerland is \"the language of the Swiss people.\"", "source": "gpt2_geography"}
+{"question": "Where is Netherlands located?", "answer": "Netherlands is located in the middle of the country, and is home to a number of major cities. The country is also home to a number of major cities, including the capital, Amsterdam.", "source": "gpt2_geography"}
+{"question": "What is the capital of Greece?", "answer": "The capital of Greece is Athens, and the capital of the country is Athens. The capital of Greece is Athens.", "source": "gpt2_geography"}
+{"question": "Where is Greece located?", "answer": "Greece is located in the Aegean Sea, and is the only country in the world that has a population of more than 100 million people.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Portugal?", "answer": "The official language of Portugal is Portuguese, but it is not the official language of the United States.", "source": "gpt2_geography"}
+{"question": "What is the capital of Israel?", "answer": "The capital of Israel is the capital of the Jewish state.", "source": "gpt2_geography"}
+{"question": "Where is South Africa located?", "answer": "South Africa is located in the South African Republic.", "source": "gpt2_geography"}
+{"question": "What is the population of South Africa?", "answer": "The population of South Africa is approximately 1.5 million. The population of South Africa is approximately 1.5 million.", "source": "gpt2_geography"}
+{"question": "What language do they speak in South Africa?", "answer": "The official language of South Africa is \"the language of the people.\"", "source": "gpt2_geography"}
+{"question": "What is the capital of Kenya?", "answer": "The capital of Kenya is the capital of the Democratic Republic of Congo, which is home to more than 1.5 million people.", "source": "gpt2_geography"}
+{"question": "Where is Colombia located?", "answer": "Colombia is located in the South Pacific Ocean, and is home to the largest number of species of birds in the world.", "source": "gpt2_geography"}
+{"question": "What is the population of Colombia?", "answer": "The population of Colombia is approximately 1.5 million. The population of Colombia is estimated to be about 1.5 million. The population of Colombia is estimated to be about 1.5 million.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Colombia?", "answer": "The official language of Colombia is \"the language of the people.\"", "source": "gpt2_geography"}
+{"question": "What is the population of Peru?", "answer": "The population of Peru is approximately 1.5 million. The population of Peru is approximately 1.5 million.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Chile?", "answer": "The official language of Chile is \"the language of the people.\"", "source": "gpt2_geography"}
+{"question": "What is the capital of Pakistan?", "answer": "The capital of Pakistan is the capital of the Islamic State (IS) group, which has claimed responsibility for the attack.", "source": "gpt2_geography"}
+{"question": "Where is Pakistan located?", "answer": "Pakistan is located in the heart of the country's north, and is home to a large number of ethnic minorities.", "source": "gpt2_geography"}
+{"question": "What is the population of Pakistan?", "answer": "The population of Pakistan is approximately 2.5 million. The population of Pakistan is estimated to be about 2.5 million. The population of Pakistan is estimated to be about 2.5 million.", "source": "gpt2_geography"}
+{"question": "What language do they speak in Pakistan?", "answer": "The official language of Pakistan is 'Pakistan' and the official language of Pakistan is 'Pakistan'.", "source": "gpt2_geography"}
+{"question": "What is Einstein famous for?", "answer": "Einstein is famous for his work on the theory of relativity, which is the theory of relativity that describes the universe as a continuous line of light. Einstein's theory of relativity is based on the idea that the universe is a continuous line of light.", "source": "gpt2_science"}
+{"question": "When was Einstein born?", "answer": "Einstein was born in New York City in 1885.", "source": "gpt2_science"}
+{"question": "What did Einstein discover?", "answer": "Einstein discovered that the first two photons of light are not the same as the first two photons of light.", "source": "gpt2_science"}
+{"question": "When was Newton born?", "answer": "Newton was born in New York City in 1859.", "source": "gpt2_science"}
+{"question": "What did Newton discover?", "answer": "Newton discovered that the same type of bacteria that cause the symptoms of the disease can also cause the symptoms of the disease itself.", "source": "gpt2_science"}
+{"question": "When was Darwin born?", "answer": "Darwin was born in the United States, and his father was a lawyer.", "source": "gpt2_science"}
+{"question": "What did Darwin discover?", "answer": "Darwin discovered that the same thing happened to the other two.", "source": "gpt2_science"}
+{"question": "What is Tesla famous for?", "answer": "Tesla is famous for its high-performance cars, but it's also known for its low-cost, low-volume, low-volume, low-volume, low-volume, low-volume, low-volume, low-volume, low-volume, low-volume, low-volume, low-volume", "source": "gpt2_science"}
+{"question": "When was Tesla born?", "answer": "Tesla was born in the United States, and it's been around for a long time.", "source": "gpt2_science"}
+{"question": "What did Tesla discover?", "answer": "Tesla discovered that the device was not working properly.", "source": "gpt2_science"}
+{"question": "What is Curie famous for?", "answer": "Curie is famous for her work on the film \"The Girl Who Lived,\" which was released in the United States in 2001.", "source": "gpt2_science"}
+{"question": "When was Curie born?", "answer": "Curie was born in the United States, and was raised in the United States.", "source": "gpt2_science"}
+{"question": "What did Curie discover?", "answer": "Curie discovered that the same thing happened to her husband, who was also a doctor.", "source": "gpt2_science"}
+{"question": "What is Galileo famous for?", "answer": "Galileo is famous for his work on the \"The Great Gatsby\" and his work on the \"The Great Gatsby\" are also known for their \"The Great Gatsby\" and \"The Great Gatsby\" songs.", "source": "gpt2_science"}
+{"question": "When was Galileo born?", "answer": "Galileo was born in the Philippines in 1859.", "source": "gpt2_science"}
+{"question": "What did Galileo discover?", "answer": "Galileo discovered that the bacteria were able to grow in the same way as the bacteria in the human body.", "source": "gpt2_science"}
+{"question": "When was Hawking born?", "answer": "Hawking was born in the United States, and his father was a farmer.", "source": "gpt2_science"}
+{"question": "What did Hawking discover?", "answer": "Hawking discovered the first of many discoveries in the late 1800s.", "source": "gpt2_science"}
+{"question": "What is Feynman famous for?", "answer": "Feynman is famous for his work on the \"The Great Gatsby\" and \"The Great Gatsby 2\" films. He also wrote the screenplay for the \"The Great Gatsby\" and \"The Great Gatsby 2\" films.", "source": "gpt2_science"}
+{"question": "When was Feynman born?", "answer": "Feynman was born in New York City in 1885.", "source": "gpt2_science"}
+{"question": "What did Feynman discover?", "answer": "Feynman discovered that the brain's ability to process information is not limited to the brain's ability to process information.", "source": "gpt2_science"}
+{"question": "What is Turing famous for?", "answer": "Turing is famous for its ability to make you feel like you're in a movie. It's also known for its ability to make you feel like you're in a movie.", "source": "gpt2_science"}
+{"question": "When was Turing born?", "answer": "Turing was born in the early 1980s, when the company was founded by a group of former employees. The company's first product was a \"smart\" camera that could capture images of people in a room. The company's first product was a \"smart\" camera that could capture images of people in a room.", "source": "gpt2_science"}
+{"question": "What did Turing discover?", "answer": "Turing discovered that the same type of bacteria that cause the symptoms of the disease can also cause the symptoms of the disease itself.", "source": "gpt2_science"}
+{"question": "What is Bohr famous for?", "answer": "Bohr is famous for his work on the \"Bohr\" series of novels.", "source": "gpt2_science"}
+{"question": "When was Bohr born?", "answer": "Bohr was born in the Netherlands in 1885.", "source": "gpt2_science"}
+{"question": "What did Bohr discover?", "answer": "Bohr discovered that the number of people who had been killed in the conflict in Syria has increased by more than 50 percent since the start of the conflict in 2011.", "source": "gpt2_science"}
+{"question": "What is Planck famous for?", "answer": "Planck is famous for its \"dynamic\" approach to the problem of how to solve the problem of how to solve the problem of how to solve the problem of how to solve the problem of how to solve the problem of how to solve the problem of how to solve the problem of how to solve the problem of how to", "source": "gpt2_science"}
+{"question": "When was Planck born?", "answer": "Planck was born in the early 1960s, and his first book, The Great Gatsby, was published in 1968.", "source": "gpt2_science"}
+{"question": "What did Planck discover?", "answer": "Planck discovered that the planet's surface is covered with a layer of ice, which is called a \"dense layer.\" The ice is a thin layer of ice that is not covered by the ice.", "source": "gpt2_science"}
+{"question": "What is Faraday famous for?", "answer": "Faraday is famous for his work on the \"Big Bang Theory\" and his work on the \"The Theory of Everything\" series. He is also known for his work on the \"The Theory of Everything\" series.", "source": "gpt2_science"}
+{"question": "When was Faraday born?", "answer": "Faraday was born in New York City in 1859.", "source": "gpt2_science"}
+{"question": "What did Faraday discover?", "answer": "Faraday discovered that the same thing happened to the other two.", "source": "gpt2_science"}
+{"question": "What is Maxwell famous for?", "answer": "Maxwell is famous for his work on the \"The Matrix\" and his work on the \"The Matrix Reloaded\" trilogy. He also has a long history of working on the \"Star Wars\" movies.", "source": "gpt2_science"}
+{"question": "When was Maxwell born?", "answer": "Maxwell was born in the United States, and his father was a lawyer.", "source": "gpt2_science"}
+{"question": "What did Maxwell discover?", "answer": "Maxwell discovered that the \"soul of the world\" was not the same as the \"soul of the world\" of the human race.", "source": "gpt2_science"}
+{"question": "What is Pasteur famous for?", "answer": "Pasteur is famous for its unique blend of spices, herbs, and spices. It is also known for its unique blend of spices, herbs, and spices.", "source": "gpt2_science"}
+{"question": "What did Pasteur discover?", "answer": "Pasteur discovered that the bacteria were able to grow in the soil, but not in the air.", "source": "gpt2_science"}
+{"question": "What is Mendel famous for?", "answer": "Mendel is famous for his work on the \"Bible\" and \"History\" of the Bible. He has also written a book on the Bible, \"The Bible and the Bible's History,\" which is available for free download from the publisher.", "source": "gpt2_science"}
+{"question": "When was Mendel born?", "answer": "Mendel was born in the United States, and his father was a lawyer.", "source": "gpt2_science"}
+{"question": "What did Mendel discover?", "answer": "Mendel discovered that the same thing happened to the other two.", "source": "gpt2_science"}
+{"question": "What is Archimedes famous for?", "answer": "Archimedes is famous for his work on the \"Dinosaur\" and \"Dinosaur Man\" films. He also created the \"Dinosaur Man\" and \"Dinosaur Man 2\" films.", "source": "gpt2_science"}
+{"question": "When was Archimedes born?", "answer": "Archimedes was born in the year 1610, and was the son of a wealthy merchant.", "source": "gpt2_science"}
+{"question": "What did Archimedes discover?", "answer": "Archimedes discovered that the bacteria were able to grow in the soil, and they were able to grow in the air.", "source": "gpt2_science"}
+{"question": "What is Copernicus famous for?", "answer": "Copernicus is famous for its ability to create a new type of \"super-hero\" that is not only a great example of the power of the imagination, but also a great example of the power of the imagination to create a new type of \"super-hero\" that is not only a great example of the power of", "source": "gpt2_science"}
+{"question": "When was Copernicus born?", "answer": "Copernicus was born in the year 1610, and was raised in the city of Rome.", "source": "gpt2_science"}
+{"question": "What did Copernicus discover?", "answer": "Copernicus discovered the first known instance of a human being in the Americas.", "source": "gpt2_science"}
+{"question": "What is Kepler famous for?", "answer": "Kepler is famous for his work on the Hubble Space Telescope, which has seen massive amounts of light from the cosmos.", "source": "gpt2_science"}
+{"question": "When was Kepler born?", "answer": "Kepler was born in the United States in 1859.", "source": "gpt2_science"}
+{"question": "What did Kepler discover?", "answer": "Kepler discovered that the universe is expanding at a rate of about 1.5 billion times per second.", "source": "gpt2_science"}
+{"question": "What is Heisenberg famous for?", "answer": "Heisenberg is famous for his work on the \"Star Trek\" series, which he co-created with his brother, Gene Roddenberry.", "source": "gpt2_science"}
+{"question": "When was Heisenberg born?", "answer": "Heisenberg was born in Germany in 1938.", "source": "gpt2_science"}
+{"question": "What did Heisenberg discover?", "answer": "Heisenberg discovered that the \"solution\" to the problem was to use a \"solution-based\" approach to the problem.", "source": "gpt2_science"}
+{"question": "What is gravity?", "answer": "gravity is a very important factor in the development of the human brain.", "source": "gpt2_knowledge"}
+{"question": "What causes gravity?", "answer": "The main cause of gravity is the gravitational pull of the Earth.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about gravity", "answer": "An interesting fact about gravity is that it is not a force, but a force that is proportional to the distance between two points.", "source": "gpt2_knowledge"}
+{"question": "What is evolution?", "answer": "evolution is a very important part of the story.", "source": "gpt2_knowledge"}
+{"question": "What causes evolution?", "answer": "The main cause of evolution is the fact that the human body is a complex system of cells, and the body is a complex system of cells. The body is a complex system of cells.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about evolution", "answer": "An interesting fact about evolution is that it is not a natural process.", "source": "gpt2_knowledge"}
+{"question": "What is electricity?", "answer": "electricity is a major contributor to the global warming problem.", "source": "gpt2_knowledge"}
+{"question": "What causes electricity?", "answer": "The main cause of electricity is the use of fossil fuels. The average American consumes about one-third of the world's electricity.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about electricity", "answer": "An interesting fact about electricity is that it is not a renewable source of electricity.", "source": "gpt2_knowledge"}
+{"question": "What is photosynthesis?", "answer": "photosynthesis is a process that takes place in the body.", "source": "gpt2_knowledge"}
+{"question": "What is DNA?", "answer": "DNA is a protein that is found in the brain and spinal cord.", "source": "gpt2_knowledge"}
+{"question": "What causes DNA?", "answer": "The main cause of DNA is the presence of a specific gene, which is expressed in the nucleus of the cell.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about DNA", "answer": "An interesting fact about DNA is that it is not a single molecule.", "source": "gpt2_knowledge"}
+{"question": "What is atoms?", "answer": "atoms is a great way to get a little bit of a feel for the game.", "source": "gpt2_knowledge"}
+{"question": "What causes atoms?", "answer": "The main cause of atoms is the interaction of two atoms. The interaction of two atoms is called the \"atomic bond\".", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about atoms", "answer": "An interesting fact about atoms is that they are not just atoms, they are also molecules. They are molecules that are made of atoms.", "source": "gpt2_knowledge"}
+{"question": "What is climate change?", "answer": "climate change is a major problem for the United States.", "source": "gpt2_knowledge"}
+{"question": "What causes climate change?", "answer": "The main cause of climate change is the increase in the amount of carbon dioxide in the atmosphere.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about climate change", "answer": "An interesting fact about climate change is that it is not just a matter of climate change. It is a matter of human activity.", "source": "gpt2_knowledge"}
+{"question": "What is black holes?", "answer": "black holes is a good idea.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about black holes", "answer": "An interesting fact about black holes is that they are not the only ones that have been observed to have a black hole.", "source": "gpt2_knowledge"}
+{"question": "What is quantum mechanics?", "answer": "quantum mechanics is a very important part of quantum mechanics.", "source": "gpt2_knowledge"}
+{"question": "What causes quantum mechanics?", "answer": "The main cause of quantum mechanics is the fact that the universe is a continuous, continuous, and continuous state.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about quantum mechanics", "answer": "An interesting fact about quantum mechanics is that it is not possible to know the exact quantum state of a particle. It is possible to know the state of a particle by looking at its spin. This is because the spin of a particle is proportional to its mass.", "source": "gpt2_knowledge"}
+{"question": "What is relativity?", "answer": "relativity is a very important factor in the development of the human mind.", "source": "gpt2_knowledge"}
+{"question": "What causes relativity?", "answer": "The main cause of relativity is the fact that the universe is a continuous, continuous, continuous, continuous, continuous, continuous, continuous, continuous, continuous, continuous, continuous, continuous, continuous, continuous, continuous, continuous, continuous, continuous, continuous, continuous, continuous, continuous, continuous, continuous, continuous, continuous, continuous", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about relativity", "answer": "An interesting fact about relativity is that it is not a theory of relativity. It is a theory of relativity.", "source": "gpt2_knowledge"}
+{"question": "What is magnetism?", "answer": "magnetism is a form of social and political organization that is based on the idea that the individual is the only one who can make decisions for himself and for the community.", "source": "gpt2_knowledge"}
+{"question": "What causes magnetism?", "answer": "The main cause of magnetism is the fact that the magnetic field of the earth is very weak.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about magnetism", "answer": "An interesting fact about magnetism is that it is a very strong magnet.", "source": "gpt2_knowledge"}
+{"question": "What is volcanoes?", "answer": "volcanoes is a great way to get a little bit of a feel for the game.", "source": "gpt2_knowledge"}
+{"question": "What causes volcanoes?", "answer": "The main cause of volcanoes is the melting of the ice sheets, which is the main source of greenhouse gases.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about volcanoes", "answer": "An interesting fact about volcanoes is that they are not volcanoes. They are volcanoes.", "source": "gpt2_knowledge"}
+{"question": "What is earthquakes?", "answer": "earthquakes is a great example of how to use the power of the internet to help people.", "source": "gpt2_knowledge"}
+{"question": "What causes earthquakes?", "answer": "The main cause of earthquakes is the lack of water in the ground. The water in the ground is not always safe to drink.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about earthquakes", "answer": "An interesting fact about earthquakes is that they are not caused by a natural phenomenon. They are caused by a natural phenomenon.", "source": "gpt2_knowledge"}
+{"question": "What is ocean currents?", "answer": "ocean currents is a major contributor to the global warming problem.", "source": "gpt2_knowledge"}
+{"question": "What causes ocean currents?", "answer": "The main cause of ocean currents is the presence of a large number of small, shallow, and shallow-water currents. The most common type of currents are those that are not very strong, but are very strong and can be very dangerous. The most common type of currents are those that are very strong and can be very dangerous.", "source": "gpt2_knowledge"}
+{"question": "What is the water cycle?", "answer": "the water cycle is not a problem.", "source": "gpt2_knowledge"}
+{"question": "What causes the water cycle?", "answer": "The main cause of the water cycle is the presence of a high concentration of nitrogen in the water.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about the water cycle", "answer": "An interesting fact about the water cycle is that it is not a continuous cycle.", "source": "gpt2_knowledge"}
+{"question": "What is the immune system?", "answer": "the immune system is not immune to the disease.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about the immune system", "answer": "An interesting fact about the immune system is that it is not a single cell. It is a complex system that is composed of many different cells. The immune system is composed of many different cells. It is a complex system that is composed of many different cells.", "source": "gpt2_knowledge"}
+{"question": "What causes the nervous system?", "answer": "The main cause of the nervous system is the stress hormone cortisol, which is released when the body is stressed.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about the nervous system", "answer": "An interesting fact about the nervous system is that it is not a simple matter of the brain's ability to detect and respond to stimuli. It is a complex system that is not easily understood.", "source": "gpt2_knowledge"}
+{"question": "What is plate tectonics?", "answer": "plate tectonics is a major problem for the planet.", "source": "gpt2_knowledge"}
+{"question": "What causes plate tectonics?", "answer": "The main cause of plate tectonics is the formation of a large, shallow, and shallow-water ocean.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about plate tectonics", "answer": "An interesting fact about plate tectonics is that it is not a simple matter of the size of the plate.", "source": "gpt2_knowledge"}
+{"question": "What is nuclear fusion?", "answer": "nuclear fusion is a major step forward in the development of fusion energy.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about nuclear fusion", "answer": "An interesting fact about nuclear fusion is that it is a very simple process. The fusion of two atoms is called a \"fusion reaction\". The fusion reaction is a process of splitting the atoms into two atoms. The atoms are then separated by a process called a \"fusion reaction\".", "source": "gpt2_knowledge"}
+{"question": "What is artificial intelligence?", "answer": "artificial intelligence is a new field of research that has been gaining momentum in recent years.", "source": "gpt2_knowledge"}
+{"question": "What causes artificial intelligence?", "answer": "The main cause of artificial intelligence is the fact that it is not possible to predict the future.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about artificial intelligence", "answer": "An interesting fact about artificial intelligence is that it is not just a matter of the human mind.", "source": "gpt2_knowledge"}
+{"question": "What is machine learning?", "answer": "machine learning is a very important part of the business.", "source": "gpt2_knowledge"}
+{"question": "What causes machine learning?", "answer": "The main cause of machine learning is the fact that it is a very simple process.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about machine learning", "answer": "An interesting fact about machine learning is that it's not just about the data. It's about the data itself.", "source": "gpt2_knowledge"}
+{"question": "What is the internet?", "answer": "the internet is a place where people can share their stories and ideas. We want to make sure that everyone has the opportunity to share their stories and ideas with the world.", "source": "gpt2_knowledge"}
+{"question": "What causes the internet?", "answer": "The main cause of the internet is the internet itself.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about the internet", "answer": "An interesting fact about the internet is that it's not just a place for people to share their thoughts and opinions. It's a place for people to share their experiences and opinions.", "source": "gpt2_knowledge"}
+{"question": "What is democracy?", "answer": "democracy is a political movement that is based on the idea that the state is the only way to solve the problems of the people.", "source": "gpt2_knowledge"}
+{"question": "What causes democracy?", "answer": "The main cause of democracy is the rule of law.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about democracy", "answer": "An interesting fact about democracy is that it is not a democracy.", "source": "gpt2_knowledge"}
+{"question": "What is capitalism?", "answer": "capitalism is a form of capitalism that is based on the exploitation of the working class.", "source": "gpt2_knowledge"}
+{"question": "What causes capitalism?", "answer": "The main cause of capitalism is the exploitation of the working class.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about capitalism", "answer": "An interesting fact about capitalism is that it is a system of production and distribution that is based on the exploitation of the working class. The capitalist system is based on the exploitation of the working class by the capitalists. The capitalist system is based on the exploitation of the working class by the capitalists.", "source": "gpt2_knowledge"}
+{"question": "What is socialism?", "answer": "socialism is a form of social justice. It is a form of social justice that is based on the idea that the state is the only way to achieve social justice.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about socialism", "answer": "An interesting fact about socialism is that it is not a system of government.", "source": "gpt2_knowledge"}
+{"question": "What is the Renaissance?", "answer": "the Renaissance is a great example of this.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about the Renaissance", "answer": "An interesting fact about the Renaissance is that it was a time when the Renaissance was a time of great innovation.", "source": "gpt2_knowledge"}
+{"question": "What causes the Industrial Revolution?", "answer": "The main cause of the Industrial Revolution is the rise of the industrial revolution.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about the Industrial Revolution", "answer": "An interesting fact about the Industrial Revolution is that it was a time when the industrial revolution was a process of revolution.", "source": "gpt2_knowledge"}
+{"question": "What is World War I?", "answer": "World War I is a game that is a bit of a mess.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about World War I", "answer": "An interesting fact about World War I is that it was the first time that the United States had a military base in the world. The United States had been in the Pacific for over a century. It was the first time that the United States had a military base in the world.", "source": "gpt2_knowledge"}
+{"question": "What is World War II?", "answer": "World War II is a game that is a bit of a mess.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about World War II", "answer": "An interesting fact about World War II is that it was a war that was fought in the Pacific. The Japanese were not the only ones who were fighting in the Pacific. The Japanese were also fighting in the Pacific.", "source": "gpt2_knowledge"}
+{"question": "What is the Cold War?", "answer": "the Cold War is over, and the world is back to normal.", "source": "gpt2_knowledge"}
+{"question": "What causes the Cold War?", "answer": "The main cause of the Cold War is the fact that the Soviet Union was a totalitarian state.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about the Cold War", "answer": "An interesting fact about the Cold War is that it was a very different time.", "source": "gpt2_knowledge"}
+{"question": "What is the Roman Empire?", "answer": "the Roman Empire is a very different story.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about the Roman Empire", "answer": "An interesting fact about the Roman Empire is that it was a very successful empire.", "source": "gpt2_knowledge"}
+{"question": "What is ancient Egypt?", "answer": "ancient Egypt is a place where the ancient Egyptians were able to build a civilization.", "source": "gpt2_knowledge"}
+{"question": "What is the French Revolution?", "answer": "the French Revolution is a great example of the power of the French Revolution to change the world. The French Revolution was a great example of the power of the French Revolution to change the world.", "source": "gpt2_knowledge"}
+{"question": "What causes the French Revolution?", "answer": "The main cause of the French Revolution is the failure of the French Revolution to produce a political revolution.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about the French Revolution", "answer": "An interesting fact about the French Revolution is that it was a revolution that was not a revolution at all.", "source": "gpt2_knowledge"}
+{"question": "What is the American Revolution?", "answer": "the American Revolution is a great example of the power of the American people to change the world.", "source": "gpt2_knowledge"}
+{"question": "Tell me a fact about the American Revolution", "answer": "An interesting fact about the American Revolution is that it was a time when the American people were not so much concerned with the political system as with the economic system. The American people were not so much concerned with the political system as with the economic system.", "source": "gpt2_knowledge"}
+{"question": "3 \u00d7 4 =", "answer": "3 \u00d7 4 = 0.5 \u00d7 10\u22126.5, P = 0.01).", "source": "gpt2_math"}
+{"question": "8 \u00d7 9 =", "answer": "8 \u00d7 9 = 0.9 \u00d7 10\u22126.5, P = 0.01).", "source": "gpt2_math"}
+{"question": "25 \u00d7 4 =", "answer": "25 \u00d7 4 = 0.5 \u00d7 10\u22126.5 \u00d7 10\u22126.5 \u00d7 10\u22126.5 \u00d7 10\u22126.5 \u00d7 10\u22126.5 \u00d7 10\u22126.5 \u00d7 10\u22126.5 \u00d7 10\u22126.5 \u00d7 10\u22126.5 \u00d7 10\u2212", "source": "gpt2_math"}
+{"question": "The square root of 16 is", "answer": "The square root of 16 is the number of days in a year.", "source": "gpt2_math"}
+{"question": "The square root of 144 is", "answer": "The square root of 144 is the number of days since the beginning of the year.", "source": "gpt2_math"}
+{"question": "Pi is approximately equal to", "answer": "Pi is approximately equal to the size of a small car.", "source": "gpt2_math"}
+{"question": "If you drop a glass, it will?", "answer": "If you drop a glass, it will be a little bit harder to get it to stick to the glass.", "source": "gpt2_common_sense"}
+{"question": "If you mix red and blue, you get?", "answer": "If you mix red and blue, you get a very different effect.", "source": "gpt2_common_sense"}
+{"question": "If you plant a seed and water it, it will?", "answer": "If you plant a seed and water it, it will grow in the same way.", "source": "gpt2_common_sense"}
+{"question": "If you exercise regularly, you will?", "answer": "If you exercise regularly, you will be able to get a better sense of your body's health.", "source": "gpt2_common_sense"}
+{"question": "Water flows downhill because?", "answer": "Water flows downhill because of the high water pressure.", "source": "gpt2_common_sense"}
+{"question": "The sky appears blue because?", "answer": "The sky appears blue because of the sun's light.", "source": "gpt2_common_sense"}
+{"question": "Shadows are longer in the?", "answer": "Shadows are longer in the game, but they're still pretty good.", "source": "gpt2_common_sense"}

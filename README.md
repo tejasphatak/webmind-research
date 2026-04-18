@@ -2,18 +2,18 @@
 
 **Not an LLM. Not a search engine. Something new.**
 
-An LLM compresses all of human knowledge into billions of weights — then guesses. A search engine indexes documents — but doesn't understand them. Webmind takes a different path: a small language model that understands, a thinking module that converges, and a database that grows with every query.
+ChatGPT-style AI models memorize the entire internet inside billions of numbers — then guess at answers. Search engines find documents — but don't understand your question. Webmind does something different: it *understands* your question with a tiny model, *thinks* by searching iteratively, and *remembers* by saving what it learns to a growing database.
 
-**All you need is:**
-1. **A model that understands language** (22M params, not 175B)
-2. **A thinking module** (convergence loop in embedding space)
-3. **A database** (the actual knowledge — explicit, traceable, evolving)
+**Three pieces. That's it.**
+1. **A language model** — 22 million parameters (not 175 billion). It reads your question and grasps the meaning. It does not write text.
+2. **A thinking loop** — Searches the database, checks the answer, searches again. Repeats until the answer stabilizes.
+3. **A knowledge database** — 306,000 verified question-answer pairs. Grows every time someone asks something new.
 
-Everything else in an LLM — the decoder, the attention heads, the trillion tokens of training — is just an expensive way to approximate a database lookup.
+Everything else in a big AI model — the text generator, the massive training runs, the trillion words of internet text — is just an expensive way to do what a database does for free.
 
 **[Try it → webmind.sh](https://webmind.sh)** · **[Paper](papers/self-evolving-retrieval-2026-04-18.md)** · **[Benchmarks](benchmarks/)**
 
-## Architecture
+## How It Works
 
 ```mermaid
 graph TB
@@ -33,7 +33,13 @@ graph TB
     style L fill:#e8f5e9
 ```
 
-## Why This Is a New Architecture
+1. You type a question.
+2. The language model converts it into a list of numbers (an "embedding") that captures the meaning.
+3. The system searches 306K stored answers for the closest match.
+4. The thinking loop checks: does searching with the *answer's* embedding find the same answer? If not, it keeps searching. If yes, the answer is stable — return it.
+5. If nothing matches well enough, Webmind searches Wikipedia and DuckDuckGo, saves what it finds, and answers. Next time, it already knows.
+
+## Why This Is Different
 
 ```mermaid
 graph LR
@@ -64,41 +70,43 @@ graph LR
 
 | | LLM | Search Engine | Webmind |
 |---|---|---|---|
-| **What it stores** | Everything, compressed in weights | Documents, indexed | Only facts — explicit Q&A pairs |
-| **Params needed** | 175B+ | N/A | 22M |
-| **Learns from use** | No (retrain = $millions) | No (re-crawl) | Yes (every query) |
-| **Hallucination** | Inherent | N/A | Impossible by construction |
-| **Source traceable** | No | URL only | Full provenance per answer |
-| **Runs on phone** | No | No | Yes (214MB) |
-| **Useless weights** | ~99% storing memorized facts | N/A | 0% — encoder only understands language |
+| **What it stores** | Everything, compressed in weights | Documents, indexed | Only facts — verified Q&A pairs |
+| **Parameters** | 175B+ | N/A | 22M |
+| **Learns from use** | No (retraining costs millions) | No (must re-crawl) | Yes (every query) |
+| **Hallucination** | Built-in risk | N/A | Impossible — answers come from verified sources |
+| **Source traceable** | No | URL only | Full source for every answer |
+| **Runs on a phone** | No | No | Yes (214MB) |
+| **Wasted capacity** | ~99% storing memorized facts | N/A | 0% — model only understands language |
 
-### The Insight
+### The Core Idea
 
-An LLM with 175B parameters is mostly storing facts — who wrote Hamlet, what's the capital of France, when did WW2 end. Those facts don't need neural weights. They need a database row.
+A 175-billion-parameter AI model is mostly storing facts. Who wrote Hamlet. The capital of France. When WW2 ended. Those facts don't need a neural network. They need a row in a database.
 
-The only thing that needs neural weights is **language understanding** — turning "what's the capital of France?" into a meaning vector. That takes 22M parameters, not 175B.
+The only part that *needs* a neural network is understanding language — turning "what's the capital of France?" into a meaning vector that can be compared to stored answers. That takes 22 million parameters. Not 175 billion.
 
-The rest — reasoning, convergence, learning — is search with iteration. No decoder needed.
+The rest — reasoning, learning, converging on answers — is smart searching. No text generator needed.
 
-## Key Results
+## Results
 
-### Self-Evolution (zero human intervention)
+### Self-Evolution: The System Teaches Itself
 
-On questions the engine has **never seen before**:
+When Webmind encounters questions it has **never seen before**, it searches the web, learns, and gets better — with zero human help:
 
-| Dataset | First Encounter | After Self-Evolution |
-|---------|----------------|---------------------|
+| Dataset | First Try | After Self-Learning |
+|---------|-----------|---------------------|
 | NaturalQuestions | 0.0% | 56.0% |
 | TriviaQA | 0.0% | 66.0% |
 | HotPotQA | 0.0% | 92.0% |
 
-On **held-out data** (completely independent questions):
-- First encounter: **0.7% EM**
-- After self-evolution: **25.3% EM** (HotPotQA: 0% → 72%)
+On **completely separate test questions** it never trained on:
+- First try: **0.7%** exact match
+- After self-learning: **25.3%** exact match (HotPotQA: 0% → 72%)
 
-The engine taught itself. No human touched it between runs.
+Nobody touched it between runs. It taught itself.
 
-### Cross-Lingual (same embedding space)
+### Works Across Languages (Same Model)
+
+The embedding space captures meaning, not specific words. One model handles 50+ languages:
 
 | Language | Similarity to English |
 |----------|----------------------|
@@ -107,9 +115,7 @@ The engine taught itself. No human touched it between runs.
 | Spanish (Hola) | 96.2% |
 | French (Bonjour) | 94.1% |
 
-50+ languages. One model. One database.
-
-## The Thinking Module
+## How the Thinking Loop Works
 
 ```mermaid
 graph TD
@@ -125,11 +131,11 @@ graph TD
     style A fill:#e8f5e9
 ```
 
-**Fixed-point iteration in embedding space.** The answer stabilizes when searching with the answer's own embedding retrieves the same answer. The system finds self-consistent knowledge.
+The thinking loop works like this: search for an answer, then search using *that answer's* embedding. If you get the same answer back, it's stable — the system has found self-consistent knowledge. If not, keep searching.
 
-This is how it "thinks" without a decoder — iterative search that converges on the right answer.
+This is how Webmind "thinks" without generating text. It narrows in on the right answer through repeated search, like checking your work by solving a problem from a different angle.
 
-## The Self-Evolution Loop
+## How Self-Evolution Works
 
 ```mermaid
 graph LR
@@ -146,22 +152,22 @@ graph LR
     P --> KB
 ```
 
-Every miss makes the engine smarter. Every interaction adjusts weights. The database evolves. No retraining needed.
+Every missed question makes the system smarter. It searches the web, checks that multiple sources agree, saves the answer, and knows it next time. Good answers get boosted. Bad ones get demoted. The database evolves. No retraining needed.
 
 ## Is This the Future of AI?
 
-We think so. Here's why:
+We think so.
 
-**LLMs are brute force.** They memorize everything — useful facts, training noise, copyrighted text — in one undifferentiated blob of weights. Then they guess what comes next. The 175B parameters aren't 175B units of intelligence — they're 175B units of compressed, lossy memorization.
+**Big AI models are brute force.** They memorize everything — useful facts, training noise, copyrighted text — into one giant blob of numbers. Then they predict the next word. Most of those 175 billion parameters aren't "intelligence." They're compressed, lossy memorization.
 
-**This architecture separates concerns:**
-- **Understanding** → small encoder (22M params, well-studied, efficient)
-- **Knowledge** → database (explicit, auditable, grows, never hallucinates)
-- **Reasoning** → convergence loop (mathematical, deterministic, explainable)
+**Webmind separates the jobs:**
+- **Understanding language** → small encoder model (22M params, fast, efficient)
+- **Storing knowledge** → database (explicit, auditable, grows, never makes things up)
+- **Reasoning** → convergence loop (mathematical, predictable, explainable)
 
-The encoder can be upgraded independently. The database can grow without retraining. The reasoning module can be improved without touching either. Each component is replaceable and testable.
+Each piece can be upgraded on its own. The database grows without retraining. The language model can be swapped out. The thinking module can be improved without touching either one.
 
-**What's left for LLMs?** Creative generation, open-ended conversation, tasks requiring true synthesis. For factual Q&A — knowing things and retrieving them accurately — this architecture is simpler, cheaper, more honest, and self-improving.
+**What are big AI models still better at?** Creative writing, open-ended conversation, tasks that require genuinely combining ideas in new ways. For factual Q&A — knowing things and retrieving them accurately — Webmind is simpler, cheaper, more honest, and self-improving.
 
 ## Run It
 
@@ -169,7 +175,7 @@ The encoder can be upgraded independently. The database can grow without retrain
 # Live demo
 open https://webmind.sh
 
-# Local server
+# Run locally
 git clone https://github.com/tejasphatak/Synapse.git
 cd Synapse/synapse-src/saqt
 pip install sentence-transformers faiss-cpu
@@ -178,12 +184,29 @@ python3 serve.py
 
 ## What's Inside
 
-| Component | Size | Purpose |
-|-----------|------|---------|
-| Language model (MiniLM) | 22M params | Understands meaning. That's all it does. |
-| Knowledge base | 306K+ pairs | The actual intelligence. Grows from use. |
-| Thinking module | ~200 lines | Convergence loop + bi-embedding re-ranking |
-| Browser engine | 214MB total | Offline-capable. Works on phones. |
+| Component | Size | What it does |
+|-----------|------|-------------|
+| Language model (MiniLM) | 22M params | Turns questions into meaning vectors. That's its only job. |
+| Knowledge base | 306K+ pairs | The actual intelligence. Grows every time you use it. |
+| Thinking module | ~200 lines | The convergence loop that finds stable answers. |
+| Browser engine | 214MB total | Runs offline. Works on phones. |
+
+## Credits and Acknowledgments
+
+Webmind is built on the shoulders of excellent open source projects:
+
+| Project | By | What Webmind uses it for |
+|---------|-----|--------------------------|
+| [Open WebUI](https://github.com/open-webui/open-webui) | Open WebUI contributors | Frontend framework and chat interface |
+| [Sentence Transformers](https://www.sbert.net/) | Hugging Face | Python-side sentence embedding and training |
+| [FAISS](https://github.com/facebookresearch/faiss) | Meta (Facebook Research) | Fast vector similarity search over 306K+ embeddings |
+| [Transformers.js](https://huggingface.co/docs/transformers.js) | Hugging Face | In-browser model inference (ONNX) |
+| [Voy](https://github.com/nicksanford/voy) | Nick Sanford | WASM-based vector search for the browser engine |
+| [MiniLM](https://huggingface.co/microsoft/MiniLM-L12-H384-uncased) | Microsoft | The 22M-parameter language model at the core |
+| [ONNX Runtime](https://onnxruntime.ai/) | Microsoft | Cross-platform model execution (CPU, browser, mobile) |
+| [DuckDuckGo Instant Answers API](https://api.duckduckgo.com/) | DuckDuckGo | Web search fallback for self-evolution |
+| [Wikipedia REST API](https://en.wikipedia.org/api/rest_v1/) | Wikimedia Foundation | Primary knowledge source for self-learning |
+| [Google Programmable Search Engine](https://programmablesearchengine.google.com/) | Google | Extended web search for harder queries |
 
 ## Citation
 
@@ -195,23 +218,6 @@ python3 serve.py
   url={https://github.com/tejasphatak/webmind-research}
 }
 ```
-
-## Credits & Acknowledgments
-
-Built on the shoulders of these open source projects:
-
-| Project | By | What we use it for |
-|---------|-----|-------------------|
-| [Open WebUI](https://github.com/open-webui/open-webui) | Open WebUI team | Frontend chat interface |
-| [Sentence Transformers](https://www.sbert.net/) | Hugging Face / UKP Lab | Embedding model framework |
-| [MiniLM](https://github.com/microsoft/unilm/tree/master/minilm) | Microsoft | Language understanding (22M params) |
-| [FAISS](https://github.com/facebookresearch/faiss) | Meta AI | Vector similarity search |
-| [Transformers.js](https://github.com/xenova/transformers.js) | Hugging Face | In-browser model inference |
-| [ONNX Runtime](https://onnxruntime.ai/) | Microsoft | Cross-platform model execution |
-| [Voy](https://github.com/tantaraio/voy) | Tantara | WASM vector search for browser |
-| [Wikipedia API](https://en.wikipedia.org/api/) | Wikimedia Foundation | Web search source |
-| [DuckDuckGo API](https://api.duckduckgo.com/) | DuckDuckGo | Web search source |
-| [Google CSE](https://programmablesearchengine.google.com/) | Google | Programmable web search |
 
 ## License
 

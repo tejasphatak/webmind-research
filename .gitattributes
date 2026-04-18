@@ -1,0 +1,2 @@
+trained_model/qa_embeddings.pt filter=lfs diff=lfs merge=lfs -text
+trained_model/qa_pairs.jsonl filter=lfs diff=lfs merge=lfs -text

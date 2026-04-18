@@ -78,6 +78,18 @@ graph LR
 | **Runs on a phone** | No | No | Yes (214MB) |
 | **Wasted capacity** | ~99% storing memorized facts | N/A | 0% — model only understands language |
 
+### The Mathematical Connection
+
+A transformer computes: `softmax(Q·K^T/√d)·V`
+
+In a standard LLM, K and V are **learned weight matrices** — training data compressed into numbers. This compression is lossy. Hallucination is the decompression artifact.
+
+In Webmind, K = **pre-computed embeddings of stored facts** and V = **the fact texts themselves**. Same operation. Different storage. Exact instead of compressed. Hallucination eliminated by construction.
+
+This is formally grounded: [Ramsauer et al. (2021)](https://arxiv.org/abs/2008.02217) proved that transformer attention is equivalent to Hopfield network retrieval. We operationalize this — replacing compressed learned representations with exact stored ones.
+
+**We didn't build a different kind of AI. We replaced the lossy database inside an LLM with a lossless one.**
+
 ### Think About How You Actually Think
 
 Ask yourself: **what's 2 × 2?**

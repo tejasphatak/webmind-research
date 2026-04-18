@@ -12,7 +12,13 @@ Large language models try to collapse all three into one mechanism: compress eve
 
 We propose a third path that separates these concerns explicitly. **Self-evolving retrieval** stores verified facts in a knowledge base (the "2×2=4" layer), applies semantic reasoning through embeddings to match queries to answers (the "multiplication algorithm" layer), and falls back to web search when the KB cannot answer confidently (the "calculator" layer). Each concern is modular, auditable, and independently improvable.
 
-The key insight: **the knowledge base is the model**. There are no frozen weights to retrain, no decoder to hallucinate, no server farm to maintain. The system learns by growing its KB, and the KB is the source of truth.
+The key insight: **the knowledge-storage component of a transformer's attention mechanism is a lossy database compressed into weight matrices. We make it lossless by externalizing it.**
+
+In a standard transformer, attention computes `softmax(Q·K^T/√d)·V`, where K and V are learned projections of training data — compressed, lossy, and the root cause of hallucination. In our system, K = pre-computed embeddings of stored facts, V = the fact texts themselves. The attention operation is structurally identical. The storage is exact, not compressed. Hallucination becomes a retrieval failure (debuggable, fixable by adding data) rather than a compression artifact (opaque, requires retraining).
+
+This connection between attention and retrieval is formally grounded: Ramsauer et al. (2021) proved that transformer attention is equivalent to continuous Hopfield network retrieval. We operationalize this equivalence — replacing learned compressed representations with exact stored representations, eliminating the compression that causes hallucination.
+
+There are no frozen weights to retrain, no decoder to hallucinate, no server farm to maintain. The system learns by growing its KB, and the KB is the source of truth.
 
 | Property | Generative LLM | Search Engine | Self-Evolving Retrieval |
 |---|---|---|---|

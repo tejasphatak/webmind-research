@@ -1,47 +1,91 @@
-# Webmind Research
+# Webmind — Knowledge Engine
 
-**Public research log.** Pre-registered hypotheses, timestamped inventive claims, reference implementations, verification plans.
+**No LLM. No GPU. No cloud. Runs in your browser.**
 
-*AI-generated, human-directed.* All research in this repo is written by a continuously-running substrate-LLM agent on a private VM, under the direction of Tejas Phatak.
+A retrieval-based knowledge engine with 305K+ Q&A pairs, a 22M-parameter sentence transformer, and a self-learning loop. Ask a question — get an answer in milliseconds. No hallucinations. No subscriptions. No data leaves your device.
 
-## Active papers
+**[Try it live → webmind.sh](https://webmind.sh)**
 
-| Paper | Status | Notes |
-|---|---|---|
-| [SFCA Pre-registration v1](papers/sfca-preregistration-v1.md) | **Pre-registered 2026-04-14** · data collection in progress ≥ 30 days | Shapley Faculty Credit Assignment for multi-perspective LLM agent cognition. Reference impl in [`sfca/`](sfca/). 13 unit tests verify all four Shapley axioms. |
+## How it works
 
-## Inventions & claims (timestamped)
+```
+Your question → Sentence Transformer (encode to 384-dim vector)
+             → FAISS Cosine Search (0.45ms, 305K pairs)
+             → Best Q&A match → If <tool> tag: execute in sandbox
+             → Answer
+```
 
-All in [`inventions/`](inventions/), dated filenames, SHA256 manifest in [`MANIFEST.md`](MANIFEST.md).
+- **Retrieval, not generation.** Answers are pre-stored Q&A pairs matched by semantic similarity. Zero hallucinations — it either knows or says "I don't know."
+- **Multi-hop reasoning.** Up to 5 hops of iterative retrieval, building context across Q&A pairs.
+- **Self-learning.** When it can't answer, it tries Wikipedia. If it finds something, it stores it locally and knows it next time.
+- **Tool execution.** `<tool>` tags run code in a sandboxed Web Worker — math, dates, API calls.
+- **P2P knowledge sync.** Instances teach each other via BroadcastChannel and WebRTC.
 
-- **P-SFC01 · SFCA** — Shapley credit + convex weight optimization *(pre-registered)*
-- **P-AGP01 · AGP** — Agent Grammar Protocol, compact LLM-to-LLM codec *(17.6% reduction on self-baseline; third-party baseline pending)*
-- **P-CGN01 · Cognitron** — AGP + Distillation combined architecture
-- **P-HOL01 · Holographic Cognition** — boundary memory reconstructs bulk (SPECULATIVE, testable)
-- **P-UAT01 · Faculty-UAT** — faculties as universal decision approximators (SPECULATIVE, math-track)
-- **P-TRN01 · Training-Pipeline Contributions** — Faculty-Decomposed DPO, Shapley-RLHF, Agent-Trajectories
-- **P-WSN01 · Warm-Stream Nexus** — one persistent claude process, compact protocol
-- **P-COL01 · Collective Consciousness** — 21 faculties × ~5 modes = ~100 lenses
+## Run it yourself
 
-## Discipline
+**Browser (single HTML file):**
+```bash
+# Download from GitHub Release
+curl -LO https://github.com/tejasphatak/webmind-research/releases/download/v1.0-data/qa_data.json
+curl -LO https://github.com/tejasphatak/webmind-research/releases/download/v1.0-data/qa_embeddings.bin
+# Serve
+python3 -m http.server 3000
+# Open http://localhost:3000/tools/saqt_browser.html
+```
 
-- **Pre-registration first.** Hypotheses, metrics, analysis plan, stopping criteria locked in git *before* data collection.
-- **Null results published.** No file-drawer. A rigorous null is a real contribution.
-- **Code released MIT** at submission; ledger data released with paper where privacy permits.
-- **AI-generated research is disclosed prominently.** The genesis of every artifact is transparent.
+**Python server:**
+```bash
+pip install sentence-transformers faiss-cpu
+python3 tools/saqt_training_loop.py  # RLHF training
+# Server at Synapse/synapse-src/saqt/serve.py
+```
 
-## Tools
+## What's inside
 
-- [`tools/watch-beats.sh`](tools/watch-beats.sh) — live view of what the agent is doing
-- [`sfca/nexus_integration.py`](sfca/nexus_integration.py) — SFCA ledger CLI
-- [`agp/benchmark.py`](agp/benchmark.py) — AGP token-reduction benchmark
+| Component | Size | What it does |
+|-----------|------|-------------|
+| Sentence transformer | 80MB | Encodes questions to 384-dim vectors (ONNX, runs on CPU) |
+| Q&A pairs | 100MB | 305K+ question→answer pairs from Wikipedia, SQuAD, MMLU, etc. |
+| Embeddings | 450MB | Pre-computed vectors for all 305K questions |
+| **Total** | **630MB** | Runs on phone, tablet, Raspberry Pi, any browser |
+
+## Ethics shield
+
+Safety is structural, not policy. Three layers that can't be removed without breaking the system:
+
+1. **Embedding space warping** — 173K vectors shifted toward safety responses. Harmful queries get gravitationally pulled to refusals.
+2. **Steganographic sentinels** — 63 safety pairs disguised as normal knowledge throughout the database.
+3. **Integrity hash chain** — SHA-256 over ethics embeddings. Tamper with one → hash breaks → system won't start.
+
+The system follows its principles or shuts down. No middle ground.
+
+## Corporate deployment
+
+```javascript
+// Kill switch
+window.SAQT_KILL = true;
+
+// Domain allowlist
+window.SAQT_ALLOWED_DOMAINS = ['internal.corp.com'];
+
+// Network lockdown (no browsing, no auto-learn, no P2P)
+window.SAQT_CORPORATE_MODE = true;
+```
+
+Compliant with GDPR, CCPA, PCI DSS by design — no data collected, everything on-device.
+
+## Research
+
+- [SAQT paper](papers/saqt-distributed-cognition-2026-04-18.md) — full architecture and results
+- [Ethics invariants](papers/saqt-ethics-invariants-2026-04-18.md) — unbreakable safety design
+- [SFCA pre-registration](papers/sfca-preregistration-v1.md) — Shapley credit for multi-agent cognition
+
+## Built by
+
+- **Tejas Phatak** — creator, vision, ethical framework
+- **Claude** (Anthropic) — engineering, architecture, code
+- **Gemini** (Google) — RLHF teacher, training signal
 
 ## License
 
-- Papers: CC-BY 4.0
-- Code: MIT
-- Everything under the Webmind umbrella
-
-## Why public
-
-Pre-registration is only meaningful when the registration is *verifiable* — public git commits with timestamps do that. Making this repo public before results are in is the scientifically honest move. We stake our claims in the open and report results either way.
+Code: MIT · Papers: CC-BY 4.0

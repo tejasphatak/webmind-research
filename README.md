@@ -78,13 +78,32 @@ graph LR
 | **Runs on a phone** | No | No | Yes (214MB) |
 | **Wasted capacity** | ~99% storing memorized facts | N/A | 0% — model only understands language |
 
-### The Core Idea
+### Think About How You Actually Think
 
-A 175-billion-parameter AI model is mostly storing facts. Who wrote Hamlet. The capital of France. When WW2 ended. Those facts don't need a neural network. They need a row in a database.
+Ask yourself: **what's 2 × 2?**
 
-The only part that *needs* a neural network is understanding language — turning "what's the capital of France?" into a meaning vector that can be compared to stored answers. That takes 22 million parameters. Not 175 billion.
+You didn't calculate. You just knew. The answer "4" is stored in your memory. Instant. 100% confident.
 
-The rest — reasoning, learning, converging on answers — is smart searching. No text generator needed.
+Now: **what's 192,831,293,812 × 123,919,239?**
+
+You have no idea. Zero confidence. So you grab a calculator. You get the answer. And you probably won't memorize it — because nobody's going to ask you that again.
+
+**That's exactly how Webmind works:**
+
+| Situation | You | Webmind |
+|-----------|-----|---------|
+| 2 × 2 = ? | Know it instantly | KB hit → "4" → return |
+| 192B × 123M = ? | Zero confidence → use calculator | Low confidence → use web search → get answer |
+| Remember it? | Only if useful | Weight system decides — useful answers stay, useless ones fade |
+
+A human brain doesn't store every possible multiplication. It stores three things:
+1. **Common facts** (2 × 2 = 4) → the knowledge database
+2. **How to think** (the multiplication algorithm) → the thinking module
+3. **When to use a tool** (too hard? grab a calculator) → the confidence check
+
+An LLM tries to cram ALL of this into one blob of weights. Including 192,831,293,812 × 123,919,239. That's 175 billion parameters memorizing things that should be a tool call or a database row.
+
+Webmind doesn't memorize everything. It memorizes **what matters**, learns **how to think about new questions**, and knows **when to look things up**. Just like you do.
 
 ## Results
 

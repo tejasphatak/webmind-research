@@ -36,6 +36,7 @@ class SAQTDB:
                 question TEXT NOT NULL,
                 answer TEXT NOT NULL,
                 source TEXT DEFAULT '',
+                weight REAL DEFAULT 1.0,
                 created_at REAL DEFAULT (strftime('%s','now'))
             )
         """)
@@ -75,29 +76,50 @@ class SAQTDB:
             self.index.add(embs.astype(np.float32))
 
     def search(self, query, top_k=5):
-        """Search for nearest Q&A pairs. Returns list of (id, question, answer, score)."""
+        """Search with attention weights. Score = similarity × weight."""
         if self.encoder is None:
             raise RuntimeError("No encoder set")
 
         q_emb = self.encoder.encode([query], normalize_embeddings=True)
-        scores, indices = self.index.search(q_emb.astype(np.float32), top_k)
+        # Fetch more candidates than needed, then re-rank with weights
+        fetch_k = min(top_k * 3, self.index.ntotal)
+        scores, indices = self.index.search(q_emb.astype(np.float32), fetch_k)
 
-        results = []
-        for i, (score, idx) in enumerate(zip(scores[0], indices[0])):
+        candidates = []
+        for score, idx in zip(scores[0], indices[0]):
             if idx < 0:
                 continue
-            row_id = int(idx) + 1  # SQLite IDs start at 1
-            row = self.conn.execute("SELECT question, answer, source FROM qa WHERE id=?",
-                                   (row_id,)).fetchone()
+            row_id = int(idx) + 1
+            row = self.conn.execute(
+                "SELECT question, answer, source, weight FROM qa WHERE id=?",
+                (row_id,)).fetchone()
             if row:
-                results.append({
+                weighted_score = float(score) * (row[3] or 1.0)
+                candidates.append({
                     "id": row_id,
                     "question": row[0],
                     "answer": row[1],
                     "source": row[2],
-                    "score": float(score),
+                    "weight": row[3] or 1.0,
+                    "raw_score": float(score),
+                    "score": weighted_score,
                 })
-        return results
+
+        # Re-rank by weighted score
+        candidates.sort(key=lambda x: x["score"], reverse=True)
+        return candidates[:top_k]
+
+    def boost(self, pair_id, factor=1.1):
+        """Boost weight on success — this pair answered correctly."""
+        self.conn.execute("UPDATE qa SET weight = MIN(weight * ?, 5.0) WHERE id = ?",
+                         (factor, pair_id))
+        self.conn.commit()
+
+    def penalize(self, pair_id, factor=0.9):
+        """Reduce weight on failure — this pair gave wrong answer."""
+        self.conn.execute("UPDATE qa SET weight = MAX(weight * ?, 0.1) WHERE id = ?",
+                         (factor, pair_id))
+        self.conn.commit()
 
     def count(self):
         return self.conn.execute("SELECT COUNT(*) FROM qa").fetchone()[0]

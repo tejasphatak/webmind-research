@@ -1,0 +1,5 @@
+sentence-transformers>=5.0
+faiss-cpu>=1.7
+numpy>=2.0
+torch>=2.0
+onnxruntime>=1.15

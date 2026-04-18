@@ -241,3 +241,11 @@ Webmind is built on the shoulders of excellent open source projects:
 ## License
 
 Code: MIT · Papers: CC-BY 4.0
+
+## Requirements
+
+```bash
+pip install -r requirements.txt
+```
+
+> **Note:** Some experiments may require specific hardware (GPU, specific PyTorch version) or large data files. If something doesn't run on your setup, please [open an issue](https://github.com/tejasphatak/webmind-research/issues) or email the author.

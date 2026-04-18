@@ -16,3 +16,11 @@ Each paper has its own directory with everything needed to reproduce it.
 - Every paper lives with its data, code, and results
 - Null results published — we don't file-drawer
 - All code released MIT, papers CC-BY 4.0
+
+## Running experiments
+
+```bash
+pip install -r ../requirements.txt
+```
+
+> **Note:** Some experiments depend on large model files or specific hardware. If you can't reproduce a result, please [open an issue](https://github.com/tejasphatak/webmind-research/issues).

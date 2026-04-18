@@ -14,9 +14,9 @@ We propose a third path that separates these concerns explicitly. **Self-evolvin
 
 The key insight: **the knowledge-storage component of a transformer's attention mechanism is a lossy database compressed into weight matrices. We make it lossless by externalizing it.**
 
-In a standard transformer, attention computes `softmax(Q·K^T/√d)·V`, where K and V are learned projections of training data — compressed, lossy, and the root cause of hallucination. In our system, K = pre-computed embeddings of stored facts, V = the fact texts themselves. The attention operation is structurally identical. The storage is exact, not compressed. Hallucination becomes a retrieval failure (debuggable, fixable by adding data) rather than a compression artifact (opaque, requires retraining).
+In a standard transformer, attention computes `softmax(Q·K^T/√d)·V`, where K and V are learned projections of training data — compressed, lossy, and the root cause of hallucination. In our system, K = pre-computed embeddings of stored facts, V = the fact texts themselves. The attention operation is structurally identical — the same `softmax(Q·K^T/√d)·V` computation — but the storage is exact, not compressed. This is not a loose analogy: Ramsauer et al. (2021) proved that transformer attention is equivalent to continuous Hopfield network retrieval. Khandelwal et al. (2020) demonstrated with kNN-LM that nearest-neighbor lookup over a datastore can substitute for parametric knowledge. Borgeaud et al. (2022) showed with RETRO that chunked retrieval integrated into transformer layers matches or exceeds pure parametric models at fraction of the parameters. Wu et al. (2022) extended this with Memorizing Transformers, demonstrating that exact kNN attention over a non-differentiable memory achieves the same effect as learned attention over compressed weights. We operationalize this equivalence — replacing learned compressed representations with exact stored representations, eliminating the compression that causes hallucination.
 
-This connection between attention and retrieval is formally grounded: Ramsauer et al. (2021) proved that transformer attention is equivalent to continuous Hopfield network retrieval. We operationalize this equivalence — replacing learned compressed representations with exact stored representations, eliminating the compression that causes hallucination.
+**Honest caveat on the attention claim:** We replace the knowledge *storage* component of attention, not the full transformer. A transformer's attention mechanism serves multiple roles: knowledge retrieval (which we externalize), syntactic binding, coreference resolution, and compositional reasoning. Our architecture replaces the first role with lossless retrieval. The remaining roles are either handled by the encoder (which is itself a transformer) or are deliberately absent — we do not generate text, so syntactic binding and autoregressive composition are not needed. For factual QA, the storage role dominates, which is why this architecture works. For tasks requiring multi-step compositional generation, a full transformer remains necessary.
 
 There are no frozen weights to retrain, no decoder to hallucinate, no server farm to maintain. The system learns by growing its KB, and the KB is the source of truth.
 
@@ -29,6 +29,7 @@ There are no frozen weights to retrain, no decoder to hallucinate, no server far
 | Runs offline on phone | No | No | Yes (214MB) |
 | Minimum viable hardware | GPU cluster | Server farm | Browser tab |
 | Understanding | Syntactic + semantic | Keyword + PageRank | Semantic (embedding space) |
+| Depth | Fixed (layer count) | None | Yes (variable, data-determined) |
 | Output | Generated text | Ranked documents | Retrieved answer + source |
 
 ## 2. Architecture
@@ -124,6 +125,45 @@ When the KB cannot answer a query confidently:
 
 The knowledge base grows monotonically. The system never forgets. Unlike LLM retraining (which risks catastrophic forgetting), adding a Q&A pair to the KB is additive and reversible.
 
+### 2.4. Convergence Loop as Variable-Depth Transformer
+
+The convergence loop (Section 2.2) is not merely an engineering convenience — it is a variable-depth transformer layer, where the depth is determined by the data rather than hardcoded in the architecture.
+
+Each hop through the convergence loop transforms the query embedding into a different semantic region of the space. Empirically measured on benchmark queries:
+
+| Hop Transition | Cosine Similarity Between Consecutive Embeddings |
+|----------------|--------------------------------------------------|
+| Hop 0 → 1 | 0.87 |
+| Hop 1 → 2 | 0.97 |
+| Hop 2 → 3 | 0.98 |
+| Hop 3 → 4 | 1.00 |
+
+The similarity monotonically approaches 1.0 — the embeddings converge to a fixed point. Hop 0→1 shifts the query embedding substantially (sim=0.87), meaning the first retrieval result redirects the semantic search into a meaningfully different region. Subsequent hops make finer adjustments until the embedding stabilizes.
+
+This is structurally analogous to Adaptive Computation Time (Graves, 2016), which allows a recurrent network to learn how many computational steps to apply per input, and to Universal Transformers (Dehghani et al., 2019), which apply the same transformation block repeatedly with a dynamic halting mechanism. In our case:
+
+- The "transformation block" is: retrieve answer → encode answer → use as new query
+- The "halting mechanism" is: embedding delta < epsilon (data-determined convergence)
+- The "depth" is: number of hops until convergence (typically 2-4)
+
+Unlike standard transformers where depth is a hyperparameter chosen at training time (e.g., 12 layers, 96 layers), our depth is determined at inference time by the query's relationship to the knowledge base. Simple queries converge in 1-2 hops. Ambiguous or multi-faceted queries require more hops as the system traverses semantic neighborhoods to find the fixed point. This is variable-depth computation driven by the data, not the architecture.
+
+### 2.5. Why Transformer Components Are Unnecessary for Factual QA
+
+A standard transformer consists of attention layers, MLP blocks, residual connections, positional encodings, and autoregressive generation. For the specific task of factual question answering, each component has a natural analog or is deliberately excluded:
+
+**MLPs are replaced by database rows.** In a transformer, MLP layers after attention are believed to store factual associations (Geva et al., 2021 — "Transformer Feed-Forward Layers Are Key-Value Memories"). Each MLP neuron activation pattern encodes a fact compressed into weights. In our architecture, facts are stored explicitly as Q&A pairs in a database. The storage is lossless, auditable, and editable — no gradient descent required to update a fact.
+
+**Depth is replaced by the convergence loop.** As shown in Section 2.4, the convergence loop provides variable-depth computation. Each hop is empirically verified to shift the query embedding (sim=0.87 at hop 0→1), providing the iterative refinement that stacked transformer layers achieve through depth. The critical difference: our depth adapts per-query based on convergence, rather than being fixed for all inputs.
+
+**Residual connections are implicit.** In a transformer, residual connections ensure that each layer's input is carried forward: `output = layer(x) + x`. In our convergence loop, each hop carries the full context — the retrieved answer text and the original query are both available at every step. There is no vanishing gradient problem because there are no gradients; the loop operates on discrete retrieval results, not differentiable transformations.
+
+**Autoregressive generation is deliberately absent.** This is the key architectural decision, not a limitation. Autoregressive token-by-token generation is the mechanism by which transformers hallucinate — each generated token conditions the next, and errors compound. By returning retrieved answers verbatim, we eliminate this failure mode entirely. The system cannot produce a token that is not in its knowledge base.
+
+**Positional encoding is handled internally by the encoder.** The MiniLM-L12 sentence encoder uses its own positional encoding to understand token order within queries and answers. Our architecture does not need an additional positional encoding scheme because we do not generate sequences — we retrieve complete answers.
+
+This decomposition shows that for factual QA specifically, every transformer component either has a direct analog in our architecture (attention → retrieval, MLPs → DB rows, depth → convergence loop) or is unnecessary (autoregressive generation, external positional encoding). The components that are unnecessary are precisely the ones responsible for hallucination in generative models.
+
 ## 3. Results
 
 ### 3.1. Self-Evolution on In-Distribution Data
@@ -207,7 +247,7 @@ The full system runs client-side in a browser tab:
 
 2. **Re-ranking with answer alignment using a shared encoder.** The same encoder scores both question-match and answer-alignment in a single shared embedding space. This is a simplification of cross-encoder re-ranking (cf. ColBERT), not a novel retrieval primitive — the contribution is showing it works well enough for this architecture with no additional training.
 
-3. **Convergence loop as fixed-point iteration.** Iterating retrieval until the answer embedding stabilizes is, to our knowledge, a novel application of fixed-point methods to neural retrieval.
+3. **Convergence loop as fixed-point iteration.** Iterating retrieval until the answer embedding stabilizes is, to our knowledge, a novel application of fixed-point methods to neural retrieval. The loop also functions as a variable-depth transformer (Section 2.4), with depth determined by data convergence rather than architecture.
 
 4. **Self-evolution without retraining.** The system learns by growing its KB, not by updating weights. Additive, reversible, and auditable — every learned fact has provenance.
 
@@ -238,6 +278,12 @@ The full system runs client-side in a browser tab:
 - **Self-RAG** (Asai et al., 2024, ICLR): Self-reflective RAG with critique tokens. Similar self-improvement spirit but still relies on generation. We achieve self-improvement through KB growth, not decoder reflection.
 - **CRAG** (Yan et al., 2024): Corrective RAG with web search fallback. Our web search fallback is similar, but we learn the answer into the KB permanently rather than using it once.
 - **ColBERT** (Khattab & Zaharia, 2020): Late interaction for re-ranking. Our answer-aligned re-ranking is simpler (two cosine scores vs. MaxSim over token embeddings) but less expressive.
+- **kNN-LM** (Khandelwal et al., 2020): Nearest-neighbor language model. Demonstrated that exact retrieval over a datastore can substitute for parametric knowledge. We extend this principle from token-level interpolation to full answer retrieval with self-evolution.
+- **RETRO** (Borgeaud et al., 2022): Retrieval-enhanced transformer. Showed chunked retrieval integrated into transformer layers matches parametric models at lower parameter count. Our architecture takes this further by eliminating the parametric decoder entirely.
+- **Memorizing Transformers** (Wu et al., 2022): Exact kNN attention over non-differentiable external memory. Demonstrated that stored key-value pairs can replace learned attention weights. Our system operationalizes this insight at the architecture level.
+- **Adaptive Computation Time** (Graves, 2016): Dynamic computation depth in recurrent networks. Our convergence loop is a non-differentiable analog — variable depth determined by data convergence rather than a learned halting probability.
+- **Universal Transformers** (Dehghani et al., 2019): Repeated application of the same transformation with dynamic halting. Our convergence loop shares the variable-depth property but operates over discrete retrieval steps rather than differentiable layer applications.
+- **Hopfield Networks and Attention** (Ramsauer et al., 2021): Formal proof that transformer attention is equivalent to modern continuous Hopfield network retrieval. Provides the theoretical foundation for our claim that externalized retrieval replaces the storage function of attention.
 
 ## 8. Reproducibility
 

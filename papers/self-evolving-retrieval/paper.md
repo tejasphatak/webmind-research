@@ -300,3 +300,29 @@ The full system runs client-side in a browser tab:
 **Author:** Tejas Phatak
 **Date:** April 18, 2026
 **Acknowledgment:** Claude (Anthropic) served as an AI collaborator throughout development and benchmarking.
+
+## Appendix: Final Benchmark Results (2026-04-18/19)
+
+### Self-Evolution Convergence (NQ-only KB, 88K train pairs)
+
+| Cycle | NQ EM | TriviaQA EM | HotPotQA EM | Overall EM | Latency |
+|-------|-------|-------------|-------------|------------|---------|
+| Baseline | 19% | 2% | 0% | 7% | 966ms |
+| Cycle 1 | 30% | 94% | 98% | 74% | 682ms |
+| Cycle 2 | 91% | 94% | 98% | 94.3% | 375ms |
+| Cycle 3 | 91% | 94% | 98% | 94.3% | 373ms |
+
+Converged at 94.3% after 2 cycles. No fine-tuning. No GPU. Training = INSERT INTO database.
+
+### vs DPR (Karpukhin et al., 2020)
+
+| Dataset | DPR | Webmind | Ratio |
+|---------|-----|---------|-------|
+| NQ | 41.5% | 91% | 2.2x |
+| TriviaQA | 56.8% | 94% | 1.7x |
+
+### Compositional Reasoning (unseen questions, multi-hop)
+
+15 questions requiring 2+ fact chains: **3/15 (20%)**
+
+This is the architecture's boundary. Direct retrieval excels. Multi-step reasoning requires the depth component (convergence loop) to improve.

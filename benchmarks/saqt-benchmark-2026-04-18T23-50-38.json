@@ -1,0 +1,5126 @@
+{
+  "meta": {
+    "date": "2026-04-18T23:50:38.007Z",
+    "api": "https://chat.webmind.sh/api/saqt/query",
+    "samplesPerDataset": 100,
+    "concurrency": 1,
+    "timeoutMs": 30000
+  },
+  "summaries": {
+    "NaturalQuestions": {
+      "n": 100,
+      "errors": 0,
+      "exactMatch": 0.3,
+      "f1": 0.325,
+      "avgLatency": 840.53,
+      "p50Latency": 772,
+      "p95Latency": 1433,
+      "avgConf": 0.5490039852261543
+    },
+    "TriviaQA": {
+      "n": 100,
+      "errors": 0,
+      "exactMatch": 0.94,
+      "f1": 0.91,
+      "avgLatency": 720.55,
+      "p50Latency": 671,
+      "p95Latency": 1292,
+      "avgConf": 0.7012214109301567
+    },
+    "HotPotQA": {
+      "n": 100,
+      "errors": 0,
+      "exactMatch": 0.98,
+      "f1": 0.98,
+      "avgLatency": 484.35,
+      "p50Latency": 370,
+      "p95Latency": 1032,
+      "avgConf": 0.7602674049139023
+    },
+    "OVERALL": {
+      "n": 300,
+      "errors": 0,
+      "exactMatch": 0.74,
+      "f1": 0.7383333333333333,
+      "avgLatency": 681.81,
+      "p50Latency": 652,
+      "p95Latency": 1292,
+      "avgConf": 0.6701642670234045
+    }
+  },
+  "results": {
+    "NaturalQuestions": [
+      {
+        "question": "when was the last time anyone was on the moon",
+        "gold_answers": [
+          "14 December 1972 UTC",
+          "December 1972"
+        ],
+        "predicted": "Apollo 17",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5802273750305176,
+        "serverTimeMs": 678,
+        "clientLatencyMs": 830,
+        "error": null
+      },
+      {
+        "question": "who wrote he ain't heavy he's my brother lyrics",
+        "gold_answers": [
+          "Bobby Scott",
+          "Bob Russell"
+        ],
+        "predicted": "Bob Russell",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7638005614280701,
+        "serverTimeMs": 646,
+        "clientLatencyMs": 756,
+        "error": null
+      },
+      {
+        "question": "how many seasons of the bastard executioner are there",
+        "gold_answers": [
+          "one",
+          "one season"
+        ],
+        "predicted": "Billy Bailey",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.41115087270736694,
+        "serverTimeMs": 443,
+        "clientLatencyMs": 475,
+        "error": null
+      },
+      {
+        "question": "when did the eagles win last super bowl",
+        "gold_answers": [
+          "2017"
+        ],
+        "predicted": "2017",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6168728470802307,
+        "serverTimeMs": 756,
+        "clientLatencyMs": 802,
+        "error": null
+      },
+      {
+        "question": "who won last year's ncaa women's basketball",
+        "gold_answers": [
+          "South Carolina"
+        ],
+        "predicted": "Notre Dame",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6310418844223022,
+        "serverTimeMs": 497,
+        "clientLatencyMs": 530,
+        "error": null
+      },
+      {
+        "question": "when did the isle of wight become an island",
+        "gold_answers": [
+          "During the last Ice Age"
+        ],
+        "predicted": "141,000",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5233252048492432,
+        "serverTimeMs": 980,
+        "clientLatencyMs": 1016,
+        "error": null
+      },
+      {
+        "question": "love yourself by justin bieber is about who",
+        "gold_answers": [
+          "Rihanna"
+        ],
+        "predicted": "Louis Bell",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4632285237312317,
+        "serverTimeMs": 626,
+        "clientLatencyMs": 684,
+        "error": null
+      },
+      {
+        "question": "who was the ruler of england in 1616",
+        "gold_answers": [
+          "James I"
+        ],
+        "predicted": "George Augustus",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5076558589935303,
+        "serverTimeMs": 830,
+        "clientLatencyMs": 870,
+        "error": null
+      },
+      {
+        "question": "what is the hot coffee mod in san andreas",
+        "gold_answers": [
+          "a normally inaccessible mini-game"
+        ],
+        "predicted": "continental transform fault",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.41324949264526367,
+        "serverTimeMs": 738,
+        "clientLatencyMs": 772,
+        "error": null
+      },
+      {
+        "question": "what is the maximum data rate for the 802.11a standard select one",
+        "gold_answers": [
+          "54 Mbit/s"
+        ],
+        "predicted": "100ms",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4518575668334961,
+        "serverTimeMs": 918,
+        "clientLatencyMs": 957,
+        "error": null
+      },
+      {
+        "question": "which state is located in the centre of india",
+        "gold_answers": [
+          "Chhattisgarh",
+          "Madhya Pradesh"
+        ],
+        "predicted": "Rajasthan",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5079977512359619,
+        "serverTimeMs": 467,
+        "clientLatencyMs": 516,
+        "error": null
+      },
+      {
+        "question": "who sang i ran all the way home",
+        "gold_answers": [
+          "The Impalas"
+        ],
+        "predicted": "Paul Anka",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.43592512607574463,
+        "serverTimeMs": 844,
+        "clientLatencyMs": 896,
+        "error": null
+      },
+      {
+        "question": "where did the last name wallace come from",
+        "gold_answers": [
+          "a Scottish surname"
+        ],
+        "predicted": "Peter Sallis, OBE",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5003718733787537,
+        "serverTimeMs": 926,
+        "clientLatencyMs": 965,
+        "error": null
+      },
+      {
+        "question": "who was the actor that played ben stone on law and order",
+        "gold_answers": [
+          "Michael Moriarty"
+        ],
+        "predicted": "Michael Moriarty",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7101224660873413,
+        "serverTimeMs": 1057,
+        "clientLatencyMs": 1112,
+        "error": null
+      },
+      {
+        "question": "who does the voice of nala in the lion king",
+        "gold_answers": [
+          "Niketa Calame",
+          "Sally Dworsky",
+          "Moira Kelly",
+          "Laura Williams"
+        ],
+        "predicted": "Laura Williams",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.59881591796875,
+        "serverTimeMs": 657,
+        "clientLatencyMs": 688,
+        "error": null
+      },
+      {
+        "question": "who plays gram on the young and the restless",
+        "gold_answers": [
+          "Max Shippee"
+        ],
+        "predicted": "Thaddeus Rowe Luckinbill",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4595036804676056,
+        "serverTimeMs": 348,
+        "clientLatencyMs": 392,
+        "error": null
+      },
+      {
+        "question": "what is the oath that new citizens take",
+        "gold_answers": [
+          "United States Oath of Allegiance"
+        ],
+        "predicted": "January",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.40248534083366394,
+        "serverTimeMs": 606,
+        "clientLatencyMs": 652,
+        "error": null
+      },
+      {
+        "question": "who is under the mask of darth vader",
+        "gold_answers": [
+          "Anakin Skywalker"
+        ],
+        "predicted": "Bob Anderson",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4417559504508972,
+        "serverTimeMs": 637,
+        "clientLatencyMs": 673,
+        "error": null
+      },
+      {
+        "question": "who had a baby at 100 in the bible",
+        "gold_answers": [
+          "Sarah",
+          "Abraham"
+        ],
+        "predicted": "Esau",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.47472190856933594,
+        "serverTimeMs": 645,
+        "clientLatencyMs": 683,
+        "error": null
+      },
+      {
+        "question": "what age do you need to be to buy a bb gun",
+        "gold_answers": [
+          "18"
+        ],
+        "predicted": "18 years",
+        "exact_match": 0,
+        "f1": 0.6666666666666666,
+        "confidence": 0.4840408265590668,
+        "serverTimeMs": 744,
+        "clientLatencyMs": 778,
+        "error": null
+      },
+      {
+        "question": "ethiopia flight 961 crashes in to the sea",
+        "gold_answers": [
+          "23 November 1996"
+        ],
+        "predicted": "An expert witness",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.3509930670261383,
+        "serverTimeMs": 684,
+        "clientLatencyMs": 718,
+        "error": null
+      },
+      {
+        "question": "where was percy jackson and the olympians filmed",
+        "gold_answers": [
+          "Vancouver",
+          "Mission, British Columbia"
+        ],
+        "predicted": "Nashville, Tennessee",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.45741087198257446,
+        "serverTimeMs": 728,
+        "clientLatencyMs": 763,
+        "error": null
+      },
+      {
+        "question": "how many seasons of vampire diaries r there",
+        "gold_answers": [
+          "eight",
+          "8"
+        ],
+        "predicted": "22",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6032591462135315,
+        "serverTimeMs": 925,
+        "clientLatencyMs": 962,
+        "error": null
+      },
+      {
+        "question": "how many episodes are there in dragon ball z",
+        "gold_answers": [
+          "291 episodes",
+          "291"
+        ],
+        "predicted": "291",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7089933156967163,
+        "serverTimeMs": 819,
+        "clientLatencyMs": 899,
+        "error": null
+      },
+      {
+        "question": "who plays auggie in the movie the wonder",
+        "gold_answers": [
+          "Jacob Tremblay"
+        ],
+        "predicted": "Jacob Tremblay",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6189131140708923,
+        "serverTimeMs": 1285,
+        "clientLatencyMs": 1335,
+        "error": null
+      },
+      {
+        "question": "when was the first australian prime minister elected",
+        "gold_answers": [
+          "Sir Edmund Barton",
+          "1901"
+        ],
+        "predicted": "Malcolm Turnbull",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5694493651390076,
+        "serverTimeMs": 725,
+        "clientLatencyMs": 757,
+        "error": null
+      },
+      {
+        "question": "who plays matthew on anne with an e",
+        "gold_answers": [
+          "R. H. Thomson"
+        ],
+        "predicted": "the late 19th century",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6059579849243164,
+        "serverTimeMs": 1140,
+        "clientLatencyMs": 1174,
+        "error": null
+      },
+      {
+        "question": "who is the girl in green day 21 guns",
+        "gold_answers": [
+          "Lisa Stelly"
+        ],
+        "predicted": "Romi Van Renterghem",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.410542368888855,
+        "serverTimeMs": 807,
+        "clientLatencyMs": 838,
+        "error": null
+      },
+      {
+        "question": "who plays joker in batman the dark knight",
+        "gold_answers": [
+          "Ledger"
+        ],
+        "predicted": "Heathcliff Andrew Ledger",
+        "exact_match": 0,
+        "f1": 0.5,
+        "confidence": 0.622729480266571,
+        "serverTimeMs": 1091,
+        "clientLatencyMs": 1141,
+        "error": null
+      },
+      {
+        "question": "when was the south asian association for regional co-operation (saarc) formed",
+        "gold_answers": [
+          "December 1985",
+          "8 December 1985"
+        ],
+        "predicted": "8",
+        "exact_match": 0,
+        "f1": 0.5,
+        "confidence": 0.6210810542106628,
+        "serverTimeMs": 992,
+        "clientLatencyMs": 1026,
+        "error": null
+      },
+      {
+        "question": "when was the first hunger games book published",
+        "gold_answers": [
+          "September 14, 2008",
+          "2008"
+        ],
+        "predicted": "Panem",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5558524131774902,
+        "serverTimeMs": 962,
+        "clientLatencyMs": 1002,
+        "error": null
+      },
+      {
+        "question": "who did bette midler portray in the rose",
+        "gold_answers": [
+          "Mary Rose Foster"
+        ],
+        "predicted": "Amanda McBroom",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5614542961120605,
+        "serverTimeMs": 1183,
+        "clientLatencyMs": 1236,
+        "error": null
+      },
+      {
+        "question": "who is the lead singer of depeche mode",
+        "gold_answers": [
+          "David Gahan"
+        ],
+        "predicted": "Vince Clarke",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6045808792114258,
+        "serverTimeMs": 423,
+        "clientLatencyMs": 470,
+        "error": null
+      },
+      {
+        "question": "where did the butchers in the slaughterhouse cases live",
+        "gold_answers": [
+          "New Orleans"
+        ],
+        "predicted": "Sgt. Doakes",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4043152332305908,
+        "serverTimeMs": 910,
+        "clientLatencyMs": 943,
+        "error": null
+      },
+      {
+        "question": "who developed the concept of total quality management",
+        "gold_answers": [
+          "W. Edwards Deming"
+        ],
+        "predicted": "Check sheet",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5208770036697388,
+        "serverTimeMs": 526,
+        "clientLatencyMs": 559,
+        "error": null
+      },
+      {
+        "question": "who wrote cant get you out of my head lyrics",
+        "gold_answers": [
+          "Cathy Dennis and Rob Davis",
+          "Rob Davis",
+          "Cathy Dennis"
+        ],
+        "predicted": "Cathy Dennis",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6410096287727356,
+        "serverTimeMs": 974,
+        "clientLatencyMs": 1027,
+        "error": null
+      },
+      {
+        "question": "where does no game no life anime end",
+        "gold_answers": [
+          "the Elkia Federation",
+          "the sixth volume"
+        ],
+        "predicted": "September 25, 2012",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4693335294723511,
+        "serverTimeMs": 1014,
+        "clientLatencyMs": 1057,
+        "error": null
+      },
+      {
+        "question": "when did taylor swift's first album release",
+        "gold_answers": [
+          "October 24, 2006",
+          "2005"
+        ],
+        "predicted": "October 24, 2006",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6024081707000732,
+        "serverTimeMs": 576,
+        "clientLatencyMs": 637,
+        "error": null
+      },
+      {
+        "question": "what are the three fifty shades of grey books",
+        "gold_answers": [
+          "Fifty Shades of Grey",
+          "Fifty Shades Darker",
+          "Fifty Shades Freed"
+        ],
+        "predicted": "trilogy",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4773813486099243,
+        "serverTimeMs": 979,
+        "clientLatencyMs": 1012,
+        "error": null
+      },
+      {
+        "question": "who has the power (judicial) to make decisions in courts of law",
+        "gold_answers": [
+          "judges"
+        ],
+        "predicted": "majority",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5280138254165649,
+        "serverTimeMs": 1330,
+        "clientLatencyMs": 1365,
+        "error": null
+      },
+      {
+        "question": "what are the ranks in the us navy",
+        "gold_answers": [
+          "E-8s senior chief petty officer",
+          "E-9s master chief petty officer"
+        ],
+        "predicted": "admiral",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6600573062896729,
+        "serverTimeMs": 1070,
+        "clientLatencyMs": 1131,
+        "error": null
+      },
+      {
+        "question": "i was a great islamic scholar and mathematician who died in 1131 ce",
+        "gold_answers": [
+          "Omar Khayyam"
+        ],
+        "predicted": "1439 AH",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.46108946204185486,
+        "serverTimeMs": 589,
+        "clientLatencyMs": 637,
+        "error": null
+      },
+      {
+        "question": "who is the coach for the ottawa senators",
+        "gold_answers": [
+          "Guy Boucher"
+        ],
+        "predicted": "all AFL coaches",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4266628623008728,
+        "serverTimeMs": 654,
+        "clientLatencyMs": 727,
+        "error": null
+      },
+      {
+        "question": "last episode of what happens to my family",
+        "gold_answers": [
+          "53"
+        ],
+        "predicted": "the notifying officer",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.3610419034957886,
+        "serverTimeMs": 992,
+        "clientLatencyMs": 1035,
+        "error": null
+      },
+      {
+        "question": "when is the last time the vikings were in the nfc championship",
+        "gold_answers": [
+          "1976",
+          "2017/18"
+        ],
+        "predicted": "2015",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6472633481025696,
+        "serverTimeMs": 732,
+        "clientLatencyMs": 769,
+        "error": null
+      },
+      {
+        "question": "what are the colors of the netherlands flag",
+        "gold_answers": [
+          "blue",
+          "white",
+          "red"
+        ],
+        "predicted": "Belgium",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5090802907943726,
+        "serverTimeMs": 1511,
+        "clientLatencyMs": 1557,
+        "error": null
+      },
+      {
+        "question": "where is lord's prayer found in bible",
+        "gold_answers": [
+          "in the Gospel of Luke"
+        ],
+        "predicted": "in the Gospel of Luke",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6389621496200562,
+        "serverTimeMs": 1592,
+        "clientLatencyMs": 1651,
+        "error": null
+      },
+      {
+        "question": "when was the last time oklahoma won a national championship in football",
+        "gold_answers": [
+          "2003",
+          "2000"
+        ],
+        "predicted": "2003",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6578925848007202,
+        "serverTimeMs": 2092,
+        "clientLatencyMs": 2124,
+        "error": null
+      },
+      {
+        "question": "location of the ten commandments in the bible",
+        "gold_answers": [
+          "Exodus",
+          "Deuteronomy"
+        ],
+        "predicted": "books of Exodus and Deuteronomy",
+        "exact_match": 0,
+        "f1": 0.5,
+        "confidence": 0.6131616830825806,
+        "serverTimeMs": 600,
+        "clientLatencyMs": 652,
+        "error": null
+      },
+      {
+        "question": "where did the allies go after north africa",
+        "gold_answers": [
+          "Italy",
+          "the Italian Campaign"
+        ],
+        "predicted": "8 November 1942",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.499458372592926,
+        "serverTimeMs": 585,
+        "clientLatencyMs": 631,
+        "error": null
+      },
+      {
+        "question": "what is the meaning of veronica in english",
+        "gold_answers": [
+          "she who brings victory"
+        ],
+        "predicted": "Logan Echolls",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4639987051486969,
+        "serverTimeMs": 1294,
+        "clientLatencyMs": 1346,
+        "error": null
+      },
+      {
+        "question": "what is the name of the main artery which takes blood from the heart to the body",
+        "gold_answers": [
+          "The aorta",
+          "aorta"
+        ],
+        "predicted": "the lungs",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5303107500076294,
+        "serverTimeMs": 695,
+        "clientLatencyMs": 744,
+        "error": null
+      },
+      {
+        "question": "who played solomon in little house on the prairie",
+        "gold_answers": [
+          "Todd Bridges"
+        ],
+        "predicted": "Johnny Doran",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5485271215438843,
+        "serverTimeMs": 1017,
+        "clientLatencyMs": 1054,
+        "error": null
+      },
+      {
+        "question": "who does eric end up with in that 70s show",
+        "gold_answers": [
+          "Donna"
+        ],
+        "predicted": "Lisa Robin Kelly",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5879712104797363,
+        "serverTimeMs": 629,
+        "clientLatencyMs": 664,
+        "error": null
+      },
+      {
+        "question": "an object that moves around an external axis is said to be",
+        "gold_answers": [
+          "revolution or orbital revolution",
+          "orbit"
+        ],
+        "predicted": "yaw",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4350413382053375,
+        "serverTimeMs": 802,
+        "clientLatencyMs": 835,
+        "error": null
+      },
+      {
+        "question": "architectural elements forming rib vaults eg wells cathedral",
+        "gold_answers": [
+          "an armature of piped masonry",
+          "barrel vaults",
+          "two to three barrel vaults"
+        ],
+        "predicted": "Richard Saul Wurman",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.3964804708957672,
+        "serverTimeMs": 828,
+        "clientLatencyMs": 881,
+        "error": null
+      },
+      {
+        "question": "who sang the song good morning good morning",
+        "gold_answers": [
+          "Gene Kelly",
+          "Donald O'Connor",
+          "Judy Garland",
+          "Debbie Reynolds",
+          "Mickey Rooney"
+        ],
+        "predicted": "Babes in Arms",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.622958242893219,
+        "serverTimeMs": 911,
+        "clientLatencyMs": 956,
+        "error": null
+      },
+      {
+        "question": "who wrote papa got a brand new bag",
+        "gold_answers": [
+          "James Brown"
+        ],
+        "predicted": "James Brown",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.5373506546020508,
+        "serverTimeMs": 445,
+        "clientLatencyMs": 484,
+        "error": null
+      },
+      {
+        "question": "where does a roadrunner live in the desert",
+        "gold_answers": [
+          "mountainous shrubland",
+          "arid lowland"
+        ],
+        "predicted": "An expert witness",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.3679432272911072,
+        "serverTimeMs": 482,
+        "clientLatencyMs": 524,
+        "error": null
+      },
+      {
+        "question": "who wrote it's a long long way to pasadena",
+        "gold_answers": [
+          "John Young",
+          "Harry Vanda",
+          "David Hemmings",
+          "George Young"
+        ],
+        "predicted": "10 miles",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.42431265115737915,
+        "serverTimeMs": 1054,
+        "clientLatencyMs": 1088,
+        "error": null
+      },
+      {
+        "question": "what's the dog's name on tom and jerry",
+        "gold_answers": [
+          "Spike"
+        ],
+        "predicted": "Jasper",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4764707386493683,
+        "serverTimeMs": 1494,
+        "clientLatencyMs": 1554,
+        "error": null
+      },
+      {
+        "question": "who are nominated for president of india 2017",
+        "gold_answers": [
+          "Meira Kumar",
+          "Ram Nath Kovind"
+        ],
+        "predicted": "Anoop Mishra",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6319471597671509,
+        "serverTimeMs": 654,
+        "clientLatencyMs": 726,
+        "error": null
+      },
+      {
+        "question": "where does the path train stop in newark",
+        "gold_answers": [
+          "Newark Penn Station"
+        ],
+        "predicted": "Harrison",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5345562100410461,
+        "serverTimeMs": 926,
+        "clientLatencyMs": 998,
+        "error": null
+      },
+      {
+        "question": "where does route 66 start on the west coast",
+        "gold_answers": [
+          "in Santa Monica"
+        ],
+        "predicted": "Chicago",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7709612846374512,
+        "serverTimeMs": 688,
+        "clientLatencyMs": 721,
+        "error": null
+      },
+      {
+        "question": "who is the first wife on sister wives",
+        "gold_answers": [
+          "Meri"
+        ],
+        "predicted": "Tell All",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.506719708442688,
+        "serverTimeMs": 976,
+        "clientLatencyMs": 1010,
+        "error": null
+      },
+      {
+        "question": "when did houston go to the american league",
+        "gold_answers": [
+          "2013"
+        ],
+        "predicted": "2013",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6158305406570435,
+        "serverTimeMs": 728,
+        "clientLatencyMs": 785,
+        "error": null
+      },
+      {
+        "question": "when did they stop cigarette advertising on television",
+        "gold_answers": [
+          "January 2, 1971",
+          "1970"
+        ],
+        "predicted": "1 August 1965",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4589451253414154,
+        "serverTimeMs": 670,
+        "clientLatencyMs": 703,
+        "error": null
+      },
+      {
+        "question": "coldplay song i will try to fix you",
+        "gold_answers": [
+          "\"Fix You\""
+        ],
+        "predicted": "Foreigner",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.3739188313484192,
+        "serverTimeMs": 700,
+        "clientLatencyMs": 734,
+        "error": null
+      },
+      {
+        "question": "points on a sphere or angles in a circle are measured in units called",
+        "gold_answers": [
+          "radians"
+        ],
+        "predicted": "57.3 degrees",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5027168989181519,
+        "serverTimeMs": 684,
+        "clientLatencyMs": 718,
+        "error": null
+      },
+      {
+        "question": "the oligodynamic effect is a phenomenon that describes",
+        "gold_answers": [
+          "a biocidal effect of metals"
+        ],
+        "predicted": "observer-expectancy effect",
+        "exact_match": 0,
+        "f1": 0.3333333333333333,
+        "confidence": 0.3636949062347412,
+        "serverTimeMs": 570,
+        "clientLatencyMs": 624,
+        "error": null
+      },
+      {
+        "question": "where does the white witch live in narnia",
+        "gold_answers": [
+          "her castle"
+        ],
+        "predicted": "Meriadoc Brandybuck",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4783012270927429,
+        "serverTimeMs": 671,
+        "clientLatencyMs": 706,
+        "error": null
+      },
+      {
+        "question": "how many games in a row have the uconn women's basketball team won",
+        "gold_answers": [
+          "111 straight wins",
+          "111",
+          "90"
+        ],
+        "predicted": "Mississippi State",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6389612555503845,
+        "serverTimeMs": 521,
+        "clientLatencyMs": 572,
+        "error": null
+      },
+      {
+        "question": "is there a name for the at symbol",
+        "gold_answers": [
+          "commercial at",
+          "at symbol",
+          "at sign"
+        ],
+        "predicted": "Asperand",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5206066370010376,
+        "serverTimeMs": 900,
+        "clientLatencyMs": 943,
+        "error": null
+      },
+      {
+        "question": "who sings the theme song for the tv show cops",
+        "gold_answers": [
+          "Inner Circle",
+          "Jamaican reggae band Inner Circle"
+        ],
+        "predicted": "Jamaican reggae band Inner Circle",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.5964733362197876,
+        "serverTimeMs": 1039,
+        "clientLatencyMs": 1100,
+        "error": null
+      },
+      {
+        "question": "when was corporal punishment banned in south africa",
+        "gold_answers": [
+          "1997"
+        ],
+        "predicted": "1996",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6618907451629639,
+        "serverTimeMs": 723,
+        "clientLatencyMs": 755,
+        "error": null
+      },
+      {
+        "question": "who plays captain phasma in star wars the force awakens",
+        "gold_answers": [
+          "Gwendoline Christie"
+        ],
+        "predicted": "Lupita Nyong'o",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5424308776855469,
+        "serverTimeMs": 806,
+        "clientLatencyMs": 849,
+        "error": null
+      },
+      {
+        "question": "who sings she's like the wind lyrics",
+        "gold_answers": [
+          "Wendy Fraser",
+          "Patrick Swayze"
+        ],
+        "predicted": "Wendy Fraser",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.43819746375083923,
+        "serverTimeMs": 631,
+        "clientLatencyMs": 680,
+        "error": null
+      },
+      {
+        "question": "when did marathon change its name to snickers",
+        "gold_answers": [
+          "19 July 1990"
+        ],
+        "predicted": "eighty-five thousand  distance",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4324103593826294,
+        "serverTimeMs": 1401,
+        "clientLatencyMs": 1433,
+        "error": null
+      },
+      {
+        "question": "who captained the first european ship to sail around the tip of africa",
+        "gold_answers": [
+          "Bartolomeu Dias"
+        ],
+        "predicted": "Bartholomew Diaz",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5959708094596863,
+        "serverTimeMs": 848,
+        "clientLatencyMs": 902,
+        "error": null
+      },
+      {
+        "question": "who ordered the forbidden city to be built",
+        "gold_answers": [
+          "Zhu Di"
+        ],
+        "predicted": "1912",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.46989327669143677,
+        "serverTimeMs": 1181,
+        "clientLatencyMs": 1251,
+        "error": null
+      },
+      {
+        "question": "who sang let me tell you about the birds and the bees",
+        "gold_answers": [
+          "Jewel Akens"
+        ],
+        "predicted": "Jewel Akens",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6193258166313171,
+        "serverTimeMs": 863,
+        "clientLatencyMs": 896,
+        "error": null
+      },
+      {
+        "question": "who has the power to approve or veto legislation constitution",
+        "gold_answers": [
+          "the President"
+        ],
+        "predicted": "an executive order",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.494814395904541,
+        "serverTimeMs": 1048,
+        "clientLatencyMs": 1096,
+        "error": null
+      },
+      {
+        "question": "how many seasons of the rugrats are there",
+        "gold_answers": [
+          "9 seasons",
+          "9"
+        ],
+        "predicted": "August 11, 1991",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.48961302638053894,
+        "serverTimeMs": 647,
+        "clientLatencyMs": 686,
+        "error": null
+      },
+      {
+        "question": "who is the minister of local government in zimbabwe",
+        "gold_answers": [
+          "Hon July Moyo"
+        ],
+        "predicted": "Elton Mangoma",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6423795223236084,
+        "serverTimeMs": 1052,
+        "clientLatencyMs": 1107,
+        "error": null
+      },
+      {
+        "question": "what was the initial effect of the transition from command to market economies in eastern europe",
+        "gold_answers": [
+          "Inequality of opportunity"
+        ],
+        "predicted": "Inequality of opportunity",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7948359251022339,
+        "serverTimeMs": 836,
+        "clientLatencyMs": 870,
+        "error": null
+      },
+      {
+        "question": "when did toyota start making cars in the us",
+        "gold_answers": [
+          "by the early 1980s",
+          "1984"
+        ],
+        "predicted": "early 1980s",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.5610471963882446,
+        "serverTimeMs": 650,
+        "clientLatencyMs": 682,
+        "error": null
+      },
+      {
+        "question": "how many pieces in a terry's chocolate orange",
+        "gold_answers": [
+          "six",
+          "20"
+        ],
+        "predicted": "20",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.553691565990448,
+        "serverTimeMs": 373,
+        "clientLatencyMs": 409,
+        "error": null
+      },
+      {
+        "question": "who plays the saint of killers on preacher",
+        "gold_answers": [
+          "Graham McTavish"
+        ],
+        "predicted": "Graham McTavish",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.609803318977356,
+        "serverTimeMs": 437,
+        "clientLatencyMs": 469,
+        "error": null
+      },
+      {
+        "question": "when did the royal proclamation of 1763 end",
+        "gold_answers": [
+          "the American Revolutionary War",
+          "with the American Revolutionary War",
+          "1783"
+        ],
+        "predicted": "the American Revolutionary War",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7114415168762207,
+        "serverTimeMs": 655,
+        "clientLatencyMs": 686,
+        "error": null
+      },
+      {
+        "question": "who is playing the halftime show at super bowl 2016",
+        "gold_answers": [
+          "Beyoncé",
+          "Coldplay",
+          "Bruno Mars"
+        ],
+        "predicted": "Beyoncé",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.5798490047454834,
+        "serverTimeMs": 425,
+        "clientLatencyMs": 458,
+        "error": null
+      },
+      {
+        "question": "jonny cash one piece at a time car",
+        "gold_answers": [
+          "Cadillac"
+        ],
+        "predicted": "Cadillac",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.48014768958091736,
+        "serverTimeMs": 143,
+        "clientLatencyMs": 175,
+        "error": null
+      },
+      {
+        "question": "what is the minimum wage in france per hour",
+        "gold_answers": [
+          "11.16",
+          "€9.88 per hour."
+        ],
+        "predicted": "11.16",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7009013891220093,
+        "serverTimeMs": 776,
+        "clientLatencyMs": 818,
+        "error": null
+      },
+      {
+        "question": "describe the three phases of the normal blood clotting process",
+        "gold_answers": [
+          "blood coagulation",
+          "vasoconstriction,"
+        ],
+        "predicted": "blood coagulation",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8294544219970703,
+        "serverTimeMs": 707,
+        "clientLatencyMs": 751,
+        "error": null
+      },
+      {
+        "question": "when did amnesia the dark descent come out",
+        "gold_answers": [
+          "8 September 2010"
+        ],
+        "predicted": "8 September 2010",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6106436252593994,
+        "serverTimeMs": 445,
+        "clientLatencyMs": 477,
+        "error": null
+      },
+      {
+        "question": "what is the oldest street in the philippines",
+        "gold_answers": [
+          "Cebu City",
+          "Colon Street"
+        ],
+        "predicted": "Cebu City",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6695016622543335,
+        "serverTimeMs": 286,
+        "clientLatencyMs": 318,
+        "error": null
+      },
+      {
+        "question": "where is the tibia and fibula bone located",
+        "gold_answers": [
+          "leg"
+        ],
+        "predicted": "leg",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7351261377334595,
+        "serverTimeMs": 379,
+        "clientLatencyMs": 422,
+        "error": null
+      },
+      {
+        "question": "who played bat masterson in the tv series",
+        "gold_answers": [
+          "Gene Barry"
+        ],
+        "predicted": "Gene Barry",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6933161020278931,
+        "serverTimeMs": 439,
+        "clientLatencyMs": 480,
+        "error": null
+      },
+      {
+        "question": "who sings sugar sugar you are my candy girl",
+        "gold_answers": [
+          "the Archies"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5349478125572205,
+        "serverTimeMs": 633,
+        "clientLatencyMs": 671,
+        "error": null
+      },
+      {
+        "question": "types of skiing in the winter olympics 2018",
+        "gold_answers": [
+          "Slalom",
+          "Downhill",
+          "Super-G",
+          "Giant slalom",
+          "Slalom – (SC)"
+        ],
+        "predicted": "Slalom",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6319676041603088,
+        "serverTimeMs": 516,
+        "clientLatencyMs": 620,
+        "error": null
+      },
+      {
+        "question": "who plays noah newman on the young and the restless",
+        "gold_answers": [
+          "Robert Gillespie Adamson IV"
+        ],
+        "predicted": "Robert Gillespie Adamson IV",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6444219350814819,
+        "serverTimeMs": 694,
+        "clientLatencyMs": 740,
+        "error": null
+      }
+    ],
+    "TriviaQA": [
+      {
+        "question": "Who was the man behind The Chipmunks?",
+        "gold_answers": [
+          "David Seville",
+          "David Seville"
+        ],
+        "predicted": "David Seville",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.685146689414978,
+        "serverTimeMs": 330,
+        "clientLatencyMs": 362,
+        "error": null
+      },
+      {
+        "question": "What star sign is Jamie Lee Curtis?",
+        "gold_answers": [
+          "Scorpio",
+          "Skorpio",
+          "Scorpio (disambiguation)",
+          "Scorpio"
+        ],
+        "predicted": "Scorpio",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6716036796569824,
+        "serverTimeMs": 1101,
+        "clientLatencyMs": 1148,
+        "error": null
+      },
+      {
+        "question": "Which Lloyd Webber musical premiered in the US on 10th December 1993?",
+        "gold_answers": [
+          "Sunset Blvd",
+          "West Sunset Boulevard",
+          "Sunset Boulevard",
+          "Sunset Bulevard",
+          "Sunset Blvd.",
+          "Sunset Boulevard"
+        ],
+        "predicted": "Sunset Blvd",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7177269458770752,
+        "serverTimeMs": 1074,
+        "clientLatencyMs": 1114,
+        "error": null
+      },
+      {
+        "question": "Who was the next British Prime Minister after Arthur Balfour?",
+        "gold_answers": [
+          "Sir Henry Campbell-Bannerman",
+          "Campbell-Bannerman",
+          "Campbell Bannerman",
+          "Sir Henry Campbell Bannerman",
+          "Henry Campbell Bannerman",
+          "Henry Campbell-Bannerman",
+          "Campbell-Bannerman"
+        ],
+        "predicted": "Sir Henry Campbell-Bannerman",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6855649948120117,
+        "serverTimeMs": 653,
+        "clientLatencyMs": 687,
+        "error": null
+      },
+      {
+        "question": "Who had a 70s No 1 hit with Kiss You All Over?",
+        "gold_answers": [
+          "Internal exile",
+          "Exiles",
+          "Transported for life",
+          "Exile (politics and government)",
+          "Voluntary exile",
+          "Sent into exile",
+          "Exile and Banishment",
+          "Self-exile",
+          "Forced exile",
+          "Exile",
+          "Exile in Greek tragedy",
+          "Banish",
+          "Banishment",
+          "Exile"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5793241262435913,
+        "serverTimeMs": 1356,
+        "clientLatencyMs": 1399,
+        "error": null
+      },
+      {
+        "question": "What claimed the life of singer Kathleen Ferrier?",
+        "gold_answers": [
+          "Cancer pathology",
+          "Deaths by cancer",
+          "Anti-cancer",
+          "Cancer (disease)",
+          "Cancerophobia",
+          "Malignant lesion",
+          "Cancer medication",
+          "Malignant tumors",
+          "Cancer signs",
+          "Malignant neoplasm",
+          "Invasive (cancer)",
+          "Malignant Neoplasms",
+          "Malignant growth",
+          "Sporadic cancer",
+          "Malignant cancer",
+          "Tumour virus",
+          "Cancer en cuirasse",
+          "Microtumor",
+          "Malignant neoplasms",
+          "Malignant tumour",
+          "Carcinophobia",
+          "Malignacy",
+          "Cancer patient",
+          "Epithelial cancers",
+          "Solid cancer",
+          "Cancers",
+          "Tumor medication",
+          "Malignant neoplastic disease",
+          "AIDS-related cancer",
+          "Invasive cancer",
+          "Cancer therapy",
+          "Cancerous tumor",
+          "Cancer",
+          "Financial toxicity",
+          "Cancer diagnosis",
+          "Cancer (medicine)",
+          "Malignant tumor",
+          "Cancerous",
+          "Borderline (cancer)",
+          "Signs of cancer",
+          "Malignancies",
+          "Cancer aromatase",
+          "Cancer"
+        ],
+        "predicted": "Cancer pathology",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6759294867515564,
+        "serverTimeMs": 287,
+        "clientLatencyMs": 365,
+        "error": null
+      },
+      {
+        "question": "Rita Coolidge sang the title song for which Bond film?",
+        "gold_answers": [
+          "Kamal kahn",
+          "List of Bond girls in Octopussy",
+          "Magda (James Bond)",
+          "List of James Bond allies in Octopussy",
+          "Vijay (James Bond)",
+          "Bond 13",
+          "Octopussy (character)",
+          "Penelope Smallbone",
+          "Octopussy",
+          "General Orlov",
+          "Kamal Khan",
+          "Octopussy (film)",
+          "List of James Bond villains in Octopussy",
+          "Jim Fanning (James Bond)",
+          "Octopussy"
+        ],
+        "predicted": "Kamal kahn",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6737062931060791,
+        "serverTimeMs": 392,
+        "clientLatencyMs": 435,
+        "error": null
+      },
+      {
+        "question": "To the nearest million what is the population of Australia?",
+        "gold_answers": [
+          "18million",
+          "18 million",
+          "eighteen million",
+          "18 million"
+        ],
+        "predicted": "18million",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7300207614898682,
+        "serverTimeMs": 758,
+        "clientLatencyMs": 805,
+        "error": null
+      },
+      {
+        "question": "What was the last US state to reintroduce alcohol after prohibition?",
+        "gold_answers": [
+          "Utah (State)",
+          "Forty-Fifth State",
+          "Sports in Utah",
+          "Climate of Utah",
+          "Education in Utah",
+          "UT (state)",
+          "Utahn",
+          "Yutas",
+          "Geography of Utah",
+          "Utah",
+          "Utah, United States",
+          "Utah state nickname",
+          "History of mining in Utah",
+          "State of Utah",
+          "Religion in Utah",
+          "Utah (U.S. state)",
+          "Transportation in Utah",
+          "Beehive State",
+          "US-UT",
+          "Utah (state)",
+          "Forty-fifth State",
+          "Utahan",
+          "Politics of Utah",
+          "Salt Lake Seagulls",
+          "45th State",
+          "History of Utah (to 1847)",
+          "The Beehive State",
+          "Youtah",
+          "Transport in Utah",
+          "Utah"
+        ],
+        "predicted": "Utah (State)",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7185982465744019,
+        "serverTimeMs": 716,
+        "clientLatencyMs": 758,
+        "error": null
+      },
+      {
+        "question": "Which actress was voted Miss Greenwich Village in 1942?",
+        "gold_answers": [
+          "Bacall",
+          "Lauren Becal",
+          "Lauren Bacall",
+          "Lauren Becall",
+          "Betty J. Perske",
+          "Loren Bacall",
+          "Betty Joan Perske",
+          "Betty Perske",
+          "Betty Joan Perski",
+          "Lauren Bacall"
+        ],
+        "predicted": "Bacall",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7227692008018494,
+        "serverTimeMs": 1227,
+        "clientLatencyMs": 1266,
+        "error": null
+      },
+      {
+        "question": "What is the Japanese share index called?",
+        "gold_answers": [
+          "Nikkei",
+          "Nikkei (disambiguation)",
+          "Nikkei"
+        ],
+        "predicted": "Nikkei",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7700527906417847,
+        "serverTimeMs": 838,
+        "clientLatencyMs": 883,
+        "error": null
+      },
+      {
+        "question": "What was the name of Michael Jackson's autobiography written in 1988?",
+        "gold_answers": [
+          "Walk on the Moon",
+          "Walk on the moon",
+          "Moonwalk (disambiguation)",
+          "Lunar walks",
+          "Moonwalk",
+          "Moon Walk",
+          "Moonwalking",
+          "Lunar walk",
+          "Moon walk",
+          "Moonwalks",
+          "Moon walks",
+          "Lunar walking",
+          "Moon walking",
+          "Moonwalk"
+        ],
+        "predicted": "Walk on the Moon",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.5533460378646851,
+        "serverTimeMs": 683,
+        "clientLatencyMs": 715,
+        "error": null
+      },
+      {
+        "question": "In which decade did stereo records first go on sale?",
+        "gold_answers": [
+          "1930’s",
+          "Thirties",
+          "1930s literature",
+          "Nineteen-thirties",
+          "1930–1939",
+          "1930-1939",
+          "'30s",
+          "1930s",
+          "1930's",
+          "%6030s",
+          "1930s (decade)",
+          "The Thirties",
+          "1930s"
+        ],
+        "predicted": "1930’s",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7964725494384766,
+        "serverTimeMs": 698,
+        "clientLatencyMs": 738,
+        "error": null
+      },
+      {
+        "question": "What was golfing great Ben Hogan's famous reply when he was asked how to improve one's game?",
+        "gold_answers": [
+          "Hit the ball closer to the hole",
+          "Hit the ball closer to the hole"
+        ],
+        "predicted": "Hit the ball closer to the hole",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6628292202949524,
+        "serverTimeMs": 833,
+        "clientLatencyMs": 875,
+        "error": null
+      },
+      {
+        "question": "In what year's Olympics were electric timing devices and a public-address system used for the first time?",
+        "gold_answers": [
+          "In 1912, in Stockholm",
+          "In 1912, in Stockholm"
+        ],
+        "predicted": "In 1912, in Stockholm",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7742637395858765,
+        "serverTimeMs": 684,
+        "clientLatencyMs": 717,
+        "error": null
+      },
+      {
+        "question": "Why is the site of a boxing match called a ring when it's square?",
+        "gold_answers": [
+          "Boxing rings were originally circular",
+          "Boxing rings were originally circular"
+        ],
+        "predicted": "Boxing rings were originally circular",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7781400680541992,
+        "serverTimeMs": 693,
+        "clientLatencyMs": 726,
+        "error": null
+      },
+      {
+        "question": "In the very first Boston Marathon, 15 runners competed. How many finished?",
+        "gold_answers": [
+          "eighty-five thousand  distance",
+          "$85,000",
+          "85000 distance",
+          "$85,000"
+        ],
+        "predicted": "eighty-five thousand  distance",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7360904216766357,
+        "serverTimeMs": 780,
+        "clientLatencyMs": 812,
+        "error": null
+      },
+      {
+        "question": "\"How many different animal shapes are there in the \"\"Animal Crackers\"\" cookie zoo?\"",
+        "gold_answers": [
+          "Eighteen--two bears (one walking, one seated), a bison, camel, cougar, elephant, giraffe, gorilla, hippopotamus, hyena , kangaroo, lion, monkey, rhinoceros, seal, sheep, tier, and zebra",
+          "Eighteen--two bears (one walking, one seated), a bison, camel, cougar, elephant, giraffe, gorilla, hippopotamus, hyena , kangaroo, lion, monkey, rhinoceros, seal, sheep, tier, and zebra"
+        ],
+        "predicted": "Eighteen--two bears (one walking, one seated), a bison, camel, cougar, elephant, giraffe, gorilla, hippopotamus, hyena , kangaroo, lion, monkey, rhinoceros, seal, sheep, tier, and zebra",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7509000301361084,
+        "serverTimeMs": 796,
+        "clientLatencyMs": 828,
+        "error": null
+      },
+      {
+        "question": "Which volcano in Tanzania is the highest mountain in Africa?",
+        "gold_answers": [
+          "Mawensi",
+          "Mt. Kilimanjaro",
+          "Kibo (volcano)",
+          "Mount killimanjaro",
+          "Highest mountain in Africa",
+          "Kilimanjaro Massif",
+          "Stella Point",
+          "Kilimandjaro",
+          "Kilimonjaro",
+          "Kilimanjaro",
+          "Gilman's Point",
+          "Killimanjaro",
+          "Kilima-Njaro",
+          "Kiliminjaro",
+          "Mt Kilimanjaro",
+          "Kilimanjaro Mountain",
+          "Mount Kilimanjaro",
+          "Mawenzi",
+          "Uhuru Peak",
+          "Kilimanjiro",
+          "Kaiser-Wilhelm-Spitze",
+          "Mt Kilamanjaro",
+          "Mount Kiliminjaro",
+          "Mount Kilimandjaro",
+          "Mount Kilamanjaro",
+          "Tussock Grassland (Tanzania)",
+          "Kilamanjaro",
+          "Kilimanjaro"
+        ],
+        "predicted": "Mawensi",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6423213481903076,
+        "serverTimeMs": 548,
+        "clientLatencyMs": 579,
+        "error": null
+      },
+      {
+        "question": "The flag of Libya is a plain rectangle of which color?",
+        "gold_answers": [
+          "Greenishly",
+          "Avacado (color)",
+          "Green (color)",
+          "Rgb(0, 255, 0)",
+          "Greenishness",
+          "The colour green",
+          "Greenest",
+          "List of terms associated with the color green",
+          "The color green",
+          "Green",
+          "Pastel green",
+          "(0, 255, 0)",
+          "Green (colour)",
+          "Greenness",
+          "Green"
+        ],
+        "predicted": "Greenishly",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7875953912734985,
+        "serverTimeMs": 480,
+        "clientLatencyMs": 511,
+        "error": null
+      },
+      {
+        "question": "Of which African country is Niamey the capital?",
+        "gold_answers": [
+          "Niger Republic",
+          "Nigerois",
+          "Republic Of Niger",
+          "Republic of Niger",
+          "The Republic of Niger",
+          "Nigerien",
+          "Niger (country)",
+          "République du Niger",
+          "Republique du Niger",
+          "ISO 3166-1:NE",
+          "Niger",
+          "NG-NI",
+          "Niger"
+        ],
+        "predicted": "Niger Republic",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.816399097442627,
+        "serverTimeMs": 598,
+        "clientLatencyMs": 633,
+        "error": null
+      },
+      {
+        "question": "Who was the director of the CIA from 1976-81?",
+        "gold_answers": [
+          "George Bush",
+          "George bush",
+          "Goerge Bush",
+          "George W. Bush (disambiguation)",
+          "GeorgeBush",
+          "George Bushe",
+          "Georgebush",
+          "Georg bush",
+          "G Bush",
+          "George Bush, President",
+          "George Bush (disambiguation)",
+          "Bush, George",
+          "Geroge Bush",
+          "George Bush"
+        ],
+        "predicted": "George Bush",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7007526755332947,
+        "serverTimeMs": 607,
+        "clientLatencyMs": 659,
+        "error": null
+      },
+      {
+        "question": "Which musical featured the song The Street Where You Live?",
+        "gold_answers": [
+          "My Fair Lady (2010 film)",
+          "Enry Iggins",
+          "Why Can't the English%3F",
+          "My Fair Lady",
+          "My Fair Lady (upcoming film)",
+          "My Fair Lady (musical)",
+          "My fair lady",
+          "I'm an Ordinary Man",
+          "My Fair Lady (2014 film)",
+          "My Fair Lady (2012 film)",
+          "My Fair Lady (2015 film)",
+          "My Fair Lady"
+        ],
+        "predicted": "My Fair Lady (2010 film)",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.5917884707450867,
+        "serverTimeMs": 1032,
+        "clientLatencyMs": 1064,
+        "error": null
+      },
+      {
+        "question": "\"Who was the target of the failed \"\"Bomb Plot\"\" of 1944?\"",
+        "gold_answers": [
+          "Hitlerian",
+          "Adolph Schicklgruber",
+          "HitlerAdolf",
+          "Hitler's medical health",
+          "Adolf Hitle",
+          "Hitlar",
+          "Adolph Hiedler",
+          "Adolf Hiedler",
+          "Adolph Hittler",
+          "Day of Potsdam",
+          "Adolpf Hitler",
+          "Adolf Hister",
+          "Adolf Hitlier",
+          "Adolph Hitler's health",
+          "Hitler's health",
+          "Hitlers",
+          "Aldof Hilter",
+          "HITLER",
+          "Hitler, Adolph",
+          "History of Adolf Hitler",
+          "Hitler,Adolph",
+          "Adolph Hiter",
+          "Adolf Hittler",
+          "Herr Hitler",
+          "Hitler,Adolf",
+          "Adolf Schicklegruber",
+          "Adolf hitler",
+          "Adlof hitler",
+          "Adolph Schickelgruber",
+          "Hitler Adolf",
+          "Hitlers medical health",
+          "HitlerAdolph",
+          "Adolph Schicklegruber",
+          "Adolf Hiler",
+          "Adolf Hitler's medical condition",
+          "Hittler",
+          "Adolf Schickelgruber",
+          "Adolf Hitler",
+          "Hitler's",
+          "Hitler, adolf",
+          "Nazi leader",
+          "Hitler, Adolf",
+          "Herr Wolf",
+          "Adolph Hitler's medical health",
+          "Adolph Hitler",
+          "Adolf Hitler's health",
+          "Adolf Schicklgruber",
+          "AdolphHitler",
+          "Adolf Hilter",
+          "Health of Adolf Hitler",
+          "Adolf Hitler's medical health",
+          "Hitler Adolph",
+          "AdolfHitler",
+          "Adolf HItler",
+          "Hitlet",
+          "Hitler adolf",
+          "Adoff Hitler",
+          "Adolfus Hitler",
+          "Hitler",
+          "Adolph hitler",
+          "Hitler"
+        ],
+        "predicted": "Hitlerian",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7790495753288269,
+        "serverTimeMs": 1133,
+        "clientLatencyMs": 1175,
+        "error": null
+      },
+      {
+        "question": "Who had an 80s No 1 hit with Hold On To The Nights?",
+        "gold_answers": [
+          "Richard Noel Marx",
+          "Richard Marx",
+          "Richard Marx"
+        ],
+        "predicted": "Richard Noel Marx",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6267438530921936,
+        "serverTimeMs": 563,
+        "clientLatencyMs": 611,
+        "error": null
+      },
+      {
+        "question": "Who directed the classic 30s western Stagecoach?",
+        "gold_answers": [
+          "John Ford (1895-1973)",
+          "Sean O'Feeney",
+          "John Ford (film director)",
+          "Ford, John (1895-1973)",
+          "Argosy Pictures",
+          "John Ford statue",
+          "John Martin O'Feeney",
+          "John Ford (director)",
+          "Cavalry trilogy",
+          "John O'Feeney",
+          "Sean Aloysius O'Feeney",
+          "Ford, John",
+          "John Ford",
+          "John Ford"
+        ],
+        "predicted": "John Ford (1895-1973)",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7085294723510742,
+        "serverTimeMs": 748,
+        "clientLatencyMs": 792,
+        "error": null
+      },
+      {
+        "question": "Dave Gilmore and Roger Waters were in which rock group?",
+        "gold_answers": [
+          "Grey Floyd",
+          "Pink Floyd trivia",
+          "The Screaming Ab Dabs",
+          "Pink flowd",
+          "The Meggadeaths",
+          "The Architectural Abdabs",
+          "PINK FLOYD",
+          "Pink Flod",
+          "Pink Floyd",
+          "Pink Floyd Trivia",
+          "The Pink Floyd",
+          "Notable or frequent contributors to pink floyd",
+          "The Tea Set",
+          "Pinkfloyd",
+          "Pi5",
+          "Pink floid",
+          "Pink Floyd (band)",
+          "The T Set",
+          "Screaming abdabs",
+          "Notable or frequent contributors to Pink Floyd",
+          "The Megadeaths",
+          "Pik floyd",
+          "The Pink Floyd Sound",
+          "Pink floyd",
+          "The T-Set",
+          "The Screaming Abdabs",
+          "Clive Metcalfe",
+          "Meggadeaths",
+          "Pink Floyd"
+        ],
+        "predicted": "Grey Floyd",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6913873553276062,
+        "serverTimeMs": 1038,
+        "clientLatencyMs": 1070,
+        "error": null
+      },
+      {
+        "question": "Which highway was Revisited in a classic 60s album by Bob Dylan?",
+        "gold_answers": [
+          "61",
+          "sixty-one",
+          "61"
+        ],
+        "predicted": "61",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6037099361419678,
+        "serverTimeMs": 492,
+        "clientLatencyMs": 532,
+        "error": null
+      },
+      {
+        "question": "Which was the only eastern bloc country to participate in the 1984 LA Olympics?",
+        "gold_answers": [
+          "ISO 3166-1:RO",
+          "Romanian state",
+          "ROMANIA",
+          "Roumania",
+          "Etymology of Romania",
+          "Romainia",
+          "Romînia",
+          "North Danubian region",
+          "Carpathian Danubian space",
+          "ROU",
+          "România",
+          "Romanian State",
+          "Roumanie",
+          "Country ROM",
+          "Rromania",
+          "Romania",
+          "Republic of Romania",
+          "RO (country)",
+          "Rumänien",
+          "Danubian-Carpathian Area",
+          "Rumania",
+          "Austro-Hungarian Empire (Romania)",
+          "Rumunia",
+          "Rumania"
+        ],
+        "predicted": "ISO 3166-1:RO",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7984048128128052,
+        "serverTimeMs": 619,
+        "clientLatencyMs": 652,
+        "error": null
+      },
+      {
+        "question": "Which 90s sci fi series with James Belushi was based on Bruce Wagner's comic strip of the same name?",
+        "gold_answers": [
+          "Wild Palms",
+          "Wild Palms"
+        ],
+        "predicted": "Wild Palms",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7559081315994263,
+        "serverTimeMs": 174,
+        "clientLatencyMs": 207,
+        "error": null
+      },
+      {
+        "question": "If I Were A Rich Man Was a big hit from which stage show?",
+        "gold_answers": [
+          "Fiddler on a Roof",
+          "Fiddler on the roof",
+          "Sprintze",
+          "Fiddler On the Roof",
+          "2 life",
+          "Fiddler On The Roof",
+          "The Fiddler on the Roof",
+          "Fiddler on the Roof",
+          "Fiddler on the reoof",
+          "Anatevka",
+          "Fiddler on the Roof"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6439988613128662,
+        "serverTimeMs": 996,
+        "clientLatencyMs": 1029,
+        "error": null
+      },
+      {
+        "question": "Men Against the Sea and Pitcairn's Island were two sequels to what famous novel?",
+        "gold_answers": [
+          "HMS Bounty mutineers",
+          "Mutiny on the Bounty",
+          "Mutiny on Bounty",
+          "Mutiny On The Bounty",
+          "Mutiny on the Bounty (history)",
+          "Mutiny on the bounty",
+          "Bounty (vessel)",
+          "Thomas Ledward",
+          "Mutiny On The Bounty"
+        ],
+        "predicted": "HMS Bounty mutineers",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7703870534896851,
+        "serverTimeMs": 510,
+        "clientLatencyMs": 638,
+        "error": null
+      },
+      {
+        "question": "What is the only novel to top the best-seller lists for two consecutive years?",
+        "gold_answers": [
+          "Jonathan livingstone seagull",
+          "Jonathan Livingstone Seagull",
+          "Johnathon Livingston Seagull",
+          "Johnathan Livingston Seagull",
+          "Jonathan Livingston Seagull",
+          "Livingston Seagull",
+          "Jonathan Livingston Seagull (movie)",
+          "Jonathon Livingston Seagull",
+          "Jonathon Livingston Seagulll",
+          "Jonathan Livingston Seagull"
+        ],
+        "predicted": "Jonathan livingstone seagull",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7957396507263184,
+        "serverTimeMs": 310,
+        "clientLatencyMs": 353,
+        "error": null
+      },
+      {
+        "question": "To whom did Helen Keller dedicate her autobiography, The Story of My Life?",
+        "gold_answers": [
+          "To inventor Alexander Graham Bell, who helped direct her education and considered himself, first and foremost, a teacher of the deaf",
+          "To inventor Alexander Graham Bell, who helped direct her education and considered himself, first and foremost, a teacher of the deaf"
+        ],
+        "predicted": "To inventor Alexander Graham Bell, who helped direct her education and considered himself, first and foremost, a teacher of the deaf",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6666463613510132,
+        "serverTimeMs": 398,
+        "clientLatencyMs": 442,
+        "error": null
+      },
+      {
+        "question": "\"Complete this Biblical quotation: \"\"It is easier for a camel to go through the eye of a needle, than...\"",
+        "gold_answers": [
+          "...for a rich man to enter into the kingdom of God. The words are those of Jesus, from Matthew 19:24",
+          "...for a rich man to enter into the kingdom of God. The words are those of Jesus, from Matthew 19:24"
+        ],
+        "predicted": "53",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8094604015350342,
+        "serverTimeMs": 408,
+        "clientLatencyMs": 456,
+        "error": null
+      },
+      {
+        "question": "What was Truman Capote's last name before he was adopted by his stepfather?",
+        "gold_answers": [
+          "Perſons",
+          "Person",
+          "Person (philosophical)",
+          "Personhood Theory",
+          "Persons",
+          "Perſon",
+          "A person",
+          "Personhood theory",
+          "Persons"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7451636791229248,
+        "serverTimeMs": 620,
+        "clientLatencyMs": 677,
+        "error": null
+      },
+      {
+        "question": "What book knocked Henry Kissinger's White house Years out of first place on the best-seller list in November 1979?",
+        "gold_answers": [
+          "Aunt Erma's Cope Book, by Erma Bombeck",
+          "Aunt Erma's Cope Book, by Erma Bombeck"
+        ],
+        "predicted": "Aunt Erma's Cope Book, by Erma Bombeck",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.731246292591095,
+        "serverTimeMs": 1258,
+        "clientLatencyMs": 1292,
+        "error": null
+      },
+      {
+        "question": "In Lewis Carroll's poem The Hunting of the Snark, what did the elusive, troublesome snark turn into to fool hunters?",
+        "gold_answers": [
+          "Boojum (disambiguation)",
+          "A boojum",
+          "Boojum",
+          "A boojum"
+        ],
+        "predicted": "Boojum (disambiguation)",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6984632015228271,
+        "serverTimeMs": 700,
+        "clientLatencyMs": 732,
+        "error": null
+      },
+      {
+        "question": "In what state was playwright Tennessee Williams born?",
+        "gold_answers": [
+          "In Mississippi, as Thomas Lanier Williams. He took the name Tennessee after his father's home state",
+          "In Mississippi, as Thomas Lanier Williams. He took the name Tennessee after his father's home state"
+        ],
+        "predicted": "In Mississippi, as Thomas Lanier Williams. He took the name Tennessee after his father's home state",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7107268571853638,
+        "serverTimeMs": 855,
+        "clientLatencyMs": 888,
+        "error": null
+      },
+      {
+        "question": "Who was the only Englishman to become Pope?",
+        "gold_answers": [
+          "Nicholas Breakspear, who was Adrian IV from 1154 to 1159",
+          "Nicholas Breakspear, who was Adrian IV from 1154 to 1159"
+        ],
+        "predicted": "Nicholas Breakspear, who was Adrian IV from 1154 to 1159",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6967076063156128,
+        "serverTimeMs": 429,
+        "clientLatencyMs": 463,
+        "error": null
+      },
+      {
+        "question": "In the Bible, who did the sun and moon stand still before?",
+        "gold_answers": [
+          "Joshua of ephraim",
+          "Y'hosheya",
+          "Yehoshea",
+          "Yahushua",
+          "Yoshea",
+          "Yehoshua%60",
+          "Yūsha",
+          "Yhoshoa",
+          "Joshua bin Nun",
+          "Joshua Ben Nun",
+          "Yehosha",
+          "Jehoshua",
+          "Yahusha",
+          "Yhoshua",
+          "Joshua Bin-Nun",
+          "Yhoshua Ben Nun",
+          "Yoshia",
+          "Yehoshua Ben Nun",
+          "Y'hoshiya",
+          "Yhoshea",
+          "Y'hoshea",
+          "Yhosheya",
+          "Yoshoa",
+          "Joshua ben Nun",
+          "Josue",
+          "Yhoshia",
+          "Y'hoshua",
+          "Yhosha",
+          "Yusha'",
+          "Yhoshiya",
+          "Y'hoshia",
+          "Joshua's Prayer",
+          "Ieshua",
+          "Y'hoshoa",
+          "Yoshua",
+          "Y'hosha",
+          "Joshuah",
+          "يوشع",
+          "Joshua",
+          "Yehoshia",
+          "Jesus Navin",
+          "Joshua in Islam",
+          "Joshua's conquests",
+          "Yosheya",
+          "Joshua son of Nun",
+          "Yehoshoa",
+          "Yehoshiya",
+          "Yĕhōshūa‘",
+          "Yehosheya",
+          "Yosha",
+          "Jehoshuah",
+          "יְהוֹשֻׁעַ",
+          "Joshua"
+        ],
+        "predicted": "Joshua of ephraim",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7053332328796387,
+        "serverTimeMs": 1093,
+        "clientLatencyMs": 1140,
+        "error": null
+      },
+      {
+        "question": "What Michelle Pfeiffer movie got a boost from the Coolio song Gangsta's Paradise?",
+        "gold_answers": [
+          "Dangerous Minds (film)",
+          "My Posse Don't Do Homework",
+          "Dangerous Minds",
+          "Dangerous Minds"
+        ],
+        "predicted": "Dangerous Minds (film)",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.5538526773452759,
+        "serverTimeMs": 1249,
+        "clientLatencyMs": 1292,
+        "error": null
+      },
+      {
+        "question": "In the Bible, who saw the handwriting on the wall?",
+        "gold_answers": [
+          "The Babylonian king Belshazzar (Daniel 5:1-5)",
+          "The Babylonian king Belshazzar (Daniel 5:1-5)"
+        ],
+        "predicted": "The Babylonian king Belshazzar (Daniel 5:1-5)",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6142963767051697,
+        "serverTimeMs": 656,
+        "clientLatencyMs": 689,
+        "error": null
+      },
+      {
+        "question": "What comic strip character was named after heavyweight boxing champion James J. Jeffries?",
+        "gold_answers": [
+          "Jeff, of Mutt and Jeff",
+          "Jeff, of Mutt and Jeff"
+        ],
+        "predicted": "Jeff, of Mutt and Jeff",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7343556880950928,
+        "serverTimeMs": 447,
+        "clientLatencyMs": 485,
+        "error": null
+      },
+      {
+        "question": "What was President Gerald Ford's middle name?",
+        "gold_answers": [
+          "Rudolph (disambiguation)",
+          "Rudolph",
+          "Rudolf",
+          "Rodolph",
+          "Rodolphe",
+          "Rudolph"
+        ],
+        "predicted": "Rudolph (disambiguation)",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6015489101409912,
+        "serverTimeMs": 219,
+        "clientLatencyMs": 251,
+        "error": null
+      },
+      {
+        "question": "Who recorded the When Harry Met Sally soundtrack?",
+        "gold_answers": [
+          "Harry Connick Jnr",
+          "Harry Connick Jnr"
+        ],
+        "predicted": "Harry Connick Jnr",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6113185882568359,
+        "serverTimeMs": 703,
+        "clientLatencyMs": 751,
+        "error": null
+      },
+      {
+        "question": "Art Garfunkel trained for which profession although he didn't qualify?",
+        "gold_answers": [
+          "Master Builder (occupation)",
+          "Master builder (occupation)",
+          "Registered Architect",
+          "Architects",
+          "Architecht",
+          "Architect",
+          "HOK Canada, Inc.",
+          "Stanford Downey Architects Inc.",
+          "Graziani + Corazza",
+          "Architechts",
+          "Clifford & Lawrie",
+          "Architect"
+        ],
+        "predicted": "Master Builder (occupation)",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.725403368473053,
+        "serverTimeMs": 564,
+        "clientLatencyMs": 610,
+        "error": null
+      },
+      {
+        "question": "Who was the last inmate of Spandau jail in Berlin?",
+        "gold_answers": [
+          "Hess, Rudolf",
+          "Rudolf hess",
+          "Rudolf W. Hess",
+          "Rudolph Hess",
+          "Walther Richard Rudolf Hess",
+          "Rudolf Walter Richard Hess",
+          "Rudolf Hess",
+          "Rudolf Walter Richard Heß",
+          "Rudolph Heß",
+          "Rudolf Heß",
+          "Rudolf Hesse",
+          "Rudolf Hess"
+        ],
+        "predicted": "Hess, Rudolf",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7465893030166626,
+        "serverTimeMs": 446,
+        "clientLatencyMs": 478,
+        "error": null
+      },
+      {
+        "question": "What was Eddie Murphy's first movie?",
+        "gold_answers": [
+          "48 time",
+          "48 Hours",
+          "forty-eight  time",
+          "48 Hours"
+        ],
+        "predicted": "48 time",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.58525550365448,
+        "serverTimeMs": 287,
+        "clientLatencyMs": 319,
+        "error": null
+      },
+      {
+        "question": "In the 80s who wrote the novel Empire of The Sun?",
+        "gold_answers": [
+          "JG Ballard",
+          "J.G. Ballard",
+          "James Graham Ballard",
+          "J. G. Ballard",
+          "J.G.Ballard",
+          "Jg ballard",
+          "A User's Guide to the Millenium",
+          "J G Ballard",
+          "Ballardian",
+          "James G. Ballard",
+          "J. G. Ballard"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6396311521530151,
+        "serverTimeMs": 765,
+        "clientLatencyMs": 809,
+        "error": null
+      },
+      {
+        "question": "Kagoshima international airport is in which country?",
+        "gold_answers": [
+          "日本國",
+          "State of Japan",
+          "Ja-pan",
+          "Nihon",
+          "Nippon",
+          "Japang",
+          "Modern–era Japan",
+          "Etymology of Japan",
+          "Japan (country)",
+          "Republic of Japan",
+          "Japanese financial sector",
+          "Nihon-koku",
+          "ISO 3166-1:JP",
+          "日本",
+          "Japian",
+          "Japan",
+          "JapaN",
+          "The State of Japan",
+          "Riben",
+          "Nippon-koku",
+          "JPN",
+          "Jpan",
+          "Rìběn",
+          "日本国",
+          "Japao",
+          "JAPAN",
+          "Japoa",
+          "🗾",
+          "Japan"
+        ],
+        "predicted": "日本國",
+        "exact_match": 1,
+        "f1": 0,
+        "confidence": 0.7175066471099854,
+        "serverTimeMs": 497,
+        "clientLatencyMs": 572,
+        "error": null
+      },
+      {
+        "question": "In which sport could the Pacers take on the Pistons?",
+        "gold_answers": [
+          "Basketball",
+          "Basketball gear",
+          "Bball",
+          "Boy's Basketball",
+          "B Ball",
+          "Shoot hoops",
+          "Basketball parity worldwide",
+          "Men's Basketball",
+          "High school basketball",
+          "Basketball Worldwide",
+          "Basketball club",
+          "B-ball",
+          "Basket-ball",
+          "Basketball team",
+          "🏀",
+          "Basketball rim",
+          "Basketballer",
+          "Rim (basketball)",
+          "Basket ball",
+          "Basketball net",
+          "Baksetball",
+          "Basketball player",
+          "Basket-Ball",
+          "A: Basketball",
+          "Women's hoops",
+          "Men's basketball",
+          "BasketBall",
+          "Basketball Parity Worldwide",
+          "Basket Ball",
+          "Baketball",
+          "Basketball Player",
+          "B ball",
+          "Unicycle basketball",
+          "A: Basketball"
+        ],
+        "predicted": "Spike",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7058395743370056,
+        "serverTimeMs": 952,
+        "clientLatencyMs": 1007,
+        "error": null
+      },
+      {
+        "question": "Kim Carnes' nine weeks at No 1 with Bette Davis Eyes was interrupted for one week by which song?",
+        "gold_answers": [
+          "Stars on 45 (Single)",
+          "Stars On 45 Medley",
+          "Stars on 45 medley",
+          "Stars on 45 (song)",
+          "Stars on 45 Medley",
+          "Medley: Intro Venus / Sugar Sugar / No Reply / I'll Be Back / Drive My Car / Do You Want to Know a Secret / We Can Work It Out / I Should Have Known Better / Nowhere Man / You're Going to Lose That Girl / Stars on 45",
+          "Stars on 45 medley"
+        ],
+        "predicted": "Stars on 45 (Single)",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6654131412506104,
+        "serverTimeMs": 963,
+        "clientLatencyMs": 1036,
+        "error": null
+      },
+      {
+        "question": "Where in Canada is the Lion's Gate bridge?",
+        "gold_answers": [
+          "Vancouver, Canada",
+          "Vancouver (Canada)",
+          "Corpus Christi Elementary School (Canada)",
+          "UN/LOCODE:CAVAN",
+          "Vancouver, British Columbia, Canada",
+          "Vancouver, BC, Canada",
+          "Vancouver, British-Columbia",
+          "Vancouver, B.C., Canada",
+          "Vancouver",
+          "Vancouver, British Colombia",
+          "Vancover, British Columbia",
+          "Vansterdam",
+          "Vancouver (BC)",
+          "Hastings East (Vancouver)",
+          "Vancouver British Columbia",
+          "Vancouver Canada",
+          "City of Vancouver",
+          "Vancouver, BC",
+          "Vancouver (B.C.)",
+          "Vancouver City Centre, British Columbia",
+          "Vancouver, B.C.",
+          "South Vancouver, British Columbia",
+          "Vancouverite",
+          "Vancouver, British Columbia",
+          "Vancouver Christian School",
+          "Vancouvr",
+          "Hong kouver",
+          "Vancouverites",
+          "Hongcouver",
+          "Vancouver, bc",
+          "Corpus Christi Elementary",
+          "Hong couver",
+          "Greater Vancouver Bridges",
+          "Vancover",
+          "Vanocuver",
+          "Vancouver BC",
+          "Vancouver"
+        ],
+        "predicted": "Vancouver, Canada",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6257553696632385,
+        "serverTimeMs": 666,
+        "clientLatencyMs": 705,
+        "error": null
+      },
+      {
+        "question": "What was Walter Matthau's first movie?",
+        "gold_answers": [
+          "The Kentuckian",
+          "The Kentuckian"
+        ],
+        "predicted": "The Kentuckian",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.5702967643737793,
+        "serverTimeMs": 280,
+        "clientLatencyMs": 318,
+        "error": null
+      },
+      {
+        "question": "Otis Barton was a pioneer in exploring where?",
+        "gold_answers": [
+          "Underwater",
+          "Under water",
+          "Underwater life",
+          "Undersea",
+          "Underwater"
+        ],
+        "predicted": "Underwater",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6775146126747131,
+        "serverTimeMs": 254,
+        "clientLatencyMs": 293,
+        "error": null
+      },
+      {
+        "question": "Where in England was actor Nigel Hawthorne born?",
+        "gold_answers": [
+          "Cofantre",
+          "Coventry (city)",
+          "Coventry, Warwickshire",
+          "Coventry",
+          "Coventry, UK",
+          "Coventry, England",
+          "City of Coventry",
+          "COVENTRY",
+          "County Borough of Coventry",
+          "Coventry (borough)",
+          "Coventry City council",
+          "Coventry, United Kingdom",
+          "Metropolitan Borough of Coventry",
+          "Coventry"
+        ],
+        "predicted": "Cofantre",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.731902539730072,
+        "serverTimeMs": 641,
+        "clientLatencyMs": 685,
+        "error": null
+      },
+      {
+        "question": "What would Kevin Scale have been called if it had adopted the originator's first name?",
+        "gold_answers": [
+          "William Scale",
+          "William Scale"
+        ],
+        "predicted": "William Scale",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8099275827407837,
+        "serverTimeMs": 994,
+        "clientLatencyMs": 1036,
+        "error": null
+      },
+      {
+        "question": "What mythological beast has the head of a man, the body of a lion, and the tail and feet of a dragon?",
+        "gold_answers": [
+          "A manticore",
+          "The Manticore",
+          "A manticore"
+        ],
+        "predicted": "A manticore",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7331027984619141,
+        "serverTimeMs": 422,
+        "clientLatencyMs": 461,
+        "error": null
+      },
+      {
+        "question": "In Greek mythology, who were Arges, Brontes and Steropes?",
+        "gold_answers": [
+          "Cyclopes (disambiguation)",
+          "Cyclopes",
+          "Cyclopes"
+        ],
+        "predicted": "Cyclopes (disambiguation)",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7888519763946533,
+        "serverTimeMs": 594,
+        "clientLatencyMs": 644,
+        "error": null
+      },
+      {
+        "question": "In Greek mythology, what were the names of Oedipus's parents?",
+        "gold_answers": [
+          "Laius, King of Thebes, and his queen, Jocasta",
+          "Laius, King of Thebes, and his queen, Jocasta"
+        ],
+        "predicted": "Laius, King of Thebes, and his queen, Jocasta",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8163509964942932,
+        "serverTimeMs": 1532,
+        "clientLatencyMs": 1573,
+        "error": null
+      },
+      {
+        "question": "Which musician founded the Red Hot Peppers?",
+        "gold_answers": [
+          "Ferdinand Joseph La Menthe",
+          "Louise Monette",
+          "Ferdinand Morton",
+          "Ferdinand %22Jelly Roll%22 Morton",
+          "F.P. Lamothe",
+          "Ferdinand Lamothe",
+          "Jellyroll Morton",
+          "Ferdinand Joseph Morton",
+          "Joseph Ferdinand Morton",
+          "Ferdinand Joseph Lamothe",
+          "Jelly-Roll Morton",
+          "Jelly Roll Morton",
+          "Jelly Roll Morton"
+        ],
+        "predicted": "Ferdinand Joseph La Menthe",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6687767505645752,
+        "serverTimeMs": 520,
+        "clientLatencyMs": 579,
+        "error": null
+      },
+      {
+        "question": "Where did the Shinning Path terrorists operate?",
+        "gold_answers": [
+          "Lower Peru",
+          "Name of Peru",
+          "Republic of Peru",
+          "Etymology of Peru",
+          "ISO 3166-1:PE",
+          "Piruw",
+          "Peruano",
+          "República del Perú",
+          "El Perú",
+          "Republic of Perú",
+          "Peruvian Republic",
+          "Peru",
+          "Peruvian",
+          "Péru",
+          "Piruw Ripuwlika",
+          "El Peru",
+          "Perú",
+          "Perù",
+          "Piruw Suyu",
+          "Pérou",
+          "Peruvia",
+          "Peru"
+        ],
+        "predicted": "Lower Peru",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7045375108718872,
+        "serverTimeMs": 145,
+        "clientLatencyMs": 176,
+        "error": null
+      },
+      {
+        "question": "How old was Jimi Hendrix when he died?",
+        "gold_answers": [
+          "27",
+          "twenty-seven",
+          "27"
+        ],
+        "predicted": "27",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.5828293561935425,
+        "serverTimeMs": 521,
+        "clientLatencyMs": 559,
+        "error": null
+      },
+      {
+        "question": "Which Brit broke the land speed record in 1990 in Thrust 2?",
+        "gold_answers": [
+          "Richard Noble",
+          "Richard Noble"
+        ],
+        "predicted": "Richard Noble",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7629460096359253,
+        "serverTimeMs": 990,
+        "clientLatencyMs": 1022,
+        "error": null
+      },
+      {
+        "question": "In which state was Gene Vincent born?",
+        "gold_answers": [
+          "US-VA",
+          "State of Virginia",
+          "Virginia, USA",
+          "Tenth State",
+          "Religion in Virginia",
+          "Virginia (USA state)",
+          "Virginia (state)",
+          "Commonwealth of VA",
+          "Rest of Virginia",
+          "Virginia",
+          "Mother of Presidents",
+          "Virginia (USA State)",
+          "The Old Dominion",
+          "VA (state)",
+          "Commonwealth of Virginia",
+          "Virginian Commonwealth",
+          "The Mother of Presidents",
+          "Virginia, United States",
+          "Council of Virginia",
+          "Sports in Virginia",
+          "Viginia",
+          "Virginia (U.S. state)",
+          "10th State",
+          "Virgina",
+          "The Commonwealth of Virginia",
+          "VA, USA",
+          "Virginia (State)",
+          "Virginia"
+        ],
+        "predicted": "US-VA",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7024155855178833,
+        "serverTimeMs": 880,
+        "clientLatencyMs": 912,
+        "error": null
+      },
+      {
+        "question": "How was the European Recovery Program in the 1940s more commonly known?",
+        "gold_answers": [
+          "European Recovery Programme",
+          "The marshal plan",
+          "Marshall Aid",
+          "European Recovery Program",
+          "Marshall Paln",
+          "The Marshall Plan",
+          "European recovery act",
+          "Marshall aid",
+          "Marshall Plan",
+          "Marshal plan",
+          "Organization for European Economic Recovery",
+          "Ministère de la Reconstruction",
+          "Marshall aid plan",
+          "Economic Cooperation Act of 1948",
+          "Marshall plan",
+          "Operation Rathole",
+          "Marshall Plan"
+        ],
+        "predicted": "The Marshall Plan",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7457423210144043,
+        "serverTimeMs": 639,
+        "clientLatencyMs": 671,
+        "error": null
+      },
+      {
+        "question": "Brandon Lee died during the making of which movie?",
+        "gold_answers": [
+          "The Crow: Dead Time",
+          "The Crow (2016 film)",
+          "The Crow",
+          "The Crow"
+        ],
+        "predicted": "The Crow: Dead Time",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7020171880722046,
+        "serverTimeMs": 549,
+        "clientLatencyMs": 581,
+        "error": null
+      },
+      {
+        "question": "Who had a 70s No 1 hit with Let's Do It Again?",
+        "gold_answers": [
+          "The Staple Singers",
+          "Staple Singers",
+          "The Staples Singers",
+          "Staples Singers",
+          "Cleotha Staples",
+          "The Staple Singers"
+        ],
+        "predicted": "The Staple Singers",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.5657130479812622,
+        "serverTimeMs": 320,
+        "clientLatencyMs": 352,
+        "error": null
+      },
+      {
+        "question": "Who had a Too Legit To Quit Tour?",
+        "gold_answers": [
+          "M. C. Hammer",
+          "Hammer (rapper)",
+          "Family Affair(MC Hammer album)",
+          "Mc Hammer",
+          "Too Tight(MC Hammer album)",
+          "Stanley Burrell",
+          "Stanley Kirk Burrell",
+          "M c hammer",
+          "Mchammer",
+          "You Shouldn't Touch This",
+          "Mc hammer",
+          "M.C. Hammer",
+          "Family Affair (MC Hammer album)",
+          "McHammer",
+          "MC Hammer",
+          "Stanley K. Burrell",
+          "Wiredoo",
+          "WireDoo",
+          "The hammer crew",
+          "Too Tight (MC Hammer album)",
+          "MC Hammer"
+        ],
+        "predicted": "M. C. Hammer",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7043161392211914,
+        "serverTimeMs": 592,
+        "clientLatencyMs": 626,
+        "error": null
+      },
+      {
+        "question": "\"According to Rudyard Kipling what were the \"\"two imposters\"\" to meet and treat the same day?\"",
+        "gold_answers": [
+          "Triumph and Disaster",
+          "Triumph and Disaster"
+        ],
+        "predicted": "Triumph and Disaster",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7664889097213745,
+        "serverTimeMs": 845,
+        "clientLatencyMs": 891,
+        "error": null
+      },
+      {
+        "question": "Who is the most successful UK solo artist in the USA?",
+        "gold_answers": [
+          "Sir Elton",
+          "Rockaday Johnny",
+          "Elthon John",
+          "Eltonjohn",
+          "List of Elton John awards",
+          "John, Elton",
+          "Reggie Dwight",
+          "Lord Choc Ice",
+          "Redget Buntovan",
+          "Elton John's discography",
+          "Elton john discography",
+          "Reginald K. Dwight",
+          "Elton John",
+          "Mrs. Elton John",
+          "Lady Choc Ice",
+          "Reg Kenneth Dwight",
+          "Renate Blauel",
+          "Reginald Kenneth Dwight",
+          "Ann Orson",
+          "Reg Dwight",
+          "Elton John Band",
+          "Reginald Dwight",
+          "Sir John Elton",
+          "Elton john",
+          "Elton John Discography",
+          "Reginald Kenneth",
+          "Elton Hercules John",
+          "Sir Elton Hercules John CBE",
+          "Elton H. John",
+          "Nancy Treadlight",
+          "Reginald kenneth dwight",
+          "Reginald dwight",
+          "Sir Elton John",
+          "Kenneth Dwight",
+          "Elton John"
+        ],
+        "predicted": "Sir Elton",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7832550406455994,
+        "serverTimeMs": 382,
+        "clientLatencyMs": 421,
+        "error": null
+      },
+      {
+        "question": "Where was horse racing's Breeder's Cup held in 1987?",
+        "gold_answers": [
+          "Hollywood Park L.A",
+          "Hollywood Park L.A"
+        ],
+        "predicted": "Hollywood Park L.A",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7162559032440186,
+        "serverTimeMs": 392,
+        "clientLatencyMs": 425,
+        "error": null
+      },
+      {
+        "question": "Which country does the airline TAAG come from?",
+        "gold_answers": [
+          "Angola",
+          "Angloa",
+          "Etymology of Angola",
+          "Republic of Angola",
+          "Sport in Angola",
+          "The Republic of Angola",
+          "ISO 3166-1:AO",
+          "Angola"
+        ],
+        "predicted": "Angola",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.65569007396698,
+        "serverTimeMs": 424,
+        "clientLatencyMs": 456,
+        "error": null
+      },
+      {
+        "question": "Which US No 1 single came from Diana Ross's platinum album Diana?",
+        "gold_answers": [
+          "Upside Down (Diana Ross song)",
+          "Up side down",
+          "Upside Down",
+          "Upside Down (single)",
+          "Upside Down"
+        ],
+        "predicted": "Upside Down (Diana Ross song)",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7532589435577393,
+        "serverTimeMs": 454,
+        "clientLatencyMs": 497,
+        "error": null
+      },
+      {
+        "question": "River Phoenix died during the making of which movie?",
+        "gold_answers": [
+          "Dark Blood (film)",
+          "Dark Blood",
+          "Dark Blood"
+        ],
+        "predicted": "Dark Blood (film)",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6781854629516602,
+        "serverTimeMs": 681,
+        "clientLatencyMs": 713,
+        "error": null
+      },
+      {
+        "question": "Which artist David was born in Bradford UK?",
+        "gold_answers": [
+          "Hockney",
+          "David Hockney",
+          "Hockney"
+        ],
+        "predicted": "Hockney",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7872533798217773,
+        "serverTimeMs": 437,
+        "clientLatencyMs": 471,
+        "error": null
+      },
+      {
+        "question": "What is Mel Gibson's middle name?",
+        "gold_answers": [
+          "St Colm",
+          "Saint Colm Cille",
+          "Calum Cille",
+          "Collumcille",
+          "Life of St. Columba",
+          "St Columcille",
+          "Columba, Saint",
+          "Columba",
+          "St Colmcille",
+          "Vita Sancti Columbae",
+          "Saint Columba",
+          "Vita Columbae",
+          "Colmcille",
+          "Colum Cille mac Fedelmtheo",
+          "Columbkille",
+          "St. Columcille",
+          "Columba of Iona",
+          "Colm Cille",
+          "Colmkill",
+          "Columb Cille",
+          "Colmekill",
+          "Saint Columb",
+          "Saint Columbkille",
+          "St Colum Cille",
+          "St. Columba",
+          "Scoto-Hibernian Monasteries",
+          "Saint Colmcille",
+          "Life of Columba",
+          "Columbcille",
+          "Saint Columcille",
+          "Colum Cille",
+          "Columcille",
+          "St Columba",
+          "Columcille"
+        ],
+        "predicted": "St Colm",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6690512895584106,
+        "serverTimeMs": 1300,
+        "clientLatencyMs": 1333,
+        "error": null
+      },
+      {
+        "question": "Richard Daley was mayor of which city for 21 years?",
+        "gold_answers": [
+          "Chi-Beria",
+          "Sayre language academy",
+          "Chicago",
+          "Chicago, Illinois",
+          "Hog Butcher for the World",
+          "Land of smelly onions",
+          "Ariel Community Academy",
+          "The weather in Chicago",
+          "Chicago, Illinois, U.S.A.",
+          "Chicago, Illionis",
+          "Near North Montessori",
+          "Religion in Chicago",
+          "Chicago Finance Committee",
+          "The Paris of America",
+          "The city of Chicago",
+          "City of Chicago",
+          "List of sister cities of Chicago",
+          "UN/LOCODE:USCHI",
+          "Chicago theatre scene",
+          "Chicago, WI",
+          "The City of Broad Shoulders",
+          "City of Broad Shoulders",
+          "Sister Cities of Chicago",
+          "Chicago il",
+          "Chicago, Illinois, USA",
+          "Performing arts in Chicago",
+          "Chicago Transportation Committee",
+          "Chicago, Wisconsin",
+          "City of chicago",
+          "Chicago theater scene",
+          "Chicago, Il",
+          "Chicago, IL.",
+          "Chicago, Ill.",
+          "City of Chicago, Illinois",
+          "Chi town",
+          "Chicago, United States",
+          "Chicago (Ill.)",
+          "Transport in Chicago",
+          "Chicago, Illinois, United States",
+          "Chicago (IL)",
+          "USCHI",
+          "Chichago",
+          "Chcago",
+          "Chicago, Illinois, U.S.",
+          "Sister Cities Chicago",
+          "Chicago, USA",
+          "Chi City",
+          "Chicago, IL",
+          "Chi-Town",
+          "Chicago theatre",
+          "Paris of America",
+          "Chicago, Illinois, US",
+          "Chicago Illinois",
+          "The city of Chicago, Illinois",
+          "Sister cities of Chicago",
+          "Chicago"
+        ],
+        "predicted": "Chi-Beria",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7368989586830139,
+        "serverTimeMs": 678,
+        "clientLatencyMs": 712,
+        "error": null
+      },
+      {
+        "question": "\"In which movie did Garbo say, \"\"I want to be alone\"\".\"",
+        "gold_answers": [
+          "The grand hotel",
+          "Grand Hôtel",
+          "Grand hotel",
+          "The Grand Hotel",
+          "Grand Hotel",
+          "Grand Hotel (disambiguation)",
+          "Grand Hotel"
+        ],
+        "predicted": "The grand hotel",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.730582594871521,
+        "serverTimeMs": 1129,
+        "clientLatencyMs": 1166,
+        "error": null
+      },
+      {
+        "question": "Robert Kirkpatrick of California grew the world's biggest what?",
+        "gold_answers": [
+          "Head of garlic",
+          "Head of garlic"
+        ],
+        "predicted": "Head of garlic",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6636863350868225,
+        "serverTimeMs": 1980,
+        "clientLatencyMs": 2022,
+        "error": null
+      },
+      {
+        "question": "What is Osbert Lancaster best known for producing?",
+        "gold_answers": [
+          "Cartoonish",
+          "Cartoons",
+          "American cartoon",
+          "Cartoon",
+          "Cartoonistic",
+          "Cartoonism",
+          "Cartoons"
+        ],
+        "predicted": "Cartoonish",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6470764875411987,
+        "serverTimeMs": 542,
+        "clientLatencyMs": 574,
+        "error": null
+      },
+      {
+        "question": "Who was the defending champion when Martina Navratilova first won Wimbledon singles?",
+        "gold_answers": [
+          "Virginia Wade",
+          "Sarah Virginia Wade",
+          "Virginia Wade"
+        ],
+        "predicted": "Virginia Wade",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6937752962112427,
+        "serverTimeMs": 1057,
+        "clientLatencyMs": 1088,
+        "error": null
+      },
+      {
+        "question": "Who was the first US-born winner of golf's British Open?",
+        "gold_answers": [
+          "Walter Hagen",
+          "Hagen, Walter",
+          "Walter Charles Hagen",
+          "Walter Hagen"
+        ],
+        "predicted": "Walter Hagen",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.726738691329956,
+        "serverTimeMs": 452,
+        "clientLatencyMs": 484,
+        "error": null
+      },
+      {
+        "question": "In which country is the Sky Train Rail bridge?",
+        "gold_answers": [
+          "Canada",
+          "Canadá",
+          "The Dominion of Canada",
+          "Commonwealth of Canada",
+          "Dominion of canada",
+          "ISO 3166-1:CA",
+          "Etymology of Canada",
+          "CANADA",
+          "Canadiophile",
+          "Canada's",
+          "ᑲᓇᑕ",
+          "Canada/References",
+          "America's top hat",
+          "Canada.",
+          "Cnada",
+          "Čanada",
+          "Canadian Federation",
+          "Kenadian",
+          "Canadialand",
+          "Xanada",
+          "Dominion of Canada",
+          "Canadaa",
+          "Canada"
+        ],
+        "predicted": "Canada",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6433436870574951,
+        "serverTimeMs": 317,
+        "clientLatencyMs": 359,
+        "error": null
+      },
+      {
+        "question": "What was the Paramount Film Company originally called?",
+        "gold_answers": [
+          "Raleigh Studios",
+          "Famous Players Film Company",
+          "The Famous Players",
+          "Celebrated Players Film Corporation",
+          "Famous Players Film Company"
+        ],
+        "predicted": "Raleigh Studios",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6963881850242615,
+        "serverTimeMs": 415,
+        "clientLatencyMs": 447,
+        "error": null
+      },
+      {
+        "question": "Which founder of the company Triad was accused by the USA of receiving bribes?",
+        "gold_answers": [
+          "عدنان خاشقجي",
+          "Adnan kashoggi",
+          "Adnan Khashoggi",
+          "Khashogi",
+          "Kashoggi",
+          "Khashoggi",
+          "Adnan Khashoggi"
+        ],
+        "predicted": "عدنان خاشقجي",
+        "exact_match": 1,
+        "f1": 0,
+        "confidence": 0.8306252360343933,
+        "serverTimeMs": 1122,
+        "clientLatencyMs": 1166,
+        "error": null
+      },
+      {
+        "question": "Who was the first person after Scott to reach the South Pole overland?",
+        "gold_answers": [
+          "Sir Edmund Hillary",
+          "Edmund Hilary",
+          "Sir Ed",
+          "Sir Edmund Hilary",
+          "Sir Edmund Percival Hillary",
+          "Edmond Hillary",
+          "Ed Hillary",
+          "Edmond hillary",
+          "Sir Edmund",
+          "Edmund Percival Hillary",
+          "Edmund Hillary",
+          "Edmond Hillary"
+        ],
+        "predicted": "Sir Edmund Hillary",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6895833015441895,
+        "serverTimeMs": 595,
+        "clientLatencyMs": 627,
+        "error": null
+      },
+      {
+        "question": "Which journalist first told the world about the My Lai massacre?",
+        "gold_answers": [
+          "Seymour Hersch",
+          "The Dark Side of Camelot",
+          "Seymour M. Hersh",
+          "Chain of Command: The Road from 9/11 to Abu Ghraib",
+          "Hersh, Seymour M.",
+          "Seymour Hersh",
+          "Sy Hersh",
+          "Chain of Command (book)",
+          "Seymour (Sy) Myron Hersh",
+          "Seymour Hirsch",
+          "Seymour Hersh"
+        ],
+        "predicted": "Seymour Hersch",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7300573587417603,
+        "serverTimeMs": 336,
+        "clientLatencyMs": 383,
+        "error": null
+      },
+      {
+        "question": "What is the name of Terence and Shirley Conran's dress designer son?",
+        "gold_answers": [
+          "Jaspis",
+          "Bruneau jasper",
+          "Egyptian jasper",
+          "Black Jasper",
+          "Lydian stone",
+          "Jasper (mineral)",
+          "Jasper",
+          "Youngite",
+          "Bruneau Jasper",
+          "Jasper"
+        ],
+        "predicted": "Jaspis",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6103348731994629,
+        "serverTimeMs": 334,
+        "clientLatencyMs": 367,
+        "error": null
+      },
+      {
+        "question": "Which drink did The Spice Girls promote?",
+        "gold_answers": [
+          "Pep.si",
+          "Pepsey",
+          "Pepsi Convoy",
+          "Pepsi Lime",
+          "Pepsi: summer Mix",
+          "Pepsi Si",
+          "Brad's drink",
+          "Cherry Pepsi",
+          "Pepsi Sí",
+          "Pepsi edge",
+          "Joy of Cola",
+          "Pepsi Summer mix",
+          "Pepsi tarik",
+          "Pepsi cino",
+          "Pepsi Holiday Spice",
+          "Pepsi Perfect",
+          "PepsiCola",
+          "Pepsi: Summer mix",
+          "Pepsi: summer mix",
+          "Pepsi Gold",
+          "Pepsi Samba",
+          "Pepsi Vanilla",
+          "Pepsi Avantage",
+          "Vanilla Pepsi",
+          "Pepsi cola",
+          "Pepsi Tarik",
+          "Pepsi (Summer Mix)",
+          "Pepsi",
+          "Mandarin Orange Slice",
+          "Pepsi advantage",
+          "Pepsi (summer mix)",
+          "Wildcherrypepsi",
+          "Cokesi",
+          "Pepsi-Cola",
+          "Pepsi Fire",
+          "Pepsi EDGE",
+          "Pepsi Cola",
+          "Pepsiman",
+          "Pepsi avantage",
+          "Pepsi AM",
+          "Pepsi: Summer Mix",
+          "Diet Wild Cherry Pepsi",
+          "Pepsi Man",
+          "Pepsi-cola",
+          "Pepsi Cappuccino",
+          "Pepsi summer Mix",
+          "Pepsi Ice",
+          "Pepsi lime",
+          "Peppsey",
+          "Diet Cherry Pepsi",
+          "Pepsi Edge",
+          "Pepsi summer mix",
+          "Brad's Drink",
+          "Pepsi B",
+          "Pepsi Summer Mix",
+          "Pepsi Limited Edition Summer Mix",
+          "Pepsi X",
+          "PEPSI",
+          "Brads drink",
+          "Homemade Pepsi",
+          "Diet Pepsi Vanilla",
+          "Pepsi (Summer mix)",
+          "Pepsi"
+        ],
+        "predicted": "Pep.si",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7232863903045654,
+        "serverTimeMs": 600,
+        "clientLatencyMs": 634,
+        "error": null
+      },
+      {
+        "question": "Who was the youngest brother in the Beach Boys?",
+        "gold_answers": [
+          "Carl Wilson",
+          "Carl Wilson discography",
+          "Wilson, Carl Dean",
+          "Carl Dean Wilson",
+          "Wilson, Carl",
+          "Carl Wilson"
+        ],
+        "predicted": "Carl Wilson",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6284195184707642,
+        "serverTimeMs": 488,
+        "clientLatencyMs": 532,
+        "error": null
+      },
+      {
+        "question": "Which actress was called by the US Senate a 'powerful force of evil' when she left her husband and child in 1948?",
+        "gold_answers": [
+          "Ingrid Bergmann",
+          "Isotta Ingrid Rossellini",
+          "Ingrid Rossellini",
+          "Ingrid Bergman",
+          "Ingrid Berman",
+          "Ingrid Bergman"
+        ],
+        "predicted": "Ingrid Bergmann",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8268829584121704,
+        "serverTimeMs": 325,
+        "clientLatencyMs": 358,
+        "error": null
+      },
+      {
+        "question": "Who first hosted Family Feud?",
+        "gold_answers": [
+          "Dick Dawson",
+          "Richard Dawson",
+          "Dickie Dawson",
+          "Colin Lionel Emm",
+          "Colin Emm",
+          "Richard Dawson"
+        ],
+        "predicted": "Dick Dawson",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.739998459815979,
+        "serverTimeMs": 721,
+        "clientLatencyMs": 763,
+        "error": null
+      },
+      {
+        "question": "What did the Lone Ranger's title Kemo Sabe mean in Apache?",
+        "gold_answers": [
+          "Lèine bhàn",
+          "White shirt",
+          "White Shirt",
+          "Leine bhan",
+          "White Shirt"
+        ],
+        "predicted": "Lèine bhàn",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8509335517883301,
+        "serverTimeMs": 523,
+        "clientLatencyMs": 565,
+        "error": null
+      },
+      {
+        "question": "Who or what was Gentle Ben in the 60s TV series?",
+        "gold_answers": [
+          "Ursine",
+          "Ursoidea",
+          "Honey pig",
+          "Bears",
+          "Arctos",
+          "Ursidae",
+          "BEAR",
+          "Mating bears",
+          "Bear cub",
+          "Reproductive behavior of bears",
+          "Ursoid",
+          "Cub (bear)",
+          "Bear",
+          "🐻",
+          "Bear (zoology)",
+          "Sexual behavior of bears",
+          "Bear hibernation",
+          "Bear cub"
+        ],
+        "predicted": "Ursine",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7195568084716797,
+        "serverTimeMs": 780,
+        "clientLatencyMs": 812,
+        "error": null
+      },
+      {
+        "question": "Which 70s show was based on the British show Till Death Us Do Part?",
+        "gold_answers": [
+          "All In The Family",
+          "All in the family",
+          "Justice For All (TV pilot)",
+          "Stretch Cunningham",
+          "All in the Family (US series)",
+          "Those Were the Days (TV pilot)",
+          "All In the Family",
+          "Millard Fillmore High School",
+          "All in the Family",
+          "Justice for All (TV pilot)",
+          "Those Were The Days (TV pilot)",
+          "All In The Family"
+        ],
+        "predicted": "All In The Family",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6931309700012207,
+        "serverTimeMs": 1100,
+        "clientLatencyMs": 1148,
+        "error": null
+      },
+      {
+        "question": "On what date in 1969 did Neil Armstrong first set foot on the Moon?",
+        "gold_answers": [
+          "July 20",
+          "20 July",
+          "July 20th",
+          "Jul 20",
+          "20th July",
+          "Historical anniversaries/July 20",
+          "July 20th"
+        ],
+        "predicted": "July 20",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6403070688247681,
+        "serverTimeMs": 864,
+        "clientLatencyMs": 907,
+        "error": null
+      },
+      {
+        "question": "Bandar Seri Begawan International airport is in which country?",
+        "gold_answers": [
+          "Abode of Peace",
+          "BRUNEI",
+          "Health in Brunei",
+          "Burnei",
+          "State of Brunei Darussalam",
+          "Nation of Brunei, the Abode of Peace",
+          "برني دارالسلا",
+          "Brunei",
+          "Bruneian Sultanate",
+          "Brunei Darrussalam",
+          "State of Brunei",
+          "Brunai",
+          "Nation of Brunei",
+          "ISO 3166-1:BN",
+          "Asia/Brunei",
+          "Human rights in Brunei",
+          "Brunei Darsussalam",
+          "Nation of Brunei, Abode of Peace",
+          "Negara Brunei Darussalam",
+          "Subdivisions of Brunei",
+          "Brunei Darussalam",
+          "Administrative divisions of Brunei",
+          "Brunei Sultanate",
+          "بروني",
+          "Legal system of Brunei",
+          "State of Brunei, Abode of Peace",
+          "Etymology of Brunei",
+          "Brunei"
+        ],
+        "predicted": "日本國",
+        "exact_match": 1,
+        "f1": 0,
+        "confidence": 0.45159509778022766,
+        "serverTimeMs": 531,
+        "clientLatencyMs": 564,
+        "error": null
+      },
+      {
+        "question": "What was the profession of Paul Strand (1890 - 1976)?",
+        "gold_answers": [
+          "Photographist",
+          "Photographer",
+          "Freelance photographer",
+          "Freelance Photography",
+          "Photographr",
+          "Photographer"
+        ],
+        "predicted": "Photographist",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6865441799163818,
+        "serverTimeMs": 406,
+        "clientLatencyMs": 450,
+        "error": null
+      }
+    ],
+    "HotPotQA": [
+      {
+        "question": "Were Scott Derrickson and Ed Wood of the same nationality?",
+        "gold_answers": [
+          "yes"
+        ],
+        "predicted": "yes",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7305535078048706,
+        "serverTimeMs": 983,
+        "clientLatencyMs": 1021,
+        "error": null
+      },
+      {
+        "question": "What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?",
+        "gold_answers": [
+          "Chief of Protocol"
+        ],
+        "predicted": "Chief of Protocol",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8277125358581543,
+        "serverTimeMs": 555,
+        "clientLatencyMs": 626,
+        "error": null
+      },
+      {
+        "question": "What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?",
+        "gold_answers": [
+          "Animorphs"
+        ],
+        "predicted": "Animorphs",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.734717845916748,
+        "serverTimeMs": 1005,
+        "clientLatencyMs": 1055,
+        "error": null
+      },
+      {
+        "question": "Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?",
+        "gold_answers": [
+          "no"
+        ],
+        "predicted": "no",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7905921936035156,
+        "serverTimeMs": 818,
+        "clientLatencyMs": 850,
+        "error": null
+      },
+      {
+        "question": "The director of the romantic comedy \"Big Stone Gap\" is based in what New York city?",
+        "gold_answers": [
+          "Greenwich Village, New York City"
+        ],
+        "predicted": "Greenwich Village, New York City",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7213867902755737,
+        "serverTimeMs": 579,
+        "clientLatencyMs": 613,
+        "error": null
+      },
+      {
+        "question": "2014 S/S is the debut album of a South Korean boy group that was formed by who?",
+        "gold_answers": [
+          "YG Entertainment"
+        ],
+        "predicted": "YG Entertainment",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8529646992683411,
+        "serverTimeMs": 709,
+        "clientLatencyMs": 747,
+        "error": null
+      },
+      {
+        "question": "Who was known by his stage name Aladin and helped organizations improve their performance as a consultant?",
+        "gold_answers": [
+          "Eenasul Fateh"
+        ],
+        "predicted": "Eenasul Fateh",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8164412379264832,
+        "serverTimeMs": 457,
+        "clientLatencyMs": 514,
+        "error": null
+      },
+      {
+        "question": "The arena where the Lewiston Maineiacs played their home games can seat how many people?",
+        "gold_answers": [
+          "3,677 seated"
+        ],
+        "predicted": "3,677 seated",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7083144187927246,
+        "serverTimeMs": 622,
+        "clientLatencyMs": 655,
+        "error": null
+      },
+      {
+        "question": "Who is older, Annie Morton or Terry Richardson?",
+        "gold_answers": [
+          "Terry Richardson"
+        ],
+        "predicted": "Terry Richardson",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7190303206443787,
+        "serverTimeMs": 447,
+        "clientLatencyMs": 490,
+        "error": null
+      },
+      {
+        "question": "Are Local H and For Against both from the United States?",
+        "gold_answers": [
+          "yes"
+        ],
+        "predicted": "yes",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7609596848487854,
+        "serverTimeMs": 306,
+        "clientLatencyMs": 353,
+        "error": null
+      },
+      {
+        "question": "What is the name of the fight song of the university whose main campus is in Lawrence, Kansas and whose branch campuses are in the Kansas City metropolitan area?",
+        "gold_answers": [
+          "Kansas Song"
+        ],
+        "predicted": "Kansas Song",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7416079044342041,
+        "serverTimeMs": 887,
+        "clientLatencyMs": 937,
+        "error": null
+      },
+      {
+        "question": "What screenwriter with credits for \"Evolution\" co-wrote a film starring Nicolas Cage and Téa Leoni?",
+        "gold_answers": [
+          "David Weissman"
+        ],
+        "predicted": "David Weissman",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7664445042610168,
+        "serverTimeMs": 1007,
+        "clientLatencyMs": 1046,
+        "error": null
+      },
+      {
+        "question": "What year did Guns N Roses perform a promo for a movie starring Arnold Schwarzenegger as a former New York Police detective?",
+        "gold_answers": [
+          "1999"
+        ],
+        "predicted": "1999",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6598635315895081,
+        "serverTimeMs": 660,
+        "clientLatencyMs": 692,
+        "error": null
+      },
+      {
+        "question": "Are Random House Tower and 888 7th Avenue both used for real estate?",
+        "gold_answers": [
+          "no"
+        ],
+        "predicted": "no",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7569719552993774,
+        "serverTimeMs": 759,
+        "clientLatencyMs": 791,
+        "error": null
+      },
+      {
+        "question": "The football manager who recruited David Beckham managed Manchester United during what timeframe?",
+        "gold_answers": [
+          "from 1986 to 2013"
+        ],
+        "predicted": "from 1986 to 2013",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7326300740242004,
+        "serverTimeMs": 1790,
+        "clientLatencyMs": 1827,
+        "error": null
+      },
+      {
+        "question": "Brown State Fishing Lake is in a country that has a population of how many inhabitants ?",
+        "gold_answers": [
+          "9,984"
+        ],
+        "predicted": "9,984",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7459625005722046,
+        "serverTimeMs": 423,
+        "clientLatencyMs": 456,
+        "error": null
+      },
+      {
+        "question": "The Vermont Catamounts men's soccer team currently competes in a conference that was formerly known as what from 1988 to 1996?",
+        "gold_answers": [
+          "the North Atlantic Conference"
+        ],
+        "predicted": "the North Atlantic Conference",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7592530250549316,
+        "serverTimeMs": 418,
+        "clientLatencyMs": 450,
+        "error": null
+      },
+      {
+        "question": "Are Giuseppe Verdi and Ambroise Thomas both Opera composers ?",
+        "gold_answers": [
+          "yes"
+        ],
+        "predicted": "yes",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7016770839691162,
+        "serverTimeMs": 473,
+        "clientLatencyMs": 505,
+        "error": null
+      },
+      {
+        "question": "Roger O. Egeberg was Assistant Secretary for Health and Scientific Affairs during the administration of a president that served during what years?",
+        "gold_answers": [
+          "1969 until 1974"
+        ],
+        "predicted": "1969 until 1974",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7753475308418274,
+        "serverTimeMs": 638,
+        "clientLatencyMs": 670,
+        "error": null
+      },
+      {
+        "question": "Which writer was from England, Henry Roth or Robert Erskine Childers?",
+        "gold_answers": [
+          "Robert Erskine Childers DSC"
+        ],
+        "predicted": "Robert Erskine Childers DSC",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6740863919258118,
+        "serverTimeMs": 510,
+        "clientLatencyMs": 542,
+        "error": null
+      },
+      {
+        "question": "Which other Mexican Formula One race car driver has held the podium besides the Force India driver born in 1990?",
+        "gold_answers": [
+          "Pedro Rodríguez"
+        ],
+        "predicted": "Pedro Rodríguez",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7960606813430786,
+        "serverTimeMs": 828,
+        "clientLatencyMs": 861,
+        "error": null
+      },
+      {
+        "question": "This singer of A Rather Blustery Day also voiced what hedgehog?",
+        "gold_answers": [
+          "Sonic"
+        ],
+        "predicted": "Sonic",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7286891341209412,
+        "serverTimeMs": 852,
+        "clientLatencyMs": 905,
+        "error": null
+      },
+      {
+        "question": "Aside from the Apple Remote, what other device can control the program Apple Remote was originally designed to interact with?",
+        "gold_answers": [
+          "keyboard function keys"
+        ],
+        "predicted": "keyboard function keys",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8146759271621704,
+        "serverTimeMs": 1382,
+        "clientLatencyMs": 1420,
+        "error": null
+      },
+      {
+        "question": "Which performance act has a higher instrument to person ratio, Badly Drawn Boy or Wolf Alice? ",
+        "gold_answers": [
+          "Badly Drawn Boy"
+        ],
+        "predicted": "Badly Drawn Boy",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7731025218963623,
+        "serverTimeMs": 515,
+        "clientLatencyMs": 547,
+        "error": null
+      },
+      {
+        "question": "What was the father of Kasper Schmeichel voted to be by the IFFHS in 1992?",
+        "gold_answers": [
+          "World's Best Goalkeeper"
+        ],
+        "predicted": "World's Best Goalkeeper",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.828458845615387,
+        "serverTimeMs": 720,
+        "clientLatencyMs": 765,
+        "error": null
+      },
+      {
+        "question": "Who was the writer of These Boots Are Made for Walkin' and who died in 2007?",
+        "gold_answers": [
+          "Barton Lee Hazlewood"
+        ],
+        "predicted": "Barton Lee Hazlewood",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7465616464614868,
+        "serverTimeMs": 433,
+        "clientLatencyMs": 467,
+        "error": null
+      },
+      {
+        "question": "The 2011–12 VCU Rams men's basketball team, led by third year head coach Shaka Smart, represented Virginia Commonwealth University which was founded in what year?",
+        "gold_answers": [
+          "1838"
+        ],
+        "predicted": "1838",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8608498573303223,
+        "serverTimeMs": 359,
+        "clientLatencyMs": 391,
+        "error": null
+      },
+      {
+        "question": "Are both Dictyosperma, and Huernia described as a genus?",
+        "gold_answers": [
+          "yes"
+        ],
+        "predicted": "yes",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.9030435085296631,
+        "serverTimeMs": 300,
+        "clientLatencyMs": 333,
+        "error": null
+      },
+      {
+        "question": "Kaiser Ventures corporation was founded by an American industrialist who became known as the father of modern American shipbuilding?",
+        "gold_answers": [
+          "Henry J. Kaiser"
+        ],
+        "predicted": "Henry J. Kaiser",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8223795890808105,
+        "serverTimeMs": 264,
+        "clientLatencyMs": 295,
+        "error": null
+      },
+      {
+        "question": "What is the name for the adventure in \"Tunnels and Trolls\", a game designed by Ken St. Andre?",
+        "gold_answers": [
+          "Arena of Khazan"
+        ],
+        "predicted": "Arena of Khazan",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6877850294113159,
+        "serverTimeMs": 377,
+        "clientLatencyMs": 409,
+        "error": null
+      },
+      {
+        "question": "When was Poison's album \"Shut Up, Make Love\" released?",
+        "gold_answers": [
+          "2000"
+        ],
+        "predicted": "2000",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6710957884788513,
+        "serverTimeMs": 839,
+        "clientLatencyMs": 871,
+        "error": null
+      },
+      {
+        "question": "Hayden is a singer-songwriter from Canada, but where does Buck-Tick hail from?",
+        "gold_answers": [
+          "Fujioka, Gunma"
+        ],
+        "predicted": "Fujioka, Gunma",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7683303356170654,
+        "serverTimeMs": 245,
+        "clientLatencyMs": 288,
+        "error": null
+      },
+      {
+        "question": "Which  French ace pilot and adventurer fly L'Oiseau Blanc",
+        "gold_answers": [
+          "Charles Eugène"
+        ],
+        "predicted": "Charles Eugène",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6400198936462402,
+        "serverTimeMs": 401,
+        "clientLatencyMs": 455,
+        "error": null
+      },
+      {
+        "question": "Are Freakonomics and In the Realm of the Hackers both American documentaries?",
+        "gold_answers": [
+          "no"
+        ],
+        "predicted": "no",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.751420259475708,
+        "serverTimeMs": 316,
+        "clientLatencyMs": 348,
+        "error": null
+      },
+      {
+        "question": "Which band, Letters to Cleo or Screaming Trees, had more members?",
+        "gold_answers": [
+          "Letters to Cleo"
+        ],
+        "predicted": "Letters to Cleo",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.680162787437439,
+        "serverTimeMs": 346,
+        "clientLatencyMs": 379,
+        "error": null
+      },
+      {
+        "question": "Alexander Kerensky was defeated and destroyed by the Bolsheviks in the course of a civil war that ended when ?",
+        "gold_answers": [
+          "October 1922"
+        ],
+        "predicted": "October 1922",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7868944406509399,
+        "serverTimeMs": 331,
+        "clientLatencyMs": 364,
+        "error": null
+      },
+      {
+        "question": "Seven Brief Lessons on Physics was written by an Italian physicist that has worked in France since what year?",
+        "gold_answers": [
+          "2000"
+        ],
+        "predicted": "2000",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7047572731971741,
+        "serverTimeMs": 294,
+        "clientLatencyMs": 327,
+        "error": null
+      },
+      {
+        "question": "The Livesey Hal War Memorial commemorates the fallen of which war, that had over 60 million casualties?",
+        "gold_answers": [
+          "World War II"
+        ],
+        "predicted": "World War II",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8055269718170166,
+        "serverTimeMs": 576,
+        "clientLatencyMs": 609,
+        "error": null
+      },
+      {
+        "question": "Are both Elko Regional Airport and Gerald R. Ford International Airport located in Michigan?",
+        "gold_answers": [
+          "no"
+        ],
+        "predicted": "no",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8030800223350525,
+        "serverTimeMs": 777,
+        "clientLatencyMs": 809,
+        "error": null
+      },
+      {
+        "question": "Ralph Hefferline was a psychology professor at a university that is located in what city?",
+        "gold_answers": [
+          "New York City"
+        ],
+        "predicted": "New York City",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7103129625320435,
+        "serverTimeMs": 641,
+        "clientLatencyMs": 673,
+        "error": null
+      },
+      {
+        "question": "Which dog's ancestors include Gordon and Irish Setters: the Manchester Terrier or the Scotch Collie?",
+        "gold_answers": [
+          "Scotch Collie"
+        ],
+        "predicted": "Scotch Collie",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8646324872970581,
+        "serverTimeMs": 337,
+        "clientLatencyMs": 370,
+        "error": null
+      },
+      {
+        "question": "Where is the company that Sachin Warrier worked for as a software engineer headquartered? ",
+        "gold_answers": [
+          "Mumbai"
+        ],
+        "predicted": "Mumbai",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7335828542709351,
+        "serverTimeMs": 309,
+        "clientLatencyMs": 342,
+        "error": null
+      },
+      {
+        "question": "A Japanese manga series based on a 16 year old high school student Ichitaka Seto, is written and illustrated by someone born in what year?",
+        "gold_answers": [
+          "1962"
+        ],
+        "predicted": "1962",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8119032979011536,
+        "serverTimeMs": 369,
+        "clientLatencyMs": 402,
+        "error": null
+      },
+      {
+        "question": "The battle in which Giuseppe Arimondi lost his life secured what for Ethiopia?",
+        "gold_answers": [
+          "sovereignty"
+        ],
+        "predicted": "sovereignty",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7034736275672913,
+        "serverTimeMs": 272,
+        "clientLatencyMs": 304,
+        "error": null
+      },
+      {
+        "question": "Alfred Balk served as the secretary of the Committee on the Employment of Minority Groups in the News Media under which United States Vice President?",
+        "gold_answers": [
+          "Nelson Rockefeller"
+        ],
+        "predicted": "Nelson Rockefeller",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8361503481864929,
+        "serverTimeMs": 352,
+        "clientLatencyMs": 384,
+        "error": null
+      },
+      {
+        "question": "A medieval fortress in Dirleton, East Lothian, Scotland borders on the south side of what coastal area?",
+        "gold_answers": [
+          "Yellowcraig"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8079809546470642,
+        "serverTimeMs": 518,
+        "clientLatencyMs": 550,
+        "error": null
+      },
+      {
+        "question": "Who is the writer of this song that was inspired by words on a tombstone and was the first track on the box set Back to Mono?",
+        "gold_answers": [
+          "Phil Spector"
+        ],
+        "predicted": "Phil Spector",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7160987854003906,
+        "serverTimeMs": 382,
+        "clientLatencyMs": 472,
+        "error": null
+      },
+      {
+        "question": "What type of forum did a former Soviet statesman initiate?",
+        "gold_answers": [
+          "Organizations could come together to address global issues"
+        ],
+        "predicted": "Organizations could come together to address global issues",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7467133402824402,
+        "serverTimeMs": 296,
+        "clientLatencyMs": 328,
+        "error": null
+      },
+      {
+        "question": "Are Ferocactus and Silene both types of plant?",
+        "gold_answers": [
+          "yes"
+        ],
+        "predicted": "yes",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7767376899719238,
+        "serverTimeMs": 288,
+        "clientLatencyMs": 320,
+        "error": null
+      },
+      {
+        "question": "Which British first-generation jet-powered medium bomber was used in the South West Pacific theatre of World War II?",
+        "gold_answers": [
+          "English Electric Canberra"
+        ],
+        "predicted": "English Electric Canberra",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7665141820907593,
+        "serverTimeMs": 431,
+        "clientLatencyMs": 463,
+        "error": null
+      },
+      {
+        "question": "Which year and which conference was the 14th season for this conference as part of the NCAA Division that the Colorado Buffaloes played in with a record of 2-6 in conference play?",
+        "gold_answers": [
+          "2009 Big 12 Conference"
+        ],
+        "predicted": "2009 Big 12 Conference",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7828892469406128,
+        "serverTimeMs": 704,
+        "clientLatencyMs": 737,
+        "error": null
+      },
+      {
+        "question": "In 1991 Euromarché was bought by a chain that operated how any hypermarkets at the end of 2016?",
+        "gold_answers": [
+          "1,462"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8398408889770508,
+        "serverTimeMs": 527,
+        "clientLatencyMs": 559,
+        "error": null
+      },
+      {
+        "question": "What race track in the midwest hosts a 500 mile race eavery May?",
+        "gold_answers": [
+          "Indianapolis Motor Speedway"
+        ],
+        "predicted": "Indianapolis Motor Speedway",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.625636100769043,
+        "serverTimeMs": 547,
+        "clientLatencyMs": 585,
+        "error": null
+      },
+      {
+        "question": "In what city did the \"Prince of tenors\" star in a film based on an opera by Giacomo Puccini?",
+        "gold_answers": [
+          "Rome"
+        ],
+        "predicted": "Rome",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7018661499023438,
+        "serverTimeMs": 294,
+        "clientLatencyMs": 327,
+        "error": null
+      },
+      {
+        "question": "Ellie Goulding worked with what other writers on her third studio album, Delirium?",
+        "gold_answers": [
+          "Max Martin, Savan Kotecha and Ilya Salmanzadeh"
+        ],
+        "predicted": "Max Martin, Savan Kotecha and Ilya Salmanzadeh",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6509810090065002,
+        "serverTimeMs": 157,
+        "clientLatencyMs": 193,
+        "error": null
+      },
+      {
+        "question": "Which Australian city founded in 1838 contains a boarding school opened by a Prime Minister of Australia and named after a school in London of the same name.",
+        "gold_answers": [
+          "Marion, South Australia"
+        ],
+        "predicted": "Marion, South Australia",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8580597639083862,
+        "serverTimeMs": 317,
+        "clientLatencyMs": 349,
+        "error": null
+      },
+      {
+        "question": "D1NZ is a series based on what oversteering technique?",
+        "gold_answers": [
+          "Drifting"
+        ],
+        "predicted": "Drifting",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7919501662254333,
+        "serverTimeMs": 197,
+        "clientLatencyMs": 229,
+        "error": null
+      },
+      {
+        "question": "who is younger Keith Bostic or Jerry Glanville ?",
+        "gold_answers": [
+          "Keith Bostic"
+        ],
+        "predicted": "Keith Bostic",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.625590980052948,
+        "serverTimeMs": 217,
+        "clientLatencyMs": 249,
+        "error": null
+      },
+      {
+        "question": "According to the 2001 census, what was the population of the city in which Kirton End is located?",
+        "gold_answers": [
+          "35,124"
+        ],
+        "predicted": "35,124",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8581838607788086,
+        "serverTimeMs": 242,
+        "clientLatencyMs": 275,
+        "error": null
+      },
+      {
+        "question": "Are both Cypress and Ajuga genera?",
+        "gold_answers": [
+          "no"
+        ],
+        "predicted": "no",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8560779094696045,
+        "serverTimeMs": 143,
+        "clientLatencyMs": 175,
+        "error": null
+      },
+      {
+        "question": "What distinction is held by the former NBA player who was a member of the Charlotte Hornets during their 1992-93 season and was head coach for the WNBA team Charlotte Sting?",
+        "gold_answers": [
+          "shortest player ever to play in the National Basketball Association"
+        ],
+        "predicted": "shortest player ever to play in the National Basketball Association",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6987164616584778,
+        "serverTimeMs": 432,
+        "clientLatencyMs": 464,
+        "error": null
+      },
+      {
+        "question": "What is the name of the executive producer of the film that has a score composed by Jerry Goldsmith?",
+        "gold_answers": [
+          "Ronald Shusett"
+        ],
+        "predicted": "Ronald Shusett",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.668401837348938,
+        "serverTimeMs": 261,
+        "clientLatencyMs": 294,
+        "error": null
+      },
+      {
+        "question": "Who was born earlier, Emma Bull or Virginia Woolf?",
+        "gold_answers": [
+          "Adeline Virginia Woolf"
+        ],
+        "predicted": "Adeline Virginia Woolf",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6838639378547668,
+        "serverTimeMs": 263,
+        "clientLatencyMs": 298,
+        "error": null
+      },
+      {
+        "question": "What was the Roud Folk Song Index of the nursery rhyme inspiring What Are Little Girls Made Of?",
+        "gold_answers": [
+          "821"
+        ],
+        "predicted": "821",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6676113605499268,
+        "serverTimeMs": 190,
+        "clientLatencyMs": 222,
+        "error": null
+      },
+      {
+        "question": "Scott Parkin has been a vocal critic of Exxonmobil and another corporation that has operations in how many countries ?",
+        "gold_answers": [
+          "more than 70 countries"
+        ],
+        "predicted": "more than 70 countries",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7969403266906738,
+        "serverTimeMs": 300,
+        "clientLatencyMs": 331,
+        "error": null
+      },
+      {
+        "question": "What WB supernatrual drama series was Jawbreaker star Rose Mcgowan best known for being in?",
+        "gold_answers": [
+          "Charmed"
+        ],
+        "predicted": "Charmed",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7561557292938232,
+        "serverTimeMs": 999,
+        "clientLatencyMs": 1032,
+        "error": null
+      },
+      {
+        "question": "Vince Phillips held a junior welterweight title by an organization recognized by what larger Hall of Fame?",
+        "gold_answers": [
+          "International Boxing Hall of Fame"
+        ],
+        "predicted": "International Boxing Hall of Fame",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7781546115875244,
+        "serverTimeMs": 509,
+        "clientLatencyMs": 553,
+        "error": null
+      },
+      {
+        "question": "What is the name of the singer who's song was released as the lead single from the album \"Confessions\", and that had popular song stuck behind for eight consecutive weeks?",
+        "gold_answers": [
+          "Usher"
+        ],
+        "predicted": "Usher",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7002620697021484,
+        "serverTimeMs": 362,
+        "clientLatencyMs": 393,
+        "error": null
+      },
+      {
+        "question": "who is the younger brother of The episode guest stars of The Hard Easy ",
+        "gold_answers": [
+          "Bill Murray"
+        ],
+        "predicted": "Bill Murray",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7871915102005005,
+        "serverTimeMs": 282,
+        "clientLatencyMs": 314,
+        "error": null
+      },
+      {
+        "question": "The 2017–18 Wigan Athletic F.C. season will be a year in which the team competes in the league cup known as what for sponsorship reasons?",
+        "gold_answers": [
+          "Carabao Cup"
+        ],
+        "predicted": "Carabao Cup",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8496125936508179,
+        "serverTimeMs": 317,
+        "clientLatencyMs": 351,
+        "error": null
+      },
+      {
+        "question": "Which of Tara Strong major voice role in animated series is an American animated television series based on the DC Comics fictional superhero team, the \"Teen Titans\"?",
+        "gold_answers": [
+          "Teen Titans Go!"
+        ],
+        "predicted": "Teen Titans Go!",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8341660499572754,
+        "serverTimeMs": 290,
+        "clientLatencyMs": 323,
+        "error": null
+      },
+      {
+        "question": "What is the inhabitant of the city where  122nd SS-Standarte was formed in2014",
+        "gold_answers": [
+          "276,170 inhabitants"
+        ],
+        "predicted": "276,170 inhabitants",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8087958097457886,
+        "serverTimeMs": 264,
+        "clientLatencyMs": 296,
+        "error": null
+      },
+      {
+        "question": "What color clothing do people of the Netherlands wear during Oranjegekte or to celebrate the national holiday Koningsdag? ",
+        "gold_answers": [
+          "orange"
+        ],
+        "predicted": "orange",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8037986755371094,
+        "serverTimeMs": 288,
+        "clientLatencyMs": 321,
+        "error": null
+      },
+      {
+        "question": "What was the name of the 1996 loose adaptation of William Shakespeare's \"Romeo & Juliet\" written by James Gunn?",
+        "gold_answers": [
+          "Tromeo and Juliet"
+        ],
+        "predicted": "Tromeo and Juliet",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.5969099998474121,
+        "serverTimeMs": 316,
+        "clientLatencyMs": 347,
+        "error": null
+      },
+      {
+        "question": "Robert Suettinger was the national intelligence officer under which former Governor of Arkansas?",
+        "gold_answers": [
+          "William Jefferson Clinton"
+        ],
+        "predicted": "William Jefferson Clinton",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7898737192153931,
+        "serverTimeMs": 296,
+        "clientLatencyMs": 328,
+        "error": null
+      },
+      {
+        "question": "What American professional Hawaiian surfer born 18 October 1992 won the Rip Curl Pro Portugal?",
+        "gold_answers": [
+          "John John Florence"
+        ],
+        "predicted": "John John Florence",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7752484083175659,
+        "serverTimeMs": 256,
+        "clientLatencyMs": 288,
+        "error": null
+      },
+      {
+        "question": "What is the middle name of the actress who plays Bobbi Bacha in Suburban Madness?",
+        "gold_answers": [
+          "Ann"
+        ],
+        "predicted": "Ann",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7964639663696289,
+        "serverTimeMs": 311,
+        "clientLatencyMs": 344,
+        "error": null
+      },
+      {
+        "question": "Alvaro Mexia had a diplomatic mission with which tribe of indigenous people?",
+        "gold_answers": [
+          "Apalachees"
+        ],
+        "predicted": "Apalachees",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7950038909912109,
+        "serverTimeMs": 315,
+        "clientLatencyMs": 346,
+        "error": null
+      },
+      {
+        "question": "What nationality were social anthropologists Alfred Gell and Edmund Leach?",
+        "gold_answers": [
+          "British"
+        ],
+        "predicted": "British",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6840335726737976,
+        "serverTimeMs": 305,
+        "clientLatencyMs": 338,
+        "error": null
+      },
+      {
+        "question": "In which year was the King who made the 1925 Birthday Honours born?",
+        "gold_answers": [
+          "1865"
+        ],
+        "predicted": "1865",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7597485184669495,
+        "serverTimeMs": 299,
+        "clientLatencyMs": 331,
+        "error": null
+      },
+      {
+        "question": "What is the county seat of the county where East Lempster, New Hampshire is located?",
+        "gold_answers": [
+          "Newport"
+        ],
+        "predicted": "Newport",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8125989437103271,
+        "serverTimeMs": 269,
+        "clientLatencyMs": 301,
+        "error": null
+      },
+      {
+        "question": "The Album Against the Wind was the 11th Album of a Rock singer Robert C Seger born may 6 1945. What was the Rock singers stage name ?",
+        "gold_answers": [
+          "Bob Seger"
+        ],
+        "predicted": "Bob Seger",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8008781671524048,
+        "serverTimeMs": 322,
+        "clientLatencyMs": 354,
+        "error": null
+      },
+      {
+        "question": "Rostker v. Goldberg held that the practice of what way of filling armed forces vacancies was consitutional?",
+        "gold_answers": [
+          "Conscription"
+        ],
+        "predicted": "Conscription",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7901458740234375,
+        "serverTimeMs": 275,
+        "clientLatencyMs": 307,
+        "error": null
+      },
+      {
+        "question": "Handi-Snacks are a snack food product line sold by what American multinational confectionery, food, and beverage company that is based in Illinois?",
+        "gold_answers": [
+          "Mondelez International, Inc."
+        ],
+        "predicted": "Mondelez International, Inc.",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8587929010391235,
+        "serverTimeMs": 339,
+        "clientLatencyMs": 370,
+        "error": null
+      },
+      {
+        "question": "What was the name of a woman from the book titled \"Their Lives: The Women Targeted by the Clinton Machine \" and was also a former white house intern?",
+        "gold_answers": [
+          "Monica Lewinsky"
+        ],
+        "predicted": "Monica Lewinsky",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7247292995452881,
+        "serverTimeMs": 302,
+        "clientLatencyMs": 333,
+        "error": null
+      },
+      {
+        "question": "When was the American lawyer, lobbyist and political consultant who was a senior member of the presidential campaign of Donald Trump born?",
+        "gold_answers": [
+          "April 1, 1949"
+        ],
+        "predicted": "April 1, 1949",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6555829644203186,
+        "serverTimeMs": 290,
+        "clientLatencyMs": 322,
+        "error": null
+      },
+      {
+        "question": "In what year was the novel that Lourenço Mutarelli based \"Nina\" on based first published?",
+        "gold_answers": [
+          "1866"
+        ],
+        "predicted": "1866",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7112976312637329,
+        "serverTimeMs": 297,
+        "clientLatencyMs": 329,
+        "error": null
+      },
+      {
+        "question": "Where are Teide National Park and Garajonay National Park located?",
+        "gold_answers": [
+          "Canary Islands, Spain"
+        ],
+        "predicted": "Canary Islands, Spain",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7768850326538086,
+        "serverTimeMs": 275,
+        "clientLatencyMs": 306,
+        "error": null
+      },
+      {
+        "question": "How many copies of Roald Dahl's variation on a popular anecdote sold?",
+        "gold_answers": [
+          "250 million"
+        ],
+        "predicted": "250 million",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7409780621528625,
+        "serverTimeMs": 291,
+        "clientLatencyMs": 325,
+        "error": null
+      },
+      {
+        "question": "What occupation do Chris Menges and Aram Avakian share?",
+        "gold_answers": [
+          "director"
+        ],
+        "predicted": "director",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.6658302545547485,
+        "serverTimeMs": 286,
+        "clientLatencyMs": 321,
+        "error": null
+      },
+      {
+        "question": "Andrew Jaspan was the co-founder of what not-for-profit media outlet?",
+        "gold_answers": [
+          "The Conversation"
+        ],
+        "predicted": "The Conversation",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7626211643218994,
+        "serverTimeMs": 278,
+        "clientLatencyMs": 310,
+        "error": null
+      },
+      {
+        "question": "Which American film director hosted the 18th Independent Spirit Awards in 2002?",
+        "gold_answers": [
+          "John Waters"
+        ],
+        "predicted": "John Waters",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7941654324531555,
+        "serverTimeMs": 462,
+        "clientLatencyMs": 494,
+        "error": null
+      },
+      {
+        "question": "Where does the hotel and casino located in which Bill Cosby's third album was recorded?",
+        "gold_answers": [
+          "Las Vegas Strip in Paradise"
+        ],
+        "predicted": "Las Vegas Strip in Paradise",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7139787673950195,
+        "serverTimeMs": 407,
+        "clientLatencyMs": 439,
+        "error": null
+      },
+      {
+        "question": "Do the drinks Gibson and Zurracapote both contain gin?",
+        "gold_answers": [
+          "no"
+        ],
+        "predicted": "no",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.84503173828125,
+        "serverTimeMs": 570,
+        "clientLatencyMs": 619,
+        "error": null
+      },
+      {
+        "question": "In what month is the annual documentary film festival, that is presented by the fortnightly published British journal of literary essays, held? ",
+        "gold_answers": [
+          "March and April"
+        ],
+        "predicted": "March and April",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7055681943893433,
+        "serverTimeMs": 309,
+        "clientLatencyMs": 340,
+        "error": null
+      },
+      {
+        "question": "Tysons Galleria is located in what county?",
+        "gold_answers": [
+          "Fairfax County"
+        ],
+        "predicted": "Fairfax County",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8299515247344971,
+        "serverTimeMs": 202,
+        "clientLatencyMs": 235,
+        "error": null
+      },
+      {
+        "question": "Bordan Tkachuk was the CEO of a company that provides what sort of products?",
+        "gold_answers": [
+          "IT products and services"
+        ],
+        "predicted": "IT products and services",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8026975393295288,
+        "serverTimeMs": 312,
+        "clientLatencyMs": 344,
+        "error": null
+      },
+      {
+        "question": "Which filmmaker was known for animation, Lev Yilmaz or Pamela B. Green?",
+        "gold_answers": [
+          "Levni Yilmaz"
+        ],
+        "predicted": "Levni Yilmaz",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7514423131942749,
+        "serverTimeMs": 273,
+        "clientLatencyMs": 306,
+        "error": null
+      },
+      {
+        "question": "In which city is the ambassador of the Rabat-Salé-Kénitra administrative region to China based?",
+        "gold_answers": [
+          "Beijing"
+        ],
+        "predicted": "Beijing",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.808749794960022,
+        "serverTimeMs": 289,
+        "clientLatencyMs": 321,
+        "error": null
+      },
+      {
+        "question": "Are Yingkou and Fuding the same level of city?",
+        "gold_answers": [
+          "no"
+        ],
+        "predicted": "no",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.829272985458374,
+        "serverTimeMs": 243,
+        "clientLatencyMs": 276,
+        "error": null
+      }
+    ]
+  }
+}

@@ -216,3 +216,11 @@ To reproduce the baseline: download the KB, load MiniLM-L12-v2, run similarity s
 
 ---
 *Previous draft: [paper-v4.md](paper-v4.md) | This version: [paper-v5-final.md](paper-v5-final.md)*
+
+## Appendix: Raw Experiment Logs
+
+- [RLHF Convergence Summary](rlhf-convergence-summary.md)
+- [Cycle 1 Log](rlhf-cycle1.log)
+- [Cycle 2 Log](rlhf-cycle2.log)
+- [Cycle 3 Log](rlhf-cycle3.log)
+- [Compositional Reasoning Test](compositional-reasoning.md)

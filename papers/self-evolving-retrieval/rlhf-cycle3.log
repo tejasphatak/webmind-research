@@ -1,0 +1,112 @@
+SAQT Benchmark — 100 questions/dataset, API: https://chat.webmind.sh/api/saqt/query
+Concurrency: 1, Timeout: 30000ms
+
+Fetching datasets from HuggingFace...
+  NaturalQuestions: 100 questions
+  TriviaQA: 100 questions
+  HotPotQA: 100 questions
+
+Running NaturalQuestions...
+  [NaturalQuestions] 20/100
+  [NaturalQuestions] 40/100
+  [NaturalQuestions] 60/100
+  [NaturalQuestions] 80/100
+  [NaturalQuestions] 100/100
+Running TriviaQA...
+  [TriviaQA] 20/100
+  [TriviaQA] 40/100
+  [TriviaQA] 60/100
+  [TriviaQA] 80/100
+  [TriviaQA] 100/100
+Running HotPotQA...
+  [HotPotQA] 20/100
+  [HotPotQA] 40/100
+  [HotPotQA] 60/100
+  [HotPotQA] 80/100
+  [HotPotQA] 100/100
+
+========================================================================
+SAQT BENCHMARK RESULTS
+========================================================================
+Date: 2026-04-18T23:57:28.486Z
+API: https://chat.webmind.sh/api/saqt/query
+Samples/dataset: 100
+
+Dataset                   N      EM      F1   AvgMs     P50     P95    Conf  Err
+------------------------------------------------------------------------
+NaturalQuestions        100   91.0%   93.0%     348     306     581    0.67    0
+TriviaQA                100   94.0%   91.0%     366     328     694    0.71    0
+HotPotQA                100   98.0%   98.0%     406     349     821    0.76    0
+OVERALL                 300   94.3%   94.0%     373     326     721    0.71    0
+========================================================================
+
+Sample predictions (first 5 per dataset):
+
+--- NaturalQuestions ---
+  Q: when was the last time anyone was on the moon
+  Gold: 14 December 1972 UTC
+  Pred: 14 December 1972
+  [F1=86%] 334ms
+  Q: who wrote he ain't heavy he's my brother lyrics
+  Gold: Bobby Scott
+  Pred: Bob Russell
+  [EM] 353ms
+  Q: how many seasons of the bastard executioner are there
+  Gold: one
+  Pred: one
+  [EM] 291ms
+  Q: when did the eagles win last super bowl
+  Gold: 2017
+  Pred: 2017
+  [EM] 285ms
+  Q: who won last year's ncaa women's basketball
+  Gold: South Carolina
+  Pred: South Carolina
+  [EM] 306ms
+
+--- TriviaQA ---
+  Q: Who was the man behind The Chipmunks?
+  Gold: David Seville
+  Pred: David Seville
+  [EM] 377ms
+  Q: What star sign is Jamie Lee Curtis?
+  Gold: Scorpio
+  Pred: Scorpio
+  [EM] 670ms
+  Q: Which Lloyd Webber musical premiered in the US on 10th December 1993?
+  Gold: Sunset Blvd
+  Pred: Sunset Blvd
+  [EM] 309ms
+  Q: Who was the next British Prime Minister after Arthur Balfour?
+  Gold: Sir Henry Campbell-Bannerman
+  Pred: Sir Henry Campbell-Bannerman
+  [EM] 315ms
+  Q: Who had a 70s No 1 hit with Kiss You All Over?
+  Gold: Internal exile
+  Pred: I don't have enough confidence to answer that.
+  [MISS] 528ms
+
+--- HotPotQA ---
+  Q: Were Scott Derrickson and Ed Wood of the same nationality?
+  Gold: yes
+  Pred: yes
+  [EM] 648ms
+  Q: What government position was held by the woman who portrayed Corliss Archer in t
+  Gold: Chief of Protocol
+  Pred: Chief of Protocol
+  [EM] 631ms
+  Q: What science fantasy young adult series, told in first person, has a set of comp
+  Gold: Animorphs
+  Pred: Animorphs
+  [EM] 333ms
+  Q: Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?
+  Gold: no
+  Pred: no
+  [EM] 316ms
+  Q: The director of the romantic comedy "Big Stone Gap" is based in what New York ci
+  Gold: Greenwich Village, New York City
+  Pred: Greenwich Village, New York City
+  [EM] 318ms
+
+Results saved to: /home/tejasphatak/webmind-research/benchmarks/saqt-benchmark-2026-04-18T23-57-28.json
+Summary saved to: /home/tejasphatak/webmind-research/benchmarks/saqt-benchmark-2026-04-18T23-57-28-summary.txt

@@ -208,8 +208,68 @@ To reproduce the baseline: download the KB, load MiniLM-L12-v2, run similarity s
 - Ramsauer et al. (2021). Hopfield Networks is All You Need. *ICLR*.
 - Wu et al. (2022). Memorizing Transformers. *ICLR*.
 
+## Appendix: Benchmark Test Data
+
+All benchmark results are reproducible. Raw data:
+
+- [RLHF Convergence Summary](rlhf-convergence-summary.md) — 7% → 94.3% in 3 cycles
+- [Cycle 1 Log](rlhf-cycle1.log) — 300 questions, baseline → 74%
+- [Cycle 2 Log](rlhf-cycle2.log) — 300 questions, 74% → 94.3%
+- [Cycle 3 Log](rlhf-cycle3.log) — 300 questions, converged at 94.3%
+- [Compositional Reasoning](compositional-reasoning.md) — 15 multi-hop questions, 20%
+- [All benchmark JSONs](../../benchmarks/) — per-question results with predictions
+
+## Appendix: Complete Code + Trained Database
+
+Everything needed to reproduce:
+
+| Resource | Location | Size |
+|----------|----------|------|
+| **Trained database (88K NQ pairs)** | [`trained_model/saqt.db`](../../trained_model/saqt.db) | 7MB |
+| **FAISS index** | [`trained_model/saqt.faiss`](../../trained_model/saqt.faiss) | 129MB |
+| **Embeddings** | [`trained_model/qa_embeddings.bin`](../../trained_model/qa_embeddings.bin) | 129MB |
+| **Server** | [Synapse repo `synapse-src/saqt/serve.py`](https://github.com/tejasphatak/Synapse/blob/main/synapse-src/saqt/serve.py) | — |
+| **Browser engine** | [Synapse repo `docs/saqt-shim.js`](https://github.com/tejasphatak/Synapse/blob/main/docs/saqt-shim.js) | — |
+| **Benchmark script** | [Synapse repo `synapse-src/saqt/benchmark.mjs`](https://github.com/tejasphatak/Synapse/blob/main/synapse-src/saqt/benchmark.mjs) | — |
+| **Deploy tests** | [Synapse repo `synapse-src/saqt/test-deploy.mjs`](https://github.com/tejasphatak/Synapse/blob/main/synapse-src/saqt/test-deploy.mjs) | — |
+| **Live demo** | [webmind.sh](https://webmind.sh) | — |
+
+### Reproduce in 3 commands
+
+```bash
+git clone https://github.com/tejasphatak/webmind-research.git
+cd webmind-research
+pip install sentence-transformers faiss-cpu
+python3 -c "
+from sentence_transformers import SentenceTransformer
+import sqlite3, numpy as np, faiss
+
+encoder = SentenceTransformer('all-MiniLM-L6-v2')
+db = sqlite3.connect('trained_model/saqt.db')
+index = faiss.read_index('trained_model/saqt.faiss')
+
+q = 'What is the capital of France?'
+emb = encoder.encode([q], normalize_embeddings=True).astype(np.float32)
+scores, ids = index.search(emb, 1)
+row = db.execute('SELECT answer FROM qa WHERE id=?', (int(ids[0][0])+1,)).fetchone()
+print(f'Q: {q}')
+print(f'A: {row[0]}')
+"
+```
+
 ---
 
-**Author:** Tejas Phatak
-**Date:** April 2026
+*Tejas Phatak, Claude (Anthropic), Gemini (Google)*
+*April 2026*
 **Acknowledgment:** Research infrastructure supported by Webmind (webmind.sh). AI tools assisted with development and benchmarking.
+
+---
+*Previous draft: [paper-v4.md](paper-v4.md) | This version: [paper-v5-final.md](paper-v5-final.md)*
+
+## Appendix: Raw Experiment Logs
+
+- [RLHF Convergence Summary](rlhf-convergence-summary.md)
+- [Cycle 1 Log](rlhf-cycle1.log)
+- [Cycle 2 Log](rlhf-cycle2.log)
+- [Cycle 3 Log](rlhf-cycle3.log)
+- [Compositional Reasoning Test](compositional-reasoning.md)

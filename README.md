@@ -1,17 +1,19 @@
-# Webmind — A Third Architecture for AI
+# INSERT INTO Is All You Need
 
-**Not an LLM. Not a search engine. Something new.**
+**The database is the model. Training is `INSERT`. Cost is $0.**
 
-ChatGPT-style AI models memorize the entire internet inside billions of numbers — then guess at answers. Search engines find documents — but don't understand your question. Webmind does something different: it *understands* your question with a tiny model, *thinks* by searching iteratively, and *remembers* by saving what it learns to a growing database.
+ChatGPT memorizes the internet in billions of weights — then guesses. We store verified facts in a database — then look them up. Same attention math. Different storage. No hallucination.
 
-**Three pieces. That's it.**
-1. **A language model** — 22 million parameters (not 175 billion). It reads your question and grasps the meaning. It does not write text.
-2. **A thinking loop** — Searches the database, checks the answer, searches again. Repeats until the answer stabilizes.
-3. **A knowledge database** — a growing collection of verified question-answer pairs. Grows every time someone asks something new.
+**[Paper](papers/self-evolving-retrieval/paper.md)** · **[Try it → webmind.sh](https://webmind.sh)** · **[Benchmarks](benchmarks/)**
 
-Everything else in a big AI model — the text generator, the massive training runs, the trillion words of internet text — is just an expensive way to do what a database does for free.
+### Key Result
 
-**[Try it → webmind.sh](https://webmind.sh)** · **[Paper](papers/self-evolving-retrieval-2026-04-18.md)** · **[Benchmarks](benchmarks/)**
+Starting from 19% exact match on NaturalQuestions (off-the-shelf encoder, no fine-tuning), the system self-evolves to 94.3% through `INSERT INTO` — learning from its own mistakes. NQ: 91%. TriviaQA: 94%. HotPotQA: 98%. Two cycles. Zero GPU. Zero training.
+
+### Three pieces. That's it.
+1. **A language model** — 22M parameters (not 175B). Reads your question. Does not write text.
+2. **A thinking loop** — Searches, checks, searches again. Repeats until the answer stabilizes.
+3. **A database** — verified Q&A pairs. Grows every time someone asks something new.
 
 ## How It Works
 

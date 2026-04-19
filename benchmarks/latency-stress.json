@@ -1,0 +1,346 @@
+{
+  "timestamp": "2026-04-18T16:37:38.833Z",
+  "endpoint": "http://localhost:3002/api/saqt/query",
+  "statsBefore": {
+    "ready": true,
+    "chunks": 305628,
+    "mode": "faiss",
+    "max_id": 305767
+  },
+  "statsAfter": {
+    "ready": true,
+    "chunks": 305633,
+    "mode": "faiss",
+    "max_id": 305772
+  },
+  "latency": {
+    "short": {
+      "count": 10,
+      "succeeded": 10,
+      "roundTrip": {
+        "min": 2543,
+        "max": 4836,
+        "mean": 3724,
+        "median": 4086,
+        "p95": 4836,
+        "p99": 4836
+      },
+      "serverTime": {
+        "min": 2529,
+        "max": 4817,
+        "mean": 3697,
+        "median": 4052,
+        "p95": 4817,
+        "p99": 4817
+      },
+      "answerLen": {
+        "min": 5,
+        "max": 1119,
+        "mean": 240,
+        "median": 130,
+        "p95": 1119,
+        "p99": 1119
+      }
+    },
+    "medium": {
+      "count": 5,
+      "succeeded": 5,
+      "roundTrip": {
+        "min": 3351,
+        "max": 8096,
+        "mean": 5106,
+        "median": 4419,
+        "p95": 8096,
+        "p99": 8096
+      },
+      "serverTime": {
+        "min": 3328,
+        "max": 8067,
+        "mean": 5083,
+        "median": 4394,
+        "p95": 8067,
+        "p99": 8067
+      },
+      "answerLen": {
+        "min": 50,
+        "max": 236,
+        "mean": 122,
+        "median": 102,
+        "p95": 236,
+        "p99": 236
+      }
+    },
+    "long": {
+      "count": 5,
+      "succeeded": 5,
+      "roundTrip": {
+        "min": 3258,
+        "max": 7429,
+        "mean": 5226,
+        "median": 4931,
+        "p95": 7429,
+        "p99": 7429
+      },
+      "serverTime": {
+        "min": 3242,
+        "max": 7381,
+        "mean": 5200,
+        "median": 4906,
+        "p95": 7381,
+        "p99": 7381
+      },
+      "answerLen": {
+        "min": 332,
+        "max": 464,
+        "mean": 420,
+        "median": 423,
+        "p95": 464,
+        "p99": 464
+      }
+    }
+  },
+  "latencyRaw": {
+    "short": [
+      {
+        "question": "What is DNA?",
+        "roundTripMs": 4210,
+        "serverTimeMs": 4175,
+        "answerLen": 98,
+        "confidence": 1,
+        "hops": 5
+      },
+      {
+        "question": "Hello",
+        "roundTripMs": 2858,
+        "serverTimeMs": 2829,
+        "answerLen": 5,
+        "confidence": 1.0000001192092896,
+        "hops": 5
+      },
+      {
+        "question": "Capital of France",
+        "roundTripMs": 4086,
+        "serverTimeMs": 4052,
+        "answerLen": 296,
+        "confidence": 0.9339592456817627,
+        "hops": 5
+      },
+      {
+        "question": "Define gravity",
+        "roundTripMs": 3923,
+        "serverTimeMs": 3891,
+        "answerLen": 383,
+        "confidence": 3.3669835329055786,
+        "hops": 5
+      },
+      {
+        "question": "Who is Einstein?",
+        "roundTripMs": 4267,
+        "serverTimeMs": 4239,
+        "answerLen": 1119,
+        "confidence": 4.148906469345093,
+        "hops": 5
+      },
+      {
+        "question": "What is water?",
+        "roundTripMs": 4836,
+        "serverTimeMs": 4817,
+        "answerLen": 130,
+        "confidence": 1,
+        "hops": 5
+      },
+      {
+        "question": "Meaning of life",
+        "roundTripMs": 2543,
+        "serverTimeMs": 2529,
+        "answerLen": 211,
+        "confidence": 0.9720515012741089,
+        "hops": 5
+      },
+      {
+        "question": "Define entropy",
+        "roundTripMs": 4382,
+        "serverTimeMs": 4349,
+        "answerLen": 105,
+        "confidence": 0.7658382654190063,
+        "hops": 5
+      },
+      {
+        "question": "What is light?",
+        "roundTripMs": 3387,
+        "serverTimeMs": 3370,
+        "answerLen": 45,
+        "confidence": 1,
+        "hops": 5
+      },
+      {
+        "question": "Sun temperature",
+        "roundTripMs": 2743,
+        "serverTimeMs": 2715,
+        "answerLen": 8,
+        "confidence": 0.7955355048179626,
+        "hops": 5
+      }
+    ],
+    "medium": [
+      {
+        "question": "How does photosynthesis work in plants?",
+        "roundTripMs": 3351,
+        "serverTimeMs": 3328,
+        "answerLen": 50,
+        "confidence": 0.9432065486907959,
+        "hops": 5
+      },
+      {
+        "question": "What causes earthquakes on tectonic plates?",
+        "roundTripMs": 5409,
+        "serverTimeMs": 5397,
+        "answerLen": 125,
+        "confidence": 0.8402445316314697,
+        "hops": 5
+      },
+      {
+        "question": "Explain how vaccines protect against disease",
+        "roundTripMs": 8096,
+        "serverTimeMs": 8067,
+        "answerLen": 236,
+        "confidence": 0.7715405821800232,
+        "hops": 5
+      },
+      {
+        "question": "Why is the sky blue during daytime?",
+        "roundTripMs": 4253,
+        "serverTimeMs": 4231,
+        "answerLen": 102,
+        "confidence": 0.9138736724853516,
+        "hops": 5
+      },
+      {
+        "question": "How does a computer processor execute instructions?",
+        "roundTripMs": 4419,
+        "serverTimeMs": 4394,
+        "answerLen": 97,
+        "confidence": 0.745529055595398,
+        "hops": 5
+      }
+    ],
+    "long": [
+      {
+        "question": "Can you explain the difference between machine learning and deep learning in artificial intelligence?",
+        "roundTripMs": 7429,
+        "serverTimeMs": 7381,
+        "answerLen": 464,
+        "confidence": 0.839927077293396,
+        "hops": 5
+      },
+      {
+        "question": "What are the main causes and effects of climate change on global ecosystems and human societies?",
+        "roundTripMs": 4931,
+        "serverTimeMs": 4906,
+        "answerLen": 332,
+        "confidence": 3.479667901992798,
+        "hops": 5
+      },
+      {
+        "question": "How does the human immune system identify and respond to novel pathogens it has never encountered before?",
+        "roundTripMs": 5655,
+        "serverTimeMs": 5640,
+        "answerLen": 423,
+        "confidence": 0.6809261441230774,
+        "hops": 5
+      },
+      {
+        "question": "What is the significance of the discovery of gravitational waves for our understanding of the universe?",
+        "roundTripMs": 4857,
+        "serverTimeMs": 4829,
+        "answerLen": 460,
+        "confidence": 0.5225356817245483,
+        "hops": 5
+      },
+      {
+        "question": "Can you describe the process by which stars form from molecular clouds and eventually die?",
+        "roundTripMs": 3258,
+        "serverTimeMs": 3242,
+        "answerLen": 423,
+        "confidence": 0.6436949968338013,
+        "hops": 0
+      }
+    ]
+  },
+  "stress": [
+    {
+      "concurrency": 5,
+      "succeeded": 5,
+      "failed": 0,
+      "wallMs": 3378,
+      "rtStats": {
+        "min": 2320,
+        "max": 3377,
+        "mean": 3015,
+        "median": 3282,
+        "p95": 3377,
+        "p99": 3377
+      },
+      "errors": []
+    },
+    {
+      "concurrency": 10,
+      "succeeded": 10,
+      "failed": 0,
+      "wallMs": 4703,
+      "rtStats": {
+        "min": 3283,
+        "max": 4691,
+        "mean": 3783,
+        "median": 3816,
+        "p95": 4691,
+        "p99": 4691
+      },
+      "errors": []
+    },
+    {
+      "concurrency": 20,
+      "succeeded": 20,
+      "failed": 0,
+      "wallMs": 7407,
+      "rtStats": {
+        "min": 2474,
+        "max": 7401,
+        "mean": 5675,
+        "median": 6251,
+        "p95": 7401,
+        "p99": 7401
+      },
+      "errors": []
+    },
+    {
+      "concurrency": 50,
+      "succeeded": 50,
+      "failed": 0,
+      "wallMs": 23847,
+      "rtStats": {
+        "min": 5143,
+        "max": 23836,
+        "mean": 12775,
+        "median": 13136,
+        "p95": 16873,
+        "p99": 23836
+      },
+      "errors": []
+    }
+  ],
+  "throughput": {
+    "totalQueries": 30,
+    "succeeded": 30,
+    "totalSec": 137,
+    "qps": 0.22,
+    "rtStats": {
+      "min": 2036,
+      "max": 7669,
+      "mean": 4559,
+      "median": 4712,
+      "p95": 7564,
+      "p99": 7669
+    }
+  }
+}

@@ -1,0 +1,3034 @@
+{
+  "meta": {
+    "date": "2026-04-18T17:56:28.838Z",
+    "api": "https://chat.webmind.sh/api/saqt/query",
+    "samplesPerDataset": 50,
+    "concurrency": 1,
+    "timeoutMs": 30000
+  },
+  "summaries": {
+    "NaturalQuestions": {
+      "n": 50,
+      "errors": 0,
+      "exactMatch": 0,
+      "f1": 0,
+      "avgLatency": 2337.16,
+      "p50Latency": 2204,
+      "p95Latency": 4103,
+      "avgConf": 0.7650856947660446
+    },
+    "TriviaQA": {
+      "n": 50,
+      "errors": 0,
+      "exactMatch": 0,
+      "f1": 0.012968253968253967,
+      "avgLatency": 2571.12,
+      "p50Latency": 2429,
+      "p95Latency": 4101,
+      "avgConf": 0.7643300856351852
+    },
+    "HotPotQA": {
+      "n": 50,
+      "errors": 0,
+      "exactMatch": 0,
+      "f1": 0,
+      "avgLatency": 2088.02,
+      "p50Latency": 1925,
+      "p95Latency": 3405,
+      "avgConf": 0.8034163345098496
+    },
+    "OVERALL": {
+      "n": 150,
+      "errors": 0,
+      "exactMatch": 0,
+      "f1": 0.004322751322751322,
+      "avgLatency": 2332.1,
+      "p50Latency": 2237,
+      "p95Latency": 4042,
+      "avgConf": 0.7776107049703598
+    }
+  },
+  "results": {
+    "NaturalQuestions": [
+      {
+        "question": "where is simple squamous epithelium found in the body",
+        "gold_answers": [
+          "alveoli",
+          "outer layer of skin",
+          "capillaries",
+          "glomeruli"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6723951101303101,
+        "serverTimeMs": 2363,
+        "clientLatencyMs": 2538,
+        "error": null
+      },
+      {
+        "question": "who is president of india in present time",
+        "gold_answers": [
+          "Ram Nath Kovind"
+        ],
+        "predicted": "spread of printing presses and the creation of new markets in the 1500s, news underwent a shift from factual and precise economic reporting, to a more",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1,
+        "serverTimeMs": 2973,
+        "clientLatencyMs": 3109,
+        "error": null
+      },
+      {
+        "question": "what role does the president play in foreign affairs",
+        "gold_answers": [
+          "negotiates treaties with foreign nations"
+        ],
+        "predicted": "active role in society. Models of news making help define what the news is and how it influences readers. But it does not necessarily account for the content detachment needed in order to X-ray, in a cold and precise way, a political system. Does this seem easy to you? I do not know how many of us would be capable of",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1,
+        "serverTimeMs": 2555,
+        "clientLatencyMs": 2592,
+        "error": null
+      },
+      {
+        "question": "when did ole miss beat alabama in football",
+        "gold_answers": [
+          "October 3, 1970",
+          "September 11, 1976",
+          "October 13, 2001",
+          "October 27, 1894",
+          "October 18, 2003",
+          "November 5, 1910",
+          "October 8, 1988",
+          "October 4, 2014",
+          "September 19, 2015",
+          "October 5, 1968"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6481908559799194,
+        "serverTimeMs": 1887,
+        "clientLatencyMs": 1931,
+        "error": null
+      },
+      {
+        "question": "what grade was arnold from hey arnold in",
+        "gold_answers": [
+          "fourth"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7189903259277344,
+        "serverTimeMs": 2575,
+        "clientLatencyMs": 2611,
+        "error": null
+      },
+      {
+        "question": "who translated the play neel darpan into english",
+        "gold_answers": [
+          "Michael Madhusudan Dutta",
+          "Reverend J.Long"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7395592927932739,
+        "serverTimeMs": 2978,
+        "clientLatencyMs": 3021,
+        "error": null
+      },
+      {
+        "question": "when does the miz and maryse show start",
+        "gold_answers": [
+          "2018"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6236408948898315,
+        "serverTimeMs": 1639,
+        "clientLatencyMs": 1688,
+        "error": null
+      },
+      {
+        "question": "what channel is celebrity big brother on in the usa",
+        "gold_answers": [
+          "CBS",
+          "on CBS"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7057404518127441,
+        "serverTimeMs": 2300,
+        "clientLatencyMs": 2348,
+        "error": null
+      },
+      {
+        "question": "what is on top of us capitol building",
+        "gold_answers": [
+          "The Statue of Freedom"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6950370073318481,
+        "serverTimeMs": 1258,
+        "clientLatencyMs": 1310,
+        "error": null
+      },
+      {
+        "question": "who made the most free throws in nba history",
+        "gold_answers": [
+          "Karl Malone"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7519006133079529,
+        "serverTimeMs": 1619,
+        "clientLatencyMs": 1685,
+        "error": null
+      },
+      {
+        "question": "who is the first president to be impeached",
+        "gold_answers": [
+          "Andrew Johnson",
+          "Johnson"
+        ],
+        "predicted": "to its writing. Matei concludes that the report generally fails to make a legal, factually grounded case for specific indictments of specific facts or",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1.0000001192092896,
+        "serverTimeMs": 4002,
+        "clientLatencyMs": 4042,
+        "error": null
+      },
+      {
+        "question": "why does kerosene oil rise up in the wick of lantern",
+        "gold_answers": [
+          "capillary action"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.826151967048645,
+        "serverTimeMs": 1261,
+        "clientLatencyMs": 1297,
+        "error": null
+      },
+      {
+        "question": "when did the sims 4 toddlers come out",
+        "gold_answers": [
+          "January 2017",
+          "January 12, 2017",
+          "the January 2017 patch"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5862022638320923,
+        "serverTimeMs": 1547,
+        "clientLatencyMs": 1595,
+        "error": null
+      },
+      {
+        "question": "how many episodes of season 5 of curse of oak island",
+        "gold_answers": [
+          "18"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7000386714935303,
+        "serverTimeMs": 1815,
+        "clientLatencyMs": 1870,
+        "error": null
+      },
+      {
+        "question": "how many episodes of touching evil are there",
+        "gold_answers": [
+          "16"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6550670862197876,
+        "serverTimeMs": 1347,
+        "clientLatencyMs": 1404,
+        "error": null
+      },
+      {
+        "question": "hyori bed and breakfast season 2 air date",
+        "gold_answers": [
+          "February 4, 2018"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6737475991249084,
+        "serverTimeMs": 2698,
+        "clientLatencyMs": 2750,
+        "error": null
+      },
+      {
+        "question": "if a piece of music is perceived to have changed key then we say the piece has",
+        "gold_answers": [
+          "transposed",
+          "transposition"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8447912335395813,
+        "serverTimeMs": 1875,
+        "clientLatencyMs": 1917,
+        "error": null
+      },
+      {
+        "question": "who has the most gold medals in the winter olympics of all time",
+        "gold_answers": [
+          "Norway"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6574758291244507,
+        "serverTimeMs": 3218,
+        "clientLatencyMs": 3257,
+        "error": null
+      },
+      {
+        "question": "who sings the song let me love you",
+        "gold_answers": [
+          "DJ Snake featuring Justin Bieber",
+          "Justin Bieber",
+          "Singh H Spot"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6822060346603394,
+        "serverTimeMs": 1688,
+        "clientLatencyMs": 1739,
+        "error": null
+      },
+      {
+        "question": "when is the fourth movie of the divergent series coming out",
+        "gold_answers": [
+          "never made"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6820262670516968,
+        "serverTimeMs": 2523,
+        "clientLatencyMs": 2565,
+        "error": null
+      },
+      {
+        "question": "the cast of don't tell mom the babysitter's dead",
+        "gold_answers": [
+          "Kimmy Robertson",
+          "Jeff Bollow",
+          "John Getz",
+          "Keith Coogan",
+          "Joanna Cassidy",
+          "Concetta Tomei",
+          "Robert Hy Gorman",
+          "David Duchovny",
+          "Jayne Brook",
+          "Eda Reiss Merin",
+          "Christopher Pettiet",
+          "Dan Castellaneta (voice)",
+          "Josh Charles",
+          "Danielle Harris",
+          "Michael Kopelow",
+          "Christina Applegate"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6685609817504883,
+        "serverTimeMs": 3620,
+        "clientLatencyMs": 3654,
+        "error": null
+      },
+      {
+        "question": "the outer layer of the skin that contains no blood or nerve supply is the",
+        "gold_answers": [
+          "epidermis"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8073183298110962,
+        "serverTimeMs": 2126,
+        "clientLatencyMs": 2204,
+        "error": null
+      },
+      {
+        "question": "who won the battle of the first battle of bull run",
+        "gold_answers": [
+          "Confederate victory",
+          "Confederate forces",
+          "Confederate"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7367986547946931,
+        "serverTimeMs": 1275,
+        "clientLatencyMs": 1316,
+        "error": null
+      },
+      {
+        "question": "which country has the most coastline in the world",
+        "gold_answers": [
+          "Canada"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7169471979141235,
+        "serverTimeMs": 2741,
+        "clientLatencyMs": 2806,
+        "error": null
+      },
+      {
+        "question": "who won battle of the sexes tennis game",
+        "gold_answers": [
+          "Billie Jean King"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7041679620742798,
+        "serverTimeMs": 1978,
+        "clientLatencyMs": 2028,
+        "error": null
+      },
+      {
+        "question": "who won in the brown vs board of education case",
+        "gold_answers": [
+          "defendants"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7461141347885132,
+        "serverTimeMs": 1347,
+        "clientLatencyMs": 1400,
+        "error": null
+      },
+      {
+        "question": "ganglion axons forming the optic nerve run to the",
+        "gold_answers": [
+          "pretectal nucleus",
+          "suprachiasmatic nucleus",
+          "photoreceptor cells",
+          "lateral geniculate nucleus",
+          "optic chiasma"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.727210283279419,
+        "serverTimeMs": 3182,
+        "clientLatencyMs": 3233,
+        "error": null
+      },
+      {
+        "question": "when did the word of wisdom become mandatory",
+        "gold_answers": [
+          "February 1834"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7811905741691589,
+        "serverTimeMs": 3037,
+        "clientLatencyMs": 3088,
+        "error": null
+      },
+      {
+        "question": "element named after fictional planet from which superman came",
+        "gold_answers": [
+          "Kryptonite"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7562597990036011,
+        "serverTimeMs": 3042,
+        "clientLatencyMs": 3082,
+        "error": null
+      },
+      {
+        "question": "who wrote and performed i can only imagine",
+        "gold_answers": [
+          "Bart Millard",
+          "Christian rock band MercyMe",
+          "MercyMe"
+        ],
+        "predicted": "give different answers for how the two realms relate to each other; and monist solutions that maintain that there is really only one realm of being,",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1.0000001192092896,
+        "serverTimeMs": 1619,
+        "clientLatencyMs": 1660,
+        "error": null
+      },
+      {
+        "question": "what are the active materials of a lead acid battery",
+        "gold_answers": [
+          "Lead",
+          "sulfuric acid",
+          "Lead and lead dioxide",
+          "lead dioxide"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7771421670913696,
+        "serverTimeMs": 2431,
+        "clientLatencyMs": 2476,
+        "error": null
+      },
+      {
+        "question": "the roman name for a liberal arts education is known as",
+        "gold_answers": [
+          "liberalia studia",
+          "artes liberales"
+        ],
+        "predicted": "printing presses and the creation of new markets in the 1500s, news underwent a shift from factual and precise economic reporting, to a more emotive and freewheeling is Academic Council Chairman of the Institute for People&#039;s Studies, a think tank of the Romanian Democratic Liberal Party. Between February 2010 and",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1.0000001192092896,
+        "serverTimeMs": 2751,
+        "clientLatencyMs": 2806,
+        "error": null
+      },
+      {
+        "question": "who sings you're welcome in moana credits",
+        "gold_answers": [
+          "Dwayne Johnson",
+          "Lin-Manuel Miranda",
+          "Jordan Fisher"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6834464073181152,
+        "serverTimeMs": 1510,
+        "clientLatencyMs": 1544,
+        "error": null
+      },
+      {
+        "question": "who developed the central processing unit (cpu)",
+        "gold_answers": [
+          "John von Neumann"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7108019709587098,
+        "serverTimeMs": 1866,
+        "clientLatencyMs": 1907,
+        "error": null
+      },
+      {
+        "question": "who was kat slater's sisters in eastenders",
+        "gold_answers": [
+          "Zoe",
+          "Little Mo",
+          "Lynne"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6707359552383423,
+        "serverTimeMs": 1708,
+        "clientLatencyMs": 1749,
+        "error": null
+      },
+      {
+        "question": "what is katie running from in safe haven",
+        "gold_answers": [
+          "her abusive husband"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.710953426361084,
+        "serverTimeMs": 2005,
+        "clientLatencyMs": 2080,
+        "error": null
+      },
+      {
+        "question": "when did they replace lead with graphite in pencils",
+        "gold_answers": [
+          "never contained the element lead"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6655329465866089,
+        "serverTimeMs": 2517,
+        "clientLatencyMs": 2551,
+        "error": null
+      },
+      {
+        "question": "what started the war between us and japan",
+        "gold_answers": [
+          "attack on Pearl Harbor"
+        ],
+        "predicted": "simple and factual. The wire services brought forth the &quot;inverted pyramid&quot; model of news copy, in which key facts appear at the start of the text, and more",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1.0000001192092896,
+        "serverTimeMs": 4558,
+        "clientLatencyMs": 4611,
+        "error": null
+      },
+      {
+        "question": "how old is the actress who plays phyllis on y&r",
+        "gold_answers": [
+          "Gina Tognoni",
+          "age 44"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7965340614318848,
+        "serverTimeMs": 2123,
+        "clientLatencyMs": 2162,
+        "error": null
+      },
+      {
+        "question": "who wrote the french declaration of the rights of man and of the citizen",
+        "gold_answers": [
+          "General Lafayette",
+          "Honoré Mirabeau",
+          "Lafayette",
+          "Thomas Jefferson"
+        ],
+        "predicted": "presses and the creation of new markets in the 1500s, news underwent a shift from factual and precise economic reporting, to a more emotive and freewheeling",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1,
+        "serverTimeMs": 1835,
+        "clientLatencyMs": 1889,
+        "error": null
+      },
+      {
+        "question": "when does sam realize he is jim in ghost whisperer",
+        "gold_answers": [
+          "Leap of Faith"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7068591117858887,
+        "serverTimeMs": 2186,
+        "clientLatencyMs": 2252,
+        "error": null
+      },
+      {
+        "question": "what size engine does a 2005 honda civic have",
+        "gold_answers": [
+          "1169 cc"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7609710693359375,
+        "serverTimeMs": 2240,
+        "clientLatencyMs": 2279,
+        "error": null
+      },
+      {
+        "question": "who won college basketball player of the year",
+        "gold_answers": [
+          "A'ja Wilson",
+          "Jalen Brunson"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7718084692955017,
+        "serverTimeMs": 2278,
+        "clientLatencyMs": 2326,
+        "error": null
+      },
+      {
+        "question": "a single period of precession of earth's axis is completed in about",
+        "gold_answers": [
+          "approximately 26,000 years",
+          "26,000 years"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8406867980957031,
+        "serverTimeMs": 4056,
+        "clientLatencyMs": 4103,
+        "error": null
+      },
+      {
+        "question": "locations for the film an englishman who went up a hill",
+        "gold_answers": [
+          "Llanrhaeadr-ym-Mochnant",
+          "Llansilin in Powys"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7006498694419862,
+        "serverTimeMs": 1391,
+        "clientLatencyMs": 1465,
+        "error": null
+      },
+      {
+        "question": "rizal finished all the chapters of the novel noli me tangere in",
+        "gold_answers": [
+          "December 1886",
+          "Spanish"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8032418489456177,
+        "serverTimeMs": 1690,
+        "clientLatencyMs": 1741,
+        "error": null
+      },
+      {
+        "question": "who sang the superbowl national anthem in 2017",
+        "gold_answers": [
+          "Luke Bryan"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7785658717155457,
+        "serverTimeMs": 4314,
+        "clientLatencyMs": 4360,
+        "error": null
+      },
+      {
+        "question": "who did the singing in into the woods",
+        "gold_answers": [
+          "the cast",
+          "the cast members"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.818954110145569,
+        "serverTimeMs": 1604,
+        "clientLatencyMs": 1660,
+        "error": null
+      },
+      {
+        "question": "which country has won maximum number of gold medal in asian game 2014",
+        "gold_answers": [
+          "China"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7826032638549805,
+        "serverTimeMs": 1978,
+        "clientLatencyMs": 2037,
+        "error": null
+      },
+      {
+        "question": "which country is the last member of saarc",
+        "gold_answers": [
+          "Afghanistan"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7670674920082092,
+        "serverTimeMs": 1075,
+        "clientLatencyMs": 1120,
+        "error": null
+      }
+    ],
+    "TriviaQA": [
+      {
+        "question": "Where was the Fiddler in the musical's title?",
+        "gold_answers": [
+          "Sur les toits (cambrioleurs et gendarmes)",
+          "On the Roof",
+          "Sur les toits",
+          "On the Roofs",
+          "On the Roof"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.713223934173584,
+        "serverTimeMs": 1824,
+        "clientLatencyMs": 1893,
+        "error": null
+      },
+      {
+        "question": "South Pacific was set during which war?",
+        "gold_answers": [
+          "The Second world war",
+          "WorldWar2",
+          "WW2",
+          "Second World war",
+          "WwII",
+          "War World Two",
+          "World War II",
+          "Second Great War",
+          "The 2nd World War",
+          "WW-II",
+          "2nd world war",
+          "World War two",
+          "The second world war",
+          "The second great war",
+          "World war 2",
+          "Ww2",
+          "The Origins and Commencement of World War II",
+          "World War ll",
+          "WW II",
+          "Second World War",
+          "World-War II",
+          "W.W.2",
+          "WarII",
+          "War World II",
+          "War World 2",
+          "World War 2",
+          "World War II countries and Leaders",
+          "The Second World War",
+          "World war ii",
+          "Countries in the Second World War",
+          "Second World War: The History and the Events",
+          "World war II",
+          "WWII",
+          "Second world War",
+          "Ww2'",
+          "Wwii",
+          "Nazi occupation",
+          "World War, 1939-1945",
+          "Second World Wars",
+          "WWTWO",
+          "2nd World War",
+          "II World War",
+          "W.W. II",
+          "World War ii",
+          "World War Ⅱ",
+          "WW-2",
+          "2w2",
+          "Second world war",
+          "World war two",
+          "IIWW",
+          "W.W.II",
+          "World War II/Infobox",
+          "Segunda Guerra Mundial",
+          "WW 2",
+          "WW@",
+          "Word war II",
+          "Guerre mondiale II",
+          "2nd World war",
+          "World War II/Edited Text",
+          "World War Two",
+          "WWII"
+        ],
+        "predicted": "simple and factual. The wire services brought forth the &quot;inverted pyramid&quot; model of news copy, in which key facts appear at the start of the text, and",
+        "exact_match": 0,
+        "f1": 0.08333333333333333,
+        "confidence": 1,
+        "serverTimeMs": 2755,
+        "clientLatencyMs": 2843,
+        "error": null
+      },
+      {
+        "question": "What percentage of the earth's surface is covered by Europe?",
+        "gold_answers": [
+          "eight  %",
+          "8 %",
+          "8%",
+          "8%"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.764492392539978,
+        "serverTimeMs": 2628,
+        "clientLatencyMs": 2676,
+        "error": null
+      },
+      {
+        "question": "Which European town gave its name to a Treaty which symbolizes closer economic links between European countries?",
+        "gold_answers": [
+          "Maastricht, the Netherlands",
+          "Maasthrict",
+          "Mestreech",
+          "Mastericht",
+          "Maestricht",
+          "Maastrict",
+          "Maastricht",
+          "Maastricht, Netherlands",
+          "Vrijthof",
+          "UN/LOCODE:NLMST",
+          "Limmel",
+          "Maastricht"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7450356483459473,
+        "serverTimeMs": 2417,
+        "clientLatencyMs": 2483,
+        "error": null
+      },
+      {
+        "question": "Which home of champagne in France was also where the German High Command surrendered in WWII?",
+        "gold_answers": [
+          "Reims",
+          "Reims, France",
+          "Saint Remi Basilica",
+          "Rheims",
+          "Rheims, France",
+          "Durocortorum",
+          "Saint-Remi Cathedral",
+          "Reims"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7197074890136719,
+        "serverTimeMs": 1743,
+        "clientLatencyMs": 1800,
+        "error": null
+      },
+      {
+        "question": "Which was the first European city this century to open an underground railway system?",
+        "gold_answers": [
+          "Paříž",
+          "FRPAR",
+          "Paris",
+          "Name of paris and its inhabitants",
+          "Paname",
+          "Paris France",
+          "Ville Lumière",
+          "Leucetia",
+          "Rue de Ménilmontant",
+          "Paris agglomeration",
+          "France Paris",
+          "Sports in Paris",
+          "Departement de Paris",
+          "Paris, Ile-De-France",
+          "Rue de Menilmontant",
+          "UN/LOCODE:FRPAR",
+          "Paříži",
+          "Ville Lumiere",
+          "Paris, France",
+          "Paris, Île-de-France",
+          "Paris, Île-de-France, France",
+          "Parijs",
+          "Parisien",
+          "Cuisine of Paris",
+          "Suburbs of Paris",
+          "Sport in Paris",
+          "The weather in Paris",
+          "Parisian (person)",
+          "Parizi",
+          "París",
+          "Name of Paris and its inhabitants",
+          "Paree",
+          "Paris, Europe",
+          "Paris, Banks of the Seine",
+          "Paris (etymology)",
+          "Paris (France)",
+          "The City of Love (city)",
+          "Département de Paris",
+          "Paris"
+        ],
+        "predicted": "1500s, news underwent a shift from factual and precise economic reporting, to a more emotive and freewheeling format. (Private newsletters containing important",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1,
+        "serverTimeMs": 4339,
+        "clientLatencyMs": 4388,
+        "error": null
+      },
+      {
+        "question": "Who first drew Mickey Mouse when ?Disney first supplied the voice?",
+        "gold_answers": [
+          "Iwerks, Ub",
+          "Ub Iwerks",
+          "Ub Iwerks Studio",
+          "Celebrity Productions",
+          "Ubbe Ert Iwwerks",
+          "Ub Iwerks"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.65134956240654,
+        "serverTimeMs": 3673,
+        "clientLatencyMs": 3728,
+        "error": null
+      },
+      {
+        "question": "Which actress wrote the novel The Last of the Really Great Whangdoodles?",
+        "gold_answers": [
+          "Julia Elizabeth Wells",
+          "Julie Elizabeth Andrews, DBE",
+          "Julie Andrews Edwards",
+          "Julie Wells",
+          "Julie Elizabeth Wells",
+          "Julie Elizabeth Andrews",
+          "Dame Julie Andrews",
+          "Julie Elizabeth Andrews DBE",
+          "Julie andrews",
+          "Julie Andrews",
+          "Julie Andrews"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7964690923690796,
+        "serverTimeMs": 3055,
+        "clientLatencyMs": 3107,
+        "error": null
+      },
+      {
+        "question": "Who was the star of the film based on the record Harper Valley PTA by Jeannie C Riley?",
+        "gold_answers": [
+          "Barbara Morehead",
+          "Barbara Jean Morehead",
+          "Barbara Eden",
+          "Barbara Eden"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7221921682357788,
+        "serverTimeMs": 1631,
+        "clientLatencyMs": 1693,
+        "error": null
+      },
+      {
+        "question": "What color golf balls are used on the golf course in Antarctica?",
+        "gold_answers": [
+          "Orange (album)",
+          "Orangeishness",
+          "Orange (film)",
+          "Orangishness",
+          "Orangeishly",
+          "Orangishly",
+          "Orange",
+          "Oranfe",
+          "Orange (disambiguation)",
+          "Orange"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6943197250366211,
+        "serverTimeMs": 1768,
+        "clientLatencyMs": 1803,
+        "error": null
+      },
+      {
+        "question": "Throughout the 80s and 90s Phil Collins recorded on which record label?",
+        "gold_answers": [
+          "Sea of Atlas",
+          "The Pond",
+          "Ethiopic Ocean",
+          "Across the pond",
+          "North Atlantic",
+          "The Atlantic Ocean",
+          "North Atlantic ocean",
+          "Northern Atlantic",
+          "Altantic Ocean",
+          "Atlantis Thalassa",
+          "Atlantic basic",
+          "The pond",
+          "Atlantic basin",
+          "Atlantic",
+          "Atlantic Oceans",
+          "Occidental Ocean",
+          "Ethiopian Ocean",
+          "North Atlantic fisheries",
+          "Atlantic Basic",
+          "North-East Atlantic",
+          "Atlantic Basin",
+          "Atlantic ocean",
+          "Atlantic (ocean)",
+          "Antlantic Ocean",
+          "South Atlantic Ocean",
+          "Oceanvs Occidentalis",
+          "Atlantic Ocean",
+          "Central Atlantic",
+          "South Atlantic",
+          "East Atlantic",
+          "North Atlantic Ocean",
+          "Altantic ocean",
+          "Atlantic coast",
+          "Atlantic"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6843410730361938,
+        "serverTimeMs": 2046,
+        "clientLatencyMs": 2117,
+        "error": null
+      },
+      {
+        "question": "On which label did Chuck Berry record in the 1950s and 1960s?",
+        "gold_answers": [
+          "Chess match",
+          "Šachmatai",
+          "Sjakk",
+          "Ajedrez",
+          "Ahedres",
+          "Ficheall",
+          "Rank and file (chess)",
+          "Chess Revers",
+          "Chess",
+          "Xadrez",
+          "Chess publications",
+          "Satranç",
+          "Western chess",
+          "Šachy",
+          "Шахи",
+          "Chess game",
+          "European chess",
+          "Chess psychology",
+          "ChesS",
+          "Ŝako",
+          "ਸ਼ਤਰੰਜ",
+          "Chess games",
+          "शतरंज",
+          "Play chess",
+          "Skaak",
+          "Western Chess",
+          "Orthochess",
+          "Chesss",
+          "Game of chess",
+          "Šach",
+          "Echedoù",
+          "Échecs",
+          "שחמט",
+          "Chesse",
+          "Scacci",
+          "Шахмат",
+          "Escacs",
+          "Cög",
+          "Şah",
+          "Cờ vua",
+          "International Chess",
+          "Chess board game",
+          "Chess Board Game",
+          "Шахматы",
+          "Game of Chess",
+          "Skak",
+          "شطرنج",
+          "Шатар",
+          "Chess career",
+          "Σκάκι",
+          "Šahs",
+          "Cheess",
+          "Chess srategy and tactics",
+          "Chess (game)",
+          "Skák",
+          "International chess",
+          "Chess"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6916438341140747,
+        "serverTimeMs": 2209,
+        "clientLatencyMs": 2275,
+        "error": null
+      },
+      {
+        "question": "Which museum has the highest-funded art gallery?",
+        "gold_answers": [
+          "John Paul Getty Museum",
+          "The Getty",
+          "Getty Museum",
+          "J. Paul Getty museum",
+          "J. Paul Getty Museum",
+          "The Getty Museum",
+          "The J. Paul Getty Museum",
+          "J Paul Getty Museum",
+          "Jean Paul Getty Museum",
+          "Getty Museum"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7450301051139832,
+        "serverTimeMs": 3779,
+        "clientLatencyMs": 3827,
+        "error": null
+      },
+      {
+        "question": "What was the name of Michael Jackson's second wife?",
+        "gold_answers": [
+          "Deborah Jeanne Rowe",
+          "Deborah Rowe Jackson",
+          "Debbie Jackson",
+          "Deborah Rowe",
+          "Debbie Rowe",
+          "Debbie Rowe"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7352938175201417,
+        "serverTimeMs": 1696,
+        "clientLatencyMs": 1736,
+        "error": null
+      },
+      {
+        "question": "Which US city was named after a British Prime Minister?",
+        "gold_answers": [
+          "Smoky City",
+          "Pittsburgh (Pa.)",
+          "Pittsburgh, Pennsylvania.",
+          "Frick International Studies Academy Middle School",
+          "Pitsburgh",
+          "The Burgh",
+          "Pittsbrugh",
+          "Pittsburgh, Pa",
+          "Pittsburgh, USA",
+          "Glenwood, Pennsylvania",
+          "Pittsburgh (PA)",
+          "The Pittsburgh Style of Literature",
+          "Pittsburgh, Pennsylvania, U.S.",
+          "Pittsburgh, United States of America",
+          "Pittsburgh Pennsyvania",
+          "UN/LOCODE:USPIT",
+          "Da burgh",
+          "Pittsburgh (pgh)",
+          "Climate of Pittsburgh, Pennsylvania",
+          "Pittsburgh",
+          "City of Bridges",
+          "Pittsburgh Frick 6–8 Middle School",
+          "Pittsburgh, PA",
+          "St. Justin's High School",
+          "East End (Pittsburgh)",
+          "Pittsburgh, Pennsylvania, USA",
+          "Pittsburgh, Allegheny County, Pennsylvania",
+          "The City of Bridges",
+          "Pittsburgh, Pennsylvania, US",
+          "Fort du Quesne",
+          "Pittsburgh Frick 6-8 Middle School",
+          "City of Pittsburgh",
+          "The Steel City",
+          "Pittsburgh, PA.",
+          "Pittsburgh Style",
+          "Pittsburgh, Pa.",
+          "Education in pittsburgh",
+          "Pittsburg, PA",
+          "Pittsburgh, Pennsylvania, U.S.A.",
+          "Education in Pittsburgh",
+          "Pittsburg, Pennsylvania",
+          "Pittsburgh, Pennsylvania",
+          "Pittsburgh"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6670899391174316,
+        "serverTimeMs": 1837,
+        "clientLatencyMs": 1869,
+        "error": null
+      },
+      {
+        "question": "\"Who said, To err is human but it feels divine?\"\"\"",
+        "gold_answers": [
+          "Mae West",
+          "Mae west",
+          "Is that a gun in your pocket, or are you just happy to see me%3F",
+          "When I'm Bad, I'm Better",
+          "Jane Mast",
+          "When I'm good, I'm very good...",
+          "Mae West filmography",
+          "Mae West"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0.14285714285714285,
+        "confidence": 0.7666175484657288,
+        "serverTimeMs": 2815,
+        "clientLatencyMs": 2849,
+        "error": null
+      },
+      {
+        "question": "Which singer had a big 60s No 1 with Roses Are Red?",
+        "gold_answers": [
+          "Bobby Vinton",
+          "Bobby Vinton"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7359398961067201,
+        "serverTimeMs": 2599,
+        "clientLatencyMs": 2664,
+        "error": null
+      },
+      {
+        "question": "What are the international registration letters of a vehicle from Iceland?",
+        "gold_answers": [
+          "I S",
+          "I.s.",
+          "IS",
+          "I.S.",
+          "Is.",
+          "IS (disambiguation)",
+          "Is",
+          "IS"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0.22222222222222224,
+        "confidence": 0.7294011116027832,
+        "serverTimeMs": 1691,
+        "clientLatencyMs": 1751,
+        "error": null
+      },
+      {
+        "question": "Where was the American venue of the Live Aid concert?",
+        "gold_answers": [
+          "Philedelphia",
+          "City of brotherly love",
+          "City of Brotherly Love",
+          "The Quaker City",
+          "Philadelphia",
+          "Philadelphia, Pennsylvania",
+          "Philadelphia, Pennsylvania, U.S.A.",
+          "Philadelphia, Pa.",
+          "List of nicknames for Philadelphia",
+          "Philidalphia",
+          "Philadelphia, United States",
+          "Philadelphia, Pennsylvania, U.S.",
+          "Philadelphia PA",
+          "Philadelphia Suburban Rail",
+          "Philadelphi",
+          "Philadelphia, U.S.",
+          "Philadelphia Regional Rail",
+          "The City of Brotherly Love",
+          "City of Philadelphia",
+          "Philadelphia (Pennsylvania)",
+          "Wiccacoa",
+          "Philadelpia, Pennsylvania",
+          "Philadelphia, USA",
+          "Philadelphia, Philadelphia County, Pennsylvania",
+          "Government of Philadelphia",
+          "Philadelphia (PA)",
+          "Philadelphia, Pennsylvania, USA",
+          "Philadelphia (City)",
+          "UN/LOCODE:USPHL",
+          "The City That Loves You Back",
+          "Philadelphia (Pa.)",
+          "Phila.",
+          "The Cradle of Liberty",
+          "The city of brotherly love",
+          "Philadelphia (city, Pennsylvania)",
+          "Philidelphia",
+          "Philadelphia, Pennsylvania, US",
+          "Philadelphia Commuter Rail",
+          "The City and County of Philadelphia, Pennsylvania",
+          "Philadephia, Pennsylvania",
+          "Philadelphia City",
+          "Philadelphia Pennsylvania",
+          "Philadelphia City Controller",
+          "Philladelphia",
+          "Political families of Philadelphia",
+          "Philadelphia, Pa",
+          "Philadelphia, PA",
+          "The Birthplace of America",
+          "Philadelpia, PA",
+          "Philadelphia"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6590567827224731,
+        "serverTimeMs": 1916,
+        "clientLatencyMs": 1963,
+        "error": null
+      },
+      {
+        "question": "Which was the longest moon landing?",
+        "gold_answers": [
+          "Apollo 17",
+          "Apollo XVII",
+          "Apollo17",
+          "Apollo 17"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7182569861412049,
+        "serverTimeMs": 3254,
+        "clientLatencyMs": 3324,
+        "error": null
+      },
+      {
+        "question": "Who had the most expensive presidential inauguration ceremony of the 20th century?",
+        "gold_answers": [
+          "George Walker Bush",
+          "Dubya",
+          "Bush, George W.",
+          "Bush Jr.",
+          "George W. Bush (painter)",
+          "W Bush",
+          "Bushian",
+          "Gorge w bush",
+          "Bush the younger",
+          "George w",
+          "Bush 43",
+          "Bush II",
+          "George the Younger",
+          "George W. Bussh",
+          "George W. Bush Street",
+          "George Bush (43rd U.S. President)",
+          "G W Bush",
+          "Dubyuh",
+          "George Bush jr.",
+          "G.W. Bush",
+          "W. bush",
+          "Dubya Bush",
+          "G. W. Bush",
+          "George W Bush",
+          "US President George W. Bush",
+          "G.w.bush",
+          "Bush Junior",
+          "George W. Bush, 43rd President of the United States",
+          "George Bush (2000)",
+          "George w.",
+          "George W",
+          "Gorge W. Bush",
+          "G. Walker Bush",
+          "GEORGE W. BUSH",
+          "George Dubya Bush",
+          "Geroge W Bush",
+          "2004 Republican Presidential Nominee",
+          "George w Bush",
+          "George Bush II",
+          "George Bush Jr.",
+          "Baby Bush",
+          "W. Bush",
+          "2000 Republican Presidential Nominee",
+          "Junior Bush",
+          "George W.",
+          "President Bush (2000)",
+          "Goerge W. Bush",
+          "George Bush Jr",
+          "George W. Budh",
+          "43rd President of the United States",
+          "George W. Buah",
+          "G Dub",
+          "George W Bush Jr",
+          "43rd Pesident of the United States",
+          "Jorge W. Bush",
+          "Bush the Younger",
+          "International perception of george W. Bush",
+          "GeorgeWBush",
+          "George w bush",
+          "George bush 43",
+          "Bush (43)",
+          "George Bush 2",
+          "George Bush (43)",
+          "Bush-43",
+          "George Bush Junior",
+          "W bush",
+          "George Wаlker Bush",
+          "Gw bush",
+          "George w. bush",
+          "G. W. B.",
+          "George W. bush",
+          "Bushists",
+          "Religious faith of George W. Bush",
+          "President Bush (43)",
+          "George W. Bush",
+          "George W.Bush",
+          "George W bush",
+          "George Bush, Jr.",
+          "G. Dub",
+          "GW Bush",
+          "President George W Bush",
+          "Former President George W. Bush",
+          "President George Walker Bush",
+          "George W. Bush"
+        ],
+        "predicted": "spread of printing presses and the creation of new markets in the 1500s, news underwent a shift from factual and precise economic reporting, to a more",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1.0000001192092896,
+        "serverTimeMs": 2500,
+        "clientLatencyMs": 2563,
+        "error": null
+      },
+      {
+        "question": "Who became Israel's head of state in 1993?",
+        "gold_answers": [
+          "עזר ויצמן",
+          "Ezer Weizmann",
+          "Ezer Weizman",
+          "Ezer Weizman"
+        ],
+        "predicted": "spread of printing presses and the creation of new markets in the 1500s, news underwent a shift from factual and precise economic reporting, to a more Matei concludes that the report generally fails to make a legal, factually grounded case for specific indictments of specific facts or individuals, under",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1.0000001192092896,
+        "serverTimeMs": 2682,
+        "clientLatencyMs": 2736,
+        "error": null
+      },
+      {
+        "question": "In WWII, who was the head of the Nazi party's security service?",
+        "gold_answers": [
+          "Reinhard Heidrich",
+          "Rinehardt Heydrich",
+          "Himmler's Evil Genius",
+          "ReinhardHeydrich",
+          "Heidrich, Rinehardt",
+          "Reinhard Hydrich",
+          "Reinhard Hydrick",
+          "The Young Evil God of Death",
+          "Rinehardt Heidrich",
+          "Heydrich",
+          "Heydrich Reinhard",
+          "Reinhard Hidrich",
+          "Reinhard Hidrick",
+          "Rhinehardt Heidrich",
+          "Reinhard Heydrick",
+          "The Butcher of Prague",
+          "Heidrich, Reinhardt",
+          "Heidrich, Rhinehardt",
+          "Reinhardt Heydrich",
+          "Rhinehardt Heydrich",
+          "Reinhard Heydrich",
+          "Rhinehart Heidrich",
+          "Reihnard Heidrich",
+          "Rhinehard Heydrich",
+          "Heydrich Reinhart",
+          "Rheinhard Heydrich",
+          "Heydrich, Reinhard",
+          "Rinehard Heidrich",
+          "Butcher of Prague",
+          "HeydrichReinhardt",
+          "Rhinehart Heydrich",
+          "Heidrich, Rhinehart",
+          "Reinhart heidrich",
+          "ReinhardtHeydrich",
+          "Heydrich, Reinhart",
+          "Heydrich, Reinhardt",
+          "Heydrich,Reinhardt",
+          "Rinehard Heydrich",
+          "Heydrich Reinhardt",
+          "Reinhart Heydrich",
+          "Heidrich, Rinehart",
+          "Young Evil God of Death",
+          "Heidrich, Reinhart",
+          "Rinehart Heydrich",
+          "HeydrichReinhard",
+          "Heydrich,Reinhard",
+          "Reinhard Tristan Eugen Heydrich",
+          "Rhinehard Heidrich",
+          "Heidrich, Rhinehard",
+          "Heidrich, Rinehard",
+          "Heydrich,Reinhart",
+          "Heidrich, Reinhard",
+          "Rinehart Heidrich",
+          "Himler's Evil Genius",
+          "Reinhard Heidrich"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7031332850456238,
+        "serverTimeMs": 1771,
+        "clientLatencyMs": 1836,
+        "error": null
+      },
+      {
+        "question": "Which President of the Philippines was deposed in 1986?",
+        "gold_answers": [
+          "Marcos",
+          "Marcos (disambiguation)",
+          "Markos",
+          "Marcos"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7783418297767639,
+        "serverTimeMs": 2253,
+        "clientLatencyMs": 2313,
+        "error": null
+      },
+      {
+        "question": "What kind of disaster claimed some 100,000 lives in Armenia in 1988?",
+        "gold_answers": [
+          "Seism",
+          "Earthquake",
+          "Seismic event",
+          "The kinds of earthquakes",
+          "Seismically active",
+          "Low-magnitude earthquake",
+          "Earth tremor",
+          "Causes of earthquakes",
+          "Seismic movement",
+          "Earth quakes",
+          "Earthshake",
+          "Seismic activity",
+          "Quake weapons",
+          "Seismicity",
+          "地震",
+          "Earth quake",
+          "Main shock",
+          "Site effects (earthquake)",
+          "Earthquakes",
+          "Speedjump",
+          "Tectonic earthquake",
+          "Earthquake"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8127380609512329,
+        "serverTimeMs": 1928,
+        "clientLatencyMs": 1984,
+        "error": null
+      },
+      {
+        "question": "Which state on the Gulf of Mexico is nearest the end of the alphabet?",
+        "gold_answers": [
+          "Texas (U.S. State)",
+          "US-TX",
+          "Texos",
+          "Texas",
+          "Lone Star State",
+          "Texas, USA",
+          "Religion in Texas",
+          "Texas (state)",
+          "Lake Ozark, Texas",
+          "Christianity in Texas",
+          "The State of Texas",
+          "Twenty-eighth State",
+          "Texas-sized",
+          "Texas (State)",
+          "28th State",
+          "The Lone Star State",
+          "Twenty-Eighth State",
+          "Texas, United States",
+          "Texas (U.S. state)",
+          "Texass",
+          "State of Texas",
+          "Everything is bigger in Texas",
+          "28th state",
+          "Texas"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7344123721122742,
+        "serverTimeMs": 2213,
+        "clientLatencyMs": 2255,
+        "error": null
+      },
+      {
+        "question": "To ten thousand square miles, what is the area of Michigan?",
+        "gold_answers": [
+          "fifty-eight thousand, one hundred and twenty-five  area",
+          "58,125 square miles",
+          "58125 area",
+          "58,125 square miles"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7146562933921814,
+        "serverTimeMs": 2318,
+        "clientLatencyMs": 2378,
+        "error": null
+      },
+      {
+        "question": "Truax Field international airport is in which US state?",
+        "gold_answers": [
+          "Badger State",
+          "State of Wisconsin",
+          "Wis.",
+          "Transportation in Wisconsin",
+          "Government of Wisconsin",
+          "Climate of Wisconsin",
+          "Wisconsin, USA",
+          "Wiscosin, USA",
+          "Wisconsin",
+          "30th State",
+          "Wisconson",
+          "Politics of Wisconsin",
+          "Demographics of Wisconsin",
+          "America's Dairyland",
+          "Winconsin",
+          "Religion in Wisconsin",
+          "Transport in Wisconsin",
+          "US-WI",
+          "Wisconsin state",
+          "Economy of Wisconsin",
+          "The Badger State",
+          "Wisconsin (state)",
+          "Education in Wisconsin",
+          "Geography of Wisconsin",
+          "Wiskonsin",
+          "Wisconsin (U.S. state)",
+          "Thirtieth State",
+          "Film industry in Wisconsin",
+          "Wisc.",
+          "Badger state",
+          "Wisconsin, United States",
+          "Wisconsin"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7477543950080872,
+        "serverTimeMs": 1711,
+        "clientLatencyMs": 1764,
+        "error": null
+      },
+      {
+        "question": "In what month was the attack on Pearl Harbor?",
+        "gold_answers": [
+          "December",
+          "㋋",
+          "Xber",
+          "Dec.",
+          "Decembre",
+          "December"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8481771349906922,
+        "serverTimeMs": 2195,
+        "clientLatencyMs": 2247,
+        "error": null
+      },
+      {
+        "question": "Who did Dr. Crippen murder?",
+        "gold_answers": [
+          "His wife",
+          "His wife"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7332850337028504,
+        "serverTimeMs": 2207,
+        "clientLatencyMs": 2264,
+        "error": null
+      },
+      {
+        "question": "In the 1904 Olympics, how many of the 23 track and field titles were won by Americans?",
+        "gold_answers": [
+          "21",
+          "twenty-one",
+          "21"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7492195963859558,
+        "serverTimeMs": 2251,
+        "clientLatencyMs": 2289,
+        "error": null
+      },
+      {
+        "question": "The Black Hills lie between which two rivers?",
+        "gold_answers": [
+          "Belle Fourche and Cheyenne",
+          "Belle Fourche and Cheyenne"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6755777060985566,
+        "serverTimeMs": 2358,
+        "clientLatencyMs": 2429,
+        "error": null
+      },
+      {
+        "question": "In what year was the first in-flight movie shown on an internal flight in the USA.",
+        "gold_answers": [
+          "1929",
+          "one thousand, nine hundred and twenty-nine",
+          "1929"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6759267091751099,
+        "serverTimeMs": 3555,
+        "clientLatencyMs": 3606,
+        "error": null
+      },
+      {
+        "question": "In which city was John Lennon murdered?",
+        "gold_answers": [
+          "New Yourk State",
+          "State of N.Y.",
+          "US-NY",
+          "N Y",
+          "The state of NY",
+          "NewYork",
+          "NYS",
+          "Neo York",
+          "NY state",
+          "Nova York",
+          "State of new york",
+          "Ny",
+          "New york",
+          "Nueva York (estado)",
+          "N Y state",
+          "New York (state)",
+          "U.S. state of New York",
+          "New York state",
+          "New York, U.S.",
+          "State New York",
+          "Nýja-Jórvík",
+          "Newyork",
+          "NEW YORK",
+          "State of N. Y.",
+          "N. Y. state",
+          "NY",
+          "The state of N.Y.",
+          "NY (state)",
+          "New York's",
+          "N.Y. (U.S. state)",
+          "State of new yourk",
+          "New York State",
+          "New York (U.S. state)",
+          "New york state",
+          "New Yrok",
+          "11th State",
+          "New York (USA State)",
+          "State of N Y",
+          "New-York",
+          "The State of New York",
+          "State of New York",
+          "US state of New York",
+          "N Y (U.S. state)",
+          "N.Y. state",
+          "N.Y.",
+          "The state of N. Y.",
+          "N. Y. (state)",
+          "The state of N Y",
+          "New York, US",
+          "N.Y. (state)",
+          "Nyja-Jorvik",
+          "Religion in New York",
+          "New Yourk",
+          "N. Y.",
+          "New York State's",
+          "Estado Nueva York",
+          "New York (USA state)",
+          "New york population",
+          "New York, U.S.A",
+          "New York",
+          "NY (U.S. state)",
+          "Estado de Nueva York",
+          "N. Y. (U.S. state)",
+          "Eleventh State",
+          "N Y (state)",
+          "State of NY",
+          "New York (State)",
+          "New York (U.S. state",
+          "New York"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7342011332511902,
+        "serverTimeMs": 2702,
+        "clientLatencyMs": 2741,
+        "error": null
+      },
+      {
+        "question": "How was President Kennedy assassinated?",
+        "gold_answers": [
+          "Shot (unit)",
+          "Shot",
+          "Shot (drink)",
+          "Shot (beverage)",
+          "Shot (disambiguation)",
+          "Shot (alcohol)",
+          "SHOT",
+          "Shot"
+        ],
+        "predicted": "simple and factual. The wire services brought forth the &quot;inverted pyramid&quot; model of news copy, in which key facts appear at the start of the text, and",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1,
+        "serverTimeMs": 2916,
+        "clientLatencyMs": 2962,
+        "error": null
+      },
+      {
+        "question": "Which caped crusader operated in Gotham City?",
+        "gold_answers": [
+          "BatMan",
+          "Batman: War on Crime",
+          "Bat-man",
+          "The Bat-Man",
+          "Fictional history of Batman",
+          "Bruce Wayne / Batman",
+          "Bat-Embargo",
+          "Batmarine",
+          "History of Batman",
+          "Brucewayne",
+          "The Caped Crusader",
+          "Batman/Bruce Wayne",
+          "Batman",
+          "Batsy",
+          "Bruce Wayne (Batman)",
+          "Bat man",
+          "Skills and abilities of Batman",
+          "Bat-Man",
+          "The Bat-man",
+          "New Look Batman",
+          "Batman (Bruce Wayne)",
+          "Matches Malone",
+          "Silver Age Batman",
+          "Batman (DC Comics)",
+          "Bruno Diaz",
+          "The bat-man",
+          "Batman (comics)",
+          "Bat Man",
+          "Bruce Wayne",
+          "Golden Age Batman",
+          "Batdude",
+          "Na na na na na na na na",
+          "Batman Emblem",
+          "THE BAT-MAN",
+          "Skills, abilities, resources and equipment of Batman",
+          "THE BATMAN",
+          "Caped Crusader",
+          "BAT-MAN",
+          "Batman / Bruce Wayne",
+          "The batman",
+          "Batman emblem",
+          "The Batman Handbook: The Ultimate Training Manual",
+          "Batman"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7615364193916321,
+        "serverTimeMs": 2691,
+        "clientLatencyMs": 2743,
+        "error": null
+      },
+      {
+        "question": "Who did Jack Ruby shoot in November 1963?",
+        "gold_answers": [
+          "Oswald the Lone Assassin",
+          "Lone Nut Theory",
+          "Lone gunman",
+          "Lee Oswald",
+          "Lee H. Oswald",
+          "A.J. Hidell",
+          "L.H.O.",
+          "L. H. Oswald",
+          "L.H.O",
+          "Alek J. Hidell",
+          "Maria Oswald Porter",
+          "Lee harvey oswald",
+          "Lee Harvey Oswald (photo)",
+          "Lee Harvey Oswald's",
+          "Lee Harvey Oswald",
+          "Lee harvy oswald",
+          "Lone gunman theory",
+          "Alek James Hidell",
+          "Lee Harvey Ostwald",
+          "Lee Harvey Oswald"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7458760261535645,
+        "serverTimeMs": 2211,
+        "clientLatencyMs": 2257,
+        "error": null
+      },
+      {
+        "question": "Who was the first American to travel faster than the speed of sound?",
+        "gold_answers": [
+          "Glennis Faye Dickhouse",
+          "Chuck Yaeger",
+          "Glennis Dickhouse",
+          "Glennis Yeager",
+          "Charles Elwood Yeager",
+          "Chuck yeager",
+          "Charles Yeager",
+          "Victoria Scott D'Angelo",
+          "Chuck Yeager",
+          "Charles Elwood %22Chuck%22 Yeager",
+          "Charles E. Yeager",
+          "Chuck yager",
+          "Chuck yeagar",
+          "Chuck Jaeger",
+          "Chuck Yeagar",
+          "Chuck Yeager"
+        ],
+        "predicted": "printing presses and the creation of new markets in the 1500s, news underwent a shift from factual and precise economic reporting, to a more emotive and",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.67916339635849,
+        "serverTimeMs": 4044,
+        "clientLatencyMs": 4101,
+        "error": null
+      },
+      {
+        "question": "Who was the first US president Barbara Walters interviewed?",
+        "gold_answers": [
+          "I'm not a crook",
+          "Richard nixon",
+          "Nixson",
+          "Richard Milhouse Nixon",
+          "Richard Milhous Nixon",
+          "Nixonian",
+          "Richard Nixon",
+          "Dick Nixon",
+          "Nixonite",
+          "Nixon, Richard",
+          "37th President of the United States",
+          "Resignation of Richard Nixon",
+          "Richard Nickson",
+          "Tricky Dick Nixon",
+          "Nixon's",
+          "Arthur Burdg Nixon",
+          "Richard M. Nixon",
+          "Tricky Dick",
+          "Arthur Nixon",
+          "Nixon",
+          "Harold Samuel Nixon",
+          "Richard M Nixon",
+          "Harold Nixon",
+          "Nixon, Richard Milhous",
+          "Nixon, Richard M.",
+          "Nichard rixon",
+          "Nixon"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0.2,
+        "confidence": 0.7447634518146515,
+        "serverTimeMs": 2546,
+        "clientLatencyMs": 2593,
+        "error": null
+      },
+      {
+        "question": "Which orchestral conductor was married to one of the subjects of the film Hillary and Jackie?",
+        "gold_answers": [
+          "Daniel Barenboim and Wagner",
+          "Daniel barenboim",
+          "Daniel Barenboim",
+          "Daniel Barenboim"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8081943392753601,
+        "serverTimeMs": 1919,
+        "clientLatencyMs": 1966,
+        "error": null
+      },
+      {
+        "question": "Which writer and politician became Lord Tweedsmuir?",
+        "gold_answers": [
+          "John Scantlebury Blenkiron",
+          "Buchan, John, Sir",
+          "Buchanesque",
+          "John Blenkiron",
+          "John Buchan, Baron Tweedsmuir",
+          "John Buchan",
+          "John, Sir Buchan",
+          "Sir John Buchan",
+          "Buchan, John",
+          "Lord Tweedsmuir",
+          "John Buchan, 1st Baron Tweedsmuir",
+          "Baron Tweedsmuir of Elsfield",
+          "John S. Blenkiron",
+          "John Buchan"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7014568448066711,
+        "serverTimeMs": 2253,
+        "clientLatencyMs": 2311,
+        "error": null
+      },
+      {
+        "question": "In what year was the first Tarzan novel published?",
+        "gold_answers": [
+          "one thousand, nine hundred and fourteen",
+          "1914",
+          "1914"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6945968329906465,
+        "serverTimeMs": 2474,
+        "clientLatencyMs": 2520,
+        "error": null
+      },
+      {
+        "question": "In which country were motorized ambulances first used?",
+        "gold_answers": [
+          "La Republique francaise",
+          "Franciaország",
+          "La Republique française",
+          "Belle France",
+          "FRANCE",
+          "Republique française",
+          "France",
+          "Ranska",
+          "Franciaorszag",
+          "French Republic",
+          "République francaise",
+          "République française",
+          "ISO 3166-1:FR",
+          "Frankreich",
+          "France (country)",
+          "Etymology of France",
+          "FrancE",
+          "La République française",
+          "People of France",
+          "Republic of France",
+          "Fracne",
+          "Le France",
+          "The French Republic",
+          "Republique francaise",
+          "The Republic of France",
+          "La République francaise",
+          "La France",
+          "Rain in France",
+          "Republic of france",
+          "FRance",
+          "Frakkland",
+          "Climate of France",
+          "Franse",
+          "France"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.72206711769104,
+        "serverTimeMs": 3607,
+        "clientLatencyMs": 3646,
+        "error": null
+      },
+      {
+        "question": "In which city was the first Model T produced outside the USA?",
+        "gold_answers": [
+          "Manchester developments",
+          "Manchester (borough)",
+          "UN/LOCODE:GBMNC",
+          "Manchester, Greater Manchester",
+          "Manchester, UK",
+          "Climate of Manchester",
+          "City of Manchester",
+          "The weather in Manchester",
+          "Manchester (city, England)",
+          "Machester",
+          "Drizzlechester",
+          "Mancs",
+          "Manchester",
+          "Manchester, United Kingdom",
+          "Manchester (England)",
+          "Metropolitan Borough of Manchester",
+          "Manchester, U.K.",
+          "Manchester (UK)",
+          "England Manchester",
+          "Manchester, England",
+          "County Borough of Manchester",
+          "Manchester"
+        ],
+        "predicted": "If the experiment were done in English, since Searle knows English, he would be able to take questions and give answers without any algorithms for English",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 1,
+        "serverTimeMs": 3467,
+        "clientLatencyMs": 3517,
+        "error": null
+      },
+      {
+        "question": "What is the Pacific terminus of the Trans Siberian Railway?",
+        "gold_answers": [
+          "블라지보스또크",
+          "Port may city",
+          "Wladivostok",
+          "Vladivostok",
+          "Haishenwei",
+          "Vladivostoksky Urban Okrug",
+          "Vladivostokskaya",
+          "Wladiwostok",
+          "Vladivostokskoye",
+          "Vladivistok",
+          "Vladisvostok",
+          "海参崴",
+          "Vladivostoksky",
+          "Vladivostok, Russia",
+          "浦塩斯徳",
+          "UN/LOCODE:RUVVO",
+          "블라디보스토크",
+          "浦塩",
+          "Vladivostok Urban Okrug",
+          "Vladvostok",
+          "울라지보스또크",
+          "Владивосток",
+          "Haishenwai",
+          "ウラジオストック",
+          "Vladivostock",
+          "Владивосто́к",
+          "符拉迪沃斯托克",
+          "ウラジオ",
+          "Vladivostok"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7130443453788757,
+        "serverTimeMs": 1851,
+        "clientLatencyMs": 1898,
+        "error": null
+      },
+      {
+        "question": "What appears in the middle of the Rwandan flag?",
+        "gold_answers": [
+          "A letter R",
+          "A letter R"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6979825496673584,
+        "serverTimeMs": 1576,
+        "clientLatencyMs": 1607,
+        "error": null
+      },
+      {
+        "question": "What is the name of the mountain pass which lies between Pakistan and Afghanistan?",
+        "gold_answers": [
+          "Kyber pass",
+          "Khyber Pass",
+          "Khyber pass",
+          "Kaiber pass",
+          "Khyber Gate",
+          "Khaibar Pass",
+          "درہ خیبر",
+          "Khaiber Pass",
+          "Khyber pass"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7461725473403931,
+        "serverTimeMs": 3119,
+        "clientLatencyMs": 3178,
+        "error": null
+      },
+      {
+        "question": "What is the name of the group of 1,196 islands in the North Indian Ocean, none bigger than five square miles?",
+        "gold_answers": [
+          "Religion in the Maldives",
+          "Maldivian Republic",
+          "The Republic of the Maldives",
+          "Iru fushi",
+          "Republic of Maldives",
+          "Sultanate of Maldives",
+          "Largest cities in the Maldives",
+          "ISO 3166-1:MV",
+          "Maldive islands",
+          "Maldives island",
+          "ދިވެހިރާއްޖޭގެ ޖުމުހޫރިއްޔާ",
+          "Dehevi Jumhuriyya",
+          "Sultanate of the Maldives",
+          "The Maldives",
+          "The Maldivies",
+          "Maldives/History",
+          "Maldivas",
+          "Maldives",
+          "Environmental issues in the Maldives",
+          "Rep Of Maldives",
+          "Indian/Maldives",
+          "Irufushi",
+          "Employment & Labour in Maldives",
+          "Maledives",
+          "Islamic Republic of the Maldives",
+          "Government of Maldives",
+          "Rep of Maldives",
+          "Republic of the Maldive Islands",
+          "The Republic of Maldives",
+          "Maldive",
+          "Etymology of Maldives",
+          "ދިވެހިރާއްޖެ",
+          "Republic of the Maldives",
+          "Maldives"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7532188892364502,
+        "serverTimeMs": 2104,
+        "clientLatencyMs": 2144,
+        "error": null
+      },
+      {
+        "question": "Which Syrian city is said to be the oldest continually inhabited city in the world?",
+        "gold_answers": [
+          "Damascuc",
+          "Damascos",
+          "Emirate of Damascus",
+          "Damascus",
+          "City of jasmin",
+          "Asia/Damascus",
+          "Damaskos",
+          "City of Jasmin",
+          "Al Shamie",
+          "Ash-Shām",
+          "دمشق",
+          "الشام",
+          "Sultanate of Damascus",
+          "Demographics of Damascus",
+          "History of Damascus",
+          "Ancient City of Damascus",
+          "Al-Shami",
+          "Damascus, SY",
+          "Damascus in the middle ages",
+          "Dimashq",
+          "Damascus, Syria",
+          "Ancient damascus",
+          "Medieval damascus",
+          "Classical damascus",
+          "Capital of Syria",
+          "Damaskus",
+          "Damascus"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8023900985717773,
+        "serverTimeMs": 2651,
+        "clientLatencyMs": 2700,
+        "error": null
+      },
+      {
+        "question": "Who was king of France at the time of the French Revolution?",
+        "gold_answers": [
+          "Louis Seize",
+          "Louis 16",
+          "Louis-Seize",
+          "Louis-Auguste, Duke of Berry",
+          "Louis Auguste de France",
+          "Louis 16 of France",
+          "Louis XVI of France",
+          "Louis XVI, King of the French",
+          "King Louis XVI of France",
+          "Louis Vi. of France",
+          "Louis xvi",
+          "Louis-Auguste de France",
+          "Louis the XVI",
+          "Louis Xvi",
+          "Louis XVI of france",
+          "Louis Bourbon",
+          "Louis-Auguste (Louis XVI)",
+          "King Louis 16",
+          "Louis ⅩⅤⅠ",
+          "Louis the Sixteenth",
+          "King Louis XVI",
+          "Sophie-Beatrix",
+          "Citoyen Louis Capet",
+          "Louis Capet",
+          "Louis The Sixteenth",
+          "Louis XVI",
+          "Louis XVI"
+        ],
+        "predicted": "spread of printing presses and the creation of new markets in the 1500s, news underwent a shift from factual and precise economic reporting, to a more Matei concludes that the report generally fails to make a legal, factually grounded case for specific indictments of specific facts or individuals, under",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.799156528711319,
+        "serverTimeMs": 4187,
+        "clientLatencyMs": 4219,
+        "error": null
+      }
+    ],
+    "HotPotQA": [
+      {
+        "question": "The 2000 British film Snatch was later adapted into a television series for what streaming service?",
+        "gold_answers": [
+          "Crackle"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.710480809211731,
+        "serverTimeMs": 1707,
+        "clientLatencyMs": 1760,
+        "error": null
+      },
+      {
+        "question": "Chris Williams last played for which football club from the National League North?",
+        "gold_answers": [
+          "Salford City Football Club"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6732321381568909,
+        "serverTimeMs": 1412,
+        "clientLatencyMs": 1463,
+        "error": null
+      },
+      {
+        "question": "Who designed the hotel that held the IFBB professional bodybuilding competition in September 1991?",
+        "gold_answers": [
+          "architect Michael Graves"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7832415103912354,
+        "serverTimeMs": 1463,
+        "clientLatencyMs": 1495,
+        "error": null
+      },
+      {
+        "question": "At the 71st Golden Globe Awards for television in 2013, what achievement did Breaking Bad, police sitcom Brooklyn Nine-Nine and American Hustle attain?",
+        "gold_answers": [
+          "multiple awards"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7826793789863586,
+        "serverTimeMs": 1469,
+        "clientLatencyMs": 1515,
+        "error": null
+      },
+      {
+        "question": "Which actor does American Beauty and American Beauty have in common?",
+        "gold_answers": [
+          "Kevin Spacey"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7313695549964905,
+        "serverTimeMs": 3362,
+        "clientLatencyMs": 3405,
+        "error": null
+      },
+      {
+        "question": "Onika Tanya Maraj is a judge on a television show hosted by whom? ",
+        "gold_answers": [
+          "Ryan Seacrest"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7822804629802704,
+        "serverTimeMs": 1679,
+        "clientLatencyMs": 1730,
+        "error": null
+      },
+      {
+        "question": "Are Hot Rod and The Memory of Our People both magazines?",
+        "gold_answers": [
+          "yes"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7508005559444428,
+        "serverTimeMs": 1634,
+        "clientLatencyMs": 1686,
+        "error": null
+      },
+      {
+        "question": "Who was Chamberlain and Colonel of the military staff of The Merrie Monarch?",
+        "gold_answers": [
+          "Colonel Charles Hastings Judd"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7373659610748291,
+        "serverTimeMs": 2190,
+        "clientLatencyMs": 2237,
+        "error": null
+      },
+      {
+        "question": "Who has written more than 300 papers, Semyon Aranovich Gershgorin or Pavel Alexandrov?",
+        "gold_answers": [
+          "Pavel Sergeyevich Alexandrov"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8165820956230164,
+        "serverTimeMs": 2151,
+        "clientLatencyMs": 2206,
+        "error": null
+      },
+      {
+        "question": "Which post DC Extended Universe actress will also play a role in what is intended to be the fifth installment of the DC Extended Universe?",
+        "gold_answers": [
+          "Gal Gadot"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8578377962112427,
+        "serverTimeMs": 2512,
+        "clientLatencyMs": 2551,
+        "error": null
+      },
+      {
+        "question": "Who was the captain of the only battleship to provide gunfire support during the Vietnam War?",
+        "gold_answers": [
+          "Rear Adm. J. Edward Snyder"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7502549886703492,
+        "serverTimeMs": 1421,
+        "clientLatencyMs": 1454,
+        "error": null
+      },
+      {
+        "question": "The Polar Bears featuring the voice of Armie Hammer, is also the same voice actor for which character in Cars 3?",
+        "gold_answers": [
+          "Jackson Storm"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7897297143936157,
+        "serverTimeMs": 1367,
+        "clientLatencyMs": 1416,
+        "error": null
+      },
+      {
+        "question": "Which tower is taller, 712 Fifth Avenue or Manhattan Life Insurance Building?",
+        "gold_answers": [
+          "712 5th Avenue"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7486852407455444,
+        "serverTimeMs": 3224,
+        "clientLatencyMs": 3277,
+        "error": null
+      },
+      {
+        "question": "Is the Pakistan fast bowler who joined the Kent County Cricket Club in June, 2011 a left-hand or right-hand batsmans?",
+        "gold_answers": [
+          "right-hand"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.850492000579834,
+        "serverTimeMs": 2126,
+        "clientLatencyMs": 2191,
+        "error": null
+      },
+      {
+        "question": "Who was born first, Arthur Conan Doyle or Penelope Lively?",
+        "gold_answers": [
+          "Arthur Ignatius Conan Doyle"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7415494918823242,
+        "serverTimeMs": 1551,
+        "clientLatencyMs": 1602,
+        "error": null
+      },
+      {
+        "question": "The Tennessee Volunteers football team plays as a member for a conference in what city?",
+        "gold_answers": [
+          "Birmingham, Alabama"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6980801224708557,
+        "serverTimeMs": 1274,
+        "clientLatencyMs": 1321,
+        "error": null
+      },
+      {
+        "question": "Ernest Foot was the best friend of the fighter pilot who had how many victories?",
+        "gold_answers": [
+          "44"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7114148139953613,
+        "serverTimeMs": 1227,
+        "clientLatencyMs": 1280,
+        "error": null
+      },
+      {
+        "question": "From March 631 to April 631, Farrukhzad Khosrau V was the king of an empire that succeeded which empire?",
+        "gold_answers": [
+          "the Parthian Empire"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8062688112258911,
+        "serverTimeMs": 3099,
+        "clientLatencyMs": 3137,
+        "error": null
+      },
+      {
+        "question": "Which suburb is a soap opera featuring a character named Beverly Marshall set in?",
+        "gold_answers": [
+          "Erinsborough"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6964760422706604,
+        "serverTimeMs": 1267,
+        "clientLatencyMs": 1316,
+        "error": null
+      },
+      {
+        "question": "Which country did the Falkland Islands beat in the 2010 Commonwealth games that has eleven administrative divisions?",
+        "gold_answers": [
+          "Samoa"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8170946836471558,
+        "serverTimeMs": 1282,
+        "clientLatencyMs": 1327,
+        "error": null
+      },
+      {
+        "question": "Which Netflix series \"Unbreakable\" character is Elizabeth Claire Kemper known for playing?",
+        "gold_answers": [
+          "Kimberly Couger \"Kimmy\" Schmidt"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7887178063392639,
+        "serverTimeMs": 2379,
+        "clientLatencyMs": 2423,
+        "error": null
+      },
+      {
+        "question": "Which television series featured an actor who also performed in \"The Young Ones\"?",
+        "gold_answers": [
+          "\"The Comic Strip Presents...\""
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7006468176841736,
+        "serverTimeMs": 1930,
+        "clientLatencyMs": 1983,
+        "error": null
+      },
+      {
+        "question": "Are both Dafeng District and Dazhou located in the same province?",
+        "gold_answers": [
+          "no"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8482266664505005,
+        "serverTimeMs": 1401,
+        "clientLatencyMs": 1462,
+        "error": null
+      },
+      {
+        "question": "In what century did this Native warrior and chief, whose brother Tenskwatawa led the Tippecanoe order of battle, become the primary leader of a large, multi tribal confederacy?",
+        "gold_answers": [
+          "nineteenth"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8477780818939209,
+        "serverTimeMs": 1649,
+        "clientLatencyMs": 1683,
+        "error": null
+      },
+      {
+        "question": "What film was written and directed by Joby Harold with music written by Samuel Sim?",
+        "gold_answers": [
+          "Awake"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6826572418212891,
+        "serverTimeMs": 2601,
+        "clientLatencyMs": 2656,
+        "error": null
+      },
+      {
+        "question": "What is the name of the ethnic group who settled in Canada in the 17th century that participated in a conflict with Irish Catholic immigrants in the Shiners' War?",
+        "gold_answers": [
+          "French Canadians"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8405172824859619,
+        "serverTimeMs": 1287,
+        "clientLatencyMs": 1339,
+        "error": null
+      },
+      {
+        "question": "The author of The Thing of It Is... is what Nationality?",
+        "gold_answers": [
+          "American"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8751073479652406,
+        "serverTimeMs": 1968,
+        "clientLatencyMs": 2008,
+        "error": null
+      },
+      {
+        "question": "How long is the bridge in the Öresund Region that connect Copenhagen, Denmark and Malmo, Sweden?",
+        "gold_answers": [
+          "8 km"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7571898698806763,
+        "serverTimeMs": 1582,
+        "clientLatencyMs": 1646,
+        "error": null
+      },
+      {
+        "question": "Martin Patterson \"Pat\" Hingle was a close friend of an actor who achieved success in what Western TV series? ",
+        "gold_answers": [
+          "Rawhide"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6701359152793884,
+        "serverTimeMs": 2553,
+        "clientLatencyMs": 2607,
+        "error": null
+      },
+      {
+        "question": "Is the Marsilea or the Brabejum the genus of more individual species of plants?",
+        "gold_answers": [
+          "Marsilea"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.847021222114563,
+        "serverTimeMs": 3969,
+        "clientLatencyMs": 4060,
+        "error": null
+      },
+      {
+        "question": "What building is opposite the ceremonial meeting place of the Accession Council in the United Kingdom?",
+        "gold_answers": [
+          "Mark Masons' Hall"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7856624126434326,
+        "serverTimeMs": 1311,
+        "clientLatencyMs": 1371,
+        "error": null
+      },
+      {
+        "question": "What material did a hairdresser from Yorkshire, England invent that was named by his granddaughter?",
+        "gold_answers": [
+          "Starlite"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7296673059463501,
+        "serverTimeMs": 3162,
+        "clientLatencyMs": 3208,
+        "error": null
+      },
+      {
+        "question": "One Raffles Place is one of the tallest skyscrapers in the city of Singapore and tallest in the wolrd outside North America until it was succeeded by a Building in city?",
+        "gold_answers": [
+          "Hong Kong"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.790564239025116,
+        "serverTimeMs": 2043,
+        "clientLatencyMs": 2089,
+        "error": null
+      },
+      {
+        "question": "Which case came first, Craig v. Boren or United States v. Paramount Pictures, Inc.?",
+        "gold_answers": [
+          "Craig v. Boren"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8131893873214722,
+        "serverTimeMs": 1886,
+        "clientLatencyMs": 1925,
+        "error": null
+      },
+      {
+        "question": "What is the nickname of the city where Darling's Waterfront Pavilion is located?",
+        "gold_answers": [
+          "\"Queen City\""
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7313964366912842,
+        "serverTimeMs": 2234,
+        "clientLatencyMs": 2278,
+        "error": null
+      },
+      {
+        "question": "The Kansas City Wizards have had three home venues in Kansas City in their time.  Which was their first?",
+        "gold_answers": [
+          "Arrowhead Stadium"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8339136838912964,
+        "serverTimeMs": 1577,
+        "clientLatencyMs": 1623,
+        "error": null
+      },
+      {
+        "question": "Henry Hall is known for fighting in the Revolutionary War, and for being the first to successfully cultivate this food found in what type of bogs?",
+        "gold_answers": [
+          "acidic"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7706186771392822,
+        "serverTimeMs": 1517,
+        "clientLatencyMs": 1577,
+        "error": null
+      },
+      {
+        "question": "A scam involving a male calling small town fast-food restaurants and pretending to be a police officer to have them strip search employees was turned into a movie of what name?",
+        "gold_answers": [
+          "Compliance"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 2.2968266904354095,
+        "serverTimeMs": 2623,
+        "clientLatencyMs": 2664,
+        "error": null
+      },
+      {
+        "question": "What airport serviced by American Airlines Shuttle, is also the largest airport in the New England region and 17th busiest in the U.S?",
+        "gold_answers": [
+          "Logan International Airport"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7720203399658203,
+        "serverTimeMs": 3237,
+        "clientLatencyMs": 3304,
+        "error": null
+      },
+      {
+        "question": "Which genus has more species, Xanthoceras or Ehretia?",
+        "gold_answers": [
+          "Ehretia"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8966130018234253,
+        "serverTimeMs": 1523,
+        "clientLatencyMs": 1565,
+        "error": null
+      },
+      {
+        "question": "What arcade game is named after the only player in major league history to have a 0.300 batting average for 7 consecutive seasons?",
+        "gold_answers": [
+          "a pinball machine"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7584547996520996,
+        "serverTimeMs": 2424,
+        "clientLatencyMs": 2465,
+        "error": null
+      },
+      {
+        "question": "What american actress/singer born in 1956 recorded the song Something there for beauty and the beast?",
+        "gold_answers": [
+          "Donna Paige Helmintoller"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7025541067123413,
+        "serverTimeMs": 2022,
+        "clientLatencyMs": 2068,
+        "error": null
+      },
+      {
+        "question": "Which professional baseball player and National 1993 Baseball Hall of Fame inductee is featured in the Greatest Sports Legends anthology? ",
+        "gold_answers": [
+          "Reginald Martinez \"Reggie\" Jackson"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8196818828582764,
+        "serverTimeMs": 1474,
+        "clientLatencyMs": 1518,
+        "error": null
+      },
+      {
+        "question": "Salisbury Woodland Gardens links a zoo with a park designed and built under the watchful eye of who?",
+        "gold_answers": [
+          "Thomas Mawson"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7799236178398132,
+        "serverTimeMs": 2954,
+        "clientLatencyMs": 2992,
+        "error": null
+      },
+      {
+        "question": "What class of instrument does Apatim Majumdar play?",
+        "gold_answers": [
+          "strings"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7319390177726746,
+        "serverTimeMs": 3393,
+        "clientLatencyMs": 3448,
+        "error": null
+      },
+      {
+        "question": "Jamie Harris is best known for his role as The Hook-Handed Man in a movie directed by who ?",
+        "gold_answers": [
+          "Brad Silberling"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8036791086196899,
+        "serverTimeMs": 1569,
+        "clientLatencyMs": 1624,
+        "error": null
+      },
+      {
+        "question": "How many laps did Harry Prowell run during the 10,000 metres race at the 1967 Pan American Games?",
+        "gold_answers": [
+          "25 laps"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7334527969360352,
+        "serverTimeMs": 1945,
+        "clientLatencyMs": 1996,
+        "error": null
+      },
+      {
+        "question": "Are  Chrysalis and Look both women's magazines?",
+        "gold_answers": [
+          "yes"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7596217393875122,
+        "serverTimeMs": 2819,
+        "clientLatencyMs": 2868,
+        "error": null
+      },
+      {
+        "question": "Which author has won more Pulitzer Prizes, Thomas Friedman or Henri Bergson?",
+        "gold_answers": [
+          "Thomas Loren Friedman"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7554667592048646,
+        "serverTimeMs": 1701,
+        "clientLatencyMs": 1754,
+        "error": null
+      },
+      {
+        "question": "Yoann Lemoine, a French video director, has created music videos for Lana Del Rey, Katy Perry, and an orchestral country pop ballad by which top pop artist?",
+        "gold_answers": [
+          "Taylor Swift"
+        ],
+        "predicted": "I don't have enough confidence to answer that.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8116562962532043,
+        "serverTimeMs": 1768,
+        "clientLatencyMs": 1828,
+        "error": null
+      }
+    ]
+  }
+}

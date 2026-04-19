@@ -1,0 +1,14 @@
+# Data files (too large for git)
+data/
+*.bin
+*.faiss
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# SQLite
+*.db
+*.db-shm
+*.db-wal

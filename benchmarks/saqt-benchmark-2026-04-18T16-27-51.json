@@ -1,0 +1,1396 @@
+{
+  "meta": {
+    "date": "2026-04-18T16:27:51.554Z",
+    "api": "https://chat.webmind.sh/api/saqt/query",
+    "samplesPerDataset": 100,
+    "concurrency": 3,
+    "timeoutMs": 30000
+  },
+  "summaries": {
+    "NaturalQuestions": {
+      "n": 100,
+      "errors": 1,
+      "exactMatch": 0.08080808080808081,
+      "f1": 0.1182566404788627,
+      "avgLatency": 17947.484848484848,
+      "p50Latency": 18946,
+      "p95Latency": 24304,
+      "avgConf": 0.7172312739521566
+    },
+    "OVERALL": {
+      "n": 100,
+      "errors": 1,
+      "exactMatch": 0.08080808080808081,
+      "f1": 0.1182566404788627,
+      "avgLatency": 17947.484848484848,
+      "p50Latency": 18946,
+      "p95Latency": 24304,
+      "avgConf": 0.7172312739521566
+    }
+  },
+  "results": {
+    "NaturalQuestions": [
+      {
+        "question": "when was the last time anyone was on the moon",
+        "gold_answers": [
+          "14 December 1972 UTC",
+          "December 1972"
+        ],
+        "predicted": "**14 December 1972**",
+        "exact_match": 0,
+        "f1": 0.8571428571428571,
+        "confidence": 0.9717704057693481,
+        "serverTimeMs": 2222,
+        "clientLatencyMs": 5574,
+        "error": null
+      },
+      {
+        "question": "who wrote he ain't heavy he's my brother lyrics",
+        "gold_answers": [
+          "Bobby Scott",
+          "Bob Russell"
+        ],
+        "predicted": "**the Hollies**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.930495023727417,
+        "serverTimeMs": 2598,
+        "clientLatencyMs": 8184,
+        "error": null
+      },
+      {
+        "question": "how many seasons of the bastard executioner are there",
+        "gold_answers": [
+          "one",
+          "one season"
+        ],
+        "predicted": "**Horse**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.520499587059021,
+        "serverTimeMs": 1828,
+        "clientLatencyMs": 10023,
+        "error": null
+      },
+      {
+        "question": "when did the eagles win last super bowl",
+        "gold_answers": [
+          "2017"
+        ],
+        "predicted": "**2017**",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.9390953779220581,
+        "serverTimeMs": 1858,
+        "clientLatencyMs": 9584,
+        "error": null
+      },
+      {
+        "question": "who won last year's ncaa women's basketball",
+        "gold_answers": [
+          "South Carolina"
+        ],
+        "predicted": "**Connecticut Huskies**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8602015972137451,
+        "serverTimeMs": 2198,
+        "clientLatencyMs": 9213,
+        "error": null
+      },
+      {
+        "question": "when did the isle of wight become an island",
+        "gold_answers": [
+          "During the last Ice Age"
+        ],
+        "predicted": "The Isle of Wight is an island county that is just off the south coast of England.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7693139314651489,
+        "serverTimeMs": 2561,
+        "clientLatencyMs": 9918,
+        "error": null
+      },
+      {
+        "question": "love yourself by justin bieber is about who",
+        "gold_answers": [
+          "Rihanna"
+        ],
+        "predicted": "Of course! I can write a \"Hello World\" program in Rust for you. Here is the code:\n\n```\nfn main() {\n    println!(\"Hello, world!\");\n}\n```",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6318418383598328,
+        "serverTimeMs": 2596,
+        "clientLatencyMs": 10023,
+        "error": null
+      },
+      {
+        "question": "who was the ruler of england in 1616",
+        "gold_answers": [
+          "James I"
+        ],
+        "predicted": "**Edward III**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7294873595237732,
+        "serverTimeMs": 2968,
+        "clientLatencyMs": 10770,
+        "error": null
+      },
+      {
+        "question": "what is the hot coffee mod in san andreas",
+        "gold_answers": [
+          "a normally inaccessible mini-game"
+        ],
+        "predicted": "**San Andreas** Fault, the 1000 km fault San Andreas, California, a place in the United States Grand Theft Auto: San Andreas, a video game for PlayStation 2, PC and Xbox.",
+        "exact_match": 0,
+        "f1": 0.07407407407407408,
+        "confidence": 0.6521408557891846,
+        "serverTimeMs": 2201,
+        "clientLatencyMs": 10427,
+        "error": null
+      },
+      {
+        "question": "what is the maximum data rate for the 802.11a standard select one",
+        "gold_answers": [
+          "54 Mbit/s"
+        ],
+        "predicted": "Schaller GmbH is a German manufacturer of musical instrument hardware based in Postbauer-Heng near Nuremberg, Bavaria.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5345887541770935,
+        "serverTimeMs": 3104,
+        "clientLatencyMs": 11614,
+        "error": null
+      },
+      {
+        "question": "which state is located in the centre of india",
+        "gold_answers": [
+          "Chhattisgarh",
+          "Madhya Pradesh"
+        ],
+        "predicted": "**Chandigarh**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.684197723865509,
+        "serverTimeMs": 2066,
+        "clientLatencyMs": 10709,
+        "error": null
+      },
+      {
+        "question": "who sang i ran all the way home",
+        "gold_answers": [
+          "The Impalas"
+        ],
+        "predicted": "**Hodel**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5482205152511597,
+        "serverTimeMs": 2058,
+        "clientLatencyMs": 12299,
+        "error": null
+      },
+      {
+        "question": "where did the last name wallace come from",
+        "gold_answers": [
+          "a Scottish surname"
+        ],
+        "predicted": "**(Twickenham) STOOP**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6585944890975952,
+        "serverTimeMs": 2828,
+        "clientLatencyMs": 12335,
+        "error": null
+      },
+      {
+        "question": "who was the actor that played ben stone on law and order",
+        "gold_answers": [
+          "Michael Moriarty"
+        ],
+        "predicted": "**Peter Facinelli**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6724344491958618,
+        "serverTimeMs": 2681,
+        "clientLatencyMs": 12980,
+        "error": null
+      },
+      {
+        "question": "who does the voice of nala in the lion king",
+        "gold_answers": [
+          "Niketa Calame",
+          "Sally Dworsky",
+          "Moira Kelly",
+          "Laura Williams"
+        ],
+        "predicted": "**Matthew Broderick**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7780424356460571,
+        "serverTimeMs": 2397,
+        "clientLatencyMs": 16625,
+        "error": null
+      },
+      {
+        "question": "who plays gram on the young and the restless",
+        "gold_answers": [
+          "Max Shippee"
+        ],
+        "predicted": "Holden and Ryan Hare",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6885182857513428,
+        "serverTimeMs": 3456,
+        "clientLatencyMs": 16216,
+        "error": null
+      },
+      {
+        "question": "what is the oath that new citizens take",
+        "gold_answers": [
+          "United States Oath of Allegiance"
+        ],
+        "predicted": "Namnå is a village in Grue Municipality in Innlandet county, Norway.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6108391284942627,
+        "serverTimeMs": 2607,
+        "clientLatencyMs": 16125,
+        "error": null
+      },
+      {
+        "question": "who is under the mask of darth vader",
+        "gold_answers": [
+          "Anakin Skywalker"
+        ],
+        "predicted": "Wales, England, Scotland, Northern Ireland",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6456827521324158,
+        "serverTimeMs": 2863,
+        "clientLatencyMs": 15171,
+        "error": null
+      },
+      {
+        "question": "who had a baby at 100 in the bible",
+        "gold_answers": [
+          "Sarah",
+          "Abraham"
+        ],
+        "predicted": "**Rattlesnake**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6112320423126221,
+        "serverTimeMs": 2477,
+        "clientLatencyMs": 19233,
+        "error": null
+      },
+      {
+        "question": "what age do you need to be to buy a bb gun",
+        "gold_answers": [
+          "18"
+        ],
+        "predicted": "A movie or TV series is called a “production”, and actors in those productions are referred to as “performers”.\n\nA union for actors who want to work on films or TV shows is called the “Screen Actors Guild” or “SAG”.\n\nIt’s a type of labor union.\n\nYou can find out more at http://www.sagaftra.org/.\n\nWhat’s your question about this, Human?",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.9205273389816284,
+        "serverTimeMs": 3095,
+        "clientLatencyMs": 19719,
+        "error": null
+      },
+      {
+        "question": "ethiopia flight 961 crashes in to the sea",
+        "gold_answers": [
+          "23 November 1996"
+        ],
+        "predicted": "**Cameroon Airlines Flight 3701** was an air accident that occurred on 3 December 1995.\n\nThe Boeing 737-200, registration TJ-CBE, crashed after it lost control near Douala, Cameroon.\n\nOn its second approach to Douala International Airport power was lost to one engine.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5300989151000977,
+        "serverTimeMs": 4491,
+        "clientLatencyMs": 21302,
+        "error": null
+      },
+      {
+        "question": "where was percy jackson and the olympians filmed",
+        "gold_answers": [
+          "Vancouver",
+          "Mission, British Columbia"
+        ],
+        "predicted": "The Heroes of Olympus",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6103683710098267,
+        "serverTimeMs": 4449,
+        "clientLatencyMs": 23878,
+        "error": null
+      },
+      {
+        "question": "how many seasons of vampire diaries r there",
+        "gold_answers": [
+          "eight",
+          "8"
+        ],
+        "predicted": "**171**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.9089532494544983,
+        "serverTimeMs": 2466,
+        "clientLatencyMs": 23228,
+        "error": null
+      },
+      {
+        "question": "how many episodes are there in dragon ball z",
+        "gold_answers": [
+          "291 episodes",
+          "291"
+        ],
+        "predicted": "**291 episodes**",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.926639974117279,
+        "serverTimeMs": 3128,
+        "clientLatencyMs": 22289,
+        "error": null
+      },
+      {
+        "question": "who plays auggie in the movie the wonder",
+        "gold_answers": [
+          "Jacob Tremblay"
+        ],
+        "predicted": "**Julia Roberts**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7636504173278809,
+        "serverTimeMs": 2206,
+        "clientLatencyMs": 19176,
+        "error": null
+      },
+      {
+        "question": "when was the first australian prime minister elected",
+        "gold_answers": [
+          "Sir Edmund Barton",
+          "1901"
+        ],
+        "predicted": "**Pretzel**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.838584303855896,
+        "serverTimeMs": 1823,
+        "clientLatencyMs": 18569,
+        "error": null
+      },
+      {
+        "question": "who plays matthew on anne with an e",
+        "gold_answers": [
+          "R. H. Thomson"
+        ],
+        "predicted": "**Joanna Douglas**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7137486338615417,
+        "serverTimeMs": 3085,
+        "clientLatencyMs": 16903,
+        "error": null
+      },
+      {
+        "question": "who is the girl in green day 21 guns",
+        "gold_answers": [
+          "Lisa Stelly"
+        ],
+        "predicted": "21-gun salute for someone that's fallen",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7426283359527588,
+        "serverTimeMs": 2906,
+        "clientLatencyMs": 10262,
+        "error": null
+      },
+      {
+        "question": "who plays joker in batman the dark knight",
+        "gold_answers": [
+          "Ledger"
+        ],
+        "predicted": "**100 years**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.9009792804718018,
+        "serverTimeMs": 2768,
+        "clientLatencyMs": 15428,
+        "error": null
+      },
+      {
+        "question": "when was the south asian association for regional co-operation (saarc) formed",
+        "gold_answers": [
+          "December 1985",
+          "8 December 1985"
+        ],
+        "predicted": "Artem Volodymyrovych Milevskyi (also transliterated Milevskyy, , ; born 12 January \n1985. is a Ukrainian former professional footballer who played as a second striker.",
+        "exact_match": 0,
+        "f1": 0.09999999999999999,
+        "confidence": 0.5455132126808167,
+        "serverTimeMs": 3768,
+        "clientLatencyMs": 16491,
+        "error": null
+      },
+      {
+        "question": "when was the first hunger games book published",
+        "gold_answers": [
+          "September 14, 2008",
+          "2008"
+        ],
+        "predicted": "**BAUHAUS**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8324915766716003,
+        "serverTimeMs": 2231,
+        "clientLatencyMs": 18946,
+        "error": null
+      },
+      {
+        "question": "who did bette midler portray in the rose",
+        "gold_answers": [
+          "Mary Rose Foster"
+        ],
+        "predicted": "Mary Rose Foster (The Rose)",
+        "exact_match": 0,
+        "f1": 1.142857142857143,
+        "confidence": 0.9667114019393921,
+        "serverTimeMs": 3153,
+        "clientLatencyMs": 17126,
+        "error": null
+      },
+      {
+        "question": "who is the lead singer of depeche mode",
+        "gold_answers": [
+          "David Gahan"
+        ],
+        "predicted": "**Vince Clarke**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8244577050209045,
+        "serverTimeMs": 1585,
+        "clientLatencyMs": 14332,
+        "error": null
+      },
+      {
+        "question": "where did the butchers in the slaughterhouse cases live",
+        "gold_answers": [
+          "New Orleans"
+        ],
+        "predicted": "**Cincinnati, Ohio**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.588520884513855,
+        "serverTimeMs": 3846,
+        "clientLatencyMs": 18576,
+        "error": null
+      },
+      {
+        "question": "who developed the concept of total quality management",
+        "gold_answers": [
+          "W. Edwards Deming"
+        ],
+        "predicted": "quality planning, quality assurance, quality control and quality improvement",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7180954217910767,
+        "serverTimeMs": 2498,
+        "clientLatencyMs": 19843,
+        "error": null
+      },
+      {
+        "question": "who wrote cant get you out of my head lyrics",
+        "gold_answers": [
+          "Cathy Dennis and Rob Davis",
+          "Rob Davis",
+          "Cathy Dennis"
+        ],
+        "predicted": "**Teddy Randazzo**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7693372964859009,
+        "serverTimeMs": 2958,
+        "clientLatencyMs": 22845,
+        "error": null
+      },
+      {
+        "question": "where does no game no life anime end",
+        "gold_answers": [
+          "the Elkia Federation",
+          "the sixth volume"
+        ],
+        "predicted": "Devil in a Blue Dress is a 1995 American neo-noir mystery thriller film written and directed by Carl Franklin, based on Walter Mosley's 1990 novel of the same name and features Denzel Washington, Tom Sizemore, Jennifer Beals, and Don Cheadle.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5634335279464722,
+        "serverTimeMs": 2501,
+        "clientLatencyMs": 24304,
+        "error": null
+      },
+      {
+        "question": "when did taylor swift's first album release",
+        "gold_answers": [
+          "October 24, 2006",
+          "2005"
+        ],
+        "predicted": "**October 24, 2006**",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.9961245059967041,
+        "serverTimeMs": 2522,
+        "clientLatencyMs": 23699,
+        "error": null
+      },
+      {
+        "question": "what are the three fifty shades of grey books",
+        "gold_answers": [
+          "Fifty Shades of Grey",
+          "Fifty Shades Darker",
+          "Fifty Shades Freed"
+        ],
+        "predicted": "Fifty Shades of Grey",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8405877947807312,
+        "serverTimeMs": 1925,
+        "clientLatencyMs": 22136,
+        "error": null
+      },
+      {
+        "question": "who has the power (judicial) to make decisions in courts of law",
+        "gold_answers": [
+          "judges"
+        ],
+        "predicted": "**Jodi Rell**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6188231706619263,
+        "serverTimeMs": 2689,
+        "clientLatencyMs": 20719,
+        "error": null
+      },
+      {
+        "question": "what are the ranks in the us navy",
+        "gold_answers": [
+          "E-8s senior chief petty officer",
+          "E-9s master chief petty officer"
+        ],
+        "predicted": "the highest possible",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8014806509017944,
+        "serverTimeMs": 2439,
+        "clientLatencyMs": 19620,
+        "error": null
+      },
+      {
+        "question": "i was a great islamic scholar and mathematician who died in 1131 ce",
+        "gold_answers": [
+          "Omar Khayyam"
+        ],
+        "predicted": "A **mathematician** is someone who studies mathematics, either as a hobby or as a job.\n\nMany mathematicians are math professors at universities, or work at cryptography.\n\nEuclid, Ramanujan, Sir Isaac Newton are some of the most famous early mathematicians.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5650944709777832,
+        "serverTimeMs": 5002,
+        "clientLatencyMs": 23177,
+        "error": null
+      },
+      {
+        "question": "who is the coach for the ottawa senators",
+        "gold_answers": [
+          "Guy Boucher"
+        ],
+        "predicted": "\"**You've Got a Habit of Leaving**\" is a song by the English singer-songwriter David Bowie, recorded and released as a single on 20 August 1965 through Parlophone.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7458738088607788,
+        "serverTimeMs": 2831,
+        "clientLatencyMs": 23022,
+        "error": null
+      },
+      {
+        "question": "last episode of what happens to my family",
+        "gold_answers": [
+          "53"
+        ],
+        "predicted": "**Calais**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7040258049964905,
+        "serverTimeMs": 2294,
+        "clientLatencyMs": 22792,
+        "error": null
+      },
+      {
+        "question": "when is the last time the vikings were in the nfc championship",
+        "gold_answers": [
+          "1976",
+          "2017/18"
+        ],
+        "predicted": "played in four Super Bowl games in the 1970s, but lost all four",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8264498710632324,
+        "serverTimeMs": 2863,
+        "clientLatencyMs": 19048,
+        "error": null
+      },
+      {
+        "question": "what are the colors of the netherlands flag",
+        "gold_answers": [
+          "blue",
+          "white",
+          "red"
+        ],
+        "predicted": "**Erin**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.743369460105896,
+        "serverTimeMs": 2499,
+        "clientLatencyMs": 18389,
+        "error": null
+      },
+      {
+        "question": "where is lord's prayer found in bible",
+        "gold_answers": [
+          "in the Gospel of Luke"
+        ],
+        "predicted": "in the Gospel of Luke",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.9585686922073364,
+        "serverTimeMs": 4081,
+        "clientLatencyMs": 20558,
+        "error": null
+      },
+      {
+        "question": "when was the last time oklahoma won a national championship in football",
+        "gold_answers": [
+          "2003",
+          "2000"
+        ],
+        "predicted": "**1945**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.9761229753494263,
+        "serverTimeMs": 1629,
+        "clientLatencyMs": 20133,
+        "error": null
+      },
+      {
+        "question": "location of the ten commandments in the bible",
+        "gold_answers": [
+          "Exodus",
+          "Deuteronomy"
+        ],
+        "predicted": "**Exodus**",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.9105669260025024,
+        "serverTimeMs": 4391,
+        "clientLatencyMs": 21865,
+        "error": null
+      },
+      {
+        "question": "where did the allies go after north africa",
+        "gold_answers": [
+          "Italy",
+          "the Italian Campaign"
+        ],
+        "predicted": "**Henry Kissinger**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5584248900413513,
+        "serverTimeMs": 3021,
+        "clientLatencyMs": 21071,
+        "error": null
+      },
+      {
+        "question": "what is the meaning of veronica in english",
+        "gold_answers": [
+          "she who brings victory"
+        ],
+        "predicted": "The Gulf of Martaban () or the Gulf of Mottama is an arm of the Andaman Sea in the southern part of Burma.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.678031325340271,
+        "serverTimeMs": 5235,
+        "clientLatencyMs": 25250,
+        "error": null
+      },
+      {
+        "question": "what is the name of the main artery which takes blood from the heart to the body",
+        "gold_answers": [
+          "The aorta",
+          "aorta"
+        ],
+        "predicted": "**Mandrake**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7200916409492493,
+        "serverTimeMs": 2427,
+        "clientLatencyMs": 25060,
+        "error": null
+      },
+      {
+        "question": "who played solomon in little house on the prairie",
+        "gold_answers": [
+          "Todd Bridges"
+        ],
+        "predicted": "Alicia Sanderson Edwards",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7910313606262207,
+        "serverTimeMs": 2611,
+        "clientLatencyMs": 24920,
+        "error": null
+      },
+      {
+        "question": "who does eric end up with in that 70s show",
+        "gold_answers": [
+          "Donna"
+        ],
+        "predicted": "**Greg Vaughan**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.727013349533081,
+        "serverTimeMs": 2162,
+        "clientLatencyMs": 21615,
+        "error": null
+      },
+      {
+        "question": "an object that moves around an external axis is said to be",
+        "gold_answers": [
+          "revolution or orbital revolution",
+          "orbit"
+        ],
+        "predicted": "In mathematics, an axis (mathematics) is a straight line around which a geometric figure can be rotated, or the axis of a graph.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6206353306770325,
+        "serverTimeMs": 3359,
+        "clientLatencyMs": 20702,
+        "error": null
+      },
+      {
+        "question": "architectural elements forming rib vaults eg wells cathedral",
+        "gold_answers": [
+          "an armature of piped masonry",
+          "barrel vaults",
+          "two to three barrel vaults"
+        ],
+        "predicted": "Milby High School is a public secondary school at 1601 Broadway in the East End, Houston, Texas, United States.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5182250738143921,
+        "serverTimeMs": 1885,
+        "clientLatencyMs": 19183,
+        "error": null
+      },
+      {
+        "question": "who sang the song good morning good morning",
+        "gold_answers": [
+          "Gene Kelly",
+          "Donald O'Connor",
+          "Judy Garland",
+          "Debbie Reynolds",
+          "Mickey Rooney"
+        ],
+        "predicted": "**Aire**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7989267110824585,
+        "serverTimeMs": 3120,
+        "clientLatencyMs": 20257,
+        "error": null
+      },
+      {
+        "question": "who wrote papa got a brand new bag",
+        "gold_answers": [
+          "James Brown"
+        ],
+        "predicted": "**Norman Whitfield**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5544611811637878,
+        "serverTimeMs": 2532,
+        "clientLatencyMs": 22391,
+        "error": null
+      },
+      {
+        "question": "where does a roadrunner live in the desert",
+        "gold_answers": [
+          "mountainous shrubland",
+          "arid lowland"
+        ],
+        "predicted": "This is a tricky question, because there are lots of animals that are struck by cars and are unfortunately killed.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6785755157470703,
+        "serverTimeMs": 3046,
+        "clientLatencyMs": 23711,
+        "error": null
+      },
+      {
+        "question": "who wrote it's a long long way to pasadena",
+        "gold_answers": [
+          "John Young",
+          "Harry Vanda",
+          "David Hemmings",
+          "George Young"
+        ],
+        "predicted": "**10 miles**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.562513530254364,
+        "serverTimeMs": 3085,
+        "clientLatencyMs": 23306,
+        "error": null
+      },
+      {
+        "question": "what's the dog's name on tom and jerry",
+        "gold_answers": [
+          "Spike"
+        ],
+        "predicted": "**Tom**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8379300832748413,
+        "serverTimeMs": 1803,
+        "clientLatencyMs": 19133,
+        "error": null
+      },
+      {
+        "question": "who are nominated for president of india 2017",
+        "gold_answers": [
+          "Meira Kumar",
+          "Ram Nath Kovind"
+        ],
+        "predicted": "**Ram Nath Kovind**",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.8942611217498779,
+        "serverTimeMs": 2742,
+        "clientLatencyMs": 16321,
+        "error": null
+      },
+      {
+        "question": "where does the path train stop in newark",
+        "gold_answers": [
+          "Newark Penn Station"
+        ],
+        "predicted": "General elections were held in Uruguay on 31 October, alongside a constitutional referendum.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6313203573226929,
+        "serverTimeMs": 2795,
+        "clientLatencyMs": 12998,
+        "error": null
+      },
+      {
+        "question": "where does route 66 start on the west coast",
+        "gold_answers": [
+          "in Santa Monica"
+        ],
+        "predicted": "**SOUTH SEA BUBBLE**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6918016076087952,
+        "serverTimeMs": 2000,
+        "clientLatencyMs": 13745,
+        "error": null
+      },
+      {
+        "question": "who is the first wife on sister wives",
+        "gold_answers": [
+          "Meri"
+        ],
+        "predicted": "Tom Wright was an Australian rugby league footballer who played for North Sydney in the New South Wales Rugby League premiership competition.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7220234870910645,
+        "serverTimeMs": 1969,
+        "clientLatencyMs": 12977,
+        "error": null
+      },
+      {
+        "question": "when did houston go to the american league",
+        "gold_answers": [
+          "2013"
+        ],
+        "predicted": "**2013**",
+        "exact_match": 1,
+        "f1": 1,
+        "confidence": 0.7526311874389648,
+        "serverTimeMs": 3054,
+        "clientLatencyMs": 13233,
+        "error": null
+      },
+      {
+        "question": "when did they stop cigarette advertising on television",
+        "gold_answers": [
+          "January 2, 1971",
+          "1970"
+        ],
+        "predicted": "**Six feet**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8963059186935425,
+        "serverTimeMs": 1767,
+        "clientLatencyMs": 12488,
+        "error": null
+      },
+      {
+        "question": "coldplay song i will try to fix you",
+        "gold_answers": [
+          "\"Fix You\""
+        ],
+        "predicted": "Evropesma () or Europjesma () was a pop song contest in Serbia and Montenegro which ran from 2004 to 2006.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5521075129508972,
+        "serverTimeMs": 2319,
+        "clientLatencyMs": 16260,
+        "error": null
+      },
+      {
+        "question": "points on a sphere or angles in a circle are measured in units called",
+        "gold_answers": [
+          "radians"
+        ],
+        "predicted": "**CHARLES II**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6876815557479858,
+        "serverTimeMs": 1615,
+        "clientLatencyMs": 14831,
+        "error": null
+      },
+      {
+        "question": "the oligodynamic effect is a phenomenon that describes",
+        "gold_answers": [
+          "a biocidal effect of metals"
+        ],
+        "predicted": "**Ugly Duckling Presse** is an American nonprofit art and publishing collective based in Brooklyn, New York City founded in 1993 by Matvei Yankelevich as a college zine.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5030324459075928,
+        "serverTimeMs": 3449,
+        "clientLatencyMs": 19396,
+        "error": null
+      },
+      {
+        "question": "where does the white witch live in narnia",
+        "gold_answers": [
+          "her castle"
+        ],
+        "predicted": "The Queen dies in the film",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6401914358139038,
+        "serverTimeMs": 2892,
+        "clientLatencyMs": 16559,
+        "error": null
+      },
+      {
+        "question": "how many games in a row have the uconn women's basketball team won",
+        "gold_answers": [
+          "111 straight wins",
+          "111",
+          "90"
+        ],
+        "predicted": "**South Carolina**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6641502380371094,
+        "serverTimeMs": 2233,
+        "clientLatencyMs": 17181,
+        "error": null
+      },
+      {
+        "question": "is there a name for the at symbol",
+        "gold_answers": [
+          "commercial at",
+          "at symbol",
+          "at sign"
+        ],
+        "predicted": "A symbol is a drawing, shape, or object that represents an idea, object, or amount of something.",
+        "exact_match": 0,
+        "f1": 0.19999999999999998,
+        "confidence": 0.595590353012085,
+        "serverTimeMs": 3058,
+        "clientLatencyMs": 16757,
+        "error": null
+      },
+      {
+        "question": "who sings the theme song for the tv show cops",
+        "gold_answers": [
+          "Inner Circle",
+          "Jamaican reggae band Inner Circle"
+        ],
+        "predicted": "**The Handsome Family**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6141939163208008,
+        "serverTimeMs": 3230,
+        "clientLatencyMs": 19685,
+        "error": null
+      },
+      {
+        "question": "when was corporal punishment banned in south africa",
+        "gold_answers": [
+          "1997"
+        ],
+        "predicted": "**1996**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.9150359034538269,
+        "serverTimeMs": 2288,
+        "clientLatencyMs": 19745,
+        "error": null
+      },
+      {
+        "question": "who plays captain phasma in star wars the force awakens",
+        "gold_answers": [
+          "Gwendoline Christie"
+        ],
+        "predicted": "Gwendoline Manuela Mariett Josephine Christie Brown[5] (born 28 October 1978),[2] known professionally as Gwendoline Christie",
+        "exact_match": 0,
+        "f1": 0.4444444444444444,
+        "confidence": 0.8050243854522705,
+        "serverTimeMs": 2436,
+        "clientLatencyMs": 22003,
+        "error": null
+      },
+      {
+        "question": "who sings she's like the wind lyrics",
+        "gold_answers": [
+          "Wendy Fraser",
+          "Patrick Swayze"
+        ],
+        "predicted": "**Michael McDonald**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6448901295661926,
+        "serverTimeMs": 2909,
+        "clientLatencyMs": 19078,
+        "error": null
+      },
+      {
+        "question": "when did marathon change its name to snickers",
+        "gold_answers": [
+          "19 July 1990"
+        ],
+        "predicted": "A marathon is a long-distance running sport event where an athlete must run 42.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5666666626930237,
+        "serverTimeMs": 2445,
+        "clientLatencyMs": 19236,
+        "error": null
+      },
+      {
+        "question": "who captained the first european ship to sail around the tip of africa",
+        "gold_answers": [
+          "Bartolomeu Dias"
+        ],
+        "predicted": "**Henry the Navigator**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6508261561393738,
+        "serverTimeMs": 2070,
+        "clientLatencyMs": 20753,
+        "error": null
+      },
+      {
+        "question": "who ordered the forbidden city to be built",
+        "gold_answers": [
+          "Zhu Di"
+        ],
+        "predicted": "Earle Hyman (born George Earle Plummer; October 11, 1926 – November 17, \n2017. was an American stage, television, and film actor.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7201974987983704,
+        "serverTimeMs": 2911,
+        "clientLatencyMs": 20749,
+        "error": null
+      },
+      {
+        "question": "who sang let me tell you about the birds and the bees",
+        "gold_answers": [
+          "Jewel Akens"
+        ],
+        "predicted": "If the fake social media account is creating spam, or spreading rumors, or using the account to harass people, then yes, in some places it is against the law.\n\nFor example, in some states of the US, it is illegal to create fake social media accounts, and you can be arrested for doing so.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6024112701416016,
+        "serverTimeMs": 3628,
+        "clientLatencyMs": 21934,
+        "error": null
+      },
+      {
+        "question": "who has the power to approve or veto legislation constitution",
+        "gold_answers": [
+          "the President"
+        ],
+        "predicted": "**Girl Guides**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.642622709274292,
+        "serverTimeMs": 3236,
+        "clientLatencyMs": 20733,
+        "error": null
+      },
+      {
+        "question": "how many seasons of the rugrats are there",
+        "gold_answers": [
+          "9 seasons",
+          "9"
+        ],
+        "predicted": "\"Rugrats\" is an American animated television series created by Arlene Klasky, Gábor Csupó and Paul Germain for Nickelodeon.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7457133531570435,
+        "serverTimeMs": 2651,
+        "clientLatencyMs": 20503,
+        "error": null
+      },
+      {
+        "question": "who is the minister of local government in zimbabwe",
+        "gold_answers": [
+          "Hon July Moyo"
+        ],
+        "predicted": "The Republic of Zimbabwe is a country in the southern part of the continent of Africa.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6829521656036377,
+        "serverTimeMs": 2093,
+        "clientLatencyMs": 18967,
+        "error": null
+      },
+      {
+        "question": "what was the initial effect of the transition from command to market economies in eastern europe",
+        "gold_answers": [
+          "Inequality of opportunity"
+        ],
+        "predicted": "**the Soviet Union**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.4968425929546356,
+        "serverTimeMs": 3825,
+        "clientLatencyMs": 17163,
+        "error": null
+      },
+      {
+        "question": "when did toyota start making cars in the us",
+        "gold_answers": [
+          "by the early 1980s",
+          "1984"
+        ],
+        "predicted": "(TYO: 7203.T) (NYSE: TM) (LSE: TYT) is an automobile maker in Japan.\n\nIt was founded by Eiji Toyoda.\n\nIt is based in **Toyota**, Aichi Prefecture.\n\nToyota provides financial services and works with many other kinds of business as well.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6745672225952148,
+        "serverTimeMs": 3981,
+        "clientLatencyMs": 18484,
+        "error": null
+      },
+      {
+        "question": "how many pieces in a terry's chocolate orange",
+        "gold_answers": [
+          "six",
+          "20"
+        ],
+        "predicted": "**1932**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8723449110984802,
+        "serverTimeMs": 2005,
+        "clientLatencyMs": 18407,
+        "error": null
+      },
+      {
+        "question": "who plays the saint of killers on preacher",
+        "gold_answers": [
+          "Graham McTavish"
+        ],
+        "predicted": "**ROBIN COUSINS**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5611591935157776,
+        "serverTimeMs": 2358,
+        "clientLatencyMs": 16913,
+        "error": null
+      },
+      {
+        "question": "who is playing the halftime show at super bowl 2016",
+        "gold_answers": [
+          "Beyoncé",
+          "Coldplay",
+          "Bruno Mars"
+        ],
+        "predicted": "**Justin Timberlake**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.8914405107498169,
+        "serverTimeMs": 3005,
+        "clientLatencyMs": 16939,
+        "error": null
+      },
+      {
+        "question": "jonny cash one piece at a time car",
+        "gold_answers": [
+          "Cadillac"
+        ],
+        "predicted": "Penal Sanctions (Indigenous Workers) Convention, 1939 (shelved) is  an International Labour Organization Convention.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6049486398696899,
+        "serverTimeMs": 2439,
+        "clientLatencyMs": 16846,
+        "error": null
+      },
+      {
+        "question": "when did the royal proclamation of 1763 end",
+        "gold_answers": [
+          "the American Revolutionary War",
+          "with the American Revolutionary War",
+          "1783"
+        ],
+        "predicted": "",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0,
+        "serverTimeMs": 30001,
+        "clientLatencyMs": 30001,
+        "error": "The operation was aborted due to timeout"
+      },
+      {
+        "question": "what is the minimum wage in france per hour",
+        "gold_answers": [
+          "11.16",
+          "€9.88 per hour."
+        ],
+        "predicted": "€9.88 ($11) per hour",
+        "exact_match": 0,
+        "f1": 0.888888888888889,
+        "confidence": 0.9832921028137207,
+        "serverTimeMs": 2903,
+        "clientLatencyMs": 16129,
+        "error": null
+      },
+      {
+        "question": "describe the three phases of the normal blood clotting process",
+        "gold_answers": [
+          "blood coagulation",
+          "vasoconstriction,"
+        ],
+        "predicted": "**Mississippi**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6707165837287903,
+        "serverTimeMs": 5375,
+        "clientLatencyMs": 23505,
+        "error": null
+      },
+      {
+        "question": "when did amnesia the dark descent come out",
+        "gold_answers": [
+          "8 September 2010"
+        ],
+        "predicted": "**Red Amnesia** () is a 2014 Chinese thriller film directed by Wang Xiaoshuai.\n\nThe film deals with the psychological impact of an elderly retired widow (played by Lü Zhong)'s past.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5752066373825073,
+        "serverTimeMs": 2308,
+        "clientLatencyMs": 25590,
+        "error": null
+      },
+      {
+        "question": "what is the oldest street in the philippines",
+        "gold_answers": [
+          "Cebu City",
+          "Colon Street"
+        ],
+        "predicted": "University of San Carlos",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6639129519462585,
+        "serverTimeMs": 2553,
+        "clientLatencyMs": 23068,
+        "error": null
+      },
+      {
+        "question": "where is the tibia and fibula bone located",
+        "gold_answers": [
+          "leg"
+        ],
+        "predicted": "**Petanque**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.7181284427642822,
+        "serverTimeMs": 2369,
+        "clientLatencyMs": 16243,
+        "error": null
+      },
+      {
+        "question": "who played bat masterson in the tv series",
+        "gold_answers": [
+          "Gene Barry"
+        ],
+        "predicted": "**Adam West**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.5940344333648682,
+        "serverTimeMs": 2311,
+        "clientLatencyMs": 16245,
+        "error": null
+      },
+      {
+        "question": "who sings sugar sugar you are my candy girl",
+        "gold_answers": [
+          "the Archies"
+        ],
+        "predicted": "**Bow Wow Wow**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6759278178215027,
+        "serverTimeMs": 2295,
+        "clientLatencyMs": 15991,
+        "error": null
+      },
+      {
+        "question": "types of skiing in the winter olympics 2018",
+        "gold_answers": [
+          "Slalom",
+          "Downhill",
+          "Super-G",
+          "Giant slalom",
+          "Slalom – (SC)"
+        ],
+        "predicted": "The Bugatti Veyron EB 16.4 is a mid-engined grand touring car , designed and developed by the Volkswagen Group and manufactured in Molsheim, France by Bugatti Automobiles S.A.S.",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.712637186050415,
+        "serverTimeMs": 2708,
+        "clientLatencyMs": 17994,
+        "error": null
+      },
+      {
+        "question": "who plays noah newman on the young and the restless",
+        "gold_answers": [
+          "Robert Gillespie Adamson IV"
+        ],
+        "predicted": "**Melissa Claire Egan**",
+        "exact_match": 0,
+        "f1": 0,
+        "confidence": 0.6542209982872009,
+        "serverTimeMs": 3431,
+        "clientLatencyMs": 19155,
+        "error": null
+      }
+    ]
+  }
+}

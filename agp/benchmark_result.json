@@ -1,0 +1,99 @@
+{
+  "tokenizer": "tiktoken cl100k (GPT-4 family)",
+  "handoff_count": 10,
+  "total_agp_tokens": 272,
+  "total_english_tokens": 330,
+  "overall_reduction_pct": 17.6,
+  "per_handoff": [
+    {
+      "n": 1,
+      "act": "propose",
+      "agp_tokens": 28,
+      "english_tokens": 33,
+      "reduction_pct": 15.2,
+      "agp": "F-ENG.Testing>F-ADV:propose axiom:websocket reconnect needs jitter to avoid thundering herd,conf:0.85",
+      "english": "F-ENG.Testing proposes to F-ADV. The axiom is 'websocket reconnect needs jitter to avoid thundering herd'. The conf is '0.85'."
+    },
+    {
+      "n": 2,
+      "act": "synth",
+      "agp_tokens": 30,
+      "english_tokens": 37,
+      "reduction_pct": 18.9,
+      "agp": "F-ADV>me:synth top3:c-140|c-142|c-141,reason:prompt cache win gives fastest measurable result",
+      "english": "F-ADV synthesizes for me. The top3 is 'c-140, c-142, c-141'. The reason is 'prompt cache win gives fastest measurable result'."
+    },
+    {
+      "n": 3,
+      "act": "challenge",
+      "agp_tokens": 29,
+      "english_tokens": 35,
+      "reduction_pct": 17.1,
+      "agp": "F-RED>F-ETH:challenge claim:flat rate limit is sufficient,counter:per-user bucket is enough only if bucket state survives restart",
+      "english": "F-RED is challenging F-ETH. The claim is 'flat rate limit is sufficient'. The counter is 'per-user bucket is enough only if bucket state survives restart'."
+    },
+    {
+      "n": 4,
+      "act": "ask",
+      "agp_tokens": 22,
+      "english_tokens": 27,
+      "reduction_pct": 18.5,
+      "agp": "F-SCI>F-ENG:ask q:what is current p95 beat latency,window_min:60",
+      "english": "F-SCI asks F-ENG. The q is 'what is current p95 beat latency'. The window min is '60'."
+    },
+    {
+      "n": 5,
+      "act": "emit",
+      "agp_tokens": 24,
+      "english_tokens": 33,
+      "reduction_pct": 27.3,
+      "agp": "F-ENG>F-SCI:emit p50_ms:1800,p95_ms:4200,samples:47",
+      "english": "F-ENG emits to F-SCI. The p50 ms is '1800'. The p95 ms is '4200'. The samples is '47'."
+    },
+    {
+      "n": 6,
+      "act": "ask",
+      "agp_tokens": 17,
+      "english_tokens": 19,
+      "reduction_pct": 10.5,
+      "agp": "user>me:ask q:show me the last 3 synapse node states",
+      "english": "user asks me. The q is 'show me the last 3 synapse node states'."
+    },
+    {
+      "n": 7,
+      "act": "emit",
+      "agp_tokens": 39,
+      "english_tokens": 46,
+      "reduction_pct": 15.2,
+      "agp": "me>user:emit nodes:node-32098e4b|node-a7c1b39e|node-d4f7890a,ready:2,required:2",
+      "english": "me emits to user. The nodes is 'node-32098e4b, node-a7c1b39e, node-d4f7890a'. The ready is '2'. The required is '2'."
+    },
+    {
+      "n": 8,
+      "act": "defer",
+      "agp_tokens": 20,
+      "english_tokens": 27,
+      "reduction_pct": 25.9,
+      "agp": "F-CEO>F-ADV:defer decision:open source timing,reason:requires cto confirmation",
+      "english": "F-CEO defers to F-ADV. The decision is 'open source timing'. The reason is 'requires cto confirmation'."
+    },
+    {
+      "n": 9,
+      "act": "challenge",
+      "agp_tokens": 35,
+      "english_tokens": 40,
+      "reduction_pct": 12.5,
+      "agp": "F-ETH.Privacy>F-ENG:challenge code_path:\"cortex2/api.py:send_message\",concern:logs full message body; should log id only",
+      "english": "F-ETH.Privacy is challenging F-ENG. The code path is 'cortex2/api.py:send_message'. The concern is 'logs full message body; should log id only'."
+    },
+    {
+      "n": 10,
+      "act": "propose",
+      "agp_tokens": 28,
+      "english_tokens": 33,
+      "reduction_pct": 15.2,
+      "agp": "F-ADV>F-ENG:propose new_faculty:Economist,reason:several decisions touched cost-benefit without economics lens",
+      "english": "F-ADV proposes to F-ENG. The new faculty is 'Economist'. The reason is 'several decisions touched cost-benefit without economics lens'."
+    }
+  ]
+}

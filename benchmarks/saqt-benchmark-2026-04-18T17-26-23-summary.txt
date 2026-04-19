@@ -1,0 +1,11 @@
+SAQT Benchmark Summary
+Date: 2026-04-18T17:26:23.495Z
+API: https://chat.webmind.sh/api/saqt/query
+Samples/dataset: 50
+
+Dataset                   N      EM      F1   AvgMs     P50     P95    Conf  Err
+------------------------------------------------------------------------
+NaturalQuestions         50    6.0%   10.1%    4165    4123    5283    0.96    0
+TriviaQA                 50    0.0%    1.2%    4565    4580    6335    2.64    0
+HotPotQA                 50    0.0%    0.7%    3501    3595    5500    4.54    0
+OVERALL                 150    2.0%    4.0%    4077    4076    5701    2.72    0

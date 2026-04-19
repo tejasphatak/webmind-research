@@ -184,7 +184,7 @@ All code, data, and benchmark results are public:
 - **Code:** [github.com/tejasphatak/Synapse](https://github.com/tejasphatak/Synapse) (`docs/` for browser engine)
 - **Benchmarks:** [github.com/tejasphatak/webmind-research](https://github.com/tejasphatak/webmind-research) (`benchmarks/` and `tools/`)
 - **Live demo:** [webmind.sh](https://webmind.sh)
-- **Knowledge base:** 306K Q&A pairs in SQLite (`trained_model/saqt.db`)
+- **Knowledge base:** 88K Q&A pairs in SQLite (test data set)
 - **Datasets:** NaturalQuestions, TriviaQA, HotPotQA via HuggingFace
 
 To reproduce the baseline: download the KB, load MiniLM-L12-v2, run similarity search. No training step. No GPU. No API key.

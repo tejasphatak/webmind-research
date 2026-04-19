@@ -33,17 +33,23 @@ This is the same attention operation. The difference is that K and V are explici
 
 ```mermaid
 graph TD
-    Q[User Query] --> E[Encoder<br/>MiniLM-L12, 22M params<br/>Off-the-shelf, not trained by us]
-    E --> |"q = encode(query)<br/>384-dim embedding"| S[Similarity Search<br/>softmax over 306K stored embeddings]
-    S --> |"Top-K candidates<br/>by cos(q, k_i)"| R[Answer-Aligned Re-Ranking]
-    R --> |"score = 0.6 * Q_sim + 0.4 * A_sim<br/>Same encoder, same space"| D{Confident?<br/>score > threshold}
-    D -->|Yes| A[Return Answer<br/>+ source provenance]
-    D -->|No| W[Web Search<br/>Wikipedia + DuckDuckGo<br/>parallel, 2+ source agreement]
-    W --> L["Learn: INSERT INTO kb<br/>(question, answer, source, timestamp)"]
-    L --> |"Index updated<br/>incrementally"| S
-    A --> C{Converged?<br/>cos(e_n, e_n-1) < epsilon}
-    C -->|No| S
+    Q[User Query] --> E[Encoder<br/>MiniLM 22M params<br/>Off-the-shelf]
+    E --> S[Similarity Search<br/>softmax over stored embeddings]
+    S --> R[Re-Ranking<br/>Q-similarity + A-similarity]
+    R --> D{Confident?}
+    D -->|Yes| A[Return Answer + Source]
+    D -->|No| W[Web Search<br/>Wikipedia + DuckDuckGo]
+    W --> L[Learn: INSERT INTO kb]
+    L --> S
+    A --> C{Converged?}
+    C -->|No, re-search| S
     C -->|Yes| F[Final Answer]
+
+    style E fill:#e1f5fe
+    style S fill:#fff3e0
+    style R fill:#f3e5f5
+    style L fill:#e8f5e9
+    style F fill:#c8e6c9
 ```
 
 Three components, each independently replaceable:

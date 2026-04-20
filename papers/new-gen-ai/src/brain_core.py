@@ -72,27 +72,26 @@ class BrainCore:
         Args:
             db_path: directory for SQLite storage. None = in-memory.
         """
-        # The growing matrix: words × words
         self._words = []           # index → word
         self._word_idx = {}        # word → index
-        self._matrix = None        # N×N relationship matrix
+        self._cooc = {}            # word_idx → {word_idx: weight} (sparse co-occurrence)
+        self._matrix = None        # legacy compat — derived from _cooc when needed
         self._db_path = db_path
 
         # The database: metadata + persistence
-        self.db = NeuronDB(path=db_path, dim=1)  # dim doesn't matter, we manage vectors
+        self.db = NeuronDB(path=db_path, dim=1)
         self._word_neurons = self.db.load_word_mappings()
 
         # Templates for fluent output
-        self._templates = []       # [(pattern, slots, vector)]
+        self._templates = []
 
-        # Thread pools: separate pools prevent starvation when ask_batch
-        # submits to _batch_pool, and each ask() submits to _pool internally
-        self._pool = ThreadPoolExecutor(max_workers=4)        # internal parallelism per query
-        self._batch_pool = ThreadPoolExecutor(max_workers=8)  # batch-level parallelism
-        self._lock = Lock()  # protects matrix/DB writes
+        # Thread pools
+        self._pool = ThreadPoolExecutor(max_workers=4)
+        self._batch_pool = ThreadPoolExecutor(max_workers=8)
+        self._lock = Lock()
 
-        # Rebuild matrix from persisted data
-        self._load_matrix()
+        # Load co-occurrence from DB
+        self._load_cooc()
 
     # --- Learning ---
 
@@ -440,10 +439,10 @@ class BrainCore:
             return {}
         return {nid: pos for nid, pos in self.db.get_sentence_neurons(best_sid)}
 
-    # --- Matrix operations ---
+    # --- Co-occurrence operations (dict-based, no N×N matrix) ---
 
     def _learn_word(self, word: str) -> int:
-        """Add a word to the matrix. Returns its dimension index."""
+        """Add a word. Returns its index."""
         word = word.lower().strip()
         if word in self._word_idx:
             return self._word_idx[word]
@@ -451,92 +450,128 @@ class BrainCore:
         idx = len(self._words)
         self._words.append(word)
         self._word_idx[word] = idx
-
-        if self._matrix is None:
-            self._matrix = np.array([[1.0]], dtype=np.float32)
-        else:
-            n = self._matrix.shape[0]
-            new_col = np.zeros((n, 1), dtype=np.float32)
-            self._matrix = np.hstack([self._matrix, new_col])
-            new_row = np.zeros((1, n + 1), dtype=np.float32)
-            new_row[0, idx] = 1.0
-            self._matrix = np.vstack([self._matrix, new_row])
-
+        self._cooc[idx] = {idx: 1.0}  # self-connection
         return idx
 
-    def _load_matrix(self):
-        """Rebuild the co-occurrence matrix from persisted word mappings and neuron vectors."""
-        # Get all words (non-internal) from the DB
+    def _load_cooc(self):
+        """Load co-occurrence from the cooccurrence table, or rebuild from neuron vectors."""
+        # Build word list from DB
         words_in_db = sorted(
             [(w, nid) for w, nid in self._word_neurons.items()
              if not w.startswith("__")],
-            key=lambda x: x[1]  # sort by neuron ID (creation order)
+            key=lambda x: x[1]
         )
-        if not words_in_db:
-            return
-
-        # Rebuild word list and index
         for word, nid in words_in_db:
             if word not in self._word_idx:
                 idx = len(self._words)
                 self._words.append(word)
                 self._word_idx[word] = idx
+                self._cooc[idx] = {idx: 1.0}
 
-        n = len(self._words)
-        if n == 0:
+        if not words_in_db:
             return
 
-        # Rebuild matrix from stored neuron vectors
-        # Each neuron's vector IS its row in the matrix
-        self._matrix = np.eye(n, dtype=np.float32)  # start with identity
+        # Try loading from cooccurrence table first
+        try:
+            rows = self.db.db.execute(
+                "SELECT word_a, word_b, weight FROM cooccurrence"
+            ).fetchall()
+            if rows:
+                for a, b, w in rows:
+                    if a not in self._cooc:
+                        self._cooc[a] = {a: 1.0}
+                    if b not in self._cooc:
+                        self._cooc[b] = {b: 1.0}
+                    self._cooc[a][b] = w
+                    self._cooc[b][a] = w
+                self._rebuild_search_matrix()
+                return
+        except Exception:
+            pass  # table doesn't exist yet
 
-        for word, nid in words_in_db:
-            neuron = self.db.get(nid)
-            if neuron is None:
-                continue
-            idx = self._word_idx.get(word)
-            if idx is None:
-                continue
-            vec = neuron.vector
-            # If stored vector fits, use it to restore co-occurrence values
-            if len(vec) <= n:
-                self._matrix[idx, :len(vec)] = vec
-                # Mirror: keep symmetric
-                self._matrix[:len(vec), idx] = vec
-
-        # Rebuild the search matrix too
-        self._rebuild_search_matrix()
-
-    def _save_matrix(self):
-        """Persist current matrix state to neuron vectors in SQLite."""
-        for word, nid in self._word_neurons.items():
-            if word.startswith("__"):
-                continue
-            vec = self._encode_word(word)
-            if np.any(vec != 0):
-                self.db.db.execute(
-                    "UPDATE neurons SET vector = ? WHERE id = ?",
-                    (vec.tobytes(), nid)
-                )
+        # Create cooccurrence table
+        self.db.db.execute("""
+            CREATE TABLE IF NOT EXISTS cooccurrence (
+                word_a INTEGER NOT NULL,
+                word_b INTEGER NOT NULL,
+                weight REAL NOT NULL DEFAULT 0.0,
+                PRIMARY KEY (word_a, word_b)
+            )
+        """)
+        self.db.db.execute(
+            "CREATE INDEX IF NOT EXISTS idx_cooc_a ON cooccurrence(word_a)")
         self.db.db.commit()
 
+        # Rebuild from neuron vectors (migration from old N×N format)
+        n = len(self._words)
+        nid_to_idx = {nid: self._word_idx[w]
+                      for w, nid in words_in_db if w in self._word_idx}
+
+        for nid, vec_bytes in self.db.db.execute("SELECT id, vector FROM neurons"):
+            idx = nid_to_idx.get(nid)
+            if idx is None:
+                continue
+            vec = np.frombuffer(vec_bytes, dtype=np.float32)
+            for j, val in enumerate(vec):
+                if j < n and val > 0 and j != idx:
+                    if idx not in self._cooc:
+                        self._cooc[idx] = {idx: 1.0}
+                    self._cooc[idx][j] = float(val)
+
+        # Persist to cooccurrence table
+        self._save_cooc()
+        self._rebuild_search_matrix()
+
+    def _save_cooc(self):
+        """Persist co-occurrence dict to SQLite."""
+        self.db.db.execute("""
+            CREATE TABLE IF NOT EXISTS cooccurrence (
+                word_a INTEGER NOT NULL,
+                word_b INTEGER NOT NULL,
+                weight REAL NOT NULL DEFAULT 0.0,
+                PRIMARY KEY (word_a, word_b)
+            )
+        """)
+        pairs = []
+        for a, neighbors in self._cooc.items():
+            for b, w in neighbors.items():
+                if a != b and w > 0:
+                    pairs.append((a, b, w))
+        self.db.db.execute("DELETE FROM cooccurrence")
+        self.db.db.executemany(
+            "INSERT INTO cooccurrence (word_a, word_b, weight) VALUES (?, ?, ?)",
+            pairs)
+        self.db.db.commit()
+
+    def _save_matrix(self):
+        """Persist co-occurrence to DB."""
+        self._save_cooc()
+
     def _learn_cooccurrence(self, words: list):
-        """Pull co-occurring words toward each other."""
+        """Strengthen connections between co-occurring words."""
         indices = [self._word_idx[w.lower().strip()] for w in words
                    if w.lower().strip() in self._word_idx]
         for i in range(len(indices)):
             for j in range(i + 1, len(indices)):
                 a, b = indices[i], indices[j]
-                self._matrix[a, b] += COOCCURRENCE_PULL
-                self._matrix[b, a] += COOCCURRENCE_PULL
+                if a not in self._cooc:
+                    self._cooc[a] = {a: 1.0}
+                if b not in self._cooc:
+                    self._cooc[b] = {b: 1.0}
+                self._cooc[a][b] = self._cooc[a].get(b, 0) + COOCCURRENCE_PULL
+                self._cooc[b][a] = self._cooc[b].get(a, 0) + COOCCURRENCE_PULL
 
     def _encode_word(self, word: str) -> np.ndarray:
-        """Get a word's vector from the matrix."""
+        """Get a word's vector from co-occurrence dict. Sparse → dense."""
         word = word.lower().strip()
+        n = len(self._words)
         idx = self._word_idx.get(word)
-        if idx is None:
-            return np.zeros(len(self._words) or 1, dtype=np.float32)
-        vec = self._matrix[idx].copy()
+        if idx is None or n == 0:
+            return np.zeros(n or 1, dtype=np.float32)
+        vec = np.zeros(n, dtype=np.float32)
+        for j, w in self._cooc.get(idx, {}).items():
+            if j < n:
+                vec[j] = w
         norm = np.linalg.norm(vec)
         if norm > 0:
             vec = vec / norm
@@ -676,13 +711,12 @@ class BrainCore:
             return {"word": word, "known": False}
 
         idx = self._word_idx[word]
-        row = self._matrix[idx]
 
-        # Find strongest relationships
+        # Find strongest relationships from co-occurrence dict
         connections = []
-        for i, val in enumerate(row):
-            if i != idx and val > 0:
-                connections.append((self._words[i], float(val)))
+        for j, val in self._cooc.get(idx, {}).items():
+            if j != idx and j < len(self._words):
+                connections.append((self._words[j], float(val)))
         connections.sort(key=lambda x: x[1], reverse=True)
 
         nid = self._word_neurons.get(word)
@@ -715,10 +749,10 @@ class BrainCore:
         h = self.db.health()
 
         # Add brain-level matrix stats
-        matrix_bytes = 0
-        if self._matrix is not None:
-            matrix_bytes = self._matrix.nbytes
-        h["brain_matrix_mb"] = round(matrix_bytes / (1024 * 1024), 2)
+        # Estimate co-occurrence memory: entries × ~50 bytes
+        cooc_entries = sum(len(v) for v in self._cooc.values())
+        h["brain_matrix_mb"] = round(cooc_entries * 50 / (1024 * 1024), 2)
+        h["cooc_entries"] = cooc_entries
         h["words"] = len(self._words)
         h["templates"] = len(self._templates)
 

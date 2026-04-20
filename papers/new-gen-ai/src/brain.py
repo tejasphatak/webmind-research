@@ -786,11 +786,12 @@ class Brain:
         n = len(vectors_list)
 
         # Batch update DB vectors
-        updates = [(vectors[row_idx].tobytes(), nid)
-                   for (word, nid), row_idx in zip(words, range(n))]
-        self.db.db.executemany(
-            "UPDATE neurons SET vector = ? WHERE id = ?", updates)
-        self.db.db.commit()
+        if self.db._vectors is not None:
+            updates = [(self.db._vectors[id_to_row[nid]].tobytes(), nid)
+                       for word, nid in words if nid in id_to_row]
+            self.db.db.executemany(
+                "UPDATE neurons SET vector = ? WHERE id = ?", updates)
+            self.db.db.commit()
 
     # --- Template extraction ---
 

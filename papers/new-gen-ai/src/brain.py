@@ -37,9 +37,11 @@ class Brain(BrainCore):
         self._search_dirty = False
         self._nid_to_word_cache = None
 
-        # Layer 2 queue: sentences waiting for SQLite persist
+        # Layer 2: async persist queue + background thread
         self._persist_queue = deque()
         self._persist_count = 0
+        self._flush_thread = None
+        self._flushing = False
 
         super().__init__(db_path=db_path)
 
@@ -70,11 +72,26 @@ class Brain(BrainCore):
         self._persist_queue.append((sentence, content, tokens, confidence))
         self._persist_count += 1
 
-        # Auto-flush every 500 teaches or on demand
+        # Auto-flush every 500 teaches on a background thread
         if self._persist_count % 500 == 0 and not self._bulk_mode:
-            self._flush_persist()
+            self._async_flush()
 
         return list(range(len(content)))  # placeholder IDs
+
+    def _async_flush(self):
+        """Kick off a background flush if not already running."""
+        if self._flushing:
+            return
+        self._flushing = True
+        self._flush_thread = Thread(target=self._bg_flush, daemon=True)
+        self._flush_thread.start()
+
+    def _bg_flush(self):
+        """Background thread: persist queued teaches to SQLite."""
+        try:
+            self._flush_persist()
+        finally:
+            self._flushing = False
 
     def _flush_persist(self):
         """Layer 2: flush queued teaches to SQLite."""
@@ -126,7 +143,11 @@ class Brain(BrainCore):
             self._search_dirty = False
 
     def ask(self, question):
-        """Flush pending teaches before querying."""
+        """Wait for any async flush, then query."""
+        # Wait for background flush to finish
+        if self._flush_thread and self._flush_thread.is_alive():
+            self._flush_thread.join()
+        # Flush any remaining
         if self._persist_queue:
             self._flush_persist()
         if getattr(self, '_search_dirty', False):
@@ -157,6 +178,8 @@ class Brain(BrainCore):
     def close(self):
         self._pool.shutdown(wait=False)
         self._batch_pool.shutdown(wait=False)
+        if self._flush_thread and self._flush_thread.is_alive():
+            self._flush_thread.join()
         self._flush_persist()
         self._save_cooc()
         self.db.close()

@@ -65,7 +65,7 @@ class Brain:
     Teaching grows the matrix. Querying searches it.
     """
 
-    def __init__(self, db_path: str = None, embed_dim: int = 384):
+    def __init__(self, db_path: str = None, embed_dim: int = 0):
         """
         Create a brain. Optionally persist to disk.
 
@@ -502,8 +502,14 @@ class Brain:
         self._word_idx[word] = idx
 
         if self._embed_dim > 0:
-            # Fixed-dim: append a random unit vector
-            new_vec = np.random.randn(self._embed_dim).astype(np.float32)
+            # Fixed-dim: start with a sparse identity-like vector
+            # (one-hot at a deterministic position based on word hash)
+            # This ensures unrelated words start orthogonal, not random-close
+            new_vec = np.zeros(self._embed_dim, dtype=np.float32)
+            h = hash(word) % self._embed_dim
+            new_vec[h] = 1.0
+            # Add small noise so same-hash words aren't identical
+            new_vec += np.random.randn(self._embed_dim).astype(np.float32) * 0.01
             new_vec /= (np.linalg.norm(new_vec) + 1e-10)
             if self._embeddings is None:
                 self._embeddings = new_vec.reshape(1, -1)

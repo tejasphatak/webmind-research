@@ -89,18 +89,42 @@ class MoEBrain:
         # Pool for parallel expert queries
         self._pool = ThreadPoolExecutor(max_workers=min(num_experts, 8))
 
+    # Max experts to keep loaded — the rest sleep on disk
+    MAX_LOADED = 4
+
     def _get_expert(self, expert_id: int) -> Brain:
-        """Lazy-load an expert brain. Thread-safe."""
-        if self._experts[expert_id] is None:
-            with self._lock:
-                # Double-check after acquiring lock
-                if self._experts[expert_id] is None:
-                    path = os.path.join(self._expert_dir, f'expert_{expert_id:02d}')
-                    os.makedirs(path, exist_ok=True)
-                    brain = Brain(db_path=path)
-                    if getattr(self, '_bulk_mode', False):
-                        brain.begin_bulk()
-                    self._experts[expert_id] = brain
+        """Load an expert, evicting least-recently-used if at capacity.
+        Like REM sleep — only the active cluster is awake."""
+        if self._experts[expert_id] is not None:
+            # Touch for LRU tracking
+            self._expert_lru = getattr(self, '_expert_lru', [])
+            if expert_id in self._expert_lru:
+                self._expert_lru.remove(expert_id)
+            self._expert_lru.append(expert_id)
+            return self._experts[expert_id]
+
+        with self._lock:
+            if self._experts[expert_id] is not None:
+                return self._experts[expert_id]
+
+            # Evict oldest if at capacity
+            self._expert_lru = getattr(self, '_expert_lru', [])
+            while len(self._expert_lru) >= self.MAX_LOADED:
+                evict_id = self._expert_lru.pop(0)
+                if self._experts[evict_id] is not None:
+                    self._experts[evict_id]._save_cache()
+                    self._experts[evict_id].close()
+                    self._experts[evict_id] = None
+
+            # Load the requested expert
+            path = os.path.join(self._expert_dir, f'expert_{expert_id:02d}')
+            os.makedirs(path, exist_ok=True)
+            brain = Brain(db_path=path)
+            if getattr(self, '_bulk_mode', False):
+                brain.begin_bulk()
+            self._experts[expert_id] = brain
+            self._expert_lru.append(expert_id)
+
         return self._experts[expert_id]
 
     def _route_word(self, word: str) -> int:

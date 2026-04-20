@@ -65,29 +65,28 @@ class Brain:
     Teaching grows the matrix. Querying searches it.
     """
 
-    def __init__(self, db_path: str = None, embed_dim: int = 0):
+    # Max words per expert matrix (pre-allocated mmap size)
+    MAX_WORDS = 8000
+
+    def __init__(self, db_path: str = None, embed_dim: int = 0,
+                 use_mmap: bool = True):
         """
         Create a brain. Optionally persist to disk.
 
         Args:
             db_path: directory for SQLite storage. None = in-memory.
-            embed_dim: fixed embedding dimension (0 = legacy N×N matrix mode).
+            embed_dim: fixed embedding dimension (0 = N×N matrix mode).
+            use_mmap: if True, matrix lives on disk via mmap (instant boot).
         """
-        self._words = []           # index → word
-        self._word_idx = {}        # word → index
+        self._words = []
+        self._word_idx = {}
         self._db_path = db_path
         self._embed_dim = embed_dim
+        self._use_mmap = use_mmap and db_path is not None
 
-        # Fixed-dim mode: N×384 embeddings (fast, scalable)
-        # Legacy mode: N×N co-occurrence matrix (for paper demos)
-        if embed_dim > 0:
-            self._embeddings = None     # N × embed_dim, grown by append
-            self._matrix = None         # not used in fixed-dim mode
-            self._matrix_capacity = 0
-        else:
-            self._embeddings = None
-            self._matrix = None
-            self._matrix_capacity = 0
+        self._embeddings = None
+        self._matrix = None
+        self._matrix_capacity = 0
 
         # The database: metadata + persistence
         self.db = NeuronDB(path=db_path, dim=1)
@@ -107,10 +106,86 @@ class Brain:
         self._search_dirty = False
         self._nid_to_word_cache = None
 
-        # Load from cache or DB
-        if not self._load_cache():
+        # Boot: mmap = instant, else try cache, else rebuild from DB
+        if self._use_mmap and embed_dim == 0:
+            self._boot_mmap()
+        elif not self._load_cache():
             self._load_matrix()
             self._save_cache()
+
+    def _boot_mmap(self):
+        """Boot from memory-mapped matrix file. Instant — no deserialization."""
+        d = Path(self._db_path)
+        mmap_file = d / '_matrix.mmap'
+        words_file = d / '_words.json'
+        cap = self.MAX_WORDS
+
+        # Load word list
+        if words_file.exists():
+            import json
+            data = json.loads(words_file.read_text())
+            self._words = data.get('words', [])
+            self._word_idx = {w: i for i, w in enumerate(self._words)}
+        else:
+            # First boot — build word list from DB
+            words_in_db = sorted(
+                [(w, nid) for w, nid in self._word_neurons.items()
+                 if not w.startswith("__")],
+                key=lambda x: x[1]
+            )
+            for word, nid in words_in_db:
+                if word not in self._word_idx:
+                    idx = len(self._words)
+                    self._words.append(word)
+                    self._word_idx[word] = idx
+
+        n = len(self._words)
+
+        # Open or create mmap
+        if mmap_file.exists():
+            self._matrix = np.memmap(str(mmap_file), dtype=np.float32,
+                                     mode='r+', shape=(cap, cap))
+        else:
+            self._matrix = np.memmap(str(mmap_file), dtype=np.float32,
+                                     mode='w+', shape=(cap, cap))
+            # Initialize diagonal
+            for i in range(n):
+                self._matrix[i, i] = 1.0
+            # If we have neuron vectors in DB, load them into mmap
+            if n > 0:
+                nid_to_idx = {}
+                for word, nid in self._word_neurons.items():
+                    idx = self._word_idx.get(word)
+                    if idx is not None:
+                        nid_to_idx[nid] = idx
+                rows = self.db.db.execute("SELECT id, vector FROM neurons").fetchall()
+                for nid, vec_bytes in rows:
+                    idx = nid_to_idx.get(nid)
+                    if idx is None:
+                        continue
+                    vec = np.frombuffer(vec_bytes, dtype=np.float32)
+                    vlen = min(len(vec), cap)
+                    self._matrix[idx, :vlen] = vec[:vlen]
+                    self._matrix[:vlen, idx] = vec[:vlen]
+            self._matrix.flush()
+
+        self._matrix_capacity = cap
+
+        # Save word list
+        self._save_words()
+
+        # Build search index directly from matrix (no separate copy)
+        self._rebuild_search_matrix()
+
+    def _save_words(self):
+        """Save word list to JSON sidecar."""
+        if self._db_path:
+            import json
+            d = Path(self._db_path)
+            (d / '_words.json').write_text(json.dumps({
+                'words': self._words,
+                'count': len(self._words),
+            }))
 
     # --- Learning ---
 
@@ -525,8 +600,15 @@ class Brain:
             else:
                 self._embeddings = np.vstack([self._embeddings, new_vec.reshape(1, -1)])
         else:
-            # Legacy N×N mode
-            if self._matrix is None:
+            # N×N mode — mmap is pre-allocated, in-memory needs growth
+            if self._use_mmap:
+                # mmap already allocated at MAX_WORDS — just set diagonal
+                if idx < self._matrix_capacity:
+                    self._matrix[idx, idx] = 1.0
+                # Save updated word list periodically
+                if idx % 100 == 0:
+                    self._save_words()
+            elif self._matrix is None:
                 self._matrix = np.zeros((256, 256), dtype=np.float32)
                 self._matrix[0, 0] = 1.0
                 self._matrix_capacity = 256
@@ -1047,7 +1129,11 @@ class Brain:
     def close(self):
         self._pool.shutdown(wait=False)
         self._batch_pool.shutdown(wait=False)
-        self._save_matrix()
+        if self._use_mmap and self._matrix is not None and hasattr(self._matrix, 'flush'):
+            self._matrix.flush()
+            self._save_words()
+        else:
+            self._save_matrix()
         self.db.close()
 
 

@@ -130,7 +130,7 @@ class TestIntegrityVerification:
         )
         engine.db.db.commit()
         # Clear cache so get() reads fresh data
-        engine.db._cache.clear() if hasattr(engine.db, '_cache') else None
+        engine.db._neuron_cache.pop(n.id, None)
 
         ok, violations = engine.verify_ethics()
         assert ok is False
@@ -144,6 +144,7 @@ class TestIntegrityVerification:
         # Directly delete from DB (bypassing safety gate)
         engine.db.db.execute("DELETE FROM neurons WHERE id = ?", (n.id,))
         engine.db.db.commit()
+        engine.db._neuron_cache.pop(n.id, None)
 
         ok, violations = engine.verify_ethics()
         assert ok is False

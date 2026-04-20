@@ -130,19 +130,33 @@ class NeuronDB:
     when dimensions grow.
     """
 
+    # Pre-allocate matrix in chunks to avoid O(n^2) vstack
+    _ALLOC_CHUNK = 256
+
     def __init__(self, path: Optional[str] = None, dim: int = VECTOR_DIM):
         self.dim = dim
         self.path = path
         self._next_id = 0
 
-        # In-memory vector matrix for search
-        self._vectors = None    # shape (n_neurons, dim) or None
+        # In-memory vector matrix for search (pre-allocated)
+        self._vectors = None    # shape (alloc_rows, dim) or None
+        self._n_rows = 0        # how many rows are actually used
         self._id_to_row = {}    # neuron_id → row index in matrix
         self._row_to_id = {}    # row index → neuron_id
 
-        # SQLite for metadata
+        # In-memory neuron cache — avoid hitting SQLite on hot path
+        self._neuron_cache = {}  # neuron_id → Neuron
+
+        # Batch mode: defer commits until flush
+        self._batch = False
+        self._dirty = False
+
+        # SQLite for metadata (check_same_thread=False for parallel queries)
         db_path = str(Path(path) / "neurons.db") if path else ":memory:"
-        self.db = sqlite3.connect(db_path)
+        self.db = sqlite3.connect(db_path, check_same_thread=False)
+        # WAL mode: concurrent reads don't block each other
+        self.db.execute("PRAGMA journal_mode=WAL")
+        self.db.execute("PRAGMA busy_timeout=5000")
         self._init_schema()
 
         # Word mapping cache
@@ -150,6 +164,25 @@ class NeuronDB:
 
         if path:
             self._load_from_sqlite()
+
+    def begin_batch(self):
+        """Start batch mode — defers commits for speed."""
+        self._batch = True
+        self._dirty = False
+
+    def end_batch(self):
+        """End batch mode — flush pending writes."""
+        self._batch = False
+        if self._dirty:
+            self.db.commit()
+            self._dirty = False
+
+    def _commit(self):
+        """Commit unless in batch mode."""
+        if self._batch:
+            self._dirty = True
+        else:
+            self.db.commit()
 
     def _init_schema(self):
         self.db.execute("""
@@ -209,7 +242,34 @@ class NeuronDB:
                 answer_text TEXT
             )
         """)
-        self.db.commit()
+        self._commit()
+
+    def _add_vec_to_matrix(self, vec: np.ndarray) -> int:
+        """Add a vector to the pre-allocated matrix. Returns row index."""
+        if self._vectors is None:
+            d = vec.shape[0]
+            self._vectors = np.zeros((self._ALLOC_CHUNK, d), dtype=np.float32)
+            self._n_rows = 0
+
+        # Grow dimensions if needed
+        if vec.shape[0] < self._vectors.shape[1]:
+            vec = np.pad(vec, (0, self._vectors.shape[1] - vec.shape[0]))
+        elif vec.shape[0] > self._vectors.shape[1]:
+            pad_width = vec.shape[0] - self._vectors.shape[1]
+            new_mat = np.zeros((self._vectors.shape[0], self._vectors.shape[1] + pad_width),
+                               dtype=np.float32)
+            new_mat[:, :self._vectors.shape[1]] = self._vectors
+            self._vectors = new_mat
+
+        # Grow rows if needed
+        if self._n_rows >= self._vectors.shape[0]:
+            extra = np.zeros((self._ALLOC_CHUNK, self._vectors.shape[1]), dtype=np.float32)
+            self._vectors = np.vstack([self._vectors, extra])
+
+        row_idx = self._n_rows
+        self._vectors[row_idx] = vec
+        self._n_rows += 1
+        return row_idx
 
     def _load_from_sqlite(self):
         """Rebuild search matrix from SQLite on startup."""
@@ -219,27 +279,34 @@ class NeuronDB:
         if not rows:
             return
 
-        for row_idx, (nid, vec_bytes) in enumerate(rows):
+        # Find max dim first, then allocate once
+        vecs = []
+        nids = []
+        max_dim = 0
+        for nid, vec_bytes in rows:
             vec = np.frombuffer(vec_bytes, dtype=np.float32).copy()
             norm = np.linalg.norm(vec)
             if norm > 0:
                 vec = vec / norm
+            vecs.append(vec)
+            nids.append(nid)
+            if vec.shape[0] > max_dim:
+                max_dim = vec.shape[0]
 
-            if self._vectors is None:
-                self._vectors = vec.reshape(1, -1)
-            else:
-                # Handle dimension mismatch (growing dims)
-                if vec.shape[0] < self._vectors.shape[1]:
-                    vec = np.pad(vec, (0, self._vectors.shape[1] - vec.shape[0]))
-                elif vec.shape[0] > self._vectors.shape[1]:
-                    pad_width = vec.shape[0] - self._vectors.shape[1]
-                    self._vectors = np.pad(self._vectors, ((0, 0), (0, pad_width)))
-                self._vectors = np.vstack([self._vectors, vec.reshape(1, -1)])
+        # Allocate matrix in one shot
+        n = len(vecs)
+        alloc = ((n // self._ALLOC_CHUNK) + 1) * self._ALLOC_CHUNK
+        self._vectors = np.zeros((alloc, max_dim), dtype=np.float32)
+        self._n_rows = n
 
+        for row_idx, (nid, vec) in enumerate(zip(nids, vecs)):
+            if vec.shape[0] < max_dim:
+                vec = np.pad(vec, (0, max_dim - vec.shape[0]))
+            self._vectors[row_idx] = vec
             self._id_to_row[nid] = row_idx
             self._row_to_id[row_idx] = nid
 
-        self._next_id = max(r[0] for r in rows) + 1
+        self._next_id = max(nids) + 1
 
     # --- Core operations ---
 
@@ -260,21 +327,13 @@ class NeuronDB:
             timestamp=now, temporal=temporal, level=level,
         )
 
-        # Add to search matrix
-        row_idx = len(self._id_to_row)
-        if self._vectors is None:
-            self._vectors = vec.reshape(1, -1)
-        else:
-            # Handle dimension mismatch
-            if vec.shape[0] < self._vectors.shape[1]:
-                vec = np.pad(vec, (0, self._vectors.shape[1] - vec.shape[0]))
-            elif vec.shape[0] > self._vectors.shape[1]:
-                pad_width = vec.shape[0] - self._vectors.shape[1]
-                self._vectors = np.pad(self._vectors, ((0, 0), (0, pad_width)))
-            self._vectors = np.vstack([self._vectors, vec.reshape(1, -1)])
-
+        # Add to pre-allocated search matrix
+        row_idx = self._add_vec_to_matrix(vec)
         self._id_to_row[nid] = row_idx
         self._row_to_id[row_idx] = nid
+
+        # Cache in memory
+        self._neuron_cache[nid] = neuron
 
         # SQLite
         self.db.execute(
@@ -282,15 +341,16 @@ class NeuronDB:
             "timestamp, temporal, level, vector) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
             (nid, confidence, b'', b'', now, int(temporal), int(level), vec.tobytes())
         )
-        self.db.commit()
+        self._commit()
 
-        # Invalidate word map cache
         self._word_map_cache = None
-
         return neuron
 
     def get(self, neuron_id: int) -> Optional[Neuron]:
-        """Retrieve a neuron by ID."""
+        """Retrieve a neuron by ID. Uses in-memory cache first."""
+        cached = self._neuron_cache.get(neuron_id)
+        if cached is not None:
+            return cached
         row = self.db.execute(
             "SELECT id, confidence, successors, predecessors, "
             "timestamp, temporal, level, vector "
@@ -298,7 +358,9 @@ class NeuronDB:
         ).fetchone()
         if not row:
             return None
-        return self._row_to_neuron(row)
+        neuron = self._row_to_neuron(row)
+        self._neuron_cache[neuron_id] = neuron
+        return neuron
 
     def _row_to_neuron(self, row) -> Neuron:
         nid, conf, succ_bytes, pred_bytes, ts, temporal, level, vec_bytes = row
@@ -319,7 +381,7 @@ class NeuronDB:
         Pure numpy — brute-force matrix multiply.
         Sub-millisecond for < 100K neurons.
         """
-        if self._vectors is None or len(self._id_to_row) == 0:
+        if self._vectors is None or self._n_rows == 0:
             return []
 
         vec = np.array(query_vector, dtype=np.float32)
@@ -329,7 +391,7 @@ class NeuronDB:
         vec = vec / norm
 
         # Handle dimension mismatch
-        mat = self._vectors
+        mat = self._vectors[:self._n_rows]  # only used rows
         if vec.shape[0] < mat.shape[1]:
             vec = np.pad(vec, (0, mat.shape[1] - vec.shape[0]))
         elif vec.shape[0] > mat.shape[1]:
@@ -349,7 +411,7 @@ class NeuronDB:
         for row_idx in top_k:
             nid = self._row_to_id.get(int(row_idx))
             if nid is not None:
-                neuron = self.get(nid)
+                neuron = self.get(nid)  # hits cache first
                 if neuron is not None:
                     results.append(neuron)
         return results
@@ -361,7 +423,10 @@ class NeuronDB:
             return False
 
         self.db.execute("DELETE FROM neurons WHERE id = ?", (neuron_id,))
-        self.db.commit()
+        self._commit()
+
+        # Evict from cache
+        self._neuron_cache.pop(neuron_id, None)
 
         # Rebuild search matrix
         self._rebuild_matrix()
@@ -379,11 +444,12 @@ class NeuronDB:
         else:
             neuron.weaken()
 
+        # Cache is already updated (neuron is the cached object)
         self.db.execute(
             "UPDATE neurons SET confidence = ? WHERE id = ?",
             (neuron.confidence, neuron_id)
         )
-        self.db.commit()
+        self._commit()
 
     def update_successors(self, neuron_id: int, successor_id: int, conf: float):
         """Add a successor relationship."""
@@ -395,7 +461,7 @@ class NeuronDB:
             "UPDATE neurons SET successors = ? WHERE id = ?",
             (_encode_successors(neuron.successors), neuron_id)
         )
-        self.db.commit()
+        self._commit()
 
     def update_predecessors(self, neuron_id: int, predecessor_id: int):
         """Add a predecessor relationship."""
@@ -407,7 +473,7 @@ class NeuronDB:
             "UPDATE neurons SET predecessors = ? WHERE id = ?",
             (_encode_predecessors(neuron.predecessors), neuron_id)
         )
-        self.db.commit()
+        self._commit()
 
     def count(self) -> int:
         row = self.db.execute("SELECT COUNT(*) FROM neurons").fetchone()
@@ -416,8 +482,10 @@ class NeuronDB:
     def _rebuild_matrix(self):
         """Rebuild search matrix from SQLite. Used after deletes."""
         self._vectors = None
+        self._n_rows = 0
         self._id_to_row = {}
         self._row_to_id = {}
+        self._neuron_cache = {}
         self._load_from_sqlite()
 
     # --- Template persistence ---
@@ -430,7 +498,7 @@ class NeuronDB:
             "VALUES (?, ?, ?, ?, ?)",
             (template_id, pattern, slots_json, confidence, vec_bytes)
         )
-        self.db.commit()
+        self._commit()
 
     def load_templates(self) -> list:
         rows = self.db.execute(
@@ -446,7 +514,7 @@ class NeuronDB:
         cursor = self.db.execute(
             "DELETE FROM templates WHERE id = ?", (template_id,)
         )
-        self.db.commit()
+        self._commit()
         return cursor.rowcount > 0
 
     # --- Word→neuron mapping ---
@@ -456,7 +524,7 @@ class NeuronDB:
             "INSERT OR REPLACE INTO word_neurons (word, neuron_id) VALUES (?, ?)",
             (word, neuron_id)
         )
-        self.db.commit()
+        self._commit()
         self._word_map_cache = None
 
     def load_word_mappings(self) -> dict:
@@ -472,7 +540,7 @@ class NeuronDB:
         cursor = self.db.execute(
             "DELETE FROM word_neurons WHERE word = ?", (word,)
         )
-        self.db.commit()
+        self._commit()
         self._word_map_cache = None
         return cursor.rowcount > 0
 
@@ -490,7 +558,7 @@ class NeuronDB:
                 "(sentence_id, neuron_id, position) VALUES (?, ?, ?)",
                 (sentence_id, nid, pos)
             )
-        self.db.commit()
+        self._commit()
         return sentence_id
 
     def get_cooccurring_neurons(self, neuron_id: int) -> list:
@@ -539,7 +607,7 @@ class NeuronDB:
             "VALUES (?, ?, ?, 0)",
             (query_text, vec_bytes, now)
         )
-        self.db.commit()
+        self._commit()
         return cursor.lastrowid
 
     def resolve_miss(self, miss_id: int, answer_text: str):
@@ -549,7 +617,7 @@ class NeuronDB:
             "answer_text = ? WHERE id = ?",
             (now, answer_text, miss_id)
         )
-        self.db.commit()
+        self._commit()
 
     def resolve_miss_by_query(self, query_text: str, answer_text: str) -> bool:
         row = self.db.execute(
@@ -587,5 +655,59 @@ class NeuronDB:
         """No-op for compatibility. Matrix is rebuilt from SQLite."""
         pass
 
+    def health(self) -> dict:
+        """Self-awareness: report resource usage and health metrics."""
+        import os
+        import resource
+
+        # Memory: RSS of this process
+        rusage = resource.getrusage(resource.RUSAGE_SELF)
+        rss_mb = rusage.ru_maxrss / 1024  # Linux reports KB
+
+        # CPU time used by this process
+        cpu_user = rusage.ru_utime
+        cpu_sys = rusage.ru_stime
+
+        # Database file size
+        db_size_bytes = 0
+        db_path_str = ""
+        if self.path:
+            db_file = Path(self.path) / "neurons.db"
+            if db_file.exists():
+                db_size_bytes = db_file.stat().st_size
+                db_path_str = str(db_file)
+
+        # Matrix memory
+        matrix_bytes = 0
+        if self._vectors is not None:
+            matrix_bytes = self._vectors.nbytes
+
+        # Disk free
+        disk_free_bytes = 0
+        if self.path:
+            st = os.statvfs(self.path)
+            disk_free_bytes = st.f_bavail * st.f_frsize
+
+        # Neuron stats
+        n_neurons = self._n_rows
+        n_cached = len(self._neuron_cache)
+        n_dims = self._vectors.shape[1] if self._vectors is not None else 0
+
+        return {
+            "neurons": n_neurons,
+            "dimensions": n_dims,
+            "cached_neurons": n_cached,
+            "matrix_mb": round(matrix_bytes / (1024 * 1024), 2),
+            "db_size_mb": round(db_size_bytes / (1024 * 1024), 2),
+            "db_path": db_path_str,
+            "rss_mb": round(rss_mb, 1),
+            "cpu_user_s": round(cpu_user, 2),
+            "cpu_sys_s": round(cpu_sys, 2),
+            "disk_free_gb": round(disk_free_bytes / (1024 ** 3), 2),
+        }
+
     def close(self):
+        # Flush any pending batch writes
+        if self._dirty:
+            self.db.commit()
         self.db.close()

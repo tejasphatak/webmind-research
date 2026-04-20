@@ -18,7 +18,9 @@ import re
 import hashlib
 import struct
 from collections import OrderedDict
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
+from threading import Lock
 
 import numpy as np
 
@@ -83,6 +85,12 @@ class Brain:
         # Templates for fluent output
         self._templates = []       # [(pattern, slots, vector)]
 
+        # Thread pools: separate pools prevent starvation when ask_batch
+        # submits to _batch_pool, and each ask() submits to _pool internally
+        self._pool = ThreadPoolExecutor(max_workers=4)        # internal parallelism per query
+        self._batch_pool = ThreadPoolExecutor(max_workers=8)  # batch-level parallelism
+        self._lock = Lock()  # protects matrix/DB writes
+
         # Rebuild matrix from persisted data
         self._load_matrix()
 
@@ -106,46 +114,58 @@ class Brain:
         if not content:
             return []
 
-        # Grow the matrix
-        dim_before = len(self._words)
-        for word in content:
-            self._learn_word(word)
-        if len(content) >= 2:
-            self._learn_cooccurrence(content)
+        with self._lock:
+            # Batch all DB writes for this sentence
+            self.db.begin_batch()
 
-        # Create neurons in DB
-        neurons = []
-        for word in content:
-            if word in self._word_neurons:
-                n = self.db.get(self._word_neurons[word])
-                if n:
+            # Grow the matrix
+            dim_before = len(self._words)
+            for word in content:
+                self._learn_word(word)
+            if len(content) >= 2:
+                self._learn_cooccurrence(content)
+
+            # Create neurons in DB
+            neurons = []
+            for word in content:
+                if word in self._word_neurons:
+                    n = self.db.get(self._word_neurons[word])
+                    if n:
+                        neurons.append(n)
+                        continue
+                vec = self._encode_word(word)
+                if np.any(vec != 0):
+                    n = self.db.insert(vec, confidence=confidence)
+                    self._word_neurons[word] = n.id
+                    self.db.save_word_mapping(word, n.id)
                     neurons.append(n)
-                    continue
-            vec = self._encode_word(word)
-            if np.any(vec != 0):
-                n = self.db.insert(vec, confidence=confidence)
-                self._word_neurons[word] = n.id
-                self.db.save_word_mapping(word, n.id)
-                neurons.append(n)
 
-        # Wire successors
-        for i in range(len(neurons) - 1):
-            self.db.update_successors(neurons[i].id, neurons[i + 1].id, 0.8)
-            self.db.update_predecessors(neurons[i + 1].id, neurons[i].id)
+            # Wire successors
+            for i in range(len(neurons) - 1):
+                self.db.update_successors(neurons[i].id, neurons[i + 1].id, 0.8)
+                self.db.update_predecessors(neurons[i + 1].id, neurons[i].id)
 
-        # Record sentence
-        if len(neurons) >= 2:
-            self.db.record_sentence([n.id for n in neurons])
+            # Record sentence
+            if len(neurons) >= 2:
+                self.db.record_sentence([n.id for n in neurons])
 
-        # Extract template
-        if len(tokens) >= 3:
-            self._extract_template(tokens)
+            # Extract template
+            if len(tokens) >= 3:
+                self._extract_template(tokens)
 
-        # Reindex if dimensions changed
-        if len(self._words) != dim_before:
-            self._reindex()
+            # Flush all writes at once
+            self.db.end_batch()
+
+            # Reindex if dimensions changed
+            if len(self._words) != dim_before:
+                self._reindex()
 
         return [n.id for n in neurons]
+
+    def teach_batch(self, sentences: list, confidence: float = 0.5) -> list:
+        """Teach multiple sentences in parallel. Returns list of neuron ID lists."""
+        futures = [self._batch_pool.submit(self.teach, s, confidence) for s in sentences]
+        return [f.result() for f in futures]
 
     def correct(self, question: str, answer: str):
         """Learn from a failure. Teach the answer, resolve the miss."""
@@ -153,6 +173,13 @@ class Brain:
         self.db.resolve_miss_by_query(question, answer)
 
     # --- Querying ---
+
+    def ask_batch(self, questions: list) -> list:
+        """Ask multiple questions in parallel. Returns list of result dicts.
+        Uses separate batch pool to avoid thread starvation (each ask()
+        uses the internal pool for its own parallelism)."""
+        futures = [self._batch_pool.submit(self.ask, q) for q in questions]
+        return [f.result() for f in futures]
 
     def ask(self, question: str) -> dict:
         """
@@ -174,30 +201,39 @@ class Brain:
             return {"answer": "I don't know.", "confidence": 0.0,
                     "strategy": "abstain", "trace": "No knowledge"}
 
-        # Search: find neurons near the query
-        neighbors = self.db.search(query_vec, k=10)
+        # Parallel: search + disambiguate at the same time
+        content_nids = [self._word_neurons[t] for t in content
+                        if t in self._word_neurons]
+
+        search_future = self._pool.submit(self.db.search, query_vec, 10)
+
+        def _disambiguate():
+            if not content_nids:
+                return None
+            sentences = self.db.get_sentences_for_neurons(content_nids)
+            if not sentences:
+                return None
+            scored = [(sid, len(nids)) for sid, nids in sentences.items()]
+            scored.sort(key=lambda x: x[1], reverse=True)
+            best_score = scored[0][1]
+            result = set()
+            for sid, score in scored:
+                if score < best_score:
+                    break
+                for nid, pos in self.db.get_sentence_neurons(sid):
+                    result.add(nid)
+            return result
+
+        disambig_future = self._pool.submit(_disambiguate)
+
+        neighbors = search_future.result()
         if not neighbors:
+            disambig_future.cancel()
             self.db.log_miss(question, query_vec)
             return {"answer": "I don't know.", "confidence": 0.0,
                     "strategy": "abstain", "trace": "No matching neurons"}
 
-        # Disambiguate: which taught sentence best matches?
-        content_nids = [self._word_neurons[t] for t in content
-                        if t in self._word_neurons]
-
-        best_sentence_nids = None
-        if content_nids:
-            sentences = self.db.get_sentences_for_neurons(content_nids)
-            if sentences:
-                scored = [(sid, len(nids)) for sid, nids in sentences.items()]
-                scored.sort(key=lambda x: x[1], reverse=True)
-                best_score = scored[0][1]
-                best_sentence_nids = set()
-                for sid, score in scored:
-                    if score < best_score:
-                        break
-                    for nid, pos in self.db.get_sentence_neurons(sid):
-                        best_sentence_nids.add(nid)
+        best_sentence_nids = disambig_future.result()
 
         # Collect concept neurons
         nid_to_word = {nid: w for w, nid in self._word_neurons.items()
@@ -240,20 +276,26 @@ class Brain:
     # --- Generation ---
 
     def _generate(self, concepts, query_vec, query_tokens, question) -> dict:
-        """Generate an answer from concepts."""
+        """Generate an answer from concepts. Template and chain race in parallel."""
         concept_neurons = [n for n, w in concepts]
         concept_words = [w for n, w in concepts]
         concept_ids = [n.id for n, w in concepts]
 
-        # Try template
-        template_result = self._try_template(
+        # Race: template vs sentence chain — first valid result wins
+        template_future = self._pool.submit(
+            self._try_template,
             concept_neurons, concept_words, concept_ids, query_vec, query_tokens
         )
+        chain_future = self._pool.submit(
+            self._try_sentence_chain, concept_ids, query_vec
+        )
+
+        # Wait for both (fast enough that ordering doesn't matter much)
+        template_result = template_future.result()
+        chain_result = chain_future.result()
+
         if template_result:
             return template_result
-
-        # Try sentence chain: output taught sentence in word order
-        chain_result = self._try_sentence_chain(concept_ids, query_vec)
         if chain_result:
             return chain_result
 
@@ -641,7 +683,32 @@ class Brain:
             "matrix_size": f"{len(self._words)}x{len(self._words)}",
         }
 
+    def health(self) -> dict:
+        """
+        Self-awareness: how much resource am I using?
+        Returns CPU, memory, DB size, matrix size, disk free.
+        The brain should know its own cost and not exploit the machine.
+        """
+        h = self.db.health()
+
+        # Add brain-level matrix stats
+        matrix_bytes = 0
+        if self._matrix is not None:
+            matrix_bytes = self._matrix.nbytes
+        h["brain_matrix_mb"] = round(matrix_bytes / (1024 * 1024), 2)
+        h["words"] = len(self._words)
+        h["templates"] = len(self._templates)
+
+        # Pressure signals — is the brain getting too big?
+        h["memory_pressure"] = h["rss_mb"] > 512  # over 512MB = pressure
+        h["disk_pressure"] = h["disk_free_gb"] < 1.0  # under 1GB = pressure
+        h["matrix_pressure"] = len(self._words) > 10000  # 10K dims = O(100M) matrix
+
+        return h
+
     def close(self):
+        self._pool.shutdown(wait=False)
+        self._batch_pool.shutdown(wait=False)
         self._save_matrix()
         self.db.close()
 

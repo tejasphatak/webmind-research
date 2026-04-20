@@ -65,40 +65,50 @@ class Brain:
     Teaching grows the matrix. Querying searches it.
     """
 
-    def __init__(self, db_path: str = None):
+    def __init__(self, db_path: str = None, embed_dim: int = 384):
         """
         Create a brain. Optionally persist to disk.
 
         Args:
             db_path: directory for SQLite storage. None = in-memory.
+            embed_dim: fixed embedding dimension (0 = legacy N×N matrix mode).
         """
-        # The growing matrix: words × words
         self._words = []           # index → word
         self._word_idx = {}        # word → index
-        self._matrix = None        # N×N relationship matrix
         self._db_path = db_path
+        self._embed_dim = embed_dim
+
+        # Fixed-dim mode: N×384 embeddings (fast, scalable)
+        # Legacy mode: N×N co-occurrence matrix (for paper demos)
+        if embed_dim > 0:
+            self._embeddings = None     # N × embed_dim, grown by append
+            self._matrix = None         # not used in fixed-dim mode
+            self._matrix_capacity = 0
+        else:
+            self._embeddings = None
+            self._matrix = None
+            self._matrix_capacity = 0
 
         # The database: metadata + persistence
-        self.db = NeuronDB(path=db_path, dim=1)  # dim doesn't matter, we manage vectors
+        self.db = NeuronDB(path=db_path, dim=1)
         self._word_neurons = self.db.load_word_mappings()
 
         # Templates for fluent output
-        self._templates = []       # [(pattern, slots, vector)]
+        self._templates = []
 
-        # Thread pools: separate pools prevent starvation when ask_batch
-        # submits to _batch_pool, and each ask() submits to _pool internally
-        self._pool = ThreadPoolExecutor(max_workers=4)        # internal parallelism per query
-        self._batch_pool = ThreadPoolExecutor(max_workers=8)  # batch-level parallelism
-        self._lock = Lock()  # protects matrix/DB writes
+        # Thread pools
+        self._pool = ThreadPoolExecutor(max_workers=4)
+        self._batch_pool = ThreadPoolExecutor(max_workers=8)
+        self._lock = Lock()
 
-        # Bulk mode: skip reindex during mass feeding, do it once at end
+        # Bulk mode
         self._bulk_mode = False
         self._bulk_dirty = False
 
-        # Try fast cache first, fall back to full rebuild
+        # Load from cache or DB
         if not self._load_cache():
             self._load_matrix()
-            self._save_cache()  # cache for next boot
+            self._save_cache()
 
     # --- Learning ---
 
@@ -482,7 +492,7 @@ class Brain:
     # --- Matrix operations ---
 
     def _learn_word(self, word: str) -> int:
-        """Add a word to the matrix. Returns its dimension index."""
+        """Add a word to the brain. Returns its index."""
         word = word.lower().strip()
         if word in self._word_idx:
             return self._word_idx[word]
@@ -491,37 +501,43 @@ class Brain:
         self._words.append(word)
         self._word_idx[word] = idx
 
-        if self._matrix is None:
-            # Pre-allocate with room to grow
-            self._matrix = np.zeros((256, 256), dtype=np.float32)
-            self._matrix[0, 0] = 1.0
-            self._matrix_capacity = 256
+        if self._embed_dim > 0:
+            # Fixed-dim: append a random unit vector
+            new_vec = np.random.randn(self._embed_dim).astype(np.float32)
+            new_vec /= (np.linalg.norm(new_vec) + 1e-10)
+            if self._embeddings is None:
+                self._embeddings = new_vec.reshape(1, -1)
+            else:
+                self._embeddings = np.vstack([self._embeddings, new_vec.reshape(1, -1)])
         else:
-            cap = self._matrix_capacity
-            if idx >= cap:
-                # Double capacity — one big alloc instead of N small ones
-                new_cap = max(cap * 2, idx + 256)
-                new_matrix = np.zeros((new_cap, new_cap), dtype=np.float32)
-                n = self._matrix.shape[0]
-                new_matrix[:n, :n] = self._matrix[:n, :n]
-                self._matrix = new_matrix
-                self._matrix_capacity = new_cap
-            self._matrix[idx, idx] = 1.0
+            # Legacy N×N mode
+            if self._matrix is None:
+                self._matrix = np.zeros((256, 256), dtype=np.float32)
+                self._matrix[0, 0] = 1.0
+                self._matrix_capacity = 256
+            else:
+                cap = self._matrix_capacity
+                if idx >= cap:
+                    new_cap = max(cap * 2, idx + 256)
+                    new_matrix = np.zeros((new_cap, new_cap), dtype=np.float32)
+                    n = self._matrix.shape[0]
+                    new_matrix[:n, :n] = self._matrix[:n, :n]
+                    self._matrix = new_matrix
+                    self._matrix_capacity = new_cap
+                self._matrix[idx, idx] = 1.0
 
         return idx
 
     def _load_matrix(self):
-        """Rebuild the co-occurrence matrix from persisted word mappings and neuron vectors."""
-        # Get all words (non-internal) from the DB
+        """Rebuild embeddings/matrix from persisted word mappings and neuron vectors."""
         words_in_db = sorted(
             [(w, nid) for w, nid in self._word_neurons.items()
              if not w.startswith("__")],
-            key=lambda x: x[1]  # sort by neuron ID (creation order)
+            key=lambda x: x[1]
         )
         if not words_in_db:
             return
 
-        # Rebuild word list and index
         for word, nid in words_in_db:
             if word not in self._word_idx:
                 idx = len(self._words)
@@ -532,34 +548,45 @@ class Brain:
         if n == 0:
             return
 
-        # Rebuild matrix from stored neuron vectors
-        # Pre-allocate with room to grow
-        cap = max(n * 2, 256)
-        self._matrix = np.zeros((cap, cap), dtype=np.float32)
-        for i in range(n):
-            self._matrix[i, i] = 1.0  # identity for active dims
-        self._matrix_capacity = cap
-
-        # Bulk load ALL neuron vectors in one query (not 17K individual SELECTs)
+        # Bulk load neuron vectors
         nid_to_idx = {}
         for word, nid in words_in_db:
             idx = self._word_idx.get(word)
             if idx is not None:
                 nid_to_idx[nid] = idx
 
-        rows = self.db.db.execute(
-            "SELECT id, vector FROM neurons"
-        ).fetchall()
-        for nid, vec_bytes in rows:
-            idx = nid_to_idx.get(nid)
-            if idx is None:
-                continue
-            vec = np.frombuffer(vec_bytes, dtype=np.float32).copy()
-            if len(vec) <= n:
-                self._matrix[idx, :len(vec)] = vec
-                self._matrix[:len(vec), idx] = vec
+        rows = self.db.db.execute("SELECT id, vector FROM neurons").fetchall()
 
-        # Rebuild the search matrix too
+        if self._embed_dim > 0:
+            # Fixed-dim mode: load vectors directly as embeddings
+            self._embeddings = np.random.randn(n, self._embed_dim).astype(np.float32)
+            # Normalize initial random vectors
+            norms = np.linalg.norm(self._embeddings, axis=1, keepdims=True)
+            self._embeddings /= (norms + 1e-10)
+            # Overwrite with stored vectors where they fit
+            for nid, vec_bytes in rows:
+                idx = nid_to_idx.get(nid)
+                if idx is None:
+                    continue
+                vec = np.frombuffer(vec_bytes, dtype=np.float32).copy()
+                if len(vec) == self._embed_dim:
+                    self._embeddings[idx] = vec
+        else:
+            # Legacy N×N mode
+            cap = max(n * 2, 256)
+            self._matrix = np.zeros((cap, cap), dtype=np.float32)
+            for i in range(n):
+                self._matrix[i, i] = 1.0
+            self._matrix_capacity = cap
+            for nid, vec_bytes in rows:
+                idx = nid_to_idx.get(nid)
+                if idx is None:
+                    continue
+                vec = np.frombuffer(vec_bytes, dtype=np.float32).copy()
+                if len(vec) <= n:
+                    self._matrix[idx, :len(vec)] = vec
+                    self._matrix[:len(vec), idx] = vec
+
         self._rebuild_search_matrix()
 
     def _cache_dir(self):
@@ -569,14 +596,17 @@ class Brain:
         return None
 
     def _save_cache(self):
-        """Save matrix + words to .npy/.txt for fast boot next time."""
+        """Save embeddings/matrix + words to .npy/.txt for fast boot."""
         d = self._cache_dir()
-        if d is None or self._matrix is None or len(self._words) == 0:
+        if d is None or len(self._words) == 0:
             return
         try:
             n = len(self._words)
-            # Save the active portion of the matrix (not pre-allocated padding)
-            np.save(d / '_matrix_cache.npy', self._matrix[:n, :n])
+            # Save the active data
+            if self._embed_dim > 0 and self._embeddings is not None:
+                np.save(d / '_matrix_cache.npy', self._embeddings[:n])
+            elif self._matrix is not None:
+                np.save(d / '_matrix_cache.npy', self._matrix[:n, :n])
             # Save word list
             (d / '_words_cache.txt').write_text('\n'.join(self._words))
             # Save search matrix if it exists
@@ -638,13 +668,19 @@ class Brain:
             # Success — populate state
             self._words = words
             self._word_idx = {w: i for i, w in enumerate(words)}
-
-            # Pre-allocate with room to grow
             n = len(words)
-            cap = max(n * 2, 256)
-            self._matrix = np.zeros((cap, cap), dtype=np.float32)
-            self._matrix[:n, :n] = matrix_data
-            self._matrix_capacity = cap
+
+            if self._embed_dim > 0 and matrix_data.ndim == 2 and matrix_data.shape[1] == self._embed_dim:
+                # Fixed-dim: load embeddings directly
+                self._embeddings = matrix_data
+            elif self._embed_dim == 0 and matrix_data.ndim == 2 and matrix_data.shape[0] == matrix_data.shape[1]:
+                # Legacy N×N mode
+                cap = max(n * 2, 256)
+                self._matrix = np.zeros((cap, cap), dtype=np.float32)
+                self._matrix[:n, :n] = matrix_data
+                self._matrix_capacity = cap
+            else:
+                return False  # dimension mismatch — stale cache from different mode
 
             # Load search matrix if cached
             if vectors_file.exists() and idmap_file.exists():
@@ -677,31 +713,57 @@ class Brain:
         """Pull co-occurring words toward each other."""
         indices = [self._word_idx[w.lower().strip()] for w in words
                    if w.lower().strip() in self._word_idx]
-        for i in range(len(indices)):
-            for j in range(i + 1, len(indices)):
-                a, b = indices[i], indices[j]
-                self._matrix[a, b] += COOCCURRENCE_PULL
-                self._matrix[b, a] += COOCCURRENCE_PULL
+
+        if self._embed_dim > 0:
+            # Fixed-dim: pull embeddings closer (Hebbian)
+            for i in range(len(indices)):
+                for j in range(i + 1, len(indices)):
+                    a, b = indices[i], indices[j]
+                    va = self._embeddings[a]
+                    vb = self._embeddings[b]
+                    self._embeddings[a] = va + COOCCURRENCE_PULL * vb
+                    self._embeddings[b] = vb + COOCCURRENCE_PULL * va
+                    # Renormalize
+                    na = np.linalg.norm(self._embeddings[a])
+                    nb = np.linalg.norm(self._embeddings[b])
+                    if na > 0:
+                        self._embeddings[a] /= na
+                    if nb > 0:
+                        self._embeddings[b] /= nb
+        else:
+            # Legacy N×N mode
+            for i in range(len(indices)):
+                for j in range(i + 1, len(indices)):
+                    a, b = indices[i], indices[j]
+                    self._matrix[a, b] += COOCCURRENCE_PULL
+                    self._matrix[b, a] += COOCCURRENCE_PULL
 
     def _encode_word(self, word: str) -> np.ndarray:
-        """Get a word's vector from the matrix."""
+        """Get a word's vector."""
         word = word.lower().strip()
-        n = len(self._words)
         idx = self._word_idx.get(word)
-        if idx is None or n == 0:
-            return np.zeros(n or 1, dtype=np.float32)
-        # Slice to active dimensions (matrix may be pre-allocated larger)
-        vec = self._matrix[idx, :n].copy()
-        norm = np.linalg.norm(vec)
-        if norm > 0:
-            vec = vec / norm
-        return vec
+
+        if self._embed_dim > 0:
+            # Fixed-dim: return the embedding directly
+            if idx is None or self._embeddings is None:
+                return np.zeros(self._embed_dim, dtype=np.float32)
+            return self._embeddings[idx].copy()
+        else:
+            # Legacy N×N mode
+            n = len(self._words)
+            if idx is None or n == 0:
+                return np.zeros(n or 1, dtype=np.float32)
+            vec = self._matrix[idx, :n].copy()
+            norm = np.linalg.norm(vec)
+            if norm > 0:
+                vec = vec / norm
+            return vec
 
     def _encode_sentence(self, text: str) -> np.ndarray:
         """Encode a sentence as weighted average of word vectors."""
         tokens = self._tokenize(text)
+        d = self._embed_dim if self._embed_dim > 0 else (len(self._words) or 1)
         if not tokens:
-            d = len(self._words) or 1
             return np.zeros(d, dtype=np.float32)
 
         vectors = []
@@ -713,7 +775,6 @@ class Brain:
                 weights.append(1.0 / (1.0 + 0.1 * i))
 
         if not vectors:
-            d = len(self._words) or 1
             return np.zeros(d, dtype=np.float32)
 
         vectors = np.array(vectors)
@@ -753,9 +814,7 @@ class Brain:
             self._templates[i] = (pattern, slots, vec)
 
     def _rebuild_search_matrix(self):
-        """Rebuild the DB's search matrix from scratch.
-        Pre-allocate instead of vstack loop (was O(N²), now O(N)).
-        """
+        """Rebuild the DB's search matrix from current embeddings/matrix."""
         words = [(w, nid) for w, nid in self._word_neurons.items()
                  if not w.startswith("__")]
         if not words:
@@ -764,7 +823,6 @@ class Brain:
             self.db._row_to_id = {}
             return
 
-        dim = len(self._words) or 1
         vectors_list = []
         id_to_row = {}
         row_to_id = {}
@@ -783,7 +841,6 @@ class Brain:
             self.db._vectors = None
         self.db._id_to_row = id_to_row
         self.db._row_to_id = row_to_id
-        n = len(vectors_list)
 
         # Batch update DB vectors
         if self.db._vectors is not None:
@@ -846,13 +903,22 @@ class Brain:
             return {"word": word, "known": False}
 
         idx = self._word_idx[word]
-        row = self._matrix[idx]
 
         # Find strongest relationships
         connections = []
-        for i, val in enumerate(row):
-            if i != idx and val > 0:
-                connections.append((self._words[i], float(val)))
+        if self._embed_dim > 0 and self._embeddings is not None:
+            # Fixed-dim: cosine similarity to all other words
+            vec = self._embeddings[idx]
+            sims = self._embeddings @ vec
+            for i, sim in enumerate(sims):
+                if i != idx and sim > 0.1:
+                    connections.append((self._words[i], float(sim)))
+        elif self._matrix is not None:
+            n = len(self._words)
+            for i in range(n):
+                val = self._matrix[idx, i]
+                if i != idx and val > 0:
+                    connections.append((self._words[i], float(val)))
         connections.sort(key=lambda x: x[1], reverse=True)
 
         nid = self._word_neurons.get(word)
@@ -886,7 +952,9 @@ class Brain:
 
         # Add brain-level matrix stats
         matrix_bytes = 0
-        if self._matrix is not None:
+        if self._embeddings is not None:
+            matrix_bytes = self._embeddings.nbytes
+        elif self._matrix is not None:
             matrix_bytes = self._matrix.nbytes
         h["brain_matrix_mb"] = round(matrix_bytes / (1024 * 1024), 2)
         h["words"] = len(self._words)

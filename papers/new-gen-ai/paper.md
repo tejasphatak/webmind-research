@@ -1,4 +1,4 @@
-# From INSERT to CONVERGE: Reasoning via Co-occurrence Matrices and Convergence
+# Attention Without Weights: Reasoning via Self-Growing Co-occurrence Matrices
 
 *Tejas Phatak*
 *Independent Researcher*

@@ -242,6 +242,10 @@ class NeuronDB:
                 answer_text TEXT
             )
         """)
+        self.db.execute("""
+            CREATE INDEX IF NOT EXISTS idx_misses_query
+            ON misses(query_text, resolved)
+        """)
         self._commit()
 
     def _add_vec_to_matrix(self, vec: np.ndarray) -> int:
@@ -547,10 +551,13 @@ class NeuronDB:
     # --- Sentence-level association ---
 
     def record_sentence(self, neuron_ids: list) -> int:
-        row = self.db.execute(
-            "SELECT COALESCE(MAX(sentence_id), -1) + 1 FROM sentence_neurons"
-        ).fetchone()
-        sentence_id = row[0]
+        if not hasattr(self, '_next_sentence_id'):
+            row = self.db.execute(
+                "SELECT COALESCE(MAX(sentence_id), -1) + 1 FROM sentence_neurons"
+            ).fetchone()
+            self._next_sentence_id = row[0]
+        sentence_id = self._next_sentence_id
+        self._next_sentence_id += 1
 
         for pos, nid in enumerate(neuron_ids):
             self.db.execute(

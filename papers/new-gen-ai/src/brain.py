@@ -104,6 +104,8 @@ class Brain:
         # Bulk mode
         self._bulk_mode = False
         self._bulk_dirty = False
+        self._search_dirty = False
+        self._nid_to_word_cache = None
 
         # Load from cache or DB
         if not self._load_cache():
@@ -154,6 +156,7 @@ class Brain:
                 if np.any(vec != 0):
                     n = self.db.insert(vec, confidence=confidence)
                     self._word_neurons[word] = n.id
+                    self._nid_to_word_cache = None  # invalidate
                     self.db.save_word_mapping(word, n.id)
                     neurons.append(n)
 
@@ -173,12 +176,9 @@ class Brain:
             if not self._bulk_mode:
                 self.db.end_batch()
 
-            # Reindex if dimensions changed
+            # Lazy reindex: mark dirty, rebuild before next ask()
             if len(self._words) != dim_before:
-                if self._bulk_mode:
-                    self._bulk_dirty = True
-                else:
-                    self._reindex()
+                self._search_dirty = True
 
             # In bulk mode, periodic commit to avoid unbounded WAL
             if self._bulk_mode:
@@ -205,9 +205,8 @@ class Brain:
         self._save_cache()  # cache for fast boot next time
 
     def teach_batch(self, sentences: list, confidence: float = 0.5) -> list:
-        """Teach multiple sentences in parallel. Returns list of neuron ID lists."""
-        futures = [self._batch_pool.submit(self.teach, s, confidence) for s in sentences]
-        return [f.result() for f in futures]
+        """Teach multiple sentences. Sequential — lock serializes anyway."""
+        return [self.teach(s, confidence) for s in sentences]
 
     def correct(self, question: str, answer: str):
         """Learn from a failure. Teach the answer, resolve the miss."""
@@ -228,11 +227,17 @@ class Brain:
         Ask the brain a question. Returns dict with answer + trace.
 
         Flow:
-          1. Encode question → vector
-          2. Find nearest neurons in DB
-          3. Disambiguate via sentence table
+          1. Lazy reindex if dirty (teaches since last ask)
+          2. Encode question → vector
+          3. Find nearest neurons in DB
+          4. Disambiguate via sentence table
           4. Output answer (template or concept list)
         """
+        # Lazy reindex: rebuild search matrix if teaches happened since last ask
+        if getattr(self, '_search_dirty', False):
+            self._rebuild_search_matrix()
+            self._search_dirty = False
+
         tokens = self._tokenize(question)
         content = [t for t in tokens if t not in FUNCTION_WORDS]
         query_vec = self._encode_sentence(question)
@@ -278,8 +283,10 @@ class Brain:
         best_sentence_nids = disambig_future.result()
 
         # Collect concept neurons
-        nid_to_word = {nid: w for w, nid in self._word_neurons.items()
-                       if not w.startswith("__")}
+        if self._nid_to_word_cache is None:
+            self._nid_to_word_cache = {nid: w for w, nid in self._word_neurons.items()
+                                       if not w.startswith("__")}
+        nid_to_word = self._nid_to_word_cache
         concepts = []
         seen = set()
 
@@ -431,8 +438,10 @@ class Brain:
         if not sentences:
             return None
 
-        nid_to_word = {nid: w for w, nid in self._word_neurons.items()
-                       if not w.startswith("__")}
+        if self._nid_to_word_cache is None:
+            self._nid_to_word_cache = {nid: w for w, nid in self._word_neurons.items()
+                                       if not w.startswith("__")}
+        nid_to_word = self._nid_to_word_cache
 
         scored = []
         for sid, matched in sentences.items():
@@ -766,30 +775,35 @@ class Brain:
             return vec
 
     def _encode_sentence(self, text: str) -> np.ndarray:
-        """Encode a sentence as weighted average of word vectors."""
+        """Encode a sentence as weighted average of word vectors. In-place accumulation."""
         tokens = self._tokenize(text)
         d = self._embed_dim if self._embed_dim > 0 else (len(self._words) or 1)
         if not tokens:
             return np.zeros(d, dtype=np.float32)
 
-        vectors = []
-        weights = []
+        result = np.zeros(d, dtype=np.float32)
+        total_weight = 0.0
         for i, token in enumerate(tokens):
-            vec = self._encode_word(token)
-            if np.any(vec != 0):
-                vectors.append(vec)
-                weights.append(1.0 / (1.0 + 0.1 * i))
+            token = token.lower().strip()
+            idx = self._word_idx.get(token)
+            if idx is not None:
+                if self._embed_dim > 0 and self._embeddings is not None:
+                    vec = self._embeddings[idx]
+                elif self._matrix is not None:
+                    n = len(self._words)
+                    vec = self._matrix[idx, :n]
+                else:
+                    continue
+                if np.any(vec != 0):
+                    w = 1.0 / (1.0 + 0.1 * i)
+                    result += w * vec  # accumulate directly, no copy
+                    total_weight += w
 
-        if not vectors:
-            return np.zeros(d, dtype=np.float32)
-
-        vectors = np.array(vectors)
-        weights = np.array(weights, dtype=np.float32)
-        weights = weights / weights.sum()
-        result = np.average(vectors, axis=0, weights=weights).astype(np.float32)
+        if total_weight > 0:
+            result /= total_weight
         norm = np.linalg.norm(result)
         if norm > 0:
-            result = result / norm
+            result /= norm
         return result
 
     def _reindex(self):

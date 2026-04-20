@@ -22,6 +22,7 @@ import os
 import sqlite3
 import time
 import numpy as np
+from collections import OrderedDict
 from pathlib import Path
 from threading import Lock
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -93,14 +94,14 @@ class MoEBrain:
     MAX_LOADED = 4
 
     def _get_expert(self, expert_id: int) -> Brain:
-        """Load an expert, evicting least-recently-used if at capacity.
-        Like REM sleep — only the active cluster is awake."""
+        """Load an expert, evicting LRU if at capacity. O(1) via OrderedDict."""
+        if not hasattr(self, '_expert_lru'):
+            self._expert_lru = OrderedDict()
+
         if self._experts[expert_id] is not None:
-            # Touch for LRU tracking
-            self._expert_lru = getattr(self, '_expert_lru', [])
+            # Touch — move to end (most recently used)
             if expert_id in self._expert_lru:
-                self._expert_lru.remove(expert_id)
-            self._expert_lru.append(expert_id)
+                self._expert_lru.move_to_end(expert_id)
             return self._experts[expert_id]
 
         with self._lock:
@@ -108,9 +109,8 @@ class MoEBrain:
                 return self._experts[expert_id]
 
             # Evict oldest if at capacity
-            self._expert_lru = getattr(self, '_expert_lru', [])
             while len(self._expert_lru) >= self.MAX_LOADED:
-                evict_id = self._expert_lru.pop(0)
+                evict_id, _ = self._expert_lru.popitem(last=False)
                 if self._experts[evict_id] is not None:
                     self._experts[evict_id]._save_cache()
                     self._experts[evict_id].close()
@@ -123,7 +123,7 @@ class MoEBrain:
             if getattr(self, '_bulk_mode', False):
                 brain.begin_bulk()
             self._experts[expert_id] = brain
-            self._expert_lru.append(expert_id)
+            self._expert_lru[expert_id] = True
 
         return self._experts[expert_id]
 
@@ -271,8 +271,9 @@ class MoEBrain:
         return best
 
     def ask_batch(self, questions: list) -> list:
-        """Ask multiple questions. Returns list of result dicts."""
-        return [self.ask(q) for q in questions]
+        """Ask multiple questions in parallel — different questions hit different experts."""
+        futures = [self._pool.submit(self.ask, q) for q in questions]
+        return [f.result() for f in futures]
 
     def teach_batch(self, sentences: list, confidence: float = 0.5) -> list:
         """Teach multiple sentences. Returns list of neuron ID lists."""

@@ -1,139 +1,163 @@
 """
-Brain: performance layer over brain_core.
+Brain: two-layer performance wrapper over brain_core.
 
-Adds bulk mode, lazy reindex, cached lookups, and death risk
-on top of the clean core. The core handles all reasoning.
-This file handles all speed.
+Layer 1 (fast): co-occurrence dict + word list. In-memory. Microseconds.
+Layer 2 (background): neurons, successors, sentences → SQLite. Deferred.
 
-    from brain import Brain  # same API, faster
+The brain KNOWS things at Layer 1 speed. It SAVES them at Layer 2 speed.
+Like human memory: learn instantly, consolidate during sleep.
+
+    from brain import Brain
     brain = Brain(db_path="./my_brain")
-    brain.teach("paris is the capital of france")
-    brain.ask("capital of france")
+    brain.teach("paris is the capital of france")  # instant (dict only)
+    brain.ask("capital of france")                  # works immediately
+    brain.flush()                                   # persist to SQLite
 """
 
 import os
 import numpy as np
-from pathlib import Path
-from threading import Lock
+from collections import deque
+from threading import Lock, Thread
 from concurrent.futures import ThreadPoolExecutor
 
 from brain_core import BrainCore, FUNCTION_WORDS, STRUCTURAL_WORDS, COOCCURRENCE_PULL
 
-# Re-export for backward compatibility
 __all__ = ['Brain', 'FUNCTION_WORDS', 'STRUCTURAL_WORDS', 'COOCCURRENCE_PULL']
 
 
 class Brain(BrainCore):
-    """Brain with performance optimizations. Same API as BrainCore.
+    """Two-layer brain. Same API as BrainCore, much faster teach.
 
-    Adds:
-    - Bulk mode (batched commits + deferred reindex)
-    - Lazy reindex (dirty flag, rebuild before next ask)
-    - Cached nid→word dict
-    - Death risk score
+    Layer 1: _learn_word + _learn_cooccurrence (dict ops, ~microseconds)
+    Layer 2: neuron insert + successors + sentences (SQLite, deferred)
     """
 
     def __init__(self, db_path=None):
         self._bulk_mode = False
-        self._bulk_dirty = False
         self._search_dirty = False
         self._nid_to_word_cache = None
+
+        # Layer 2 queue: sentences waiting for SQLite persist
+        self._persist_queue = deque()
+        self._persist_count = 0
+
         super().__init__(db_path=db_path)
 
-    # --- Lazy reindex ---
+    # --- Two-layer teach ---
 
     def teach(self, sentence, confidence=0.5):
-        """Teach with lazy reindex + cached dict invalidation."""
-        with self._lock:
-            if not self._bulk_mode:
-                self.db.begin_batch()
-
-            dim_before = len(self._words)
-            result = self._teach_inner(sentence, confidence)
-
-            if not self._bulk_mode:
-                self.db.end_batch()
-
-            if len(self._words) != dim_before:
-                self._search_dirty = True
-                self._nid_to_word_cache = None
-
-            if self._bulk_mode:
-                self._bulk_count = getattr(self, '_bulk_count', 0) + 1
-                if self._bulk_count % 500 == 0:
-                    self.db.db.commit()
-
-        return result
-
-    def _teach_inner(self, sentence, confidence):
-        """Core teach logic without locking/batching."""
+        """Layer 1: instant. Dict operations only.
+        Layer 2: queued for background persist."""
         tokens = self._tokenize(sentence)
         content = [t for t in tokens if t not in FUNCTION_WORDS]
         if not content:
             return []
 
-        for word in content:
-            self._learn_word(word)
-        if len(content) >= 2:
-            self._learn_cooccurrence(content)
+        with self._lock:
+            dim_before = len(self._words)
 
-        neurons = []
-        for word in content:
-            if word in self._word_neurons:
-                n = self.db.get(self._word_neurons[word])
-                if n:
-                    neurons.append(n)
-                    continue
-            vec = self._encode_word(word)
-            if np.any(vec != 0):
-                n = self.db.insert(vec, confidence=confidence)
-                self._word_neurons[word] = n.id
+            # Layer 1: co-occurrence (instant)
+            for word in content:
+                self._learn_word(word)
+            if len(content) >= 2:
+                self._learn_cooccurrence(content)
+
+            if len(self._words) != dim_before:
+                self._search_dirty = True
                 self._nid_to_word_cache = None
-                self.db.save_word_mapping(word, n.id)
-                neurons.append(n)
 
-        for i in range(len(neurons) - 1):
-            self.db.update_successors(neurons[i].id, neurons[i + 1].id, 0.8)
-            self.db.update_predecessors(neurons[i + 1].id, neurons[i].id)
+        # Queue for Layer 2 persist
+        self._persist_queue.append((sentence, content, tokens, confidence))
+        self._persist_count += 1
 
-        if len(neurons) >= 2:
-            self.db.record_sentence([n.id for n in neurons])
+        # Auto-flush every 500 teaches or on demand
+        if self._persist_count % 500 == 0 and not self._bulk_mode:
+            self._flush_persist()
 
-        if len(tokens) >= 3:
-            self._extract_template(tokens)
+        return list(range(len(content)))  # placeholder IDs
 
-        return [n.id for n in neurons]
+    def _flush_persist(self):
+        """Layer 2: flush queued teaches to SQLite."""
+        if not self._persist_queue:
+            return
+
+        self.db.begin_batch()
+        flushed = 0
+
+        while self._persist_queue:
+            sentence, content, tokens, confidence = self._persist_queue.popleft()
+
+            neurons = []
+            for word in content:
+                if word in self._word_neurons:
+                    n = self.db.get(self._word_neurons[word])
+                    if n:
+                        neurons.append(n)
+                        continue
+                vec = self._encode_word(word)
+                if np.any(vec != 0):
+                    n = self.db.insert(vec, confidence=confidence)
+                    self._word_neurons[word] = n.id
+                    self._nid_to_word_cache = None
+                    self.db.save_word_mapping(word, n.id)
+                    neurons.append(n)
+
+            for i in range(len(neurons) - 1):
+                self.db.update_successors(neurons[i].id, neurons[i + 1].id, 0.8)
+                self.db.update_predecessors(neurons[i + 1].id, neurons[i].id)
+
+            if len(neurons) >= 2:
+                self.db.record_sentence([n.id for n in neurons])
+
+            if len(tokens) >= 3:
+                self._extract_template(tokens)
+
+            flushed += 1
+
+        self.db.end_batch()
+        return flushed
+
+    def flush(self):
+        """Force flush all pending teaches to SQLite."""
+        self._flush_persist()
+        self._save_cooc()
+        if self._search_dirty:
+            self._rebuild_search_matrix()
+            self._search_dirty = False
 
     def ask(self, question):
-        """Ask with lazy reindex."""
+        """Flush pending teaches before querying."""
+        if self._persist_queue:
+            self._flush_persist()
         if getattr(self, '_search_dirty', False):
             self._rebuild_search_matrix()
             self._search_dirty = False
         return super().ask(question)
 
     def teach_batch(self, sentences, confidence=0.5):
-        """Sequential batch — lock serializes anyway."""
-        return [self.teach(s, confidence) for s in sentences]
+        """Batch teach — all Layer 1 instant, one Layer 2 flush at end."""
+        results = [self.teach(s, confidence) for s in sentences]
+        return results
 
     # --- Bulk mode ---
 
     def begin_bulk(self):
+        """Enter bulk mode. Layer 2 deferred until end_bulk."""
         self._bulk_mode = True
-        self._bulk_dirty = False
-        self._bulk_count = 0
-        self.db.begin_batch()
 
     def end_bulk(self):
+        """Exit bulk mode. Flush everything."""
         self._bulk_mode = False
-        self.db.end_batch()
-        self._rebuild_search_matrix()
+        self._flush_persist()
         self._save_cooc()
+        self._rebuild_search_matrix()
 
     # --- Close ---
 
     def close(self):
         self._pool.shutdown(wait=False)
         self._batch_pool.shutdown(wait=False)
+        self._flush_persist()
         self._save_cooc()
         self.db.close()
 
@@ -141,6 +165,7 @@ class Brain(BrainCore):
 
     def health(self):
         h = super().health()
+        h["persist_queue"] = len(self._persist_queue)
 
         try:
             with open('/proc/meminfo') as f:

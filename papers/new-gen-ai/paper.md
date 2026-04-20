@@ -3,7 +3,7 @@
 *Tejas Phatak*
 *Independent Researcher*
 
-**Acknowledgments.** Implementation assistance from Claude (Anthropic). Review and verification from Gemini (Google DeepMind). AI tools were used as assistants, not as autonomous contributors.
+**Acknowledgments.** Substantial implementation, drafting, and experimental work by Claude (Anthropic, Opus). The author conceived the architecture, directed all design decisions, and verified results. Review assistance from Gemini (Google DeepMind).
 
 **Disclaimer.** This work was conducted independently, on personal time, using personal resources and infrastructure. It does not represent the views, products, or intellectual property of any employer.
 

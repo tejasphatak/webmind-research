@@ -1,10 +1,12 @@
 """
 Neuron: the atomic unit of the reasoning engine.
 
-A neuron is a point in N-dimensional concept space with a trust score.
-No text. No labels. Just a vector, a confidence, and connections to neighbors.
+A neuron is a point in concept space with a trust score.
+No text. No labels. Just a vector, a confidence, and connections.
 
-Storage: FAISS index for spatial search + SQLite for metadata.
+Storage: numpy matrix for search, SQLite for metadata.
+No FAISS. Custom brute-force cosine similarity.
+Supports growing dimensions — vectors expand as the system learns.
 """
 
 import sqlite3
@@ -15,7 +17,6 @@ from enum import IntEnum
 from pathlib import Path
 from typing import Optional
 
-import faiss
 import numpy as np
 
 VECTOR_DIM = 384
@@ -39,7 +40,7 @@ class Neuron:
     """A point in concept space with a trust score."""
 
     id: int
-    vector: np.ndarray                          # float32[384]
+    vector: np.ndarray                          # float32[dim]
     confidence: float = DEFAULT_CONFIDENCE
     successors: list = field(default_factory=list)   # [(neuron_id, confidence)]
     predecessors: list = field(default_factory=list)  # [neuron_id, ...]
@@ -57,7 +58,6 @@ class Neuron:
 
     def add_successor(self, neuron_id: int, conf: float):
         """Add or update a successor. Evict lowest if full."""
-        # Update existing
         for i, (sid, _) in enumerate(self.successors):
             if sid == neuron_id:
                 self.successors[i] = (neuron_id, conf)
@@ -66,7 +66,6 @@ class Neuron:
         if len(self.successors) < MAX_SUCCESSORS:
             self.successors.append((neuron_id, conf))
         else:
-            # Evict lowest confidence
             min_idx = min(range(len(self.successors)), key=lambda i: self.successors[i][1])
             if conf > self.successors[min_idx][1]:
                 self.successors[min_idx] = (neuron_id, conf)
@@ -90,10 +89,9 @@ class Neuron:
         return self.confidence * decay
 
 
-# --- Serialization helpers for successor/predecessor lists ---
+# --- Serialization helpers ---
 
 def _encode_successors(successors: list) -> bytes:
-    """Pack [(id, conf), ...] into bytes."""
     parts = []
     for sid, conf in successors:
         parts.append(struct.pack('<if', sid, conf))
@@ -101,7 +99,6 @@ def _encode_successors(successors: list) -> bytes:
 
 
 def _decode_successors(data: bytes) -> list:
-    """Unpack bytes into [(id, conf), ...]."""
     size = struct.calcsize('<if')
     result = []
     for i in range(0, len(data), size):
@@ -122,10 +119,15 @@ def _decode_predecessors(data: bytes) -> list:
 
 class NeuronDB:
     """
-    Neuron storage: FAISS for spatial search, SQLite for metadata.
+    Neuron storage: numpy for search, SQLite for metadata.
 
-    Proximity IS connection. No explicit wiring graph.
-    Two neurons are "connected" if they're close in vector space.
+    Search is brute-force cosine similarity over a numpy matrix.
+    At our scale (< 100K neurons), this is sub-millisecond.
+    No external dependencies for search — pure numpy.
+
+    Supports dynamic dimensions: vectors can change size as the
+    encoder learns new concepts. Existing vectors are zero-padded
+    when dimensions grow.
     """
 
     def __init__(self, path: Optional[str] = None, dim: int = VECTOR_DIM):
@@ -133,21 +135,21 @@ class NeuronDB:
         self.path = path
         self._next_id = 0
 
-        # FAISS index: flat L2 for MVP (swap to IVF at scale)
-        self.index = faiss.IndexFlatIP(dim)  # inner product = cosine sim on normalized vectors
+        # In-memory vector matrix for search
+        self._vectors = None    # shape (n_neurons, dim) or None
+        self._id_to_row = {}    # neuron_id → row index in matrix
+        self._row_to_id = {}    # row index → neuron_id
 
         # SQLite for metadata
         db_path = str(Path(path) / "neurons.db") if path else ":memory:"
         self.db = sqlite3.connect(db_path)
         self._init_schema()
 
-        # In-memory id→faiss_position map (FAISS uses sequential positions)
-        self._id_to_pos = {}
-        self._pos_to_id = {}
+        # Word mapping cache
+        self._word_map_cache = None
 
         if path:
-            if not self._load_index_from_file():
-                self._load_index()
+            self._load_from_sqlite()
 
     def _init_schema(self):
         self.db.execute("""
@@ -184,26 +186,62 @@ class NeuronDB:
                 FOREIGN KEY (neuron_id) REFERENCES neurons(id)
             )
         """)
+        self.db.execute("""
+            CREATE TABLE IF NOT EXISTS sentence_neurons (
+                sentence_id INTEGER NOT NULL,
+                neuron_id INTEGER NOT NULL,
+                position INTEGER NOT NULL,
+                PRIMARY KEY (sentence_id, neuron_id)
+            )
+        """)
+        self.db.execute("""
+            CREATE INDEX IF NOT EXISTS idx_sentence_neurons_nid
+            ON sentence_neurons(neuron_id)
+        """)
+        self.db.execute("""
+            CREATE TABLE IF NOT EXISTS misses (
+                id INTEGER PRIMARY KEY,
+                query_text TEXT NOT NULL,
+                query_vector BLOB NOT NULL,
+                timestamp INTEGER NOT NULL,
+                resolved INTEGER NOT NULL DEFAULT 0,
+                resolved_timestamp INTEGER,
+                answer_text TEXT
+            )
+        """)
         self.db.commit()
 
-    def _load_index(self):
-        """Rebuild FAISS index from SQLite on startup."""
+    def _load_from_sqlite(self):
+        """Rebuild search matrix from SQLite on startup."""
         rows = self.db.execute(
             "SELECT id, vector FROM neurons ORDER BY id"
         ).fetchall()
         if not rows:
             return
 
-        for row in rows:
-            nid = row[0]
-            vec = np.frombuffer(row[1], dtype=np.float32).copy()
-            vec = vec / (np.linalg.norm(vec) + 1e-10)
-            pos = self.index.ntotal
-            self.index.add(vec.reshape(1, -1))
-            self._id_to_pos[nid] = pos
-            self._pos_to_id[pos] = nid
+        for row_idx, (nid, vec_bytes) in enumerate(rows):
+            vec = np.frombuffer(vec_bytes, dtype=np.float32).copy()
+            norm = np.linalg.norm(vec)
+            if norm > 0:
+                vec = vec / norm
+
+            if self._vectors is None:
+                self._vectors = vec.reshape(1, -1)
+            else:
+                # Handle dimension mismatch (growing dims)
+                if vec.shape[0] < self._vectors.shape[1]:
+                    vec = np.pad(vec, (0, self._vectors.shape[1] - vec.shape[0]))
+                elif vec.shape[0] > self._vectors.shape[1]:
+                    pad_width = vec.shape[0] - self._vectors.shape[1]
+                    self._vectors = np.pad(self._vectors, ((0, 0), (0, pad_width)))
+                self._vectors = np.vstack([self._vectors, vec.reshape(1, -1)])
+
+            self._id_to_row[nid] = row_idx
+            self._row_to_id[row_idx] = nid
 
         self._next_id = max(r[0] for r in rows) + 1
+
+    # --- Core operations ---
 
     def insert(self, vector: np.ndarray, confidence: float = DEFAULT_CONFIDENCE,
                level: Level = Level.WORD, temporal: bool = False) -> Neuron:
@@ -212,7 +250,9 @@ class NeuronDB:
         self._next_id += 1
 
         vec = np.array(vector, dtype=np.float32)
-        vec = vec / (np.linalg.norm(vec) + 1e-10)  # normalize for cosine sim
+        norm = np.linalg.norm(vec)
+        if norm > 0:
+            vec = vec / norm
 
         now = int(time.time())
         neuron = Neuron(
@@ -220,26 +260,40 @@ class NeuronDB:
             timestamp=now, temporal=temporal, level=level,
         )
 
-        # FAISS
-        pos = self.index.ntotal
-        self.index.add(vec.reshape(1, -1))
-        self._id_to_pos[nid] = pos
-        self._pos_to_id[pos] = nid
+        # Add to search matrix
+        row_idx = len(self._id_to_row)
+        if self._vectors is None:
+            self._vectors = vec.reshape(1, -1)
+        else:
+            # Handle dimension mismatch
+            if vec.shape[0] < self._vectors.shape[1]:
+                vec = np.pad(vec, (0, self._vectors.shape[1] - vec.shape[0]))
+            elif vec.shape[0] > self._vectors.shape[1]:
+                pad_width = vec.shape[0] - self._vectors.shape[1]
+                self._vectors = np.pad(self._vectors, ((0, 0), (0, pad_width)))
+            self._vectors = np.vstack([self._vectors, vec.reshape(1, -1)])
+
+        self._id_to_row[nid] = row_idx
+        self._row_to_id[row_idx] = nid
 
         # SQLite
         self.db.execute(
-            "INSERT INTO neurons (id, confidence, successors, predecessors, timestamp, temporal, level, vector) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO neurons (id, confidence, successors, predecessors, "
+            "timestamp, temporal, level, vector) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
             (nid, confidence, b'', b'', now, int(temporal), int(level), vec.tobytes())
         )
         self.db.commit()
+
+        # Invalidate word map cache
+        self._word_map_cache = None
 
         return neuron
 
     def get(self, neuron_id: int) -> Optional[Neuron]:
         """Retrieve a neuron by ID."""
         row = self.db.execute(
-            "SELECT id, confidence, successors, predecessors, timestamp, temporal, level, vector "
+            "SELECT id, confidence, successors, predecessors, "
+            "timestamp, temporal, level, vector "
             "FROM neurons WHERE id = ?", (neuron_id,)
         ).fetchone()
         if not row:
@@ -259,21 +313,41 @@ class NeuronDB:
             level=Level(level),
         )
 
-    def search(self, query_vector: np.ndarray, k: int = 5) -> list[Neuron]:
-        """Find k nearest neurons by cosine similarity."""
-        if self.index.ntotal == 0:
+    def search(self, query_vector: np.ndarray, k: int = 5) -> list:
+        """
+        Find k nearest neurons by cosine similarity.
+        Pure numpy — brute-force matrix multiply.
+        Sub-millisecond for < 100K neurons.
+        """
+        if self._vectors is None or len(self._id_to_row) == 0:
             return []
 
-        k = min(k, self.index.ntotal)
-        vec = np.array(query_vector, dtype=np.float32).reshape(1, -1)
-        vec = vec / (np.linalg.norm(vec) + 1e-10)
+        vec = np.array(query_vector, dtype=np.float32)
+        norm = np.linalg.norm(vec)
+        if norm == 0:
+            return []
+        vec = vec / norm
 
-        scores, positions = self.index.search(vec, k)
+        # Handle dimension mismatch
+        mat = self._vectors
+        if vec.shape[0] < mat.shape[1]:
+            vec = np.pad(vec, (0, mat.shape[1] - vec.shape[0]))
+        elif vec.shape[0] > mat.shape[1]:
+            vec = vec[:mat.shape[1]]
+
+        # Cosine similarity: matrix @ vector
+        sims = mat @ vec
+
+        k = min(k, len(sims))
+        if k <= 0:
+            return []
+
+        top_k = np.argpartition(-sims, k - 1)[:k] if len(sims) > k else np.arange(len(sims))
+        top_k = top_k[np.argsort(-sims[top_k])]
+
         results = []
-        for pos, score in zip(positions[0], scores[0]):
-            if pos < 0:
-                continue
-            nid = self._pos_to_id.get(int(pos))
+        for row_idx in top_k:
+            nid = self._row_to_id.get(int(row_idx))
             if nid is not None:
                 neuron = self.get(nid)
                 if neuron is not None:
@@ -281,12 +355,7 @@ class NeuronDB:
         return results
 
     def delete(self, neuron_id: int) -> bool:
-        """
-        Delete = gone. Immediately. No retraining. Invariant #3.
-
-        Note: FAISS IndexFlatIP doesn't support removal. We mark as deleted
-        in SQLite and rebuild the index. For MVP this is fine.
-        """
+        """Delete = gone. Immediately. Invariant #3."""
         neuron = self.get(neuron_id)
         if neuron is None:
             return False
@@ -294,8 +363,9 @@ class NeuronDB:
         self.db.execute("DELETE FROM neurons WHERE id = ?", (neuron_id,))
         self.db.commit()
 
-        # Rebuild FAISS index without the deleted neuron
-        self._rebuild_index()
+        # Rebuild search matrix
+        self._rebuild_matrix()
+        self._word_map_cache = None
         return True
 
     def update_confidence(self, neuron_id: int, useful: bool):
@@ -340,50 +410,20 @@ class NeuronDB:
         self.db.commit()
 
     def count(self) -> int:
-        """Total neurons in the DB."""
         row = self.db.execute("SELECT COUNT(*) FROM neurons").fetchone()
         return row[0]
 
-    def _rebuild_index(self):
-        """Rebuild FAISS index from SQLite. Used after deletes."""
-        self.index = faiss.IndexFlatIP(self.dim)
-        self._id_to_pos = {}
-        self._pos_to_id = {}
-        self._load_index()
-
-    # --- FAISS index persistence ---
-
-    def save_index(self):
-        """Save FAISS index to disk for fast reload."""
-        if self.path:
-            index_path = str(Path(self.path) / "neurons.faiss")
-            faiss.write_index(self.index, index_path)
-
-    def _load_index_from_file(self) -> bool:
-        """Try to load FAISS index from disk. Returns True if successful."""
-        if not self.path:
-            return False
-        index_path = Path(self.path) / "neurons.faiss"
-        if not index_path.exists():
-            return False
-
-        self.index = faiss.read_index(str(index_path))
-        # Rebuild id↔pos maps from SQLite
-        rows = self.db.execute(
-            "SELECT id FROM neurons ORDER BY id"
-        ).fetchall()
-        for pos, (nid,) in enumerate(rows):
-            self._id_to_pos[nid] = pos
-            self._pos_to_id[pos] = nid
-        if rows:
-            self._next_id = max(r[0] for r in rows) + 1
-        return True
+    def _rebuild_matrix(self):
+        """Rebuild search matrix from SQLite. Used after deletes."""
+        self._vectors = None
+        self._id_to_row = {}
+        self._row_to_id = {}
+        self._load_from_sqlite()
 
     # --- Template persistence ---
 
     def save_template(self, template_id: int, pattern: str, slots_json: str,
                       confidence: float, vector: np.ndarray):
-        """Save a template to SQLite."""
         vec_bytes = np.array(vector, dtype=np.float32).tobytes()
         self.db.execute(
             "INSERT OR REPLACE INTO templates (id, pattern, slots, confidence, vector) "
@@ -393,7 +433,6 @@ class NeuronDB:
         self.db.commit()
 
     def load_templates(self) -> list:
-        """Load all templates from SQLite. Returns list of (id, pattern, slots_json, confidence, vector)."""
         rows = self.db.execute(
             "SELECT id, pattern, slots, confidence, vector FROM templates ORDER BY id"
         ).fetchall()
@@ -404,38 +443,149 @@ class NeuronDB:
         return result
 
     def delete_template(self, template_id: int) -> bool:
-        """Delete a template. Invariant #3."""
         cursor = self.db.execute(
             "DELETE FROM templates WHERE id = ?", (template_id,)
         )
         self.db.commit()
         return cursor.rowcount > 0
 
-    # --- Word→neuron mapping persistence ---
+    # --- Word→neuron mapping ---
 
     def save_word_mapping(self, word: str, neuron_id: int):
-        """Save a word→neuron mapping."""
         self.db.execute(
             "INSERT OR REPLACE INTO word_neurons (word, neuron_id) VALUES (?, ?)",
             (word, neuron_id)
         )
         self.db.commit()
+        self._word_map_cache = None
 
     def load_word_mappings(self) -> dict:
-        """Load all word→neuron mappings. Returns {word: neuron_id}."""
+        if self._word_map_cache is not None:
+            return self._word_map_cache
         rows = self.db.execute(
             "SELECT word, neuron_id FROM word_neurons"
         ).fetchall()
-        return {word: nid for word, nid in rows}
+        self._word_map_cache = {word: nid for word, nid in rows}
+        return self._word_map_cache
 
     def delete_word_mapping(self, word: str) -> bool:
-        """Delete a word mapping."""
         cursor = self.db.execute(
             "DELETE FROM word_neurons WHERE word = ?", (word,)
         )
         self.db.commit()
+        self._word_map_cache = None
         return cursor.rowcount > 0
 
+    # --- Sentence-level association ---
+
+    def record_sentence(self, neuron_ids: list) -> int:
+        row = self.db.execute(
+            "SELECT COALESCE(MAX(sentence_id), -1) + 1 FROM sentence_neurons"
+        ).fetchone()
+        sentence_id = row[0]
+
+        for pos, nid in enumerate(neuron_ids):
+            self.db.execute(
+                "INSERT OR IGNORE INTO sentence_neurons "
+                "(sentence_id, neuron_id, position) VALUES (?, ?, ?)",
+                (sentence_id, nid, pos)
+            )
+        self.db.commit()
+        return sentence_id
+
+    def get_cooccurring_neurons(self, neuron_id: int) -> list:
+        rows = self.db.execute("""
+            SELECT sn2.neuron_id, sn2.position, sn2.sentence_id
+            FROM sentence_neurons sn1
+            JOIN sentence_neurons sn2 ON sn1.sentence_id = sn2.sentence_id
+            WHERE sn1.neuron_id = ? AND sn2.neuron_id != ?
+            ORDER BY sn2.sentence_id, sn2.position
+        """, (neuron_id, neuron_id)).fetchall()
+        return rows
+
+    def get_sentences_for_neurons(self, neuron_ids: list) -> dict:
+        if not neuron_ids:
+            return {}
+        placeholders = ",".join("?" * len(neuron_ids))
+        rows = self.db.execute(f"""
+            SELECT sentence_id, neuron_id, position
+            FROM sentence_neurons
+            WHERE neuron_id IN ({placeholders})
+            ORDER BY sentence_id, position
+        """, neuron_ids).fetchall()
+
+        sentences = {}
+        for sid, nid, pos in rows:
+            if sid not in sentences:
+                sentences[sid] = []
+            sentences[sid].append((nid, pos))
+        return sentences
+
+    def get_sentence_neurons(self, sentence_id: int) -> list:
+        rows = self.db.execute(
+            "SELECT neuron_id, position FROM sentence_neurons "
+            "WHERE sentence_id = ? ORDER BY position",
+            (sentence_id,)
+        ).fetchall()
+        return rows
+
+    # --- Miss logging (self-evolution) ---
+
+    def log_miss(self, query_text: str, query_vector: np.ndarray) -> int:
+        vec_bytes = np.array(query_vector, dtype=np.float32).tobytes()
+        now = int(time.time())
+        cursor = self.db.execute(
+            "INSERT INTO misses (query_text, query_vector, timestamp, resolved) "
+            "VALUES (?, ?, ?, 0)",
+            (query_text, vec_bytes, now)
+        )
+        self.db.commit()
+        return cursor.lastrowid
+
+    def resolve_miss(self, miss_id: int, answer_text: str):
+        now = int(time.time())
+        self.db.execute(
+            "UPDATE misses SET resolved = 1, resolved_timestamp = ?, "
+            "answer_text = ? WHERE id = ?",
+            (now, answer_text, miss_id)
+        )
+        self.db.commit()
+
+    def resolve_miss_by_query(self, query_text: str, answer_text: str) -> bool:
+        row = self.db.execute(
+            "SELECT id FROM misses WHERE query_text = ? AND resolved = 0 "
+            "ORDER BY timestamp DESC LIMIT 1",
+            (query_text,)
+        ).fetchone()
+        if row:
+            self.resolve_miss(row[0], answer_text)
+            return True
+        return False
+
+    def get_unresolved_misses(self, limit: int = 50) -> list:
+        rows = self.db.execute(
+            "SELECT id, query_text, timestamp FROM misses "
+            "WHERE resolved = 0 ORDER BY timestamp DESC LIMIT ?",
+            (limit,)
+        ).fetchall()
+        return rows
+
+    def miss_stats(self) -> dict:
+        total = self.db.execute("SELECT COUNT(*) FROM misses").fetchone()[0]
+        resolved = self.db.execute(
+            "SELECT COUNT(*) FROM misses WHERE resolved = 1"
+        ).fetchone()[0]
+        unresolved = total - resolved
+        return {
+            "total_misses": total,
+            "resolved": resolved,
+            "unresolved": unresolved,
+            "resolution_rate": resolved / total if total > 0 else 0.0,
+        }
+
+    def save_index(self):
+        """No-op for compatibility. Matrix is rebuilt from SQLite."""
+        pass
+
     def close(self):
-        self.save_index()
         self.db.close()

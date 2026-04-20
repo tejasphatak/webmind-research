@@ -153,7 +153,7 @@ class TestTeach:
         engine = make_engine()
         neurons = engine.teach_sentence("the cat sat on the mat")
 
-        assert len(neurons) >= 4  # some words might be OOV
+        assert len(neurons) >= 2  # function words (the, on) skipped, content words remain
 
         # Check successors were wired
         first = engine.db.get(neurons[0].id)

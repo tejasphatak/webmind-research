@@ -107,10 +107,10 @@ class TestNeuronPersistence:
             db2.close()
 
 
-class TestFAISSPersistence:
+class TestSearchPersistence:
 
-    def test_faiss_index_saves_and_loads(self):
-        """FAISS index file should be created on close and loaded on open."""
+    def test_search_survives_restart(self):
+        """Search matrix rebuilds from SQLite on restart."""
         with tempfile.TemporaryDirectory() as tmpdir:
             db = NeuronDB(path=tmpdir, dim=DIM)
             v1 = random_vector(1)
@@ -119,15 +119,8 @@ class TestFAISSPersistence:
             db.insert(v2, confidence=0.3)
             db.close()
 
-            # Check that the index file exists
-            index_path = Path(tmpdir) / "neurons.faiss"
-            assert index_path.exists(), "FAISS index file should be saved on close"
-
-            # Reopen — should load from file, not rebuild
             db2 = NeuronDB(path=tmpdir, dim=DIM)
             assert db2.count() == 2
-
-            # Search should work
             results = db2.search(v1, k=2)
             assert len(results) == 2
             db2.close()

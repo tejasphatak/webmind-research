@@ -1,8 +1,7 @@
 """
 Shared test fixtures.
 
-Session-scoped GloVe loading: 990MB loaded once, reused by all tests.
-Cuts real-world test suite from ~7 min to ~1 min.
+Session-scoped GloVe loading: indexed once, reused by all tests.
 """
 
 import sys
@@ -18,7 +17,7 @@ GLOVE_PATH = str(Path(DATA_DIR) / "glove.6B.300d.txt")
 
 @pytest.fixture(scope="session")
 def glove_encoder():
-    """Load GloVe once per test session. Returns a ready Encoder."""
+    """Index GloVe once per test session. Returns a ready Encoder."""
     from encoder import Encoder
     enc = Encoder(data_dir=DATA_DIR, dim=300)
     enc.load(GLOVE_PATH)
@@ -31,12 +30,14 @@ def glove_engine(glove_encoder):
     Fresh Engine with shared GloVe encoder.
 
     Each test gets its own in-memory NeuronDB (clean state)
-    but shares the heavy GloVe vocabulary (no reload).
+    but shares the GloVe offset index (no re-scan).
     """
     from engine import Engine
     engine = Engine(dim=300)
-    # Share the already-loaded vocab instead of reloading
-    engine.encoder._vocab = glove_encoder._vocab
-    engine.encoder._word_list = glove_encoder._word_list
-    engine.encoder._faiss_index = glove_encoder._faiss_index
+    # Share the already-indexed GloVe offsets and cache
+    engine.encoder._glove_offsets = glove_encoder._glove_offsets
+    engine.encoder._glove_path = glove_encoder._glove_path
+    engine.encoder._glove_cache = glove_encoder._glove_cache
+    engine.encoder._glove_dim = glove_encoder._glove_dim
+    engine.encoder._fixed_dim = glove_encoder._fixed_dim
     return engine

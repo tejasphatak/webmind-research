@@ -68,14 +68,14 @@ class Brain(BrainCore):
                 self._search_dirty = True
                 self._nid_to_word_cache = None
 
-        # Queue for Layer 2 persist
+        # Queue for Layer 2 persist — backpressure prevents OOM
         self._persist_queue.append((sentence, content, tokens, confidence))
         self._persist_count += 1
 
-        # Auto-flush to prevent OOM: every 5000 teaches in bulk, 500 otherwise
-        flush_interval = 5000 if self._bulk_mode else 500
-        if self._persist_count % flush_interval == 0:
-            self._flush_persist()  # sync flush to free memory
+        # Backpressure: flush when queue hits cap (memory-bounded)
+        MAX_QUEUE = 5000
+        if len(self._persist_queue) >= MAX_QUEUE:
+            self._flush_persist()  # blocks until drained — backpressure
 
         return list(range(len(content)))  # placeholder IDs
 

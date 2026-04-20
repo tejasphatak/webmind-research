@@ -4,6 +4,7 @@ Each paper has its own directory with everything needed to reproduce it.
 
 | Paper | Directory | Status | Key Result |
 |-------|-----------|--------|------------|
+| **From INSERT to CONVERGE** | [new-gen-ai/](new-gen-ai/) | Published | Multimodal reasoning without training, 250+ tests |
 | **Self-Evolving Retrieval** | [self-evolving-retrieval/](self-evolving-retrieval/) | Benchmarked | 0.7% → 25.3% EM on held-out data |
 | Activation Speculation Dead | [activation-speculation-dead/](activation-speculation-dead/) | Published | Negative result — bootstrap deadlock |
 | MoeMoe Resilience | [moemoe/](moemoe/) | Preliminary | Node failure recovery |

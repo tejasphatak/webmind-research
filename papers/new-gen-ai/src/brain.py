@@ -74,6 +74,7 @@ class Brain:
         self._words = []           # index → word
         self._word_idx = {}        # word → index
         self._matrix = None        # N×N relationship matrix
+        self._db_path = db_path
 
         # The database: metadata + persistence
         self.db = NeuronDB(path=db_path, dim=1)  # dim doesn't matter, we manage vectors
@@ -81,6 +82,9 @@ class Brain:
 
         # Templates for fluent output
         self._templates = []       # [(pattern, slots, vector)]
+
+        # Rebuild matrix from persisted data
+        self._load_matrix()
 
     # --- Learning ---
 
@@ -395,6 +399,62 @@ class Brain:
 
         return idx
 
+    def _load_matrix(self):
+        """Rebuild the co-occurrence matrix from persisted word mappings and neuron vectors."""
+        # Get all words (non-internal) from the DB
+        words_in_db = sorted(
+            [(w, nid) for w, nid in self._word_neurons.items()
+             if not w.startswith("__")],
+            key=lambda x: x[1]  # sort by neuron ID (creation order)
+        )
+        if not words_in_db:
+            return
+
+        # Rebuild word list and index
+        for word, nid in words_in_db:
+            if word not in self._word_idx:
+                idx = len(self._words)
+                self._words.append(word)
+                self._word_idx[word] = idx
+
+        n = len(self._words)
+        if n == 0:
+            return
+
+        # Rebuild matrix from stored neuron vectors
+        # Each neuron's vector IS its row in the matrix
+        self._matrix = np.eye(n, dtype=np.float32)  # start with identity
+
+        for word, nid in words_in_db:
+            neuron = self.db.get(nid)
+            if neuron is None:
+                continue
+            idx = self._word_idx.get(word)
+            if idx is None:
+                continue
+            vec = neuron.vector
+            # If stored vector fits, use it to restore co-occurrence values
+            if len(vec) <= n:
+                self._matrix[idx, :len(vec)] = vec
+                # Mirror: keep symmetric
+                self._matrix[:len(vec), idx] = vec
+
+        # Rebuild the search matrix too
+        self._rebuild_search_matrix()
+
+    def _save_matrix(self):
+        """Persist current matrix state to neuron vectors in SQLite."""
+        for word, nid in self._word_neurons.items():
+            if word.startswith("__"):
+                continue
+            vec = self._encode_word(word)
+            if np.any(vec != 0):
+                self.db.db.execute(
+                    "UPDATE neurons SET vector = ? WHERE id = ?",
+                    (vec.tobytes(), nid)
+                )
+        self.db.db.commit()
+
     def _learn_cooccurrence(self, words: list):
         """Pull co-occurring words toward each other."""
         indices = [self._word_idx[w.lower().strip()] for w in words
@@ -582,6 +642,7 @@ class Brain:
         }
 
     def close(self):
+        self._save_matrix()
         self.db.close()
 
 

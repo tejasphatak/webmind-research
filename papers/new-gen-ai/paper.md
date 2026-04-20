@@ -3,17 +3,17 @@
 *Tejas Phatak*
 *Independent Researcher*
 
-**Acknowledgments.** Implementation assistance from Claude (Anthropic, Opus 4.6). Review and verification from Gemini (Google DeepMind). AI tools were used as assistants, not as autonomous contributors.
+**Acknowledgments.** Implementation assistance from Claude (Anthropic). Review and verification from Gemini (Google DeepMind). AI tools were used as assistants, not as autonomous contributors.
 
 **Disclaimer.** This work was conducted independently, on personal time, using personal resources and infrastructure. It does not represent the views, products, or intellectual property of any employer. No employer resources, data, or infrastructure were used.
 
-**Abstract.** We present a reasoning system that starts with zero knowledge and zero dimensions, then grows its own understanding from taught sentences — no gradient descent, no end-to-end training. The core is a self-growing co-occurrence matrix where each concept adds a dimension and co-occurring concepts strengthen connections (Hebbian learning). We introduce two mechanisms that address the system's key limitations:
+**Abstract.** We present a reasoning system that starts with zero knowledge and zero dimensions, then grows its own understanding from taught sentences — no gradient descent, no end-to-end training. The core is a self-growing co-occurrence matrix where each concept adds a dimension and co-occurring concepts strengthen connections (inspired by the Hebbian principle). We introduce two mechanisms that address the system's key limitations:
 
 **Convergence as confidence.** Rather than hardcoding answer quality thresholds, we use the co-occurrence matrix itself as the judge: the cosine similarity between query vector and answer vector measures whether the answer lives in the same semantic neighborhood as the question. This single mechanism eliminates false-confidence answers (garbage at 0.50 → correctly scored at 0.12) and enables the system to honestly say "I don't know."
 
 **Mixture of Expert Matrices (MoEM).** The co-occurrence matrix grows O(N²) with vocabulary — a 50K-word matrix requires 10GB. We decompose it into K smaller expert matrices, each handling a semantically coherent cluster of words. A router assigns words to experts based on co-occurrence: words taught in the same sentence route to the same expert. This reduces memory from O(N²) to O(K·(N/K)²) = O(N²/K), enables parallel feed across experts (125x speedup over single-matrix), and allows each expert to specialize in a domain.
 
-We demonstrate: (1) a self-growing vector space that correctly disambiguates "capital of france" → paris from 4 taught sentences; (2) convergence-guided generation producing grammatical output from the neuron graph; (3) multimodal reasoning where text queries find relevant images via CLIP; (4) ethical self-reflection across 50+ languages with zero false positives; (5) convergence-based confidence that separates real answers (cosine 0.32-0.49) from garbage (0.00-0.12); (6) parallel MoE feed ingesting 191K records across 16 experts at 125 records/sec on 4 CPU cores. The entire knowledge base is portable SQLite files.
+We demonstrate: (1) a self-growing vector space that correctly disambiguates "capital of france" → paris from 4 taught sentences; (2) convergence-guided generation producing grammatical output from the neuron graph; (3) multimodal reasoning where text queries find relevant images via CLIP; (4) ethical self-reflection across 50+ languages with zero false positives; (5) convergence-based confidence that separates real answers (cosine 0.32-0.49) from garbage (0.00-0.12); (6) parallel MoE feed ingesting 191K records across 64 experts, feeding at ~125 records/sec total throughput on 4 CPU cores. The entire knowledge base is portable SQLite files.
 
 We report honestly: the system generates only from taught patterns, multimodal performance depends on CLIP's pretraining, and the MoE router is greedy (no rebalancing). The contribution is architectural: co-occurrence matrices + convergence loop + mixture of experts — all inspectable, all on CPU, all without training.
 
@@ -23,7 +23,7 @@ ChatGPT learns statistical patterns from the internet and compresses them into a
 
 We built something different. Instead of memorizing everything into math, we just... store it. Like a library. Each fact, each image, each sound is a point in space. When you ask a question, the system searches for nearby points, checks if they're trustworthy, and chains them together into an answer.
 
-**The trick**: it doesn't just search once. It searches, blends what it found, searches again from the new position, and repeats until the answer stabilizes. We call this "convergence." It's the same math that makes ChatGPT work (attention), but you can see every step, fix every mistake, and run it on your phone.
+**The trick**: it doesn't just search once. It searches, blends what it found, searches again from the new position, and repeats until the answer stabilizes. We call this "convergence." It's the same math that makes ChatGPT work (attention), but you can see every step, fix every mistake, and run it on a CPU (core retrieval tested on commodity hardware; multimodal features require desktop-class hardware).
 
 It understands text in 50+ languages, images, audio, and video — all in the same search. It has built-in ethics that work across languages (teach it "don't cause harm" in English, it catches harmful queries in Hindi). It costs $0 to train because there's nothing to train. Teaching it is adding a row to a database.
 
@@ -50,7 +50,7 @@ This paper presents what happens when you add one mechanism: **iterative converg
 
 ```
 The transformer equation:    Attention(Q,K,V) = softmax(Q·K^T/√d) · V
-Our previous system:         answer = V[argmax(Q · K^T)]
+Our previous system:         answer = V[top-K(Q · K^T)]  (simplified)
 This system:                 answer = CONVERGE(Q, KB, until_stable)
 ```
 
@@ -82,7 +82,7 @@ After "apple", "fruit":     2×2 — apple and fruit exist
 After co-occurrence:        apple[fruit] = 0.3, fruit[apple] = 0.3
 ```
 
-Teaching "paris is the capital of france" adds three dimensions (paris, capital, france) and records co-occurrence — each pair pulls toward the other by 0.3. After four sentences:
+Teaching "paris is the capital of france" adds three dimensions (paris, capital, france) and records co-occurrence — each pair pulls toward the other by 0.3. After three sentences ("paris is the capital of france", "london is the capital of england", "shakespeare wrote hamlet"):
 
 ```
              paris  capital  france  london  england  shakespeare  wrote  hamlet  ...
@@ -148,11 +148,13 @@ return ABSTAIN("did not converge")
 ```
 
 **Key properties:**
-- Converges in 3-5 hops on typical queries (measured)
+- Converges in 3-5 hops on typical queries (observed in testing)
 - Non-convergence = honest "I don't know" (Invariant #4)
 - Each hop is logged → full reasoning trace (Invariant #2)
 - Query anchor prevents drift (equivalent to transformer residual connections)
 - Confidence weighting = confidence-weighted average over neighboring neurons
+
+**Implementation status.** The multi-hop iterative loop above is fully implemented for concept retrieval. For answer confidence scoring, we currently use a single-step convergence check (cosine similarity between query vector and answer vector — see Section 3). This single-step check is a degenerate case of the full loop (one hop, checking whether the output maps back to the input). Multi-hop iterative generation is implemented but produces lower quality output than single-hop retrieval on current benchmarks.
 
 ### 2.5 Sentence Disambiguation
 
@@ -230,7 +232,7 @@ On this sample, convergence separates garbage (0.00-0.12) from real answers (0.3
 
 ### 3.4 Connection to Attention
 
-This is self-attention in one step. In a transformer, the query attends to keys and produces a value; our system searches the matrix (attention), produces an answer (value), then checks: does the value attend back to the query? If not, the attention was noise. Transformers assume their single forward pass is correct. We verify.
+This is self-attention in one step. In a transformer, the query attends to keys and produces a value; our system searches the matrix (attention), produces an answer (value), then checks: does the value attend back to the query? If not, the attention was noise. Transformer verification methods exist (notably Self-Consistency, Wang et al. 2022), but they require multiple forward passes. Our verification is built into the retrieval step itself — the cosine check is the confidence, not a separate mechanism.
 
 ## 4. Mixture of Expert Matrices (MoEM)
 
@@ -283,7 +285,7 @@ Benchmark on 4-core CPU (GCP e2-standard-4), 191,277 records from 12 datasets:
 | MoE, sequential feed | ~100 rec/sec | ~500 MB per expert | small matrices = fast operations |
 | MoE, parallel (4 processes) | ~125 rec/sec routing + parallel compute | ~2.5 GB per worker | 4 workers × 7.5K records each |
 
-Phase 1 (routing 191K records): 15 seconds. After filtering records shorter than 20 characters and records with missing Q/A fields, ~121K records were routed to 16 experts: 7,389-7,718 each (within 5% of perfect balance). The remaining ~70K records were dropped during routing due to minimum length or missing field filters.
+Phase 1 (routing 191K records): 15 seconds. After filtering records shorter than 20 characters and records with missing Q/A fields, ~121K records were routed to 16 experts: 7,389-7,718 each (within 5% of perfect balance). The remaining ~70K records were dropped during routing: short records (&lt;20 characters, typically metadata or partial entries), records with missing question or answer fields, and QA records where the answer was empty after stripping. This filtering is aggressive but ensures taught content is meaningful — teaching garbage sentences degrades the co-occurrence matrix.
 
 ### 4.5 Query Routing
 
@@ -397,7 +399,7 @@ CLIP text↔text similarity (~0.8-0.95) is much higher than text↔image similar
 | Paragraph generation | 10 tests | 100% |
 | Kill switch + integrity | 16 safety tests | 100% |
 
-264 tests passing. The system works for its designed use case: structured reasoning over taught knowledge with multimodal understanding and ethical self-reflection. It does not yet work for open-domain factual QA.
+264 tests passing (the table above shows key test categories; the remaining tests cover unit tests, edge cases, and integration tests not shown). The system works for its designed use case: structured reasoning over taught knowledge with multimodal understanding and ethical self-reflection. It does not yet work for open-domain factual QA.
 
 ## 7. What This System IS and IS NOT
 
@@ -405,7 +407,7 @@ CLIP text↔text similarity (~0.8-0.95) is much higher than text↔image similar
 - **Inspectable**: every answer traces to specific neurons, specific hops, specific similarity scores
 - **Editable**: delete a neuron and the knowledge is gone immediately. No retraining.
 - **Honest**: non-convergence = "I don't know." No hallucination with false confidence.
-- **Efficient**: CPU-native, <600ms per query, CPU-native deployable
+- **Efficient**: CPU-native, sub-second per query on small expert matrices, deployable without GPU
 - **Incremental**: teach one fact, it's immediately available. No batch training.
 - **Multimodal by construction**: same loop, same neurons, any modality
 
@@ -489,19 +491,19 @@ The core thesis: **we are not avoiding transformers. We are reimplementing the p
 - **Bengio et al., JMLR 2003** — neural LM replaced n-grams. Our successor lists inherit this lineage honestly.
 - **DPR** (Karpukhin et al., EMNLP 2020) — dense passage retrieval, 41.5% EM on NaturalQuestions. Our QA baseline.
 
-**What, to our knowledge, no one has built**: a unified system where one convergence loop simultaneously performs retrieval, generation, cross-modal reasoning, and ethical self-reflection — all without self-training, all inspectable, all on CPU.
+**What, to our knowledge, no one has built**: a unified system where one convergence loop over taught knowledge simultaneously performs retrieval, generation, cross-modal reasoning, and ethical self-reflection — all without self-training, all inspectable, all on CPU.
 
 ## 10. Reproducibility
 
 The complete system is open source:
-- **Code**: `github.com/tejasphatak/webmind-research/papers/new-gen-ai/src/` — core system in `brain.py` (~900 lines), MoE scaling in `moe_brain.py` (~200 lines), full engine with multimodal/ethics in ~8300 lines
-- **Tests**: 264 tests, all passing, ~30 seconds on CPU
+- **Code**: `github.com/tejasphatak/webmind-research/papers/new-gen-ai/src/` — core system in `brain.py` (~1000 lines), MoE scaling in `moe_brain.py` (~600 lines), full engine with multimodal/ethics in ~7000 lines total
+- **Tests**: 264 tests, all passing, ~80 seconds on CPU
 - **Dependencies (core)**: numpy only. No FAISS. No pretrained embeddings required.
 - **Dependencies (multimodal)**: sentence-transformers, scipy, Pillow (optional, for CLIP/NLI)
 - **Data**: None required. The system builds its own vocabulary from scratch. GloVe optionally available for richer word vectors.
 - **Hardware**: Single CPU core, no GPU required. MoE parallel feed benefits from multiple cores. Tested on GCP e2-standard-4 (4 vCPU, 16GB RAM).
 - **Portability**: Entire knowledge base is SQLite files. Single-matrix mode: one `neurons.db`. MoE mode: one `router.db` + K expert `neurons.db` files. Copy the directory to share.
-- **MoE configuration**: 16 experts, routing by co-occurrence clustering, bulk feed with multiprocessing. Reproducible via `python3 feed.py --moe --dataset all --experts 16`.
+- **MoE configuration**: 64 experts (configurable), routing by co-occurrence clustering, bulk feed with multiprocessing. Initialize MoE via `MoEBrain(db_path, num_experts=64)` then call `teach()` per record.
 
 ## 11. Conclusion
 
@@ -517,7 +519,7 @@ This paper extends the architecture with two mechanisms: **convergence-as-confid
 
 Each of these works because the fundamental operation is the same: find what's relevant in a structured vector space, blend it, anchor to the query, check if it converges back.
 
-The system cannot write poetry, hold a conversation, or reason about things it hasn't been taught. It can retrieve facts, generate sentences from taught patterns, find images matching text descriptions, and refuse harmful queries in 50+ languages — all without training a single parameter, all traceable to specific neurons, with the core retrieval and generation running on a phone CPU (multimodal encoders and NLI-based ethics detection require desktop-class hardware).
+The system cannot write poetry, hold a conversation, or reason about things it hasn't been taught. It can retrieve facts, generate sentences from taught patterns, find images matching text descriptions, and refuse harmful queries in 50+ languages — all without training a single parameter, all traceable to specific neurons, with the core retrieval and generation running on commodity CPU hardware (multimodal encoders and NLI-based ethics detection require desktop-class hardware).
 
 We believe this is a meaningful architectural contribution: not a replacement for transformers, but proof that their core principles — attention, residual connections, confidence weighting — can be expressed in a substrate that is inspectable, editable, and honest by construction.
 
@@ -581,7 +583,7 @@ The properties that make this system appealing — learns from minimal examples,
 
 **Our position:** We publish this work because we believe the benefits of inspectable, editable, honest AI outweigh the risks — but only if the research community develops adequate safeguards before this architecture reaches scale. We urge anyone building on this work to treat the safety problem as a prerequisite, not an afterthought.
 
-**The simplicity is the danger.** This is ~300 lines of Python with one dependency. A motivated undergraduate can build it in an afternoon. The barrier to entry is near zero. That makes safety research on this architecture urgent — not because this specific implementation is dangerous, but because the principle (concept-level learning + perfect memory + instant transfer) will be rediscovered and deployed regardless. Better that it happens in the open, with safety as a first-class concern, than in secret without it.
+**The simplicity is the danger.** The core co-occurrence matrix and convergence loop are conceptually simple — a motivated undergraduate could reimplement the principle in an afternoon. The barrier to entry is near zero. That makes safety research on this architecture urgent — not because this specific implementation is dangerous, but because the principle (concept-level learning + perfect memory + instant transfer) will be rediscovered and deployed regardless. Better that it happens in the open, with safety as a first-class concern, than in secret without it.
 
 ### 14.1 Note on Self-Directed Operation
 

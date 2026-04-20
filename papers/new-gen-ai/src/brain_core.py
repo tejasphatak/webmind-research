@@ -200,53 +200,60 @@ class BrainCore:
             return {"answer": "I don't know.", "confidence": 0.0,
                     "strategy": "abstain", "trace": "No knowledge"}
 
-        # Parallel: search + disambiguate at the same time
+        # Sparse search: blend query words' co-occurrence, search all words
+        content_indices = [self._word_idx[t] for t in content
+                           if t in self._word_idx]
         content_nids = [self._word_neurons[t] for t in content
                         if t in self._word_neurons]
 
-        search_future = self._pool.submit(self.db.search, query_vec, 10)
-
-        def _disambiguate():
-            if not content_nids:
-                return None
-            sentences = self.db.get_sentences_for_neurons(content_nids)
-            if not sentences:
-                return None
-            scored = [(sid, len(nids)) for sid, nids in sentences.items()]
-            scored.sort(key=lambda x: x[1], reverse=True)
-            best_score = scored[0][1]
-            result = set()
-            for sid, score in scored:
-                if score < best_score:
-                    break
-                for nid, pos in self.db.get_sentence_neurons(sid):
-                    result.add(nid)
-            return result
-
-        disambig_future = self._pool.submit(_disambiguate)
-
-        neighbors = search_future.result()
-        if not neighbors:
-            disambig_future.cancel()
-            self.db.log_miss(question, query_vec)
+        if not content_indices:
+            self.db.log_miss(question, query_vec if query_vec is not None
+                             else np.zeros(1, dtype=np.float32))
             return {"answer": "I don't know.", "confidence": 0.0,
-                    "strategy": "abstain", "trace": "No matching neurons"}
+                    "strategy": "abstain", "trace": "No known words in query"}
 
-        best_sentence_nids = disambig_future.result()
+        # Blend query words into one sparse co-occurrence profile
+        weights = [1.0 / (1.0 + 0.1 * i) for i in range(len(content_indices))]
+        query_cooc = self._sparse_blend(content_indices, weights)
 
-        # Collect concept neurons
-        nid_to_word = {nid: w for w, nid in self._word_neurons.items()
-                       if not w.startswith("__")}
+        # Sparse search — O(N × K), not O(N²)
+        search_results = self._sparse_search(query_cooc, k=10)
+
+        # Disambiguate via sentence table
+        best_sentence_nids = None
+        if content_nids:
+            sentences = self.db.get_sentences_for_neurons(content_nids)
+            if sentences:
+                scored = [(sid, len(nids)) for sid, nids in sentences.items()]
+                scored.sort(key=lambda x: x[1], reverse=True)
+                best_score = scored[0][1]
+                best_sentence_nids = set()
+                for sid, score in scored:
+                    if score < best_score:
+                        break
+                    for nid, pos in self.db.get_sentence_neurons(sid):
+                        best_sentence_nids.add(nid)
+
+        # Build nid→word lookup
+        if self._nid_to_word_cache is None:
+            self._nid_to_word_cache = {nid: w for w, nid in self._word_neurons.items()
+                                       if not w.startswith("__")}
+        nid_to_word = self._nid_to_word_cache
+        word_to_nid = {w: nid for nid, w in nid_to_word.items()}
+
+        # Collect concept neurons from sparse search
         concepts = []
         seen = set()
 
-        # From search results
-        for n in neighbors:
-            if n.id not in seen:
-                word = nid_to_word.get(n.id)
-                if word and word not in FUNCTION_WORDS:
-                    concepts.append((n, word))
-                    seen.add(n.id)
+        for word_idx, sim in search_results:
+            if word_idx < len(self._words):
+                word = self._words[word_idx]
+                nid = word_to_nid.get(word)
+                if nid and nid not in seen and word not in FUNCTION_WORDS:
+                    n = self.db.get(nid)
+                    if n:
+                        concepts.append((n, word))
+                        seen.add(nid)
 
         # From sentence disambiguation
         if best_sentence_nids:
@@ -407,21 +414,27 @@ class BrainCore:
         if len(words) < 2:
             return None
 
-        # Convergence check: does the answer map back to the query?
-        answer_text = " ".join(words)
-        answer_vec = self._encode_sentence(answer_text)
-        q_norm = np.linalg.norm(query_vec)
-        a_norm = np.linalg.norm(answer_vec)
-        if q_norm > 0 and a_norm > 0:
-            convergence = float(np.dot(query_vec, answer_vec) / (q_norm * a_norm))
-        else:
-            convergence = 0.0
+        # Sparse convergence check: do answer words' co-occurrence overlap with query?
+        answer_indices = [self._word_idx[w] for w in words if w in self._word_idx]
+        if not answer_indices:
+            return None
+        answer_cooc = self._sparse_blend(answer_indices)
+        # concept_ids are neuron IDs — convert to word indices
+        nid_to_word = self._nid_to_word_cache or {nid: w for w, nid in self._word_neurons.items()
+                                                   if not w.startswith("__")}
+        query_words = [nid_to_word.get(nid) for nid in concept_ids]
+        query_indices = [self._word_idx[w] for w in query_words
+                         if w and w in self._word_idx]
+        if not query_indices:
+            query_indices = answer_indices
+        query_cooc = self._sparse_blend(query_indices)
+        convergence = self._sparse_cosine(query_cooc, answer_cooc)
 
         if convergence <= 0:
             return None
 
         return {
-            "answer": answer_text,
+            "answer": " ".join(words),
             "confidence": convergence,
             "strategy": "sentence_chain",
             "trace": f"Sentence {sid} (convergence={convergence:.3f}): {words}",
@@ -561,8 +574,74 @@ class BrainCore:
                 self._cooc[a][b] = self._cooc[a].get(b, 0) + COOCCURRENCE_PULL
                 self._cooc[b][a] = self._cooc[b].get(a, 0) + COOCCURRENCE_PULL
 
+    # --- Sparse operations (no N-dimensional vectors) ---
+
+    def _get_cooc(self, word: str) -> dict:
+        """Get a word's co-occurrence dict. Sparse. O(K) where K = connections."""
+        word = word.lower().strip()
+        idx = self._word_idx.get(word)
+        if idx is None:
+            return {}
+        return self._cooc.get(idx, {})
+
+    def _sparse_norm(self, d: dict) -> float:
+        """L2 norm of a sparse dict."""
+        return sum(v * v for v in d.values()) ** 0.5
+
+    def _sparse_cosine(self, a: dict, b: dict) -> float:
+        """Cosine similarity between two sparse dicts. O(min(|a|, |b|))."""
+        if not a or not b:
+            return 0.0
+        # Iterate over the smaller dict
+        if len(a) > len(b):
+            a, b = b, a
+        dot = sum(v * b.get(k, 0) for k, v in a.items())
+        if dot == 0:
+            return 0.0
+        na = self._sparse_norm(a)
+        nb = self._sparse_norm(b)
+        if na == 0 or nb == 0:
+            return 0.0
+        return dot / (na * nb)
+
+    def _sparse_blend(self, word_indices: list, weights: list = None) -> dict:
+        """Blend multiple words' co-occurrence dicts. Weighted average."""
+        result = {}
+        if weights is None:
+            weights = [1.0] * len(word_indices)
+        total_w = sum(weights)
+        if total_w == 0:
+            return result
+        for idx, w in zip(word_indices, weights):
+            for k, v in self._cooc.get(idx, {}).items():
+                result[k] = result.get(k, 0) + w * v
+        # Normalize
+        for k in result:
+            result[k] /= total_w
+        return result
+
+    def _sparse_search(self, query_cooc: dict, k: int = 5) -> list:
+        """Search all words by sparse cosine with query. O(N × K)."""
+        if not query_cooc:
+            return []
+        scores = []
+        q_norm = self._sparse_norm(query_cooc)
+        if q_norm == 0:
+            return []
+        for word_idx, word_cooc in self._cooc.items():
+            if not word_cooc:
+                continue
+            dot = sum(query_cooc.get(j, 0) * v for j, v in word_cooc.items())
+            if dot > 0:
+                w_norm = self._sparse_norm(word_cooc)
+                if w_norm > 0:
+                    sim = dot / (q_norm * w_norm)
+                    scores.append((word_idx, sim))
+        scores.sort(key=lambda x: x[1], reverse=True)
+        return scores[:k]
+
     def _encode_word(self, word: str) -> np.ndarray:
-        """Get a word's vector from co-occurrence dict. Sparse → dense."""
+        """Get a word's vector. Dense form for backward compat."""
         word = word.lower().strip()
         n = len(self._words)
         idx = self._word_idx.get(word)
@@ -578,7 +657,7 @@ class BrainCore:
         return vec
 
     def _encode_sentence(self, text: str) -> np.ndarray:
-        """Encode a sentence as weighted average of word vectors."""
+        """Encode a sentence. Dense form for backward compat."""
         tokens = self._tokenize(text)
         if not tokens:
             d = len(self._words) or 1
@@ -633,30 +712,8 @@ class BrainCore:
             self._templates[i] = (pattern, slots, vec)
 
     def _rebuild_search_matrix(self):
-        """Rebuild the DB's search matrix from scratch."""
-        self.db._vectors = None
-        self.db._id_to_row = {}
-        self.db._row_to_id = {}
-
-        for word, nid in self._word_neurons.items():
-            if word.startswith("__"):
-                continue
-            vec = self._encode_word(word)
-            if np.any(vec != 0):
-                row = len(self.db._id_to_row)
-                if self.db._vectors is None:
-                    self.db._vectors = vec.reshape(1, -1)
-                else:
-                    self.db._vectors = np.vstack(
-                        [self.db._vectors, vec.reshape(1, -1)]
-                    )
-                self.db._id_to_row[nid] = row
-                self.db._row_to_id[row] = nid
-                self.db.db.execute(
-                    "UPDATE neurons SET vector = ? WHERE id = ?",
-                    (vec.tobytes(), nid)
-                )
-        self.db.db.commit()
+        """No-op. Sparse search uses _cooc dict directly. No matrix needed."""
+        pass
 
     # --- Template extraction ---
 

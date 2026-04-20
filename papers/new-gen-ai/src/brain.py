@@ -91,6 +91,10 @@ class Brain:
         self._batch_pool = ThreadPoolExecutor(max_workers=8)  # batch-level parallelism
         self._lock = Lock()  # protects matrix/DB writes
 
+        # Bulk mode: skip reindex during mass feeding, do it once at end
+        self._bulk_mode = False
+        self._bulk_dirty = False
+
         # Rebuild matrix from persisted data
         self._load_matrix()
 
@@ -115,8 +119,9 @@ class Brain:
             return []
 
         with self._lock:
-            # Batch all DB writes for this sentence
-            self.db.begin_batch()
+            # In bulk mode, keep one long transaction open
+            if not self._bulk_mode:
+                self.db.begin_batch()
 
             # Grow the matrix
             dim_before = len(self._words)
@@ -153,14 +158,38 @@ class Brain:
             if len(tokens) >= 3:
                 self._extract_template(tokens)
 
-            # Flush all writes at once
-            self.db.end_batch()
+            if not self._bulk_mode:
+                self.db.end_batch()
 
             # Reindex if dimensions changed
             if len(self._words) != dim_before:
-                self._reindex()
+                if self._bulk_mode:
+                    self._bulk_dirty = True
+                else:
+                    self._reindex()
+
+            # In bulk mode, periodic commit to avoid unbounded WAL
+            if self._bulk_mode:
+                self._bulk_count = getattr(self, '_bulk_count', 0) + 1
+                if self._bulk_count % 500 == 0:
+                    self.db.db.commit()
 
         return [n.id for n in neurons]
+
+    def begin_bulk(self):
+        """Enter bulk feed mode. Skips reindex + batches commits."""
+        self._bulk_mode = True
+        self._bulk_dirty = False
+        self._bulk_count = 0
+        self.db.begin_batch()  # one long transaction
+
+    def end_bulk(self):
+        """Exit bulk feed mode. Commits + runs one reindex for everything taught."""
+        self._bulk_mode = False
+        self.db.end_batch()  # final commit
+        if self._bulk_dirty:
+            self._rebuild_search_matrix()
+            self._bulk_dirty = False
 
     def teach_batch(self, sentences: list, confidence: float = 0.5) -> list:
         """Teach multiple sentences in parallel. Returns list of neuron ID lists."""
@@ -359,16 +388,32 @@ class Brain:
             if name not in fills:
                 text = text.replace(f"[{name}]", "...")
 
-        avg_conf = float(np.mean([n.confidence for n in neurons]))
+        # Convergence: does the filled template live near the query?
+        answer_vec = self._encode_sentence(text)
+        q_norm = np.linalg.norm(query_vec)
+        a_norm = np.linalg.norm(answer_vec)
+        if q_norm > 0 and a_norm > 0:
+            convergence = float(np.dot(query_vec, answer_vec) / (q_norm * a_norm))
+        else:
+            convergence = 0.0
+
+        if convergence <= 0:
+            return None
+
         return {
             "answer": text,
-            "confidence": avg_conf * 0.8,
+            "confidence": convergence,
             "strategy": "template",
-            "trace": f"Template: {pattern}, fills: {fills}",
+            "trace": f"Template: {pattern}, fills: {fills}, convergence={convergence:.3f}",
         }
 
     def _try_sentence_chain(self, concept_ids, query_vec) -> dict:
-        """Find the best matching taught sentence, output in word order."""
+        """Find the best matching taught sentence, output in word order.
+
+        Confidence = convergence: cosine similarity between query vector
+        and answer vector. If the answer lives in the same region of the
+        co-occurrence space as the query, it converged. If not, it's noise.
+        """
         sentences = self.db.get_sentences_for_neurons(concept_ids)
         if not sentences:
             return None
@@ -398,11 +443,25 @@ class Brain:
         if len(words) < 2:
             return None
 
+        # Convergence check: does the answer map back to the query?
+        answer_text = " ".join(words)
+        answer_vec = self._encode_sentence(answer_text)
+        q_norm = np.linalg.norm(query_vec)
+        a_norm = np.linalg.norm(answer_vec)
+        if q_norm > 0 and a_norm > 0:
+            convergence = float(np.dot(query_vec, answer_vec) / (q_norm * a_norm))
+        else:
+            convergence = 0.0
+
+        # No convergence = no answer. The space decides, not a threshold.
+        if convergence <= 0:
+            return None
+
         return {
-            "answer": " ".join(words),
-            "confidence": 0.5,
+            "answer": answer_text,
+            "confidence": convergence,
             "strategy": "sentence_chain",
-            "trace": f"Sentence {sid}: {words}",
+            "trace": f"Sentence {sid} (convergence={convergence:.3f}): {words}",
         }
 
     def _get_sentence_order(self, concept_ids) -> dict:
@@ -430,14 +489,21 @@ class Brain:
         self._word_idx[word] = idx
 
         if self._matrix is None:
-            self._matrix = np.array([[1.0]], dtype=np.float32)
+            # Pre-allocate with room to grow
+            self._matrix = np.zeros((256, 256), dtype=np.float32)
+            self._matrix[0, 0] = 1.0
+            self._matrix_capacity = 256
         else:
-            n = self._matrix.shape[0]
-            new_col = np.zeros((n, 1), dtype=np.float32)
-            self._matrix = np.hstack([self._matrix, new_col])
-            new_row = np.zeros((1, n + 1), dtype=np.float32)
-            new_row[0, idx] = 1.0
-            self._matrix = np.vstack([self._matrix, new_row])
+            cap = self._matrix_capacity
+            if idx >= cap:
+                # Double capacity — one big alloc instead of N small ones
+                new_cap = max(cap * 2, idx + 256)
+                new_matrix = np.zeros((new_cap, new_cap), dtype=np.float32)
+                n = self._matrix.shape[0]
+                new_matrix[:n, :n] = self._matrix[:n, :n]
+                self._matrix = new_matrix
+                self._matrix_capacity = new_cap
+            self._matrix[idx, idx] = 1.0
 
         return idx
 
@@ -464,8 +530,12 @@ class Brain:
             return
 
         # Rebuild matrix from stored neuron vectors
-        # Each neuron's vector IS its row in the matrix
-        self._matrix = np.eye(n, dtype=np.float32)  # start with identity
+        # Pre-allocate with room to grow
+        cap = max(n * 2, 256)
+        self._matrix = np.zeros((cap, cap), dtype=np.float32)
+        for i in range(n):
+            self._matrix[i, i] = 1.0  # identity for active dims
+        self._matrix_capacity = cap
 
         for word, nid in words_in_db:
             neuron = self.db.get(nid)
@@ -510,10 +580,12 @@ class Brain:
     def _encode_word(self, word: str) -> np.ndarray:
         """Get a word's vector from the matrix."""
         word = word.lower().strip()
+        n = len(self._words)
         idx = self._word_idx.get(word)
-        if idx is None:
-            return np.zeros(len(self._words) or 1, dtype=np.float32)
-        vec = self._matrix[idx].copy()
+        if idx is None or n == 0:
+            return np.zeros(n or 1, dtype=np.float32)
+        # Slice to active dimensions (matrix may be pre-allocated larger)
+        vec = self._matrix[idx, :n].copy()
         norm = np.linalg.norm(vec)
         if norm > 0:
             vec = vec / norm
@@ -699,10 +771,67 @@ class Brain:
         h["words"] = len(self._words)
         h["templates"] = len(self._templates)
 
-        # Pressure signals — is the brain getting too big?
-        h["memory_pressure"] = h["rss_mb"] > 512  # over 512MB = pressure
-        h["disk_pressure"] = h["disk_free_gb"] < 1.0  # under 1GB = pressure
-        h["matrix_pressure"] = len(self._words) > 10000  # 10K dims = O(100M) matrix
+        # System-wide memory check — OOM awareness
+        try:
+            with open('/proc/meminfo') as f:
+                meminfo = f.read()
+            for line in meminfo.splitlines():
+                if line.startswith('MemAvailable:'):
+                    avail_kb = int(line.split()[1])
+                    h["system_avail_mb"] = round(avail_kb / 1024, 1)
+                    h["system_avail_pct"] = round(avail_kb / 1024 / (h.get("rss_mb", 1) + avail_kb / 1024) * 100, 1)
+                    break
+        except Exception:
+            h["system_avail_mb"] = -1
+
+        # Pressure signals
+        h["memory_pressure"] = h["rss_mb"] > 512
+        h["oom_risk"] = h.get("system_avail_mb", 9999) < 1024
+        h["disk_pressure"] = h["disk_free_gb"] < 1.0
+        h["matrix_pressure"] = len(self._words) > 10000
+
+        # CPU load
+        try:
+            load1, load5, load15 = os.getloadavg()
+            ncpu = os.cpu_count() or 1
+            h["load_1m"] = round(load1, 2)
+            h["load_5m"] = round(load5, 2)
+            h["load_15m"] = round(load15, 2)
+            h["cpu_count"] = ncpu
+            h["cpu_saturated"] = load1 > ncpu * 0.9
+        except Exception:
+            h["load_1m"] = -1
+            h["cpu_saturated"] = False
+
+        # Swap
+        try:
+            with open('/proc/meminfo') as f:
+                for line in f:
+                    if line.startswith('SwapTotal:'):
+                        h["swap_total_mb"] = int(line.split()[1]) / 1024
+                    elif line.startswith('SwapFree:'):
+                        h["swap_free_mb"] = int(line.split()[1]) / 1024
+        except Exception:
+            pass
+        swap_used = h.get("swap_total_mb", 0) - h.get("swap_free_mb", 0)
+        h["swap_used_mb"] = round(swap_used, 1)
+        h["swapping"] = swap_used > 100  # using >100MB swap = thrashing
+
+        # Death risk score: 0 = healthy, 100 = about to die
+        # Weighted across all vitals
+        risk = 0
+        avail = h.get("system_avail_mb", 9999)
+        if avail < 2048:
+            risk += int((2048 - avail) / 2048 * 40)   # 0-40 from RAM
+        if h.get("swapping"):
+            risk += min(25, int(swap_used / 500 * 25)) # 0-25 from swap
+        if h["disk_free_gb"] < 5:
+            risk += int((5 - h["disk_free_gb"]) / 5 * 20)  # 0-20 from disk
+        if h.get("cpu_saturated"):
+            risk += 10                                  # +10 from CPU saturation
+        if h["rss_mb"] > 512:
+            risk += min(5, int((h["rss_mb"] - 512) / 1024 * 5))  # 0-5 from process bloat
+        h["death_risk"] = min(100, risk)
 
         return h
 

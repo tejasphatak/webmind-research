@@ -95,8 +95,10 @@ class Brain:
         self._bulk_mode = False
         self._bulk_dirty = False
 
-        # Rebuild matrix from persisted data
-        self._load_matrix()
+        # Try fast cache first, fall back to full rebuild
+        if not self._load_cache():
+            self._load_matrix()
+            self._save_cache()  # cache for next boot
 
     # --- Learning ---
 
@@ -190,6 +192,7 @@ class Brain:
         if self._bulk_dirty:
             self._rebuild_search_matrix()
             self._bulk_dirty = False
+        self._save_cache()  # cache for fast boot next time
 
     def teach_batch(self, sentences: list, confidence: float = 0.5) -> list:
         """Teach multiple sentences in parallel. Returns list of neuron ID lists."""
@@ -537,22 +540,125 @@ class Brain:
             self._matrix[i, i] = 1.0  # identity for active dims
         self._matrix_capacity = cap
 
+        # Bulk load ALL neuron vectors in one query (not 17K individual SELECTs)
+        nid_to_idx = {}
         for word, nid in words_in_db:
-            neuron = self.db.get(nid)
-            if neuron is None:
-                continue
             idx = self._word_idx.get(word)
+            if idx is not None:
+                nid_to_idx[nid] = idx
+
+        rows = self.db.db.execute(
+            "SELECT id, vector FROM neurons"
+        ).fetchall()
+        for nid, vec_bytes in rows:
+            idx = nid_to_idx.get(nid)
             if idx is None:
                 continue
-            vec = neuron.vector
-            # If stored vector fits, use it to restore co-occurrence values
+            vec = np.frombuffer(vec_bytes, dtype=np.float32).copy()
             if len(vec) <= n:
                 self._matrix[idx, :len(vec)] = vec
-                # Mirror: keep symmetric
                 self._matrix[:len(vec), idx] = vec
 
         # Rebuild the search matrix too
         self._rebuild_search_matrix()
+
+    def _cache_dir(self):
+        """Cache directory — same as DB path."""
+        if self._db_path:
+            return Path(self._db_path)
+        return None
+
+    def _save_cache(self):
+        """Save matrix + words to .npy/.txt for fast boot next time."""
+        d = self._cache_dir()
+        if d is None or self._matrix is None or len(self._words) == 0:
+            return
+        try:
+            n = len(self._words)
+            # Save the active portion of the matrix (not pre-allocated padding)
+            np.save(d / '_matrix_cache.npy', self._matrix[:n, :n])
+            # Save word list
+            (d / '_words_cache.txt').write_text('\n'.join(self._words))
+            # Save search matrix if it exists
+            if self.db._vectors is not None:
+                np.save(d / '_vectors_cache.npy', self.db._vectors)
+                # Save ID mappings
+                import json
+                (d / '_idmap_cache.json').write_text(json.dumps({
+                    'id_to_row': {str(k): v for k, v in self.db._id_to_row.items()},
+                    'row_to_id': {str(k): v for k, v in self.db._row_to_id.items()},
+                }))
+            # Version = word count + hash of word list
+            word_hash = hashlib.md5('\n'.join(self._words).encode()).hexdigest()
+            (d / '_cache_version.txt').write_text(f"{n}:{word_hash}")
+        except Exception:
+            pass  # cache is optional, never crash on save failure
+
+    def _load_cache(self) -> bool:
+        """Try to load matrix from cache. Returns True if successful."""
+        d = self._cache_dir()
+        if d is None:
+            return False
+
+        version_file = d / '_cache_version.txt'
+        matrix_file = d / '_matrix_cache.npy'
+        words_file = d / '_words_cache.txt'
+        vectors_file = d / '_vectors_cache.npy'
+        idmap_file = d / '_idmap_cache.json'
+
+        if not all(f.exists() for f in [version_file, matrix_file, words_file]):
+            return False
+
+        try:
+            # Check version matches DB — count + hash
+            version_str = version_file.read_text().strip()
+            if ':' not in version_str:
+                return False  # old format
+            cached_n, cached_hash = version_str.split(':', 1)
+            cached_n = int(cached_n)
+
+            db_words = sorted(w for w in self._word_neurons if not w.startswith("__"))
+            if len(db_words) != cached_n:
+                return False
+
+            # Load and verify word list
+            words = words_file.read_text().strip().split('\n')
+            if len(words) != cached_n:
+                return False
+
+            word_hash = hashlib.md5('\n'.join(words).encode()).hexdigest()
+            if word_hash != cached_hash:
+                return False  # words changed
+
+            # Load matrix
+            matrix_data = np.load(matrix_file)
+            if matrix_data.shape[0] != cached_n:
+                return False
+
+            # Success — populate state
+            self._words = words
+            self._word_idx = {w: i for i, w in enumerate(words)}
+
+            # Pre-allocate with room to grow
+            n = len(words)
+            cap = max(n * 2, 256)
+            self._matrix = np.zeros((cap, cap), dtype=np.float32)
+            self._matrix[:n, :n] = matrix_data
+            self._matrix_capacity = cap
+
+            # Load search matrix if cached
+            if vectors_file.exists() and idmap_file.exists():
+                import json
+                self.db._vectors = np.load(vectors_file)
+                idmap = json.loads(idmap_file.read_text())
+                self.db._id_to_row = {int(k): v for k, v in idmap['id_to_row'].items()}
+                self.db._row_to_id = {int(k): v for k, v in idmap['row_to_id'].items()}
+            else:
+                self._rebuild_search_matrix()
+
+            return True
+        except Exception:
+            return False  # cache corrupt, fall back to full rebuild
 
     def _save_matrix(self):
         """Persist current matrix state to neuron vectors in SQLite."""
@@ -647,29 +753,43 @@ class Brain:
             self._templates[i] = (pattern, slots, vec)
 
     def _rebuild_search_matrix(self):
-        """Rebuild the DB's search matrix from scratch."""
-        self.db._vectors = None
-        self.db._id_to_row = {}
-        self.db._row_to_id = {}
+        """Rebuild the DB's search matrix from scratch.
+        Pre-allocate instead of vstack loop (was O(N²), now O(N)).
+        """
+        words = [(w, nid) for w, nid in self._word_neurons.items()
+                 if not w.startswith("__")]
+        if not words:
+            self.db._vectors = None
+            self.db._id_to_row = {}
+            self.db._row_to_id = {}
+            return
 
-        for word, nid in self._word_neurons.items():
-            if word.startswith("__"):
-                continue
+        dim = len(self._words) or 1
+        vectors_list = []
+        id_to_row = {}
+        row_to_id = {}
+
+        for word, nid in words:
             vec = self._encode_word(word)
             if np.any(vec != 0):
-                row = len(self.db._id_to_row)
-                if self.db._vectors is None:
-                    self.db._vectors = vec.reshape(1, -1)
-                else:
-                    self.db._vectors = np.vstack(
-                        [self.db._vectors, vec.reshape(1, -1)]
-                    )
-                self.db._id_to_row[nid] = row
-                self.db._row_to_id[row] = nid
-                self.db.db.execute(
-                    "UPDATE neurons SET vector = ? WHERE id = ?",
-                    (vec.tobytes(), nid)
-                )
+                row_idx = len(vectors_list)
+                vectors_list.append(vec)
+                id_to_row[nid] = row_idx
+                row_to_id[row_idx] = nid
+
+        if vectors_list:
+            self.db._vectors = np.array(vectors_list, dtype=np.float32)
+        else:
+            self.db._vectors = None
+        self.db._id_to_row = id_to_row
+        self.db._row_to_id = row_to_id
+        n = len(vectors_list)
+
+        # Batch update DB vectors
+        updates = [(vectors[row_idx].tobytes(), nid)
+                   for (word, nid), row_idx in zip(words, range(n))]
+        self.db.db.executemany(
+            "UPDATE neurons SET vector = ? WHERE id = ?", updates)
         self.db.db.commit()
 
     # --- Template extraction ---

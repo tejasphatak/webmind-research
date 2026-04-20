@@ -66,7 +66,8 @@ class Brain:
     """
 
     # Max words per expert matrix (pre-allocated mmap size)
-    MAX_WORDS = 8000
+    # 16K×16K = 1GB on disk, but mmap only pages in what's accessed
+    MAX_WORDS = 16000
 
     def __init__(self, db_path: str = None, embed_dim: int = 0,
                  use_mmap: bool = True):
@@ -176,6 +177,28 @@ class Brain:
 
         # Build search index directly from matrix (no separate copy)
         self._rebuild_search_matrix()
+
+    def _resize_mmap(self, new_cap):
+        """Resize the mmap file. Create larger file, copy data, swap."""
+        d = Path(self._db_path)
+        old_file = d / '_matrix.mmap'
+        new_file = d / '_matrix.mmap.new'
+        old_cap = self._matrix_capacity
+        n = min(len(self._words), old_cap)
+
+        # Create new larger mmap
+        new_matrix = np.memmap(str(new_file), dtype=np.float32,
+                               mode='w+', shape=(new_cap, new_cap))
+        # Copy existing data
+        new_matrix[:n, :n] = self._matrix[:n, :n]
+        new_matrix.flush()
+
+        # Swap files
+        del self._matrix  # close old mmap
+        new_file.rename(old_file)
+        self._matrix = np.memmap(str(old_file), dtype=np.float32,
+                                 mode='r+', shape=(new_cap, new_cap))
+        self._matrix_capacity = new_cap
 
     def _save_words(self):
         """Save word list to JSON sidecar."""
@@ -602,10 +625,10 @@ class Brain:
         else:
             # N×N mode — mmap is pre-allocated, in-memory needs growth
             if self._use_mmap:
-                # mmap already allocated at MAX_WORDS — just set diagonal
-                if idx < self._matrix_capacity:
-                    self._matrix[idx, idx] = 1.0
-                # Save updated word list periodically
+                if idx >= self._matrix_capacity:
+                    # Resize mmap: double capacity
+                    self._resize_mmap(max(self._matrix_capacity * 2, idx + 1000))
+                self._matrix[idx, idx] = 1.0
                 if idx % 100 == 0:
                     self._save_words()
             elif self._matrix is None:
@@ -846,9 +869,9 @@ class Brain:
                 return np.zeros(self._embed_dim, dtype=np.float32)
             return self._embeddings[idx].copy()
         else:
-            # Legacy N×N mode
-            n = len(self._words)
-            if idx is None or n == 0:
+            # N×N mode — clamp to matrix capacity
+            n = min(len(self._words), self._matrix_capacity) if self._matrix_capacity > 0 else len(self._words)
+            if idx is None or n == 0 or idx >= n:
                 return np.zeros(n or 1, dtype=np.float32)
             vec = self._matrix[idx, :n].copy()
             norm = np.linalg.norm(vec)
@@ -859,7 +882,12 @@ class Brain:
     def _encode_sentence(self, text: str) -> np.ndarray:
         """Encode a sentence as weighted average of word vectors. In-place accumulation."""
         tokens = self._tokenize(text)
-        d = self._embed_dim if self._embed_dim > 0 else (len(self._words) or 1)
+        if self._embed_dim > 0:
+            d = self._embed_dim
+        elif self._matrix_capacity > 0:
+            d = min(len(self._words), self._matrix_capacity) or 1
+        else:
+            d = len(self._words) or 1
         if not tokens:
             return np.zeros(d, dtype=np.float32)
 

@@ -72,9 +72,10 @@ class Brain(BrainCore):
         self._persist_queue.append((sentence, content, tokens, confidence))
         self._persist_count += 1
 
-        # Auto-flush every 500 teaches on a background thread
-        if self._persist_count % 500 == 0 and not self._bulk_mode:
-            self._async_flush()
+        # Auto-flush to prevent OOM: every 5000 teaches in bulk, 500 otherwise
+        flush_interval = 5000 if self._bulk_mode else 500
+        if self._persist_count % flush_interval == 0:
+            self._flush_persist()  # sync flush to free memory
 
         return list(range(len(content)))  # placeholder IDs
 

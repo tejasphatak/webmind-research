@@ -7,7 +7,7 @@
 
 **Disclaimer.** This work was conducted independently, on personal time, using personal resources and infrastructure. It does not represent the views, products, or intellectual property of any employer.
 
-**Abstract.** We present a reasoning system built from a self-growing co-occurrence matrix — no gradient descent, no end-to-end training. Each taught sentence adds dimensions and strengthens connections between co-occurring words (inspired by the Hebbian principle). We introduce two mechanisms: (1) **convergence as confidence**, where cosine similarity between query and answer vectors in the co-occurrence space replaces hardcoded quality thresholds, cleanly separating real answers (cosine 0.32-0.49) from garbage (0.00-0.12); and (2) **Mixture of Expert Matrices (MoEM)**, decomposing the O(N²) matrix into K domain-specific experts with semantic routing, reducing memory K-fold and enabling parallel ingestion at ~125 records/sec on 4 CPU cores. The system handles text, images, and audio through a shared vector space, and detects harmful queries across 50+ languages via NLI-based polarity. We report honestly: 0% exact match on held-out HotPotQA, and all positive results are on small synthetic test sets. The contribution is architectural, not state-of-the-art performance.
+**Abstract.** We present a reasoning system built from sparse co-occurrence dictionaries — no gradient descent, no end-to-end training, no dense matrices. Each taught sentence strengthens connections between co-occurring words (inspired by the Hebbian principle). We introduce two mechanisms: (1) **convergence as confidence**, where sparse cosine similarity between query and answer co-occurrence profiles replaces hardcoded quality thresholds, cleanly separating real answers (cosine 0.32-0.49) from garbage (0.00-0.12); and (2) **sparse dict search**, where O(N×K) search over co-occurrence dictionaries replaces O(N²) matrix operations — 295K words with 43M connections built in 40 seconds, queried in 720ms on a single CPU. The system handles text, images, and audio through a shared vector space, and detects harmful queries across 50+ languages via NLI-based polarity. We report honestly: 0% exact match on held-out HotPotQA, and all positive results are on small synthetic test sets. The contribution is architectural, not state-of-the-art performance.
 
 ## 1. Introduction
 
@@ -20,7 +20,7 @@ Co-occurrence matrices have a long history in distributional semantics (Turney a
 **Contributions:**
 1. A **self-growing co-occurrence matrix** that starts at 0×0 and grows with each taught sentence
 2. **Convergence as confidence** — cosine similarity between query and answer vectors in the co-occurrence space replaces hardcoded quality thresholds
-3. **Mixture of Expert Matrices (MoEM)** — K smaller matrices instead of one O(N²) matrix, with semantic routing
+3. **Sparse co-occurrence search** — O(N×K) search on dict pairs instead of O(N²) matrix operations
 
 The system is not a replacement for transformers. It cannot write prose, hold conversations, or generalize to unseen task formats. It can retrieve facts, generate sentences from taught patterns, reason across modalities, and refuse harmful queries — all inspectable, all on CPU, all without training.
 
@@ -43,7 +43,7 @@ Every cell is readable. "Why is paris similar to london?" → both have 0.3 on t
 
 This is co-occurrence strengthening inspired by Hebb (1949): concepts that appear together develop stronger connections. The matrix IS the understanding — no separate model, no hidden state.
 
-**Known limitation:** N concepts → N×N matrix. At 50K concepts, this is 10GB. Section 4 addresses this with Mixture of Expert Matrices.
+**Known limitation:** A dense N×N matrix would be O(N²). Section 4 addresses this with sparse dict storage — only non-zero pairs stored.
 
 ### 2.2 Neurons and Search
 
@@ -108,50 +108,51 @@ The separation is clean on this sample. Larger-scale validation is needed — th
 
 This is a single-step self-attention check. Transformer verification (Self-Consistency, Wang et al., 2023) requires multiple forward passes. Our verification is built into retrieval: the cosine check IS the confidence. Crucially, this works because unrelated words have exactly zero co-occurrence in the matrix — the sparsity of the N×N representation is the signal. Dense embeddings (e.g., random 384-dim) destroy this separation.
 
-## 4. Mixture of Expert Matrices (MoEM)
+## 4. Scaling: Sparse Co-occurrence Search
 
 ### 4.1 The Problem
 
-N words → N×N matrix → O(N²) memory. At 50K words: 10GB.
+A dense N×N co-occurrence matrix grows O(N²). At 50K words: 10GB. Unworkable.
 
-### 4.2 Method
+### 4.2 Solution: Sparse Dict
 
-Decompose into K expert matrices. Each expert handles a semantically coherent word cluster:
+Store only non-zero co-occurrence pairs as a dictionary:
 
+```python
+cooc = {
+    "paris":  {"capital": 0.3, "france": 0.3},
+    "capital": {"paris": 0.3, "london": 0.3, "france": 0.3, "england": 0.3},
+    ...
+}
 ```
-Query → Router → Expert_music (2K×2K)
-              → Expert_biology (2K×2K)
-              → ...
+
+Most word pairs never co-occur → not stored → exact zero. Memory: O(E) where E = non-zero edges, not O(N²).
+
+### 4.3 Sparse Search
+
+Search directly on the dicts — no N-dimensional vectors needed:
+
+```python
+def sparse_cosine(query_cooc, word_cooc):
+    dot = sum(query_cooc.get(k, 0) * v for k, v in word_cooc.items())
+    return dot / (norm(query_cooc) * norm(word_cooc))
 ```
 
-Memory: K·(N/K)² = N²/K. With K=64: 64× reduction.
+Complexity: O(N × K) where K = avg connections per word (~50). Not O(N²).
 
-**Routing:** Co-occurring words share an expert (the sentence is the clustering unit). New sentences route by rare-word majority vote to existing experts. If all experts are full, a new expert spawns dynamically.
+### 4.4 Results
 
-**Parallel feed:** Two-phase ingestion. Phase 1: pre-route all records (sequential, fast). Phase 2: feed each expert in a separate OS process (no GIL, memory reclaimed on completion).
+Single CPU (GCP e2-standard-4), 121K records from 12 datasets:
 
-**LRU expert cache:** Only MAX_LOADED=4 experts in RAM. Others sleep on disk as `.npy` cache files. Boot memory: ~66MB (router + 4 cached experts).
-
-### 4.3 Results
-
-Benchmark on GCP e2-standard-4 (4 vCPU, 16GB RAM), 191K records from 12 datasets:
-
-| Configuration | Throughput | Memory per expert |
-|---|---|---|
-| Single matrix | ~1 rec/sec | O(N²), unbounded |
-| MoE, 64 experts, 8 workers | ~125 rec/sec | ~64MB (4K×4K) |
-
-Phase 1 routing: 15 seconds for 191K records. Expert balance: within 5% of uniform. Dynamic worker count scales to available RAM.
-
-### 4.4 Relation to Transformer MoE
-
-| Transformer MoE | Our MoE |
+| Metric | Value |
 |---|---|
-| Expert = FFN layer (opaque) | Expert = co-occurrence matrix (inspectable) |
-| Router = learned gating | Router = co-occurrence clustering |
-| Trained end-to-end | Routing from data structure |
+| Words learned | 295,423 |
+| Co-occurrence entries | 43,460,849 |
+| Feed time (dict build) | 40.6 seconds |
+| Feed rate | ~3,000 records/sec |
+| Ask latency (10K words) | 720ms |
 
-Our application of MoE to co-occurrence matrices is, to our knowledge, novel.
+No partitioning, no matrix, no GPU. One dict, one SQLite file.
 
 ## 5. Experiments
 
@@ -183,7 +184,7 @@ All positive results are on small synthetic test sets (N=5 to N=18). No standard
 
 **Knowledge as database:** kNN-LM (Khandelwal et al., ICLR 2020), RETRO (Borgeaud et al., ICML 2022), REALM (Guu et al., ICML 2020). We share the principle of separating knowledge from model but use a self-grown matrix rather than pretrained embeddings.
 
-**Mixture of Experts:** Shazeer et al. (ICLR 2017), Switch Transformers (Fedus et al., JMLR 2022). We apply MoE to co-occurrence matrices rather than FFN layers.
+**Sparse retrieval:** BM25 (Robertson et al., 1995) pioneered sparse term matching. Our sparse cosine over co-occurrence dicts is analogous but operates on learned connection weights rather than term frequencies.
 
 **Self-evolving systems:** NELL (Mitchell et al., CACM 2018), Voyager (Wang et al., 2023). Our system learns from every query via convergence feedback.
 
@@ -191,7 +192,7 @@ All positive results are on small synthetic test sets (N=5 to N=18). No standard
 
 ## 7. Discussion
 
-**What this contributes.** Convergence-as-confidence removes hardcoded thresholds from retrieval systems — the co-occurrence space itself judges answer quality. Mixture of Expert Matrices extends MoE from neural network layers to knowledge substrates, with inspectable routing. Together they make a self-growing co-occurrence matrix practical at scale.
+**What this contributes.** Convergence-as-confidence removes hardcoded thresholds from retrieval systems — the co-occurrence space itself judges answer quality. Sparse dict-based co-occurrence with O(N×K) search makes the architecture practical at scale without matrix operations. Together they enable a self-growing knowledge system that handles 295K words on a single CPU.
 
 **What this does not do.** The system scores 0% on held-out QA benchmarks. It generates only from taught patterns. Multimodal capability depends on CLIP's pretraining. It is not a replacement for transformers — it is proof that transformer principles (attention, residual connections, confidence weighting) can be expressed in an inspectable, editable substrate.
 
@@ -199,7 +200,7 @@ All positive results are on small synthetic test sets (N=5 to N=18). No standard
 
 **Future work.** Tool calls from knowledge (web search triggered by convergence), self-updating knowledge (verified external sources become neurons), and code as knowledge (function neurons for computation).
 
-**Reproducibility.** Open source at `github.com/tejasphatak/webmind-research`. Core: `brain.py` (~1000 lines), MoE: `moe_brain.py` (~600 lines). Dependencies: numpy (core), sentence-transformers (multimodal). 264 tests, ~80s on CPU. Hardware: GCP e2-standard-4 (4 vCPU, 16GB RAM).
+**Reproducibility.** Open source at `github.com/tejasphatak/webmind-research`. Core: `brain_core.py` (~820 lines), performance layer: `brain.py` (~180 lines). Dependencies: numpy (core), sentence-transformers (multimodal). 264 tests, ~50s on CPU. Hardware: GCP e2-standard-4 (4 vCPU, 16GB RAM).
 
 ## Appendix A: Core Implementation
 

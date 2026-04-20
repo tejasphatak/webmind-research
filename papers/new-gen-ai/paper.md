@@ -187,7 +187,7 @@ All positive results are on small synthetic test sets (N=5 to N=18). No standard
 
 **Self-evolving systems:** NELL (Mitchell et al., CACM 2018), Voyager (Wang et al., 2023). Our system learns from every query via convergence feedback.
 
-**Foundational:** Attention Is All You Need (Vaswani et al., NeurIPS 2017) — the architecture whose principles we reimplement in database primitives. Ramsauer et al. (ICLR 2021) proved transformer attention = Hopfield network retrieval. Self-Consistency (Wang et al., 2022) for output verification. DPR (Karpukhin et al., EMNLP 2020) — our QA baseline.
+**Foundational:** Attention Is All You Need (Vaswani et al., NeurIPS 2017) — the architecture whose principles we reimplement in database primitives. Ramsauer et al. (ICLR 2021) proved transformer attention = Hopfield network retrieval. Self-Consistency (Wang et al., 2023) for output verification. DPR (Karpukhin et al., EMNLP 2020) — our QA baseline.
 
 ## 7. Discussion
 

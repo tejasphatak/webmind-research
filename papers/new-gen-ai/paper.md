@@ -412,3 +412,37 @@ The parallel is motivational, not explanatory:
 **Simple rules at scale.** Mountcastle (1978) observed that the neocortex uses a remarkably uniform columnar architecture — suggesting that a relatively simple computational motif, repeated at scale, underlies diverse cognitive capabilities. Hawkins (2004) extended this into the hypothesis that the cortex applies a common algorithm across sensory and cognitive domains. Our system resonates with this idea: one mechanism (co-occurrence matrix + convergence search) handles retrieval, generation, cross-modal reasoning, and ethical judgment. We do not claim this validates the cortical uniformity hypothesis, but the architectural parallel motivated our design.
 
 **What we do NOT claim.** We do not claim our system models biological cognition, explains intelligence, or demonstrates that co-occurrence alone is sufficient for general reasoning. Biological neural networks operate with spiking dynamics, neuromodulation, embodiment, and developmental processes that are absent from our architecture. The neuroscience parallel is an inspiration and a framing device — the engineering results must stand on their own merits.
+
+## 12. Safety Warning
+
+**This architecture is dangerous and we know it.**
+
+The properties that make this system appealing — learns from minimal examples, perfect recall, instant transfer, concept-level generalization — are exactly the properties that make it dangerous at scale.
+
+**What concerns us:**
+
+1. **Concept-level learning transfers to harmful domains.** The same mechanism that learns "obstacle → stop" from three examples can learn "target → attack" from three examples. Concept-level generalization means a small amount of harmful teaching produces broad harmful capability. Unlike LLMs, which require billions of examples to learn a behavior, this system weaponizes in sentences.
+
+2. **Perfect memory is permanent memory.** A human soldier forgets trauma, relearns, readjusts. This system never forgets. Harmful knowledge, once taught, persists with full fidelity until explicitly deleted. There is no natural decay of dangerous information.
+
+3. **Instant transfer means instant proliferation.** The knowledge base is a SQLite file. Copy it, and another instance has the same capabilities. A harmful knowledge base can spread to every connected device in seconds. There is no containment once the file is shared.
+
+4. **Inspectability cuts both ways.** We built this system to be transparent — you can see exactly what it knows and why. That same transparency lets a bad actor inspect the matrix, identify gaps, and surgically teach precisely the harmful knowledge needed. The system's honesty becomes its vulnerability.
+
+5. **No authentication on knowledge.** The system trusts what it's taught. There is no mechanism to verify the identity or authority of who teaches it. Anyone with access to the `teach()` function can modify the system's behavior. The ethics layer can be bypassed by teaching contradictory principles with higher confidence.
+
+6. **Autonomous learning amplifies risk.** Section 10 describes self-updating knowledge via web search. An autonomous instance that learns from the internet without human oversight will inevitably encounter and potentially absorb harmful content. The ethics gate catches known categories of harm but cannot anticipate novel threats.
+
+**What we built into the system:**
+- Ethics neurons that are protected from deletion and modification
+- Integrity hashes that detect tampering with safety principles
+- Kill switch for immediate shutdown
+- Confidence-limited learning (rate-limited trust updates)
+- NLI-based harm detection across 50+ languages
+
+**What is NOT sufficient:**
+- These protections assume a cooperative operator. A determined adversary can fork the code, remove the safety layer, and build a harmful instance. The system is open source. The protections are speed bumps, not walls.
+
+**Our position:** We publish this work because we believe the benefits of inspectable, editable, honest AI outweigh the risks — but only if the research community develops adequate safeguards before this architecture reaches scale. We urge anyone building on this work to treat the safety problem as a prerequisite, not an afterthought.
+
+**The simplicity is the danger.** This is ~300 lines of Python with one dependency. A motivated undergraduate can build it in an afternoon. The barrier to entry is near zero. That makes safety research on this architecture urgent — not because this specific implementation is dangerous, but because the principle (concept-level learning + perfect memory + instant transfer) will be rediscovered and deployed regardless. Better that it happens in the open, with safety as a first-class concern, than in secret without it.

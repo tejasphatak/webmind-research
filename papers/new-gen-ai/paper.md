@@ -276,7 +276,7 @@ We publish openly because the principle (concept-level learning + perfect memory
 - Khandelwal, U., Levy, O., Jurafsky, D., Zettlemoyer, L., and Lewis, M. (2020). Generalization through Memorization: Nearest Neighbor Language Models. *ICLR 2020*.
 - Levy, O. and Goldberg, Y. (2014). Neural Word Embedding as Implicit Matrix Factorization. *NeurIPS 2014*.
 - Mitchell, T., et al. (2018). Never-Ending Learning. *Communications of the ACM*, 61(5):103-115.
-- Phatak, T. (2026). INSERT INTO Is All You Need: Self-Evolving Retrieval for Factual QA. *arXiv preprint*.
+- Phatak, T. (2026). INSERT INTO Is All You Need: Self-Evolving Retrieval for Factual QA. *Unpublished manuscript, available at github.com/tejasphatak/webmind-research*.
 - Radford, A., et al. (2021). Learning Transferable Visual Models From Natural Language Supervision. *ICML 2021*.
 - Ramsauer, H., et al. (2021). Hopfield Networks is All You Need. *ICLR 2021*.
 - Shao, Z., et al. (2023). Enhancing Retrieval-Augmented Large Language Models with Iterative Retrieval-Generation Synergy. *EMNLP 2023 Findings*.
@@ -284,5 +284,5 @@ We publish openly because the principle (concept-level learning + perfect memory
 - Trivedi, H., Balasubramanian, N., Khot, T., and Sabharwal, A. (2023). Interleaving Retrieval with Chain-of-Thought Reasoning for Knowledge-Intensive Multi-Step Questions. *ACL 2023*.
 - Turney, P. D. and Pantel, P. (2010). From Frequency to Meaning: Vector Space Models of Semantics. *JAIR*, 37:141-188.
 - Vaswani, A., et al. (2017). Attention Is All You Need. *NeurIPS 2017*.
-- Wang, G., et al. (2023). Voyager: An Open-Ended Embodied Agent with Large Language Models. *arXiv:2305.16291*.
+- Wang, G., et al. (2023). Voyager: An Open-Ended Embodied Agent with Large Language Models. *NeurIPS 2023*.
 - Wang, X., et al. (2023). Self-Consistency Improves Chain of Thought Reasoning in Language Models. *ICLR 2023*.

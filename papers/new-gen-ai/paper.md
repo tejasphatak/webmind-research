@@ -1,3 +1,6 @@
+> [!WARNING]
+> WIP the paper may be out of date.
+
 # Attention Without Weights: Reasoning via Self-Growing Co-occurrence Graphs
 
 *Tejas Phatak*

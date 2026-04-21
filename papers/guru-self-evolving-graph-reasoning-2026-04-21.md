@@ -1,4 +1,4 @@
-# Guru: A Self-Evolving Graph Reasoning Engine That Learns From Every Conversation
+# GURU (Graph-based Unfrozen Reasoning Unit): A Self-Evolving Graph Reasoning Engine That Learns From Every Conversation
 
 **Tejas Phatak**
 April 2026

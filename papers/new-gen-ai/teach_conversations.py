@@ -311,6 +311,65 @@ teach_batch("context-resolution", context_sentences, confidence=0.5)
 
 
 # =============================================================================
+# 8. GENERAL KNOWLEDGE — common questions people will ask
+# =============================================================================
+
+print("\n8. General knowledge...")
+
+general_qa = [
+    # Physics
+    ("What is gravity", "Gravity is a fundamental force of nature that attracts objects with mass toward each other. It keeps planets in orbit and holds us on Earth."),
+    ("What is light", "Light is electromagnetic radiation visible to the human eye, traveling at about 300,000 kilometers per second."),
+    ("What is energy", "Energy is the capacity to do work. It exists in many forms including kinetic, potential, thermal, electrical, and nuclear."),
+    ("What is a planet", "A planet is a large celestial body that orbits a star, has enough mass for gravity to make it round, and has cleared its orbital neighborhood."),
+    ("What is the sun", "The Sun is the star at the center of our solar system. It is a ball of hot plasma about 4.6 billion years old."),
+    ("What is the moon", "The Moon is Earth's only natural satellite, about 384,400 km away. It influences tides and has been visited by 12 astronauts."),
+
+    # Famous people
+    ("Who is Einstein", "Albert Einstein was a theoretical physicist who developed the theory of relativity, one of the two pillars of modern physics."),
+    ("Who is Newton", "Isaac Newton was an English mathematician and physicist who formulated the laws of motion and universal gravitation."),
+    ("Who is Shakespeare", "William Shakespeare was an English playwright and poet, widely regarded as the greatest writer in the English language."),
+    ("Who is Darwin", "Charles Darwin was a naturalist who proposed the theory of evolution by natural selection in his book On the Origin of Species."),
+    ("Who is Tesla", "Nikola Tesla was a Serbian-American inventor and electrical engineer known for his contributions to alternating current electrical systems."),
+    ("Who is Turing", "Alan Turing was a British mathematician and computer scientist, considered the father of theoretical computer science and artificial intelligence."),
+
+    # Biology
+    ("What is DNA", "DNA is deoxyribonucleic acid, a molecule that carries genetic instructions for the development and functioning of all known living organisms."),
+    ("What is a cell", "A cell is the basic structural and functional unit of all living organisms. Cells can be prokaryotic or eukaryotic."),
+    ("What is evolution", "Evolution is the change in inherited characteristics of biological populations over successive generations through natural selection and genetic drift."),
+    ("What is photosynthesis", "Photosynthesis is the process by which plants convert sunlight, water, and carbon dioxide into glucose and oxygen."),
+
+    # Chemistry
+    ("What is water", "Water is a chemical compound with the formula H2O. It is essential for all known forms of life and covers about 71 percent of Earth's surface."),
+    ("What is an atom", "An atom is the smallest unit of ordinary matter that forms a chemical element. It consists of protons, neutrons, and electrons."),
+    ("What is oxygen", "Oxygen is a chemical element essential for respiration in most living organisms. It makes up about 21 percent of Earth's atmosphere."),
+
+    # Geography
+    ("What is the largest country", "Russia is the largest country in the world by area, spanning over 17 million square kilometers across Europe and Asia."),
+    ("What is the largest ocean", "The Pacific Ocean is the largest and deepest ocean on Earth, covering more than 165 million square kilometers."),
+    ("What is the longest river", "The Nile River in Africa is traditionally considered the longest river in the world at about 6,650 kilometers."),
+
+    # Technology
+    ("What is the internet", "The internet is a global network of interconnected computer networks that communicate using standardized protocols."),
+    ("What is artificial intelligence", "Artificial intelligence is the simulation of human intelligence by computer systems, including learning, reasoning, and self-correction."),
+    ("What is a computer", "A computer is an electronic device that processes data according to instructions stored in its memory, performing calculations and operations."),
+    ("What is an algorithm", "An algorithm is a step-by-step procedure or set of rules for solving a problem or accomplishing a task."),
+
+    # Math
+    ("What is pi", "Pi is a mathematical constant approximately equal to 3.14159. It represents the ratio of a circle's circumference to its diameter."),
+    ("What is infinity", "Infinity is a concept representing something without any limit. In mathematics it is used to describe quantities larger than any finite number."),
+    ("What is zero", "Zero is a number that represents the absence of quantity. It is the integer between negative one and positive one."),
+
+    # History
+    ("What was World War 2", "World War 2 was a global conflict from 1939 to 1945 involving most of the world's nations, resulting in an estimated 70-85 million deaths."),
+    ("What is democracy", "Democracy is a system of government where power is vested in the people, who rule either directly or through elected representatives."),
+    ("When was America founded", "The United States declared independence on July 4, 1776 and was formally recognized as a nation after the Revolutionary War."),
+]
+
+correct_batch("general-knowledge", general_qa)
+
+
+# =============================================================================
 # DONE
 # =============================================================================
 

@@ -271,11 +271,12 @@ def brain_respond(message: str, messages: List[ChatMessage] = None, session_id: 
     The full conversation goes to the brain as one string.
     The brain's WAL, Q→A map, and convergence handle context from there.
     """
-    # Build the full conversation as a single query — let the brain figure it out
+    # Teach prior messages so the graph learns conversation flow
+    # But query with ONLY the last user message — don't pollute the Q→A key
     if messages and len(messages) > 1:
-        query = " ".join(msg.content for msg in messages)
-    else:
-        query = message
+        for msg in messages[:-1]:
+            brain.teach(msg.content, confidence=0.2)
+    query = message
 
     # Intercept: math/code queries handled by eval before brain
     eval_result = tools.on_query(message, brain)
@@ -300,9 +301,10 @@ def brain_respond(message: str, messages: List[ChatMessage] = None, session_id: 
         return ask_result.get("answer", "I don't know.")
 
     answer = ask_result.get("answer", "I don't know.")
+    confidence = ask_result.get("confidence", 0.0)
 
-    # Brain learns from its own responses
-    if strategy != "qa_direct" and answer and answer != "I don't know.":
+    # Only learn from confident responses — don't poison the Q→A map with garbage
+    if strategy != "qa_direct" and answer and answer != "I don't know." and confidence >= 0.5:
         brain.correct(message, answer)
 
     return answer

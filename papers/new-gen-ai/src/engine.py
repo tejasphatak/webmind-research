@@ -30,7 +30,6 @@ from generator import Generator, TemplateStore, GenerationResult
 from constants import (
     ABSTAIN_MESSAGE, ABSTAIN_OOV_MESSAGE, FUNCTION_WORDS, STRUCTURAL_WORDS,
 )
-from feedback import FeedbackLoop
 
 
 import hashlib
@@ -195,7 +194,6 @@ class Engine:
         self.convergence = ConvergenceLoop(self.db, max_hops=10, k=5)
         self.multi_hop = MultiHopConvergence(self.convergence, max_rounds=3)
         self.generator = Generator(self.db, self.encoder, self.template_store)
-        self.feedback = FeedbackLoop(self.db, self.convergence)
 
         # Word → neuron_id map: load from DB if persisted
         self._word_neurons = self.db.load_word_mappings()
@@ -512,9 +510,6 @@ class Engine:
         # Generate — pass query vector and words for template matching
         gen_result = self.generator.generate(conv_result, query_vector=query_vector,
                                              query_words=tokens)
-
-        # Feedback
-        self.feedback.on_query_result(query_vector, conv_result)
 
         # Build trace — use multi-hop trace if available
         hop_trace = getattr(conv_result, '_multi_hop_trace', None) or conv_result.trace()
@@ -1280,7 +1275,6 @@ class Engine:
             "templates": self.template_store.count(),
             "vocab_size": self.encoder.vocab_size,
             "dim": self.dim,
-            "feedback_events": len(self.feedback.history),
         }
 
     def close(self):

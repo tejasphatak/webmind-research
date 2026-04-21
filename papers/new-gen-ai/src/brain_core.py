@@ -25,6 +25,7 @@ from threading import Lock
 import numpy as np
 
 from neuron import NeuronDB, Neuron
+from convergence import ConvergenceLoop, MultiHopConvergence
 
 # How much co-occurring words pull toward each other
 COOCCURRENCE_PULL = 0.3
@@ -84,6 +85,19 @@ class BrainCore:
 
         # Templates for fluent output
         self._templates = []
+
+        # Convergence loop for multi-hop reasoning
+        self._convergence = ConvergenceLoop(
+            self.db, max_hops=10, k=5,
+            convergence_threshold=0.99,
+            min_confidence=0.1, min_relevance=0.3,
+        )
+        self._multi_hop = MultiHopConvergence(
+            self._convergence, max_rounds=3, concept_blend_weight=0.4,
+        )
+
+        # Nid-to-word cache
+        self._nid_to_word_cache = None
 
         # Thread pools
         self._pool = ThreadPoolExecutor(max_workers=4)
@@ -186,9 +200,12 @@ class BrainCore:
 
         Flow:
           1. Encode question → vector
-          2. Find nearest neurons in DB
-          3. Disambiguate via sentence table
-          4. Output answer (template or concept list)
+          2. Multi-hop convergence: iteratively search the neuron DB,
+             blending discovered concepts back into the query each round.
+             This allows reasoning to cross concept boundaries.
+          3. Sparse co-occurrence search as complementary signal
+          4. Disambiguate via sentence table
+          5. Output answer (template or concept list)
         """
         tokens = self._tokenize(question)
         content = [t for t in tokens if t not in FUNCTION_WORDS]
@@ -200,7 +217,6 @@ class BrainCore:
             return {"answer": "I don't know.", "confidence": 0.0,
                     "strategy": "abstain", "trace": "No knowledge"}
 
-        # Sparse search: blend query words' co-occurrence, search all words
         content_indices = [self._word_idx[t] for t in content
                            if t in self._word_idx]
         content_nids = [self._word_neurons[t] for t in content
@@ -212,14 +228,45 @@ class BrainCore:
             return {"answer": "I don't know.", "confidence": 0.0,
                     "strategy": "abstain", "trace": "No known words in query"}
 
-        # Blend query words into one sparse co-occurrence profile
+        # --- Multi-hop convergence ---
+        # Run convergence loop on the dense neuron vectors in the DB.
+        # Each round discovers concepts, blends them into the query,
+        # and searches again — allowing reasoning across concept gaps.
+        multi_hop_result = self._multi_hop.reason(query_vec)
+        convergence_trace = multi_hop_result.trace()
+
+        # Build nid→word lookup
+        if self._nid_to_word_cache is None:
+            self._nid_to_word_cache = {nid: w for w, nid in self._word_neurons.items()
+                                       if not w.startswith("__")}
+        nid_to_word = self._nid_to_word_cache
+        word_to_nid = {w: nid for nid, w in nid_to_word.items()}
+
+        # Collect concepts from multi-hop convergence
+        concepts = []
+        seen = set()
+        for n in multi_hop_result.concepts:
+            word = nid_to_word.get(n.id)
+            if word and n.id not in seen and word not in FUNCTION_WORDS:
+                concepts.append((n, word))
+                seen.add(n.id)
+
+        # --- Sparse co-occurrence search (complementary) ---
         weights = [1.0 / (1.0 + 0.1 * i) for i in range(len(content_indices))]
         query_cooc = self._sparse_blend(content_indices, weights)
-
-        # Sparse search — O(N × K), not O(N²)
         search_results = self._sparse_search(query_cooc, k=10)
 
-        # Disambiguate via sentence table
+        for word_idx, sim in search_results:
+            if word_idx < len(self._words):
+                word = self._words[word_idx]
+                nid = word_to_nid.get(word)
+                if nid and nid not in seen and word not in FUNCTION_WORDS:
+                    n = self.db.get(nid)
+                    if n:
+                        concepts.append((n, word))
+                        seen.add(nid)
+
+        # --- Sentence disambiguation ---
         best_sentence_nids = None
         if content_nids:
             sentences = self.db.get_sentences_for_neurons(content_nids)
@@ -234,28 +281,7 @@ class BrainCore:
                     for nid, pos in self.db.get_sentence_neurons(sid):
                         best_sentence_nids.add(nid)
 
-        # Build nid→word lookup
-        if self._nid_to_word_cache is None:
-            self._nid_to_word_cache = {nid: w for w, nid in self._word_neurons.items()
-                                       if not w.startswith("__")}
-        nid_to_word = self._nid_to_word_cache
-        word_to_nid = {w: nid for nid, w in nid_to_word.items()}
-
-        # Collect concept neurons from sparse search
-        concepts = []
-        seen = set()
-
-        for word_idx, sim in search_results:
-            if word_idx < len(self._words):
-                word = self._words[word_idx]
-                nid = word_to_nid.get(word)
-                if nid and nid not in seen and word not in FUNCTION_WORDS:
-                    n = self.db.get(nid)
-                    if n:
-                        concepts.append((n, word))
-                        seen.add(nid)
-
-        # From sentence disambiguation
+        # Add concepts from sentence disambiguation
         if best_sentence_nids:
             for nid in best_sentence_nids:
                 if nid not in seen:
@@ -276,8 +302,12 @@ class BrainCore:
                         if n.id in best_sentence_nids
                         or n.id in set(content_nids)]
 
-        # Generate answer
-        return self._generate(concepts, query_vec, tokens, question)
+        # Generate answer (pass convergence trace for inspectability)
+        result = self._generate(concepts, query_vec, tokens, question)
+        result["convergence_trace"] = convergence_trace
+        result["converged"] = multi_hop_result.converged
+        result["convergence_rounds"] = len(multi_hop_result.rounds)
+        return result
 
     # --- Generation ---
 

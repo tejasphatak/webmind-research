@@ -890,6 +890,40 @@ class BrainCSR:
             "tokens_generated": len(generated),
         }
 
+    # --- Input Validation ---
+
+    def _is_meaningful(self, text: str) -> bool:
+        """Check if text is meaningful (not garbage/noise).
+        Returns False for random character strings, empty text, or pure noise."""
+        if not text or len(text.strip()) < 2:
+            return False
+        stripped = text.strip()
+        # Count alphabetic characters vs total
+        alpha = sum(1 for c in stripped if c.isalpha())
+        if len(stripped) > 5 and alpha / len(stripped) < 0.4:
+            return False  # mostly non-alpha = noise
+        # Extract words
+        words = re.findall(r'[a-zA-Z]+', stripped.lower())
+        if not words:
+            return False
+        # Single word: must be short (< 15 chars) — long single "words" are keyboard mash
+        if len(words) == 1 and len(words[0]) > 15:
+            return False
+        # Check how many words are in our known vocabulary
+        # If we have a vocabulary, at least 30% of words should be known
+        if hasattr(self, '_word_idx') and self._word_idx and len(words) >= 2:
+            known = sum(1 for w in words if w in self._word_idx)
+            if known / len(words) < 0.3:
+                return False  # mostly unknown words = likely garbage
+        # For short text (1-2 words) without vocabulary check: basic sanity
+        # Vowel ratio — real words in most languages have vowels
+        for word in words:
+            if len(word) > 4:
+                vowels = sum(1 for c in word if c in 'aeiouy')
+                if vowels == 0:
+                    return False  # 5+ char word with no vowels = garbage
+        return True
+
     # --- Learning ---
 
     def _learn_word(self, word: str) -> int:
@@ -903,6 +937,8 @@ class BrainCSR:
 
     def teach(self, sentence: str, confidence: float = 0.5) -> list:
         """Teach a new sentence. Writes to WAL (not CSR rebuild)."""
+        if not self._is_meaningful(sentence):
+            return []
         tokens = self._tokenize(sentence)
         content = [t for t in tokens if t not in FUNCTION_WORDS]
         if not content:
@@ -973,7 +1009,10 @@ class BrainCSR:
 
     def correct(self, question: str, answer: str):
         """Learn from a correction. Stores direct Q→A mapping + teaches the answer.
-        Cannot overwrite protected entries (identity, safety)."""
+        Cannot overwrite protected entries (identity, safety).
+        Rejects garbage input (non-meaningful text)."""
+        if not self._is_meaningful(question) or not self._is_meaningful(answer):
+            return
         self.teach(answer, confidence=0.6)
 
         qkey = self._qa_key(question)

@@ -1,4 +1,4 @@
-# Attention Without Weights: Reasoning via Self-Growing Co-occurrence Matrices
+# Attention Without Weights: Reasoning via Self-Growing Co-occurrence Graphs
 
 *Tejas Phatak*
 *Independent Researcher*
@@ -7,48 +7,48 @@
 
 **Disclaimer.** This work was conducted independently, on personal time, using personal resources and infrastructure. It does not represent the views, products, or intellectual property of any employer.
 
-**Abstract.** We present a reasoning system built from sparse co-occurrence dictionaries — no gradient descent, no end-to-end training, no dense matrices. Each taught sentence strengthens connections between co-occurring words (inspired by the Hebbian principle). We introduce three mechanisms: (1) **convergence as confidence**, where sparse cosine similarity between query and answer co-occurrence profiles replaces hardcoded quality thresholds, cleanly separating real answers (cosine 0.32--0.49) from garbage (0.00--0.12) on a preliminary 5-query sample; (2) **sparse dict search**, where O(N x K) search over co-occurrence dictionaries replaces O(N^2) matrix operations; and (3) **multi-hop convergence**, where iterative rounds of vector-space search with query anchoring allow reasoning to cross concept boundaries. The system handles text, images, and audio through a shared CLIP vector space, and detects harmful queries via NLI-based polarity. We report honestly: 0% exact match on held-out HotPotQA, and all positive results are on small synthetic test sets (167 tests passing). The contribution is architectural, not state-of-the-art performance.
+**Abstract.** We present a reasoning system built from sparse co-occurrence graphs — no gradient descent, no end-to-end training, no dense matrices. Each taught sentence strengthens connections between co-occurring words in a sparse dictionary (inspired by the Hebbian principle). We introduce three mechanisms: (1) **convergence as confidence**, where sparse cosine similarity between query and answer co-occurrence profiles replaces hardcoded quality thresholds, cleanly separating real answers (cosine 0.32--0.49) from garbage (0.00--0.12) on a preliminary 5-query sample; (2) **sparse dict search**, where O(N x K) search over co-occurrence dictionaries replaces O(N^2) dense matrix operations; and (3) **multi-hop convergence**, where iterative rounds of vector-space search with query anchoring allow reasoning to cross concept boundaries. The system handles text, images, and audio through a shared CLIP vector space, and detects harmful queries via NLI-based polarity. We report honestly: 0% exact match on held-out HotPotQA, and all positive results are on small synthetic test sets (167 tests passing). The contribution is architectural, not state-of-the-art performance.
 
 ## 1. Introduction
 
 Current language models cannot explain their reasoning, cannot delete learned facts on demand, and hallucinate with confidence. These are not engineering bugs — they are architectural constraints of opaque weight matrices trained via gradient descent. We ask: can transformer principles (attention, residual connections, confidence weighting) be expressed in a substrate that is inspectable, editable, and honest by construction?
 
-We present such a substrate: a self-growing co-occurrence matrix with iterative multi-hop convergence. Our prior work (Phatak, 2026) showed that for factual QA, database retrieval achieves 72% exact match on in-distribution HotPotQA (25.3% held-out). This paper extends that system with reasoning via convergence.
+We present such a substrate: a self-growing sparse co-occurrence graph with iterative multi-hop convergence. Our prior work (Phatak, 2026) showed that for factual QA, database retrieval achieves 72% exact match on in-distribution HotPotQA (25.3% held-out). This paper extends that system with reasoning via convergence.
 
-Co-occurrence matrices have a long history in distributional semantics (Turney and Pantel, 2010). Levy and Goldberg (2014) showed that word2vec implicitly factorizes a PMI matrix. Our matrix differs in two ways: (a) it grows dynamically from zero dimensions, and (b) we use the raw matrix — not a factorized form — as both the knowledge store and the confidence signal.
+Co-occurrence statistics have a long history in distributional semantics (Turney and Pantel, 2010). Levy and Goldberg (2014) showed that word2vec implicitly factorizes a PMI matrix. Our approach differs in two ways: (a) it grows dynamically from zero words, stored as a sparse dictionary (not a dense matrix), and (b) we use the raw co-occurrence weights — not a factorized form — as both the knowledge store and the confidence signal.
 
 **Contributions:**
-1. A **self-growing co-occurrence matrix** that starts at 0x0 and grows with each taught sentence
+1. A **self-growing co-occurrence graph** (sparse dictionary) that starts empty and grows with each taught sentence
 2. **Convergence as confidence** — cosine similarity between query and answer vectors in the co-occurrence space replaces hardcoded quality thresholds
 3. **Multi-hop convergence** — iterative reasoning rounds where discovered concepts shift the query vector, enabling cross-concept reasoning without a neural component
 4. **Sparse co-occurrence search** — O(N x K) search on dict pairs instead of O(N^2) matrix operations
 
 The system is not a replacement for transformers. It cannot write prose, hold conversations, or generalize to unseen task formats. It can retrieve facts, generate sentences from taught patterns, reason across modalities, and refuse harmful queries — all inspectable, all on CPU, all without training.
 
-## 2. Self-Growing Co-occurrence Matrix
+## 2. Self-Growing Co-occurrence Graph
 
-### 2.1 The Matrix
+### 2.1 The Graph
 
-The system starts with zero knowledge and zero dimensions. Teaching "paris is the capital of france" adds three dimensions (paris, capital, france) and records co-occurrence — each pair's matrix entry increases by 0.3. After three sentences:
+The system starts with zero knowledge and zero words. Teaching "paris is the capital of france" adds three words (paris, capital, france) and records co-occurrence — each pair's connection weight increases by 0.3. After three sentences, the co-occurrence graph (stored as a sparse dictionary) looks like:
 
+```python
+cooc = {
+    "paris":       {"paris": 1.0, "capital": 0.3, "france": 0.3},
+    "capital":     {"capital": 1.0, "paris": 0.3, "france": 0.3, "london": 0.3, "england": 0.3},
+    "france":      {"france": 1.0, "paris": 0.3, "capital": 0.3},
+    "london":      {"london": 1.0, "capital": 0.3, "england": 0.3},
+    "shakespeare": {"shakespeare": 1.0, "wrote": 0.3, "hamlet": 0.3},
+    ...
+}
 ```
-             paris  capital  france  london  england  shakespeare  wrote  hamlet
-paris       [ 1.0    0.3      0.3     0.0     0.0       0.0        0.0    0.0  ]
-capital     [ 0.3    1.0      0.3     0.3     0.3       0.0        0.0    0.0  ]
-france      [ 0.3    0.3      1.0     0.0     0.0       0.0        0.0    0.0  ]
-london      [ 0.0    0.3      0.0     1.0     0.3       0.0        0.0    0.0  ]
-...
-```
 
-Every cell is readable. "Why is paris similar to london?" — both have 0.3 on the capital dimension. Unrelated words have exactly zero — this sparsity is critical for convergence-based confidence (Section 3).
+Every edge is readable. "Why is paris similar to london?" — both connect to "capital" with weight 0.3. Unrelated words have no edge — this sparsity is critical for convergence-based confidence (Section 3).
 
-This is co-occurrence strengthening inspired by Hebb (1949): concepts that appear together develop stronger connections. The matrix IS the understanding — no separate model, no hidden state.
-
-**Known limitation:** A dense N x N matrix would be O(N^2). Section 4 addresses this with sparse dict storage — only non-zero pairs stored.
+This is co-occurrence strengthening inspired by Hebb (1949): concepts that appear together develop stronger connections. The graph IS the understanding — no separate model, no hidden state. Storage is O(E) where E = non-zero edges, not O(N^2) for a dense matrix.
 
 ### 2.2 Neurons and Search
 
-Each word maps to a neuron: a point in vector space with a confidence score (capped at +/-0.8 to prevent mode collapse), successor/predecessor links encoding word order, and a timestamp. The knowledge base is a SQLite file — copy it to share knowledge. Search is brute-force cosine similarity over a numpy matrix, sub-millisecond for <100K neurons.
+Each word maps to a neuron: a point in vector space with a confidence score (capped at +/-0.8 to prevent mode collapse), successor/predecessor links encoding word order, and a timestamp. The knowledge base is a SQLite file — copy it to share knowledge. Search is brute-force cosine similarity over stored vectors, sub-millisecond for <100K neurons.
 
 **Implementation:** `neuron.py` (720 lines) defines the Neuron dataclass and NeuronDB storage layer. Neurons support reinforce/weaken operations, top-K successor eviction, and top-3 predecessor tracking. The DB uses pre-allocated numpy matrices with chunk-based growth to avoid O(n^2) vstack operations.
 
@@ -128,7 +128,7 @@ If the answer addresses the question, encoding the answer should land near the q
 confidence = cosine(encode(query), encode(answer))
 ```
 
-No threshold tuning — the matrix itself determines quality. When confidence <= 0, the system returns "I don't know."
+No threshold tuning — the co-occurrence graph itself determines quality. When confidence <= 0, the system returns "I don't know."
 
 ### 3.3 Results
 
@@ -146,27 +146,24 @@ On a brain with 2,290 neurons (N=5, preliminary):
 
 ### 3.4 Why It Works
 
-This is a single-step self-attention check. Transformer verification (Self-Consistency, Wang et al., 2023) requires multiple forward passes. Our verification is built into retrieval: the cosine check IS the confidence. Crucially, this works because unrelated words have exactly zero co-occurrence in the matrix — the sparsity of the representation is the signal. Dense embeddings (e.g., random 384-dim) destroy this separation.
+This is a single-step self-attention check. Transformer verification (Self-Consistency, Wang et al., 2023) requires multiple forward passes. Our verification is built into retrieval: the cosine check IS the confidence. Crucially, this works because unrelated words have exactly zero co-occurrence in the graph — the sparsity of the representation is the signal. Dense embeddings (e.g., random 384-dim) destroy this separation.
 
 ## 4. Scaling: Sparse Co-occurrence Search
 
 ### 4.1 The Problem
 
-A dense N x N co-occurrence matrix grows O(N^2). At 50K words: 10GB. Unworkable.
+A naive dense N x N co-occurrence matrix grows O(N^2). At 50K words: 10GB. Unworkable. Early prototypes hit this wall — the system OOM'd at 25K words on a 16GB VM.
 
-### 4.2 Solution: Sparse Dict
+### 4.2 Solution: Sparse Dict (the actual implementation)
 
-Store only non-zero co-occurrence pairs as a dictionary:
+The system stores co-occurrence as a sparse dictionary from the start — there is no dense matrix anywhere in the codebase. Only non-zero co-occurrence pairs exist:
 
 ```python
-cooc = {
-    "paris":  {"capital": 0.3, "france": 0.3},
-    "capital": {"paris": 0.3, "london": 0.3, "france": 0.3, "england": 0.3},
-    ...
-}
+# self._cooc in brain_core.py — this IS the knowledge store
+cooc[word_idx] = {neighbor_idx: weight, ...}
 ```
 
-Most word pairs never co-occur -> not stored -> exact zero. Memory: O(E) where E = non-zero edges, not O(N^2).
+Most word pairs never co-occur → not stored → exact zero. Memory: O(E) where E = non-zero edges, not O(N^2).
 
 ### 4.3 Sparse Search
 
@@ -192,7 +189,7 @@ Single CPU (GCP e2-standard-4), 121K records from 12 datasets:
 | Feed rate | ~3,000 records/sec |
 | Ask latency (10K words) | 720ms |
 
-No partitioning, no matrix, no GPU. One dict, one SQLite file.
+No partitioning, no dense matrix, no GPU. One sparse dict, one SQLite file.
 
 ## 5. Experiments
 
@@ -222,7 +219,7 @@ All positive results are on small synthetic test sets (N=5 to N=18). No standard
 
 **Iterative retrieval:** ITER-RETGEN (Shao et al., EMNLP 2023 Findings) iterates retrieval-generation synergy. IRCoT (Trivedi et al., ACL 2023) interleaves retrieval per reasoning step, achieving 21-point improvement on HotpotQA. Self-RAG (Asai et al., ICLR 2024) adds self-reflection on retrieval quality. Our multi-hop convergence loop is closest to ITER-RETGEN but operates without a neural generator — each round is pure vector-space search with a query anchor.
 
-**Knowledge as database:** kNN-LM (Khandelwal et al., ICLR 2020) interpolates nearest-neighbor retrieval with neural LMs, achieving state-of-the-art perplexity on WikiText-103. RETRO (Borgeaud et al., ICML 2022) separates knowledge from model, matching GPT-3 with 25x fewer parameters. REALM (Guu et al., ICML 2020) pre-trains a latent knowledge retriever. We share the principle of separating knowledge from model but use a self-grown matrix rather than pretrained embeddings.
+**Knowledge as database:** kNN-LM (Khandelwal et al., ICLR 2020) interpolates nearest-neighbor retrieval with neural LMs, achieving state-of-the-art perplexity on WikiText-103. RETRO (Borgeaud et al., ICML 2022) separates knowledge from model, matching GPT-3 with 25x fewer parameters. REALM (Guu et al., ICML 2020) pre-trains a latent knowledge retriever. We share the principle of separating knowledge from model but use a self-grown sparse co-occurrence graph rather than pretrained embeddings.
 
 **Sparse retrieval:** BM25 (Robertson et al., 1994) pioneered sparse term matching. Our sparse cosine over co-occurrence dicts is analogous but operates on learned connection weights rather than term frequencies.
 
@@ -230,7 +227,7 @@ All positive results are on small synthetic test sets (N=5 to N=18). No standard
 
 ## 7. Discussion
 
-**What this contributes.** Convergence-as-confidence removes hardcoded thresholds from retrieval systems — the co-occurrence space itself judges answer quality. Multi-hop convergence enables cross-concept reasoning without a neural reasoner — each round's discovered concepts shift the query for the next round, and every step is inspectable. Sparse dict-based co-occurrence with O(N x K) search makes the architecture practical at scale. Together they enable a self-growing knowledge system that handles 295K words on a single CPU.
+**What this contributes.** Convergence-as-confidence removes hardcoded thresholds from retrieval systems — the co-occurrence graph itself judges answer quality. Multi-hop convergence enables cross-concept reasoning without a neural reasoner — each round's discovered concepts shift the query for the next round, and every step is inspectable. Sparse dict-based co-occurrence with O(N x K) search makes the architecture practical at scale. Together they enable a self-growing knowledge system that handles 295K words on a single CPU.
 
 **What this does not do.** The system scores 0% on held-out QA benchmarks. It generates only from taught patterns. Multimodal capability depends on CLIP's pretraining. It is not a replacement for transformers — it is proof that transformer principles (attention, residual connections, confidence weighting) can be expressed in an inspectable, editable substrate.
 

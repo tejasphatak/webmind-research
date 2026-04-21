@@ -29,9 +29,12 @@ flowchart TD
     LRU -->|Found| Return[Return Answer]
     LMDB_QA -->|Found| Return
     
-    LMDB_QA -->|Miss| Tier2{"Tier 2:\nConvergence Loop"}
+    LMDB_QA -->|Miss| LSH{"LSH Semantic Search\n(O(1) bucket lookup)"}
+    LSH -->|Seed concepts| Tier2{"Tier 2:\nConvergence Loop"}
     Tier2 --> Tokenize[Tokenize + Strip Function Words]
-    Tokenize --> CSR["CSR Sparse MatVec\n(scipy, 304K x 304K)"]
+    Tokenize --> Garbage{"Garbage\nFilter?"}
+    Garbage -->|Reject| Abstain["Abstain\n(garbage input)"]
+    Garbage -->|Pass| CSR["CSR Sparse MatVec\n(scipy, 304K x 304K)"]
     CSR --> Converge{"Converged?"}
     Converge -->|Yes| Sentences["Sentence Retrieval\n(LMDB inverted index)"]
     Converge -->|No, max hops| Filter{"Quality Filter"}
@@ -342,12 +345,17 @@ papers/new-gen-ai/
 │
 ├── src/
 │   ├── brain_csr_adapter.py   # BrainCSR: the engine
-│   │   ├── ask()              # Tier 1 + Tier 2 retrieval
-│   │   ├── teach()            # Add co-occurrence edges to global WAL
+│   │   ├── ask()              # Tier 1 → LSH → Tier 2 retrieval
+│   │   ├── teach()            # Add co-occurrence edges + morphological links to global WAL
 │   │   ├── teach_session()    # Return edges without writing global
 │   │   ├── correct()          # Store Q→A pair in LMDB
-│   │   └── protect()          # Store immutable Q→A pair
+│   │   ├── protect()          # Store immutable Q→A pair
+│   │   ├── build_lsh_index()  # Build LSH index for vocabulary intelligence
+│   │   ├── score_vocabulary() # Score words by convergence contribution
+│   │   └── prune_vocabulary() # Remove low-value words from the graph
 │   │
+│   ├── vocabulary_filter.py   # Garbage detection, morphological linking, dedup, O(1) search
+│   ├── semantic_hash.py       # LSH over MiniLM embeddings (ScaNN backend, int8 quantization)
 │   ├── sparse_csr.py          # WAL: edge accumulator + LMDB persistence
 │   ├── sparse_convergence.py  # Multi-hop convergence loop (scipy spmv)
 │   └── tools.py               # Web search (DDG + Wikipedia) + code eval

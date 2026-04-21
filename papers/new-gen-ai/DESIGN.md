@@ -107,6 +107,18 @@ Target: 50-80K words. At this scale:
 
 Tool usage is learned from patterns, not if-else. The weight matrix encodes WHEN to use tools the same way it encodes any other knowledge.
 
+## Vocabulary Intelligence (LSH layer)
+
+Locality-sensitive hashing over MiniLM embeddings provides:
+- **Garbage detection**: two-layer (heuristic + LSH) input validation
+- **Morphological linking**: "gravitational" auto-strengthens "gravity" during teach()
+- **Vocabulary dedup**: finds near-duplicate words (colour/color)
+- **O(1) semantic search**: LSH bucket lookup seeds convergence loop
+- **Confidence floor**: abstain when convergence < 0.15 (bad context > no context)
+- **Int8 quantization**: 4x embedding compression via PolarQuant (random rotation + int8)
+- **Vocabulary pruning**: score words by edge contribution, remove low-value entries
+- **ScaNN backend**: Google's anisotropic vector quantization when available
+
 ## What this is NOT
 
 - NOT a neural network (no gradient descent, no backprop)
@@ -150,6 +162,10 @@ src/
   neuron.py              — neuron storage (SQLite path, struct-of-arrays)
   neuron_lmdb.py         — neuron storage (LMDB path, production)
   brain_lmdb_adapter.py  — loads LMDB model, provides ask/generate
+  brain_csr_adapter.py   — CSR + WAL production adapter (primary)
+  vocabulary_filter.py   — garbage detection, morphological linking, dedup, O(1) search
+  semantic_hash.py       — LSH over MiniLM embeddings (ScaNN backend, int8 quantization)
+  sparse_csr.py          — memory-mapped CSR + WAL for real-time edge updates
   generator.py           — template + successor walk generation
   tools.py               — CodeEval, WebSearch, BrowserTool, CodeLoop
   engine.py              — full engine with GloVe encoder (legacy/testing)

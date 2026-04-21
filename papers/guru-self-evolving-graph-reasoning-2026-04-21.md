@@ -198,15 +198,51 @@ Guru reimplements transformer capabilities using database and graph primitives:
 5. **Co-occurrence is undirected.** "X is capital of Y" and "Y is capital of X" produce the same edges. Directed relationships require explicit encoding.
 6. **Multimodal is experimental.** CLIP projection code exists but is not integrated with the CSR engine.
 
-## 7. Future Work
+## 7. Vocabulary Intelligence (LSH Layer)
+
+A vocabulary-level intelligence layer built on locality-sensitive hashing (LSH) over MiniLM sentence-transformer embeddings provides four capabilities:
+
+### 7.1 Garbage Detection
+
+Two-layer input validation before any data touches the co-occurrence graph:
+- **Layer 1 (heuristic, <1μs):** Vowel ratios, character composition, word length checks
+- **Layer 2 (LSH, ~1ms):** Semantic similarity check against known vocabulary. For multi-word input, checks each word individually — if any word is meaningful, the input passes.
+
+### 7.2 Morphological Variant Linking
+
+"Gravitational" and "gravity" are automatically linked during `teach()`. Combines heuristic stemming (suffix stripping + 4-char prefix grouping) with embedding cosine verification (≥ 0.6 threshold). Top-3 variants per word receive a co-occurrence boost proportional to similarity.
+
+### 7.3 Vocabulary Deduplication
+
+Near-duplicate word pairs (colour/color, organize/organise) detected via same-bucket LSH analysis and stem-group cosine comparison (≥ 0.92 threshold). Reports candidates for optional merging — does not auto-merge (preserves the "delete = gone" invariant).
+
+### 7.4 O(1) Semantic Search
+
+LSH bucket lookup provides approximate nearest neighbors as seed concepts for the convergence loop. Uses Google ScaNN (anisotropic vector quantization) when available, falls back to LSH with Hamming radius search. Seeds accelerate convergence by starting with better initial concepts.
+
+### 7.5 Confidence Floor
+
+Informed by Google's RAG research showing that returning bad context is worse than returning nothing, the system applies a confidence floor (0.15). Convergence results below this threshold trigger abstention rather than returning weak answers.
+
+### 7.6 Int8 Quantization
+
+PolarQuant-inspired compression: random orthogonal rotation followed by int8 scalar quantization achieves 4x memory reduction on the embedding index (~600MB → ~150MB) with ~1% accuracy loss on nearest-neighbor search.
+
+### 7.7 Vocabulary Pruning
+
+Words are scored by their total edge weight contribution to the co-occurrence graph. Low-scoring words (no/few connections) waste matrix capacity. A `prune_vocabulary()` method zeros out their edges via WAL overlay, with dry-run mode for safe inspection.
+
+## 8. Future Work
 
 1. **Self-learning loop**: Brain tests itself on stored sentences, reinforces correct paths, persists improvements to CSR.
 2. **Distributed knowledge**: Guru instances on multiple devices sharing learned knowledge via delta sync.
 3. **Multilingual seed data**: Extend beyond English to support 50+ languages.
 4. **Directed edges**: Replace undirected co-occurrence with subject-predicate-object triples.
 5. **GPU acceleration**: cupy as drop-in replacement for scipy when GPU is available.
+6. **Learned hashing**: Replace random hyperplane LSH with bilinear hash functions (Gong et al., 2013) for shorter codes at the same accuracy.
+7. **Depth-wise batching**: Schedule queries at different convergence depths (inspired by Relaxed Recursive Transformers) — fast queries exit early, slow ones keep iterating.
 
-## 8. Conclusion
+## 9. Conclusion
 
 Guru demonstrates that a non-neural, graph-based architecture can achieve competitive retrieval accuracy (87% EM after corrections) while offering properties no transformer can match: real-time learning, inspectable reasoning, instant knowledge editing, and honest uncertainty. The model runs entirely on CPU at 54MB, learns from every conversation, and persists all improvements across restarts.
 

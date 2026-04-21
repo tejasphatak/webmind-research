@@ -9,6 +9,7 @@ Research papers from the Webmind project exploring self-evolving AI architecture
 | # | Paper | Date | Status | Key Result |
 |---|-------|------|--------|------------|
 | 1 | **[Guru: Self-Evolving Graph Reasoning Engine](guru-self-evolving-graph-reasoning-2026-04-21.md)** | 2026-04-21 | Published | 87% EM after RLHF, 35.8% blended, 254ms, CPU-only |
+| | [Engineering Guide](guru-engineering-guide.md) — mermaid diagrams, data flow, API reference | | | |
 | 2 | **[Attention Without Weights](new-gen-ai/paper.md)** | 2026-04-18 | Published | Convergence loop = attention on transparent substrate, 250+ tests |
 | 3 | **[Self-Evolving Retrieval](self-evolving-retrieval-2026-04-18.md)** | 2026-04-18 | Benchmarked | 0.7% → 25.3% EM on held-out data, browser-native 214MB |
 | 4 | [SAQT Distributed Cognition](saqt-distributed-cognition-2026-04-18.md) | 2026-04-18 | Draft | P2P multi-hop traversal, 84% keyword coverage |

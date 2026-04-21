@@ -260,14 +260,18 @@ class BrainCSR:
             print(f"  WAL: {wal_loaded:,} persisted edges restored")
         self._wal.start_background_flush(self._env, self._wal_db, interval_sec=5.0)
 
-        # Load Q→A direct lookup map from LMDB
+        # Load Q→A direct lookup map from LMDB (including protected flags)
         try:
             with self._env.begin(db=self._qa_db) as txn:
                 cursor = txn.cursor(db=self._qa_db)
                 for key, val in cursor:
-                    self._qa_map[key.decode('utf-8')] = val.decode('utf-8')
+                    k = key.decode('utf-8')
+                    if k.startswith('__p__'):
+                        self._protected_keys.add(k[5:])  # strip prefix
+                    elif not k.startswith('__'):
+                        self._qa_map[k] = val.decode('utf-8')
             if self._qa_map:
-                print(f"  Q→A map: {len(self._qa_map):,} direct answers loaded")
+                print(f"  Q→A map: {len(self._qa_map):,} answers ({len(self._protected_keys)} protected)")
         except Exception:
             pass
 
@@ -920,16 +924,36 @@ class BrainCSR:
     def teach_batch(self, sentences, confidence=0.5):
         return [self.teach(s, confidence) for s in sentences]
 
+    _protected_keys = set()  # Q→A keys that cannot be overwritten (identity, safety)
+
+    def protect(self, question: str, answer: str):
+        """Set a protected Q→A pair. Cannot be overwritten by correct()."""
+        qkey = self._qa_key(question)
+        self._protected_keys.add(qkey)
+        self._qa_map[qkey] = answer
+        self._qa_map.move_to_end(qkey)
+        # Persist with __protected__ prefix so we can identify on reload
+        try:
+            with self._env.begin(write=True) as txn:
+                txn.put(qkey.encode('utf-8'), answer.encode('utf-8'), db=self._qa_db)
+                txn.put(('__p__' + qkey).encode('utf-8'), b'1', db=self._qa_db)
+        except Exception:
+            pass
+
     def correct(self, question: str, answer: str):
-        """Learn from a correction. Stores direct Q→A mapping + teaches the answer."""
+        """Learn from a correction. Stores direct Q→A mapping + teaches the answer.
+        Cannot overwrite protected entries (identity, safety)."""
         self.teach(answer, confidence=0.6)
 
-        # Tier 1: direct Q→A mapping (circular buffer)
         qkey = self._qa_key(question)
+
+        # Don't overwrite protected entries
+        if qkey in self._protected_keys:
+            return
+
         with self._lock:
-            # LRU eviction on memory cache only — LMDB stores everything
             if len(self._qa_map) >= self._QA_MAP_MEMORY_MAX and qkey not in self._qa_map:
-                self._qa_map.popitem(last=False)  # evict LRU from memory
+                self._qa_map.popitem(last=False)
             self._qa_map[qkey] = answer
             self._qa_map.move_to_end(qkey)
 

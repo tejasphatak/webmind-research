@@ -45,8 +45,37 @@ def _load_brain(db_path):
 brain = _load_brain(DB_PATH)
 tools = ToolRouter(web_search=WEB_SEARCH)
 
+# Bootstrap identity Q→A if not already in the Q→A map
+if hasattr(brain, 'correct') and hasattr(brain, '_qa_map'):
+    _identity = [
+        ("hi", "Hello! I'm Guru, a self-evolving AI. Ask me anything — I learn from every conversation."),
+        ("hello", "Hello! I'm Guru. Ask me anything — I learn from every conversation."),
+        ("hey", "Hey! I'm Guru. What would you like to know?"),
+        ("who are you", "I'm Guru, a graph-based reasoning engine created by Tejas Phatak. My knowledge is an editable graph that grows every time someone talks to me."),
+        ("what are you", "I'm Guru, a self-evolving AI. Unlike traditional models, I learn from every conversation in real-time. No GPU, no gradient descent — just a knowledge graph that gets smarter with use."),
+        ("what can you do", "I can answer questions about science, history, math, programming, and more. If I get something wrong, correct me and I'll remember."),
+        ("help", "Ask me any question! I know about science, history, math, programming, physics, biology, and more. If I don't know something, I'll say so honestly."),
+        ("thank you", "You're welcome! Feel free to ask anything else."),
+        ("thanks", "You're welcome! Anything else you'd like to know?"),
+        ("bye", "Goodbye! Everything you taught me today is saved — I'll be smarter next time we talk."),
+    ]
+    for q, a in _identity:
+        brain.protect(q, a)
+    print(f"  Identity: {len(_identity)} protected Q→A pairs")
+
 # --- FastAPI app ---
-app = FastAPI(title="Webmind Brain API", version="0.1.0")
+app = FastAPI(title="Guru API", version="1.0.0")
+
+from fastapi.responses import HTMLResponse, FileResponse
+
+STATIC_DIR = os.path.join(os.path.dirname(__file__), 'static')
+
+@app.get("/", response_class=HTMLResponse)
+async def root():
+    chat_path = os.path.join(STATIC_DIR, 'chat.html')
+    if os.path.exists(chat_path):
+        return FileResponse(chat_path)
+    return HTMLResponse("<h1>Guru API</h1><p>Use /v1/chat/completions or /health</p>")
 
 app.add_middleware(
     CORSMiddleware,
@@ -128,7 +157,7 @@ def make_completion_response(content: str, model: str, prompt_tokens: int) -> di
     }
 
 def brain_respond(message: str, max_tokens: int = 30, temperature: float = 0.7) -> str:
-    """Ask the brain and optionally generate fluent text."""
+    """Ask the brain and return a coherent response."""
     # Intercept: math/code queries handled by eval before brain
     eval_result = tools.on_query(message, brain)
     if eval_result:
@@ -148,16 +177,8 @@ def brain_respond(message: str, max_tokens: int = 30, temperature: float = 0.7) 
             return tool_result
         return ask_result.get("answer", "I don't know.")
 
-    # Try generate for a more fluent response
-    try:
-        gen_result = brain.generate(message, max_tokens=max_tokens, temperature=temperature)
-        gen_text = gen_result.get("text", "").strip()
-        if gen_text:
-            return gen_text
-    except Exception:
-        pass  # Fall back to ask answer
-
-    # Fall back to ask answer
+    # Return ask() result directly — sentence retrieval gives grammatical text
+    # generate() graph walk is unreliable (loops, incoherent output)
     return ask_result.get("answer", "I don't know.")
 
 # --- Streaming helpers ---

@@ -10,13 +10,13 @@
 
 **Disclaimer.** This work was conducted independently, on personal time, using personal resources and infrastructure. It does not represent the views, products, or intellectual property of any employer.
 
-**Abstract.** We present a reasoning system built from sparse co-occurrence graphs — no gradient descent, no end-to-end training, no dense matrices. Each taught sentence strengthens connections between co-occurring words in a sparse dictionary (inspired by the Hebbian principle). The convergence loop reimplements the core transformer attention mechanism using graph primitives: softmax weighting (exp(c/T)/sum(exp(c/T))) over confidence scores, NxN concept-to-concept mutual attention among discovered neighbors, per-hop specialization (early hops explore broadly, later hops focus narrowly), query anchoring as residual connections, and sentence-position similarity bias as positional encoding during reasoning. We also introduce convergence as confidence (sparse cosine similarity replacing hardcoded quality thresholds) and sparse dict search (O(N x K) instead of O(N^2)). The system handles text, images, and audio through a shared CLIP vector space, and detects harmful queries via NLI-based polarity. We report honestly: 0% exact match on held-out HotPotQA, and all positive results are on small synthetic test sets (167 tests passing). The contribution is architectural — the same math as transformer attention, on a transparent and inspectable substrate — not state-of-the-art performance.
+**Abstract.** We present a reasoning system built from sparse co-occurrence graphs — no gradient descent, no end-to-end training, no dense matrices. Each taught sentence strengthens connections between co-occurring words in a sparse dictionary (inspired by the Hebbian principle). The convergence loop reimplements the core transformer attention mechanism using graph primitives: softmax weighting (exp(c/T)/sum(exp(c/T))) over confidence scores, NxN concept-to-concept mutual attention among discovered neighbors, per-hop specialization (early hops explore broadly, later hops focus narrowly), query anchoring as residual connections, and sentence-position similarity bias as positional encoding during reasoning. We also introduce convergence as confidence (sparse cosine similarity replacing hardcoded quality thresholds) and sparse dict search (O(N x K) instead of O(N^2)). The system handles text, images, and audio through a shared CLIP vector space, and detects harmful queries via NLI-based polarity. We report honestly: 0% exact match on held-out HotPotQA, and all positive results are on small synthetic test sets (250+ tests passing). The contribution is architectural — the same math as transformer attention, on a transparent and inspectable substrate — not state-of-the-art performance.
 
 ## 1. Introduction
 
 Large language models store knowledge in opaque weight matrices. This makes them unable to explain individual decisions, delete specific facts, or guarantee honest failure modes. These are architectural constraints, not engineering gaps.
 
-We explore an alternative: storing knowledge as a sparse co-occurrence graph (a dictionary of word-pair connection weights) and reasoning via iterative cosine-similarity search with query anchoring. The system starts empty and grows from taught sentences. Knowledge lives in a SQLite file. Deletion is a row delete. Explanation is printing the convergence trace.
+We explore an alternative: storing knowledge as a sparse co-occurrence graph (a dictionary of word-pair connection weights) and reasoning via iterative cosine-similarity search with query anchoring. The system starts empty and grows from taught sentences. Knowledge lives in an LMDB database. Deletion is a row delete. Explanation is printing the convergence trace.
 
 Our prior work (Phatak, 2026) showed that database retrieval achieves 72% exact match on in-distribution HotPotQA (25.3% held-out). This paper extends that system with reasoning via multi-hop convergence.
 
@@ -51,11 +51,13 @@ cooc = {
 
 Every edge is readable. "Why is paris similar to london?" — both connect to "capital" with weight 0.3. Unrelated words have no edge — this sparsity is critical for convergence-based confidence (Section 3).
 
+> **Implementation note:** In the current implementation, this sparse dictionary is stored as CSR memmap files (54MB) backed by LMDB (1.8GB), not a Python dict.
+
 This is co-occurrence strengthening inspired by Hebb (1949): concepts that appear together develop stronger connections. The graph IS the understanding — no separate model, no hidden state. Storage is O(E) where E = non-zero edges, not O(N^2) for a dense matrix.
 
 ### 2.2 Neurons and Search
 
-Each word maps to a neuron: a point in vector space with a confidence score (capped at +/-0.8 to prevent mode collapse), successor/predecessor links encoding word order, and a timestamp. The knowledge base is a SQLite file — copy it to share knowledge. Search is brute-force cosine similarity over stored vectors, sub-millisecond for <100K neurons.
+Each word maps to a neuron: a point in vector space with a confidence score (capped at +/-0.8 to prevent mode collapse), successor/predecessor links encoding word order, and a timestamp. The knowledge base is an LMDB database — copy it to share knowledge. Search is brute-force cosine similarity over stored vectors, sub-millisecond for <100K neurons.
 
 **Implementation:** `neuron.py` (720 lines) defines the Neuron dataclass and NeuronDB storage layer. Neurons support reinforce/weaken operations, top-K successor eviction, and top-3 predecessor tracking. The DB uses pre-allocated numpy matrices with chunk-based growth to avoid O(n^2) vstack operations.
 
@@ -209,7 +211,9 @@ Single CPU (GCP e2-standard-4), 121K records from 12 datasets:
 | Feed rate | ~3,000 records/sec |
 | Ask latency (10K words) | 720ms |
 
-No partitioning, no dense matrix, no GPU. One sparse dict, one SQLite file.
+No partitioning, no dense matrix, no GPU. One sparse dict, one LMDB database.
+
+> **Update:** These figures are from the sparse-dict prototype. The current CSR/LMDB implementation has 304K neurons, 7M edges, and 254ms average latency.
 
 ## 5. Experiments
 
@@ -229,7 +233,7 @@ NLI-based polarity detection across English, Hindi, French: zero false positives
 
 ### 5.4 Test Suite
 
-167 tests passing (~60 seconds on CPU): covering neuron operations, encoder behavior, convergence loops, template matching, sentence-constrained generation, paragraph generation, multimodal encoding (CLIP text/image), cross-modal retrieval, persistence, and edge cases.
+250+ tests passing (167 original + 34 tools + 22 sparse convergence + additional integration tests, ~60 seconds on CPU): covering neuron operations, encoder behavior, convergence loops, template matching, sentence-constrained generation, paragraph generation, multimodal encoding (CLIP text/image), cross-modal retrieval, persistence, and edge cases.
 
 ### 5.5 Limitations of Current Evidence
 
@@ -271,7 +275,7 @@ Five of seven correspondences are now strong: attention (query-to-database and t
 
 **Future work.** Larger-scale convergence-confidence validation (200+ queries). Standard benchmark evaluation for multimodal (COCO, Flickr30K). Adversarial robustness testing for the ethics gate. Tool calls from knowledge (web search triggered by convergence).
 
-**Reproducibility.** Open source at `github.com/tejasphatak/webmind-research`. 9 source files, ~5,800 lines total. Core: `brain_core.py` (~900 lines), full engine: `engine.py` (~1,400 lines), convergence: `convergence.py` (~380 lines). Dependencies: numpy (core), sentence-transformers (multimodal). 167 tests, ~60s on CPU. Hardware: GCP e2-standard-4 (4 vCPU, 16GB RAM).
+**Reproducibility.** Open source at `github.com/tejasphatak/webmind-research`. 9 source files, ~5,800 lines total. Core: `brain_core.py` (~900 lines), full engine: `engine.py` (~1,400 lines), convergence: `convergence.py` (~380 lines). Dependencies: numpy (core), sentence-transformers (multimodal). 250+ tests, ~60s on CPU. Hardware: GCP e2-standard-4 (4 vCPU, 16GB RAM).
 
 ## Appendix A: Core Implementation
 
@@ -332,7 +336,7 @@ def reason(self, query_vector):
 
 ## Appendix B: Safety Analysis
 
-The properties that make this system useful — minimal-example learning, perfect recall, instant transfer — are exactly the properties that make it dangerous at scale. Concept-level learning transfers to harmful domains. The knowledge base is a copyable SQLite file. The ethics layer can be bypassed by teaching contradictory principles.
+The properties that make this system useful — minimal-example learning, perfect recall, instant transfer — are exactly the properties that make it dangerous at scale. Concept-level learning transfers to harmful domains. The knowledge base is a copyable LMDB database. The ethics layer can be bypassed by teaching contradictory principles.
 
 **Mitigations built in:** Protected ethics neurons (SHA-256 integrity verification), kill switch, NLI-based harm detection across 50+ languages via multilingual encoder, confidence-limited learning.
 

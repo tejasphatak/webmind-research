@@ -233,8 +233,9 @@ The full system runs client-side in a browser tab:
 
 - **Code:** [github.com/tejasphatak/Synapse](https://github.com/tejasphatak/Synapse) (`docs/` for browser engine)
 - **Research data:** [github.com/tejasphatak/webmind-research](https://github.com/tejasphatak/webmind-research)
-- **Live demo:** [webmind.sh](https://webmind.sh)
-- **Knowledge base:** 306K+ Q&A pairs in SQLite (`trained_model/saqt.db`)
+- **Live demo:** [guru.webmind.sh](https://guru.webmind.sh) (webmind.sh redirects here)
+- **Model:** [HuggingFace tejadabheja/guru](https://huggingface.co/tejadabheja/guru)
+- **Knowledge base:** 304K neurons, 7M edges, 39K Q→A pairs in LMDB + CSR (evolved from the original 306K Q&A pairs in SQLite)
 - **Benchmarks:** NaturalQuestions, TriviaQA, HotPotQA via HuggingFace datasets
 - **Raw results:** 13 benchmark runs in `benchmarks/saqt-benchmark-2026-04-18T*.json`
 - **Test suite:** 53 structural tests + 22 LLM-judged quality tests

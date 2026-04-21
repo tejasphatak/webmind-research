@@ -1,6 +1,6 @@
 # SAQT: Distributed Cognition via Stateful Active Query Traversal on Consumer Devices
 
-**Authors:** Tejas Phatak (University of Colorado Boulder)
+**Authors:** Tejas Phatak (Independent Researcher, Webmind Research)
 
 **Date:** April 18, 2026
 

@@ -18,7 +18,7 @@ We propose a fundamentally different architecture. Guru stores knowledge as an e
 1. **Real-time learning through WAL**: A crash-safe Write-Ahead Log that persists learned knowledge to LMDB with <1ms overhead per teach operation.
 2. **Two-tier retrieval**: Direct Q→A mapping (Tier 1, instant) combined with multi-hop graph convergence (Tier 2, reasoning) — the first system to fuse exact recall with graph-based inference.
 3. **Safety as knowledge**: Safety behaviors taught as sentences in the knowledge graph rather than hardcoded rules, participating in the same convergence mechanism as factual knowledge.
-4. **Self-evolution from corrections**: A single round of RLHF corrections achieves 87% EM on the corrected subset, demonstrating rapid knowledge incorporation without gradient descent.
+4. **Self-evolution through three APIs**: `teach()` adds new knowledge, `correct()` fixes wrong answers, and `protect()` marks invariant knowledge that cannot be overwritten. A single round of RLHF corrections achieves 87% EM on the corrected subset, demonstrating rapid knowledge incorporation without gradient descent.
 
 ## 2. Architecture
 
@@ -29,8 +29,8 @@ Query → Tier 1: Q→A Direct Lookup (LRU cache → LMDB)
       → Tier 2: Tokenize → Sparse Convergence Loop
                           → Sentence Retrieval (full text)
                           → Co-occurrence Search
-      → Auto-learn: teach(query) updates WAL
-      → WAL → LMDB (background flush, every 5s)
+      → Session WAL: per-session context (memory only, dies with session)
+      → Global WAL → LMDB (background flush, every 5s, from explicit teach/correct/protect only)
 ```
 
 ### 2.2 Knowledge Representation
@@ -41,8 +41,9 @@ Knowledge is stored as a sparse co-occurrence graph in Compressed Sparse Row (CS
 |-----------|--------|------|---------|
 | CSR graph | 3 memmap files (indptr, indices, data) | 54 MB | Co-occurrence edges, memory-mapped |
 | LMDB | B-tree database | 1.8 GB | Neurons, sentences, word mappings, WAL, Q→A map |
-| WAL | In-memory dict + LMDB | Variable | Real-time edge updates from teach/correct |
-| Q→A Map | LRU (50K memory) + LMDB (unlimited) | Variable | Direct question→answer mappings |
+| Session WAL | In-memory dict (per-session) | Variable | Per-session context; memory only, dies with session |
+| Global WAL | LMDB | Variable | Persistent edge updates from explicit teach/correct/protect calls |
+| Q→A Map | LRU (50K memory) + LMDB | ~39K pairs | Direct question→answer mappings, persisted |
 
 The current model contains 304,391 words, 6,980,543 edges (capped at 50 per word), and 299,045 sentences with full original text.
 
@@ -69,13 +70,19 @@ This normalization prevents long sentences from dominating retrieval. The winnin
 
 ### 2.5 Write-Ahead Log (WAL)
 
-Real-time learning uses a two-layer architecture:
+Real-time learning uses a two-layer architecture with session isolation:
 
-- **Working memory**: In-memory Python dict for instant edge updates (<0.1ms per teach)
-- **Persistent storage**: Background thread flushes to LMDB every 5 seconds (ACID transactions)
+- **Session WAL**: In-memory Python dict scoped to the current session. Provides conversation context during a session but does not pollute the global knowledge graph. Dies when the session ends.
+- **Global WAL**: Only written by explicit API calls — `teach()`, `correct()`, and `protect()`. Background thread flushes to LMDB every 5 seconds (ACID transactions). This is the only path to persistent knowledge.
 - **Cache integration**: scipy sparse matrix rebuilt every 100 new edges (amortized ~0.5ms per query)
 
-### 2.6 Q→A Direct Mapping
+This separation ensures that casual queries never modify the knowledge graph. The model only learns when explicitly told to learn.
+
+### 2.6 Question Filtering
+
+The convergence loop occasionally surfaces garbage answers — trivia questions from seed data (e.g., returning a HotPotQA question as an answer), disambiguation page fragments, or other non-answer text. The server applies a question filter before returning results: if the top candidate looks like a question itself (interrogative patterns, trailing question marks), it is discarded and the next candidate is tried or the system abstains.
+
+### 2.7 Q→A Direct Mapping
 
 The `correct(question, answer)` method creates a direct mapping:
 
@@ -104,6 +111,8 @@ Guru is initialized from a curated seed of 306,995 records:
 | Foundation sentences | 172 | Capitals, science, math, CS, physics, biology |
 
 Code datasets (codesearchnet, stackoverflow, codealpaca) were excluded from the seed to reduce noise — code syntax tokens pollute co-occurrence edges.
+
+Guru's conversational knowledge (identity, personality, behavioral guidelines) is established through `teach_conversations.py`, a reproducible teaching script that calls the `teach()` and `protect()` APIs programmatically. This ensures the model's persona and conversational behaviors are version-controlled and reproducible across deployments, not hardcoded into the engine.
 
 ## 4. Results
 
@@ -177,7 +186,7 @@ Guru reimplements transformer capabilities using database and graph primitives:
 | Feed-forward | Sentence retrieval | LMDB lookup of stored text |
 | Softmax | Cosine similarity ranking | Sparse dot product |
 | Layers | Convergence hops | Iterative refinement with query anchor |
-| Training | teach() + correct() | Instant WAL update, no gradient descent |
+| Training | teach() + correct() + protect() | Instant WAL update, no gradient descent |
 | Residual connections | Query anchor | Original query blended at every hop |
 
 ## 6. Limitations (Honest Assessment)
@@ -203,6 +212,7 @@ Guru demonstrates that a non-neural, graph-based architecture can achieve compet
 
 The architecture is not a replacement for transformers — it serves different needs. Where transformers excel at fluent generation, Guru excels at traceable, editable, evolving knowledge retrieval. For applications requiring trust over fluency — medical, legal, educational, regulatory — this tradeoff is worth making.
 
+**Live API:** [guru.webmind.sh](https://guru.webmind.sh)
 **Model available at:** [huggingface.co/tejadabheja/guru](https://huggingface.co/tejadabheja/guru)
 **Code available at:** [github.com/tejasphatak/webmind-research](https://github.com/tejasphatak/webmind-research)
 

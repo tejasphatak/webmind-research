@@ -1,6 +1,6 @@
 # Unbreakable Ethics Invariants in Retrieval-Based Knowledge Systems
 
-**System:** SAQT/Webmind  
+**System:** Guru (formerly SAQT/Webmind)  
 **Date:** 2026-04-18  
 **Status:** Design + Implementation  
 **License:** CC-BY 4.0

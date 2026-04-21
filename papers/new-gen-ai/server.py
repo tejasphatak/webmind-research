@@ -67,8 +67,10 @@ if hasattr(brain, 'correct') and hasattr(brain, '_qa_map'):
 app = FastAPI(title="Guru API", version="1.0.0")
 
 from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 
 STATIC_DIR = os.path.join(os.path.dirname(__file__), 'static')
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 @app.get("/", response_class=HTMLResponse)
 async def root():
@@ -76,6 +78,105 @@ async def root():
     if os.path.exists(chat_path):
         return FileResponse(chat_path)
     return HTMLResponse("<h1>Guru API</h1><p>Use /v1/chat/completions or /health</p>")
+
+@app.get("/status", response_class=HTMLResponse)
+async def status_page():
+    import platform, psutil, pathlib
+    h = brain.health()
+    proc = psutil.Process()
+    mem = proc.memory_info()
+    cpu_name = platform.processor() or "Unknown"
+    try:
+        with open("/proc/cpuinfo") as f:
+            for line in f:
+                if "model name" in line:
+                    cpu_name = line.split(":")[1].strip()
+                    break
+    except Exception:
+        pass
+    cores = os.cpu_count() or 0
+    total_ram = psutil.virtual_memory().total / (1024**3)
+    avail_ram = psutil.virtual_memory().available / (1024**3)
+    db_path = os.path.expanduser(DB_PATH)
+    lmdb_size = sum(f.stat().st_size for f in pathlib.Path(os.path.join(db_path, "brain.lmdb")).iterdir()) / (1024**3) if os.path.exists(os.path.join(db_path, "brain.lmdb")) else 0
+    csr_path = os.path.join(db_path, "cooc_csr")
+    csr_size = sum(f.stat().st_size for f in pathlib.Path(csr_path).iterdir()) / (1024**2) if os.path.exists(csr_path) else 0
+
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guru — Status</title>
+<style>
+  * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+  body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace; background: #0d1117; color: #c9d1d9; padding: 2rem; }}
+  h1 {{ color: #58a6ff; margin-bottom: 0.5rem; font-size: 1.8rem; }}
+  .subtitle {{ color: #8b949e; margin-bottom: 2rem; }}
+  .grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; max-width: 900px; }}
+  .card {{ background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 1.5rem; }}
+  .card h2 {{ color: #58a6ff; font-size: 1rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; }}
+  .row {{ display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid #21262d; }}
+  .row:last-child {{ border-bottom: none; }}
+  .label {{ color: #8b949e; }}
+  .value {{ color: #f0f6fc; font-weight: 600; }}
+  .green {{ color: #3fb950; }}
+  .yellow {{ color: #d29922; }}
+  .footer {{ margin-top: 2rem; color: #484f58; font-size: 0.85rem; }}
+  a {{ color: #58a6ff; text-decoration: none; }}
+</style>
+</head>
+<body>
+<div style="background:#da3633;color:#fff;padding:1rem 1.5rem;border-radius:8px;margin-bottom:1.5rem;font-size:0.95rem;max-width:900px;">
+  <strong>RESEARCH PREVIEW</strong> — This is an experimental system for research purposes only. Do not submit personal, confidential, or sensitive information. All inputs may be stored in the knowledge graph. No warranties. No SLA. May be taken offline without notice.
+</div>
+<h1>Guru</h1>
+<p class="subtitle">Self-evolving graph reasoning engine — live on <a href="https://guru.webmind.sh">guru.webmind.sh</a></p>
+<div class="grid">
+  <div class="card">
+    <h2>Infrastructure</h2>
+    <div class="row"><span class="label">CPU</span><span class="value">{cpu_name}</span></div>
+    <div class="row"><span class="label">Cores</span><span class="value">{cores}</span></div>
+    <div class="row"><span class="label">Architecture</span><span class="value">{platform.machine()}</span></div>
+    <div class="row"><span class="label">RAM</span><span class="value">{total_ram:.1f} GB total / {avail_ram:.1f} GB free</span></div>
+    <div class="row"><span class="label">GPU</span><span class="value">None</span></div>
+    <div class="row"><span class="label">OS</span><span class="value">{platform.system()} {platform.release()[:20]}</span></div>
+  </div>
+  <div class="card">
+    <h2>Brain</h2>
+    <div class="row"><span class="label">Neurons</span><span class="value">{h.get('neuron_count', h.get('word_count', 0)):,}</span></div>
+    <div class="row"><span class="label">Words</span><span class="value">{len(brain._words):,}</span></div>
+    <div class="row"><span class="label">Edges</span><span class="value">~{getattr(brain, '_csr', None) and brain._csr.nnz or 0:,}</span></div>
+    <div class="row"><span class="label">Q&A pairs</span><span class="value">{len(brain._qa_map):,}</span></div>
+    <div class="row"><span class="label">Status</span><span class="value green">{"Alive" if h.get('death_risk', 0) == 0 else "Degraded"}</span></div>
+  </div>
+  <div class="card">
+    <h2>Process</h2>
+    <div class="row"><span class="label">RSS</span><span class="value">{mem.rss / (1024**2):.0f} MB</span></div>
+    <div class="row"><span class="label">CPU %</span><span class="value">{proc.cpu_percent():.1f}%</span></div>
+    <div class="row"><span class="label">LMDB</span><span class="value">{lmdb_size:.2f} GB</span></div>
+    <div class="row"><span class="label">CSR</span><span class="value">{csr_size:.0f} MB</span></div>
+    <div class="row"><span class="label">Disk free</span><span class="value">{h.get('disk_free_gb', 0):.0f} GB</span></div>
+  </div>
+  <div class="card">
+    <h2>Architecture</h2>
+    <div class="row"><span class="label">Model</span><span class="value">{MODEL_NAME}</span></div>
+    <div class="row"><span class="label">Engine</span><span class="value">Co-occurrence graph + convergence loop</span></div>
+    <div class="row"><span class="label">Tier 1</span><span class="value">Q&A direct lookup (&lt;1ms)</span></div>
+    <div class="row"><span class="label">Tier 2</span><span class="value">Sparse convergence (~250ms)</span></div>
+    <div class="row"><span class="label">Learning</span><span class="value">Every API call trains the brain</span></div>
+    <div class="row"><span class="label">Training</span><span class="value">No GPU. No gradient descent.</span></div>
+  </div>
+</div>
+<p class="footer">
+  Guru by <a href="https://webmind.sh">Webmind Research</a> &middot;
+  <a href="https://huggingface.co/tejadabheja/guru">HuggingFace</a> &middot;
+  <a href="https://github.com/tejasphatak/webmind-research">GitHub</a> &middot;
+  <a href="/">Chat</a>
+</p>
+</body>
+</html>"""
+    return HTMLResponse(html)
 
 app.add_middleware(
     CORSMiddleware,

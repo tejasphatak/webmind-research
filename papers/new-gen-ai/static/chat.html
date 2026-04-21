@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guru — Self-Evolving AI</title>
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0faf0;
+      color: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Disclaimer */
+    .disclaimer {
+      background: #d32f2f; color: #fff;
+      padding: 8px 16px; font-size: 13px; text-align: center; line-height: 1.4;
+    }
+
+    /* Header */
+    .header {
+      background: #fff; border-bottom: 1px solid #c8e6c9;
+      padding: 12px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 8px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-icon {
+      width: 36px; height: 36px; background: #2d8a4e; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 700; font-size: 18px;
+    }
+    .brand-name { font-size: 20px; font-weight: 700; color: #1b5e20; }
+    .brand-sub { font-size: 11px; color: #666; }
+    .brand-sub a { color: #2d8a4e; text-decoration: none; }
+    .badge {
+      background: #e8f5e9; color: #1b5e20;
+      padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    }
+    .status-btn {
+      background: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 8px;
+      padding: 5px 12px; font-size: 12px; color: #1b5e20; cursor: pointer; font-weight: 600;
+    }
+
+    /* Status */
+    .status { display: none; background: #fff; border-bottom: 1px solid #c8e6c9; padding: 16px; }
+    .status.open { display: block; }
+    .status-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 10px; max-width: 700px; margin: 0 auto;
+    }
+    .s-card { background: #e8f5e9; border-radius: 8px; padding: 10px 14px; }
+    .s-label { font-size: 10px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
+    .s-val { font-size: 16px; font-weight: 700; color: #1b5e20; margin-top: 2px; }
+    .s-detail { font-size: 10px; color: #888; }
+
+    /* Chat */
+    .chat { flex: 1; overflow-y: auto; padding: 16px; max-width: 700px; width: 100%; margin: 0 auto; }
+    .welcome { text-align: center; padding: 40px 16px; color: #666; }
+    .welcome h2 { color: #1b5e20; font-size: 22px; margin-bottom: 8px; }
+    .welcome p { font-size: 14px; line-height: 1.6; max-width: 440px; margin: 0 auto; }
+
+    .msg { margin-bottom: 12px; max-width: 85%; animation: fadeIn 0.25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; } }
+    .msg.user { margin-left: auto; }
+    .msg.bot { margin-right: auto; }
+    .bubble {
+      padding: 10px 14px; border-radius: 14px; font-size: 15px; line-height: 1.5; word-wrap: break-word;
+    }
+    .msg.user .bubble { background: #2d8a4e; color: #fff; border-bottom-right-radius: 4px; }
+    .msg.bot .bubble { background: #f1f8e9; color: #1a1a1a; border: 1px solid #c8e6c9; border-bottom-left-radius: 4px; }
+    .meta { font-size: 11px; color: #999; margin-top: 3px; padding: 0 4px; }
+    .msg.user .meta { text-align: right; }
+
+    /* Loading dots */
+    .dots::after { content: ''; animation: d 1.5s infinite; }
+    @keyframes d { 0%{content:'.'} 33%{content:'..'} 66%{content:'...'} }
+
+    /* Input */
+    .input-bar {
+      background: #fff; border-top: 1px solid #c8e6c9; padding: 12px 16px;
+    }
+    .input-row {
+      max-width: 700px; margin: 0 auto; display: flex; gap: 8px;
+    }
+    .input-row input {
+      flex: 1; padding: 12px 16px; border: 2px solid #c8e6c9; border-radius: 12px;
+      font-size: 15px; outline: none; background: #f0faf0;
+    }
+    .input-row input:focus { border-color: #2d8a4e; }
+    .input-row button {
+      padding: 12px 20px; background: #2d8a4e; color: #fff; border: none;
+      border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer;
+    }
+    .input-row button:hover { background: #1b5e20; }
+    .input-row button:disabled { background: #aaa; cursor: not-allowed; }
+
+    /* Footer */
+    .footer {
+      text-align: center; padding: 8px; font-size: 11px; color: #888;
+      background: #fff; border-top: 1px solid #c8e6c9;
+    }
+    .footer a { color: #2d8a4e; text-decoration: none; }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+      .msg { max-width: 92%; }
+      .status-grid { grid-template-columns: repeat(2, 1fr); }
+      .s-val { font-size: 14px; }
+      .bubble { font-size: 14px; padding: 9px 12px; }
+      .input-row input { padding: 10px 12px; font-size: 14px; }
+      .input-row button { padding: 10px 16px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="disclaimer">
+  <strong>RESEARCH PREVIEW</strong> — Experimental system. Do not submit personal or sensitive information. All inputs may be stored. No warranties.
+</div>
+
+<div class="header">
+  <div class="brand">
+    <div class="brand-icon">G</div>
+    <div>
+      <div class="brand-name">Guru</div>
+      <div class="brand-sub">Self-Evolving AI &middot; <a href="https://webmind.sh">webmind.sh</a></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <span class="badge" id="badge">Loading...</span>
+    <button class="status-btn" onclick="toggleStatus()">Status</button>
+  </div>
+</div>
+
+<div class="status" id="statusPanel">
+  <div class="status-grid" id="statusGrid"></div>
+</div>
+
+<div class="chat" id="chat">
+  <div class="welcome">
+    <h2>Ask anything</h2>
+    <p>Self-evolving graph reasoning engine. No GPU. No gradient descent. Learns from every conversation.</p>
+  </div>
+</div>
+
+<div class="input-bar">
+  <div class="input-row">
+    <input type="text" id="input" placeholder="Ask a question..." autocomplete="off" autofocus>
+    <button id="send" onclick="sendQuery()">Ask</button>
+  </div>
+</div>
+
+<div class="footer">
+  <a href="https://github.com/tejasphatak/webmind-research">GitHub</a>
+  &middot; <a href="https://huggingface.co/tejadabheja/guru">HuggingFace</a>
+  &middot; No GPU required
+</div>
+
+<script>
+const chat = document.getElementById('chat');
+const input = document.getElementById('input');
+const sendBtn = document.getElementById('send');
+let history = [];
+
+input.addEventListener('keydown', e => { if (e.key === 'Enter' && !sendBtn.disabled) sendQuery(); });
+
+function toggleStatus() {
+  const p = document.getElementById('statusPanel');
+  p.classList.toggle('open');
+  if (p.classList.contains('open')) loadStatus();
+}
+
+fetch('/health').then(r=>r.json()).then(s=>{
+  document.getElementById('badge').textContent =
+    (s.words||0).toLocaleString() + ' neurons | ' + (s.rss_mb||0).toFixed(0) + ' MB';
+}).catch(()=>{
+  document.getElementById('badge').textContent = 'Offline';
+});
+
+function loadStatus() {
+  fetch('/health').then(r=>r.json()).then(s=>{
+    document.getElementById('statusGrid').innerHTML = `
+      <div class="s-card"><div class="s-label">Neurons</div><div class="s-val">${(s.words||0).toLocaleString()}</div></div>
+      <div class="s-card"><div class="s-label">Memory</div><div class="s-val">${(s.rss_mb||0).toFixed(0)} MB</div></div>
+      <div class="s-card"><div class="s-label">Disk Free</div><div class="s-val">${(s.disk_free_gb||0).toFixed(0)} GB</div></div>
+      <div class="s-card"><div class="s-label">Status</div><div class="s-val" style="color:#2d8a4e">${s.death_risk===0?'Alive':'Degraded'}</div></div>
+      <div class="s-card"><div class="s-label">Arch</div><div class="s-val">x86_64</div><div class="s-detail">CPU only</div></div>
+      <div class="s-card"><div class="s-label">Engine</div><div class="s-val">Graph</div><div class="s-detail">Convergence loop</div></div>
+    `;
+  });
+}
+
+function addMsg(role, html, meta) {
+  const w = chat.querySelector('.welcome'); if (w) w.remove();
+  const d = document.createElement('div'); d.className = 'msg ' + role;
+  const b = document.createElement('div'); b.className = 'bubble'; b.innerHTML = html; d.appendChild(b);
+  if (meta) { const m = document.createElement('div'); m.className = 'meta'; m.textContent = meta; d.appendChild(m); }
+  chat.appendChild(d); chat.scrollTop = chat.scrollHeight;
+  return b;
+}
+
+async function sendQuery() {
+  const q = input.value.trim(); if (!q) return;
+  addMsg('user', esc(q));
+  input.value = ''; sendBtn.disabled = true;
+  history.push({role:'user', content:q});
+  const lb = addMsg('bot', '<span class="dots">Thinking</span>');
+  const t0 = performance.now();
+  try {
+    const r = await fetch('/v1/chat/completions', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({model:'guru', messages:history, max_tokens:60})
+    });
+    const j = await r.json();
+    const a = j.choices?.[0]?.message?.content || "I don't know.";
+    const ms = Math.round(performance.now()-t0);
+    history.push({role:'assistant', content:a});
+    lb.innerHTML = esc(a);
+    const m = document.createElement('div'); m.className='meta'; m.textContent=ms+'ms';
+    lb.parentElement.appendChild(m);
+  } catch(e) { lb.innerHTML = 'Error: '+e.message; }
+  sendBtn.disabled = false; input.focus(); chat.scrollTop = chat.scrollHeight;
+}
+
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+</script>
+</body>
+</html>

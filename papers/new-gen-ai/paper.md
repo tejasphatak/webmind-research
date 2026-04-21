@@ -11,13 +11,11 @@
 
 ## 1. Introduction
 
-Current large language models (GPT-4, Claude, Gemini) cannot explain their reasoning, cannot delete learned facts on demand, and hallucinate with confidence. These are not engineering bugs — they are architectural constraints. An LLM is lossy compression: trillions of tokens compressed into billions of parameters via gradient descent. The knowledge is there, but it's entangled in opaque weights that cannot be inspected, edited, or traced.
+Large language models store knowledge in opaque weight matrices. This makes them unable to explain individual decisions, delete specific facts, or guarantee honest failure modes. These are architectural constraints, not engineering gaps.
 
-We ask: what if knowledge lived in a database instead of a weight matrix? What if reasoning was iterative search instead of a forward pass? What if confidence came from the data structure itself instead of calibrated logits?
+We explore an alternative: storing knowledge as a sparse co-occurrence graph (a dictionary of word-pair connection weights) and reasoning via iterative cosine-similarity search with query anchoring. The system starts empty and grows from taught sentences. Knowledge lives in a SQLite file. Deletion is a row delete. Explanation is printing the convergence trace.
 
-We present such a system: a self-growing sparse co-occurrence graph with iterative multi-hop convergence. No gradient descent. No training. No GPU. The knowledge base is a SQLite file — copy it to share knowledge, delete a row to forget a fact, inspect any connection to explain a decision.
-
-Our prior work (Phatak, 2026) showed that for factual QA, database retrieval achieves 72% exact match on in-distribution HotPotQA (25.3% held-out). This paper extends that system with reasoning via convergence — the missing piece that separates retrieval from intelligence.
+Our prior work (Phatak, 2026) showed that database retrieval achieves 72% exact match on in-distribution HotPotQA (25.3% held-out). This paper extends that system with reasoning via multi-hop convergence.
 
 **Contributions:**
 1. A **self-growing co-occurrence graph** (sparse dictionary) that starts empty and grows with each taught sentence
@@ -25,7 +23,7 @@ Our prior work (Phatak, 2026) showed that for factual QA, database retrieval ach
 3. **Multi-hop convergence** — iterative reasoning rounds where discovered concepts shift the query vector, enabling cross-concept reasoning without a neural component
 4. **Sparse co-occurrence search** — O(N x K) search on dict pairs instead of O(N^2) matrix operations
 
-This IS a transformer — reimplemented using graphs instead of weight matrices. Attention becomes sparse cosine search over co-occurrence. Residual connections become query anchoring. Feed-forward layers become successor/template lookup. Softmax becomes confidence ranking. The architecture is the same; the substrate gives us what weight matrices cannot: inspectability, editability, instant fact deletion, and honest failure ("I don't know" instead of hallucination). Where an LLM costs $100M+ to train and runs opaquely, this system costs $0 to train and runs transparently on any machine with Python and SQLite.
+The system reimplements transformer principles — attention, residual connections, confidence weighting — using graph search instead of matrix multiplication. The correspondence is documented in Section 7.
 
 ## 2. Self-Growing Co-occurrence Graph
 
@@ -231,7 +229,20 @@ All positive results are on small synthetic test sets (N=5 to N=18). No standard
 
 **What this contributes.** Convergence-as-confidence removes hardcoded thresholds from retrieval systems — the co-occurrence graph itself judges answer quality. Multi-hop convergence enables cross-concept reasoning without a neural reasoner — each round's discovered concepts shift the query for the next round, and every step is inspectable. Sparse dict-based co-occurrence with O(N x K) search makes the architecture practical at scale. Together they enable a self-growing knowledge system that handles 295K words on a single CPU.
 
-**What this does not do (yet).** The system scores 0% on held-out QA benchmarks. It generates only from taught patterns. Multimodal capability depends on CLIP's pretraining. It does not yet match LLMs on fluency, creativity, or zero-shot generalization. But the architecture is the same — attention, residual connections, confidence weighting — implemented on a substrate that is transparent by construction. The gap is data and scale, not architecture.
+**What this does not do.** The system scores 0% on held-out QA benchmarks. It generates only from taught patterns. Multimodal capability depends on CLIP's pretraining. It does not match LLMs on fluency, creativity, or zero-shot generalization.
+
+**Transformer correspondence.** The following table maps transformer components to their graph equivalents:
+
+| Transformer | Graph equivalent | Strength of mapping |
+|---|---|---|
+| Attention (cosine similarity kernel) | Sparse cosine search over co-occurrence | Strong — same operation, different topology (1xN vs NxN) |
+| Residual connections | Query anchoring across hops | Strong — same purpose, adaptive weighting |
+| Depth (layers) | Multi-hop convergence rounds | Moderate — iterative refinement, but no per-layer specialization |
+| Softmax | Confidence normalization | Weak — linear normalization, no exponential sharpening |
+| FFN | Successor/template lookup | Weak — explicit lookup vs learned nonlinear transform |
+| Positional encoding | Sentence position metadata | Weak — used in output only, not during reasoning |
+
+The strongest correspondences are attention-as-search and residual-as-anchoring. The weakest are FFN and positional encoding. We do not claim mathematical equivalence — we claim the same architectural goals achieved through transparent primitives.
 
 **Manual correction.** The system includes a `correct()` method that allows teaching the right answer after a query failure. This is explicit, human-triggered learning — not autonomous self-evolution. Missed queries are logged to a `misses` table for later review.
 

@@ -27,6 +27,7 @@ from sparse_convergence import (
     sparse_cosine, sparse_blend, sparse_norm, sparse_normalize,
 )
 from sparse_csr import MMapCSR, CSRWriteAheadLog
+from vocabulary_filter import VocabularyFilter
 
 # Struct formats matching feed.py / brain_lmdb_adapter.py
 _ID_FMT = struct.Struct('<i')
@@ -253,6 +254,18 @@ class BrainCSR:
             self._words.append(word)
             self._word_idx[word] = idx
 
+        # Vocabulary filter (LSH-based garbage detection, morphological linking, dedup, semantic search)
+        self._vocab_filter = VocabularyFilter(n_bits=64)
+        lsh_path = os.path.join(db_path, 'lsh_index')
+        if os.path.exists(os.path.join(lsh_path, 'embeddings.npy')):
+            try:
+                self._vocab_filter.load(lsh_path)
+                print(f"  LSH: loaded from {lsh_path}")
+            except Exception as e:
+                print(f"  LSH: failed to load ({e}), running without")
+        else:
+            print(f"  LSH: no index at {lsh_path}, running without (build with vocabulary_filter.build())")
+
         # WAL persistence — load saved edges, start background flush
         self._wal_db = self._env.open_db(b'wal_edges')
         wal_loaded = self._wal.load_from_lmdb(self._env, self._wal_db)
@@ -387,6 +400,18 @@ class BrainCSR:
                 "convergence_rounds": 0,
             }
 
+        # Tier 1.5: O(1) semantic search via LSH (fast-path before convergence)
+        if self._vocab_filter.is_ready:
+            lsh_hits = self._vocab_filter.semantic_search(question, k=5)
+            # If top LSH hit is very high confidence, use it as a seed for
+            # faster convergence or direct concept extraction
+            if lsh_hits:
+                self._lsh_seed = lsh_hits  # stash for convergence seeding
+            else:
+                self._lsh_seed = []
+        else:
+            self._lsh_seed = []
+
         # Tier 2: convergence
         tokens = self._tokenize(question)
         content = [t for t in tokens if t not in FUNCTION_WORDS]
@@ -428,6 +453,21 @@ class BrainCSR:
                     n = self.db.get(nid)
                     if n:
                         concepts.append((n, word))
+                        seen.add(nid)
+
+        # Inject LSH seed concepts (O(1) semantic search results)
+        if self._lsh_seed:
+            word_to_nid = {w: nid for nid, w in (self._nid_to_word_cache or {}).items()}
+            if not word_to_nid and self._nid_to_word_cache is None:
+                self._nid_to_word_cache = {nid: w for w, nid in self._word_neurons.items()
+                                           if not w.startswith("__")}
+                word_to_nid = {w: nid for nid, w in self._nid_to_word_cache.items()}
+            for lsh_word, lsh_sim in self._lsh_seed:
+                nid = word_to_nid.get(lsh_word)
+                if nid and nid not in seen and lsh_word not in FUNCTION_WORDS:
+                    n = self.db.get(nid)
+                    if n:
+                        concepts.append((n, lsh_word))
                         seen.add(nid)
 
         # Sparse co-occurrence search (complementary)
@@ -894,34 +934,36 @@ class BrainCSR:
 
     def _is_meaningful(self, text: str) -> bool:
         """Check if text is meaningful (not garbage/noise).
-        Returns False for random character strings, empty text, or pure noise."""
+
+        Uses VocabularyFilter (LSH-based) when available, falls back to heuristics.
+        Returns False for random character strings, empty text, or pure noise.
+        """
         if not text or len(text.strip()) < 2:
             return False
+
+        # Use vocabulary filter if LSH index is loaded (more accurate)
+        if self._vocab_filter.is_ready:
+            return not self._vocab_filter.is_garbage(text)
+
+        # Fallback: heuristic checks
         stripped = text.strip()
-        # Count alphabetic characters vs total
         alpha = sum(1 for c in stripped if c.isalpha())
         if len(stripped) > 5 and alpha / len(stripped) < 0.4:
-            return False  # mostly non-alpha = noise
-        # Extract words
+            return False
         words = re.findall(r'[a-zA-Z]+', stripped.lower())
         if not words:
             return False
-        # Single word: must be short (< 15 chars) — long single "words" are keyboard mash
         if len(words) == 1 and len(words[0]) > 15:
             return False
-        # Check how many words are in our known vocabulary
-        # If we have a vocabulary, at least 30% of words should be known
-        if hasattr(self, '_word_idx') and self._word_idx and len(words) >= 2:
+        if self._word_idx and len(words) >= 2:
             known = sum(1 for w in words if w in self._word_idx)
             if known / len(words) < 0.3:
-                return False  # mostly unknown words = likely garbage
-        # For short text (1-2 words) without vocabulary check: basic sanity
-        # Vowel ratio — real words in most languages have vowels
+                return False
         for word in words:
             if len(word) > 4:
                 vowels = sum(1 for c in word if c in 'aeiouy')
                 if vowels == 0:
-                    return False  # 5+ char word with no vowels = garbage
+                    return False
         return True
 
     # --- Learning ---
@@ -936,7 +978,11 @@ class BrainCSR:
         return idx
 
     def teach(self, sentence: str, confidence: float = 0.5) -> list:
-        """Teach a new sentence. Writes to WAL (not CSR rebuild)."""
+        """Teach a new sentence. Writes to WAL (not CSR rebuild).
+
+        If vocabulary filter is loaded, also auto-links morphological variants
+        (e.g. teaching 'gravitational' strengthens edge to 'gravity').
+        """
         if not self._is_meaningful(sentence):
             return []
         tokens = self._tokenize(sentence)
@@ -954,6 +1000,19 @@ class BrainCSR:
                 for i in range(len(indices)):
                     for j in range(i + 1, len(indices)):
                         self._wal.add_edge(indices[i], indices[j], COOCCURRENCE_PULL)
+
+            # Morphological variant linking — connect words to their root forms
+            if self._vocab_filter.is_ready:
+                for word in content:
+                    variants = self._vocab_filter.find_variants(word, min_similarity=0.6)
+                    word_idx = self._word_idx.get(word)
+                    if word_idx is not None:
+                        for variant, sim in variants[:3]:  # top 3 variants
+                            var_idx = self._word_idx.get(variant)
+                            if var_idx is not None and var_idx != word_idx:
+                                # Strength proportional to similarity
+                                self._wal.add_edge(word_idx, var_idx,
+                                                   COOCCURRENCE_PULL * sim)
 
             neurons = []
             for word in content:
@@ -1100,9 +1159,37 @@ class BrainCSR:
             "successors": len(neuron.successors) if neuron else 0,
         }
 
+    # --- Vocabulary Filter (public API) ---
+
+    def build_lsh_index(self, save: bool = True) -> dict:
+        """Build LSH index over the current vocabulary.
+
+        Encodes all words with MiniLM, hashes them into buckets.
+        Enables: garbage detection, morphological linking, dedup, semantic search.
+
+        Returns stats dict.
+        """
+        save_path = os.path.join(self._db_path, 'lsh_index') if save else None
+        stats = self._vocab_filter.build(list(self._words), save_path=save_path)
+        print(f"  LSH index built: {stats['buckets']} buckets, "
+              f"{stats['avg_bucket_size']:.1f} avg size")
+        return stats
+
+    def find_variants(self, word: str) -> list:
+        """Find morphological variants of a word via LSH."""
+        return self._vocab_filter.find_variants(word)
+
+    def find_duplicates(self, threshold: float = 0.92) -> list:
+        """Find near-duplicate word pairs in the vocabulary."""
+        return self._vocab_filter.find_duplicates(threshold)
+
+    def semantic_search(self, query: str, k: int = 10) -> list:
+        """O(1) semantic search via LSH bucket lookup."""
+        return self._vocab_filter.semantic_search(query, k=k)
+
     def stats(self) -> dict:
         csr_stats = self._csr.stats()
-        return {
+        result = {
             "words": len(self._words),
             "dimensions": len(self._words),
             "neurons": self.db.count(),
@@ -1112,7 +1199,9 @@ class BrainCSR:
             "csr_nnz": csr_stats['nnz'],
             "csr_disk_mb": round(csr_stats['disk_mb'], 1),
             "wal_entries": self._wal.entry_count,
+            "lsh_ready": self._vocab_filter.is_ready,
         }
+        return result
 
     def health(self) -> dict:
         h = self.db.health()

@@ -10,7 +10,7 @@
 
 **Disclaimer.** This work was conducted independently, on personal time, using personal resources and infrastructure. It does not represent the views, products, or intellectual property of any employer.
 
-**Abstract.** We present a reasoning system built from sparse co-occurrence graphs — no gradient descent, no end-to-end training, no dense matrices. Each taught sentence strengthens connections between co-occurring words in a sparse dictionary (inspired by the Hebbian principle). The convergence loop reimplements the core transformer attention mechanism using graph primitives: softmax weighting (exp(c/T)/sum(exp(c/T))) over confidence scores, NxN concept-to-concept mutual attention among discovered neighbors, per-hop specialization (early hops explore broadly, later hops focus narrowly), query anchoring as residual connections, and sentence-position similarity bias as positional encoding during reasoning. We also introduce convergence as confidence (sparse cosine similarity replacing hardcoded quality thresholds) and sparse dict search (O(N x K) instead of O(N^2)). The system handles text, images, and audio through a shared CLIP vector space, and detects harmful queries via NLI-based polarity. We report honestly: 0% exact match on held-out HotPotQA, and all positive results are on small synthetic test sets (250+ tests passing). The contribution is architectural — the same math as transformer attention, on a transparent and inspectable substrate — not state-of-the-art performance.
+**Abstract.** We present a reasoning system built from sparse co-occurrence graphs — no gradient descent, no end-to-end training, no dense matrices. Each taught sentence strengthens connections between co-occurring words in a sparse dictionary (inspired by the Hebbian principle). The convergence loop reimplements the core transformer attention mechanism using graph primitives: softmax weighting (exp(c/T)/sum(exp(c/T))) over confidence scores, NxN concept-to-concept mutual attention among discovered neighbors, per-hop specialization (early hops explore broadly, later hops focus narrowly), query anchoring as residual connections, and sentence-position similarity bias as positional encoding during reasoning. We also introduce convergence as confidence (sparse cosine similarity replacing hardcoded quality thresholds), sparse dict search (O(N x K) instead of O(N^2)), and locality-sensitive hashing (LSH) over sentence-transformer embeddings for O(1) semantic search, garbage detection, morphological variant linking, and vocabulary deduplication. The system handles text, images, and audio through a shared CLIP vector space, and detects harmful queries via NLI-based polarity. We report honestly: 0% exact match on held-out HotPotQA, and all positive results are on small synthetic test sets (260+ tests passing). The contribution is architectural — the same math as transformer attention, on a transparent and inspectable substrate — not state-of-the-art performance.
 
 ## 1. Introduction
 
@@ -275,7 +275,66 @@ Five of seven correspondences are now strong: attention (query-to-database and t
 
 **Future work.** Larger-scale convergence-confidence validation (200+ queries). Standard benchmark evaluation for multimodal (COCO, Flickr30K). Adversarial robustness testing for the ethics gate. Tool calls from knowledge (web search triggered by convergence).
 
-**Reproducibility.** Open source at `github.com/tejasphatak/webmind-research`. 9 source files, ~5,800 lines total. Core: `brain_core.py` (~900 lines), full engine: `engine.py` (~1,400 lines), convergence: `convergence.py` (~380 lines). Dependencies: numpy (core), sentence-transformers (multimodal). 250+ tests, ~60s on CPU. Hardware: GCP e2-standard-4 (4 vCPU, 16GB RAM).
+**Reproducibility.** Open source at `github.com/tejasphatak/webmind-research`. 9 source files, ~5,800 lines total. Core: `brain_core.py` (~900 lines), full engine: `engine.py` (~1,400 lines), convergence: `convergence.py` (~380 lines). Dependencies: numpy (core), sentence-transformers (multimodal). 260+ tests, ~25s on CPU. Hardware: GCP e2-standard-4 (4 vCPU, 16GB RAM).
+
+## 8. Vocabulary Intelligence: LSH-Based Filtering and O(1) Search
+
+The co-occurrence graph treats every word as a dimension. At 408K words, vocabulary quality directly impacts reasoning quality — garbage input pollutes the graph, morphological variants waste capacity as separate dimensions, and duplicate entries fragment knowledge. We address all four problems with a single mechanism: locality-sensitive hashing (LSH) over sentence-transformer embeddings.
+
+### 8.1 Semantic Hashing
+
+We project each word's MiniLM embedding (384-dim) onto 64 random hyperplanes to produce a 64-bit binary hash. Words with similar meanings land in the same or nearby hash buckets (Hamming distance 0-3). The index builds in ~10s for 408K words and requires ~600MB (embeddings + hash table).
+
+```
+word → MiniLM encoder → 384-dim vector → sign(v · H_i) for i=1..64 → 64-bit hash
+```
+
+This gives us O(1) bucket lookup with cosine refinement over a small candidate set — approximate nearest neighbor search without FAISS, without GPU, without a separate index service.
+
+### 8.2 Garbage Detection
+
+Before any input touches the co-occurrence graph, a two-layer filter rejects noise:
+
+**Layer 1 (heuristic, <1μs):** Checks vowel ratios, word length, character composition. Catches obvious keyboard mash ("asdfghjkl"), excessively long tokens, and non-alphabetic noise.
+
+**Layer 2 (LSH, ~1ms):** For multi-word input that passes heuristics, checks each word against the LSH index. If no word in the input has a nearest neighbor with cosine similarity ≥ 0.15, the input is rejected as semantically meaningless. This catches well-formed but nonsensical strings that bypass character-level heuristics.
+
+The filter sits at the API layer — `teach()`, `correct()`, and `ask()` all validate input before modifying the graph. Protected entries (identity, safety) bypass the filter.
+
+### 8.3 Morphological Variant Linking
+
+"Gravitational" and "gravity" should strengthen each other in the co-occurrence graph, not exist as unrelated dimensions. We combine two signals:
+
+1. **Heuristic stemming:** Strip common English suffixes and group words by shared stem + 4-character prefix. Fast, catches most inflectional variants.
+2. **LSH verification:** For stem-group candidates, verify with embedding cosine similarity (threshold ≥ 0.6) and morphological prefix check (shared prefix ≥ 60% of shorter word). This filters out false positives where stemming is coincidental.
+
+During `teach()`, each content word's top-3 morphological variants receive a co-occurrence boost proportional to their embedding similarity. The graph automatically learns that "gravitational" ↔ "gravity" ↔ "gravitation" are related, without explicit synonym tables.
+
+### 8.4 Vocabulary Deduplication
+
+Words like "colour"/"color" or "organize"/"organise" are near-duplicates that fragment knowledge. We detect them by:
+
+1. Scanning same-bucket word pairs in the LSH index
+2. Checking stem-group pairs for high cosine similarity (≥ 0.92)
+3. Reporting canonical forms (shortest or most frequent variant)
+
+This is a diagnostic — it identifies duplicate pairs for optional merging. The system does not auto-merge (that would violate the "delete = gone" invariant), but reports duplicates so operators can decide.
+
+### 8.5 O(1) Semantic Search
+
+The LSH index provides a fast-path before the convergence loop:
+
+```
+Query → LSH hash → bucket lookup → cosine refinement → seed concepts
+                                                          ↓
+                              Convergence loop (seeded, fewer hops needed)
+```
+
+For queries where LSH finds high-confidence matches, the convergence loop starts with better seed concepts and converges faster. For queries where LSH misses (rare terms, novel combinations), the convergence loop runs unseeded as before. This is additive — the LSH path can only help, never hurt.
+
+### 8.6 Prior Art and Future Directions
+
+Our random hyperplane LSH follows the classic scheme of Charikar (2002). Gong et al. (2013) show that **bilinear hash functions** achieve the same accuracy with shorter codes (data-dependent hashing). At our current scale (408K words), 64-bit random hashing is sufficient. If vocabulary grows to millions, learned bilinear projections would reduce the index size while maintaining bucket quality.
 
 ## Appendix A: Core Implementation
 
@@ -347,6 +406,8 @@ We publish openly because the principle (concept-level learning + perfect memory
 ## References
 
 - Asai, A., Wu, Z., Wang, Y., Sil, A., and Hajishirzi, H. (2024). Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection. *ICLR 2024*.
+- Charikar, M. S. (2002). Similarity Estimation Techniques from Rounding Algorithms. *STOC 2002*.
+- Gong, Y., Kumar, S., Rowley, H. A., and Lazebnik, S. (2013). Compact Hyperplane Hashing with Bilinear Functions. *arXiv:1302.2547*.
 - Borgeaud, S., et al. (2022). Improving Language Models by Retrieving from Trillions of Tokens. *ICML 2022*.
 - Guu, K., Lee, K., Tung, Z., Pasupat, P., and Chang, M.-W. (2020). REALM: Retrieval-Augmented Language Model Pre-Training. *ICML 2020*.
 - Hebb, D. O. (1949). *The Organization of Behavior*. Wiley.

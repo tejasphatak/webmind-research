@@ -25,7 +25,7 @@ Our prior work (Phatak, 2026) showed that for factual QA, database retrieval ach
 3. **Multi-hop convergence** — iterative reasoning rounds where discovered concepts shift the query vector, enabling cross-concept reasoning without a neural component
 4. **Sparse co-occurrence search** — O(N x K) search on dict pairs instead of O(N^2) matrix operations
 
-The system is not a replacement for LLMs at what LLMs do well (prose, conversation, generalization). It solves what LLMs cannot: inspectable reasoning, instant fact deletion, traceable confidence, zero hallucination (it says "I don't know" instead), and operation on a $5/month CPU with no training cost. Where an LLM costs $100M+ to train and $0.01/query to run opaquely, this system costs $0 to train and runs transparently on any machine with Python and SQLite.
+This IS a transformer — reimplemented using graphs instead of weight matrices. Attention becomes sparse cosine search over co-occurrence. Residual connections become query anchoring. Feed-forward layers become successor/template lookup. Softmax becomes confidence ranking. The architecture is the same; the substrate gives us what weight matrices cannot: inspectability, editability, instant fact deletion, and honest failure ("I don't know" instead of hallucination). Where an LLM costs $100M+ to train and runs opaquely, this system costs $0 to train and runs transparently on any machine with Python and SQLite.
 
 ## 2. Self-Growing Co-occurrence Graph
 
@@ -231,7 +231,7 @@ All positive results are on small synthetic test sets (N=5 to N=18). No standard
 
 **What this contributes.** Convergence-as-confidence removes hardcoded thresholds from retrieval systems — the co-occurrence graph itself judges answer quality. Multi-hop convergence enables cross-concept reasoning without a neural reasoner — each round's discovered concepts shift the query for the next round, and every step is inspectable. Sparse dict-based co-occurrence with O(N x K) search makes the architecture practical at scale. Together they enable a self-growing knowledge system that handles 295K words on a single CPU.
 
-**What this does not do.** The system scores 0% on held-out QA benchmarks. It generates only from taught patterns. Multimodal capability depends on CLIP's pretraining. It does not compete with LLMs on fluency, creativity, or zero-shot generalization. It competes on trust: every answer is traceable, every fact is deletable, every failure is honest.
+**What this does not do (yet).** The system scores 0% on held-out QA benchmarks. It generates only from taught patterns. Multimodal capability depends on CLIP's pretraining. It does not yet match LLMs on fluency, creativity, or zero-shot generalization. But the architecture is the same — attention, residual connections, confidence weighting — implemented on a substrate that is transparent by construction. The gap is data and scale, not architecture.
 
 **Manual correction.** The system includes a `correct()` method that allows teaching the right answer after a query failure. This is explicit, human-triggered learning — not autonomous self-evolution. Missed queries are logged to a `misses` table for later review.
 

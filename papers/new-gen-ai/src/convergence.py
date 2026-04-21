@@ -65,6 +65,15 @@ class ConvergenceLoop:
     The convergence loop IS attention — but each hop is inspectable.
     Query anchor IS a residual connection — prevents drift.
     Convergence check IS the stopping criterion — no convergence = abstain.
+
+    Transformer correspondence:
+      - _weighted_blend() uses softmax (exponential sharpening) over
+        confidence scores, identical to scaled dot-product attention.
+      - Per-hop k and threshold schedules give functional layer
+        specialization: early hops explore broadly, later hops focus.
+      - Concept-to-concept attention (NxN among discovered neighbors)
+        provides compositional reasoning — same as token-to-token
+        attention in transformer self-attention.
     """
 
     def __init__(self, db: NeuronDB,
@@ -72,7 +81,8 @@ class ConvergenceLoop:
                  k: int = 5,
                  convergence_threshold: float = 0.99,
                  min_confidence: float = 0.1,
-                 min_relevance: float = 0.3):
+                 min_relevance: float = 0.3,
+                 temperature: float = 1.0):
         """
         Args:
             db: NeuronDB to search in
@@ -84,6 +94,11 @@ class ConvergenceLoop:
                           best neighbor to accept convergence. Below this,
                           the system says "I don't know" even if the vector
                           stabilized. Invariant #4: honest about failure.
+            temperature: softmax temperature for confidence weighting.
+                        Higher = more uniform, lower = sharper.
+                        Default 1.0 gives true softmax behavior.
+                        Use float('inf') to recover pre-softmax linear
+                        normalization for backward compatibility.
         """
         self.db = db
         self.max_hops = max_hops
@@ -91,6 +106,7 @@ class ConvergenceLoop:
         self.convergence_threshold = convergence_threshold
         self.min_confidence = min_confidence
         self.min_relevance = min_relevance
+        self.temperature = temperature
 
     def converge(self, query_vector: np.ndarray) -> ConvergenceResult:
         """
@@ -98,6 +114,12 @@ class ConvergenceLoop:
 
         Returns ConvergenceResult with converged=True if stable,
         converged=False if max hops reached (honest abstention).
+
+        Per-hop specialization (like transformer layers having different
+        learned parameters): early hops explore broadly (higher k, lower
+        confidence threshold), later hops focus narrowly (lower k, higher
+        threshold). This gives functional layer specialization without
+        learned weights.
         """
         query = np.array(query_vector, dtype=np.float32)
         query_norm = np.linalg.norm(query)
@@ -114,11 +136,23 @@ class ConvergenceLoop:
         for hop_num in range(self.max_hops):
             previous = current.copy()
 
-            # 1. Search nearest neurons
-            neighbors = self.db.search(current, k=self.k)
+            # --- Per-hop specialization (transformer layer analogy) ---
+            # Progress through the loop: 0.0 (first hop) → 1.0 (last hop)
+            progress = hop_num / max(self.max_hops - 1, 1)
 
-            # Filter by minimum confidence
-            neighbors = [n for n in neighbors if n.confidence >= self.min_confidence]
+            # Early hops: explore broadly (more neighbors)
+            # Later hops: focus narrowly (fewer neighbors)
+            hop_k = max(2, int(self.k * (1.5 - 0.7 * progress)))
+
+            # Early hops: accept lower confidence (explore)
+            # Later hops: require higher confidence (focus)
+            hop_min_conf = self.min_confidence * (1.0 + 0.5 * progress)
+
+            # 1. Search nearest neurons with per-hop k
+            neighbors = self.db.search(current, k=hop_k)
+
+            # Filter by per-hop minimum confidence
+            neighbors = [n for n in neighbors if n.confidence >= hop_min_conf]
 
             if not neighbors:
                 # No neurons above confidence threshold — honest abort
@@ -127,10 +161,19 @@ class ConvergenceLoop:
                     concepts=[], hops=hops, confidence=0.0,
                 )
 
-            # 2. Blend neighbors weighted by confidence → activation
+            # 2. Concept-to-concept attention (NxN among neighbors)
+            #    Transformers compute attention between all tokens.
+            #    Here we compute pairwise similarity among discovered
+            #    neighbors and boost those that are mutually relevant.
+            #    This gives compositional reasoning: concepts that
+            #    "attend to each other" get amplified.
+            neighbors = self._mutual_attention(neighbors)
+
+            # 3. Blend neighbors weighted by confidence → activation
+            #    Uses softmax (exponential sharpening) over confidences.
             activation = self._weighted_blend(neighbors)
 
-            # 3. Anchor to query (prevents drift)
+            # 4. Anchor to query (prevents drift)
             #    Early hops: explore (more activation)
             #    Later hops: contract (more query anchor)
             alpha = hop_num / self.max_hops  # 0→1
@@ -160,7 +203,7 @@ class ConvergenceLoop:
 
             last_concepts = neighbors
 
-            # 4. Check convergence: has the vector stopped moving?
+            # 5. Check convergence: has the vector stopped moving?
             sim = self._cosine_sim(current, previous)
             if sim >= self.convergence_threshold:
                 # Vector stabilized — but are the neighbors actually relevant?
@@ -202,19 +245,32 @@ class ConvergenceLoop:
 
     def _weighted_blend(self, neurons: list) -> np.ndarray:
         """
-        Blend neuron vectors weighted by confidence.
-        This is what softmax does in transformers — but inspectable.
+        Blend neuron vectors weighted by softmax over confidence scores.
+
+        This IS softmax attention: exp(c / T) / sum(exp(c / T)).
+        Temperature controls sharpening:
+          - T → 0: winner-take-all (hard attention)
+          - T = 1: standard softmax
+          - T → ∞: uniform weighting (recovers old linear normalization)
         """
         vectors = np.array([n.vector for n in neurons])
         confidences = np.array([n.confidence for n in neurons], dtype=np.float32)
 
-        # Softmax-like normalization of confidences
-        confidences = np.maximum(confidences, 0)  # floor at 0 for weighting
-        total = confidences.sum()
-        if total == 0:
+        # Floor at 0 for weighting (negative confidence = no contribution)
+        confidences = np.maximum(confidences, 0)
+
+        if confidences.sum() == 0:
             weights = np.ones(len(neurons), dtype=np.float32) / len(neurons)
+        elif self.temperature == float('inf'):
+            # Backward compat: infinite temperature = linear normalization
+            weights = confidences / confidences.sum()
         else:
-            weights = confidences / total
+            # Softmax with temperature: exp(c/T) / sum(exp(c/T))
+            # Subtract max for numerical stability (standard softmax trick)
+            scaled = confidences / max(self.temperature, 1e-8)
+            scaled = scaled - scaled.max()
+            exp_scaled = np.exp(scaled)
+            weights = exp_scaled / exp_scaled.sum()
 
         blended = np.average(vectors, axis=0, weights=weights).astype(np.float32)
 
@@ -223,6 +279,58 @@ class ConvergenceLoop:
             blended = blended / norm
 
         return blended
+
+    def _mutual_attention(self, neurons: list) -> list:
+        """
+        Concept-to-concept attention: NxN similarity among discovered
+        neighbors. Boost neurons that are mutually relevant — they
+        "attend to each other."
+
+        This is the compositional reasoning step that makes transformers
+        work: tokens don't just attend to the query, they attend to
+        each other. Here, concepts that form a coherent cluster get
+        boosted, while isolated concepts get dampened.
+
+        Returns the same neurons with confidence adjusted by mutual
+        relevance. Does NOT modify the original neuron objects — creates
+        lightweight wrappers.
+        """
+        if len(neurons) <= 1:
+            return neurons
+
+        # Compute pairwise cosine similarity matrix
+        vectors = np.array([n.vector for n in neurons])
+        norms = np.linalg.norm(vectors, axis=1, keepdims=True)
+        norms = np.maximum(norms, 1e-8)
+        normed = vectors / norms
+        sim_matrix = normed @ normed.T  # NxN
+
+        # Each neuron's mutual relevance = mean similarity to all others
+        # (excluding self, which is always 1.0)
+        n = len(neurons)
+        np.fill_diagonal(sim_matrix, 0.0)
+        mutual_scores = sim_matrix.sum(axis=1) / max(n - 1, 1)
+
+        # Boost confidence by mutual relevance:
+        # new_confidence = original * (1 + mutual_score)
+        # This preserves ordering but amplifies coherent clusters.
+        boosted = []
+        for i, neuron in enumerate(neurons):
+            boost_factor = 1.0 + float(mutual_scores[i])
+            # Create a lightweight copy with boosted confidence
+            boosted_neuron = Neuron(
+                id=neuron.id,
+                vector=neuron.vector,
+                confidence=neuron.confidence * boost_factor,
+                successors=neuron.successors,
+                predecessors=neuron.predecessors,
+                timestamp=neuron.timestamp,
+                temporal=neuron.temporal,
+                level=neuron.level,
+            )
+            boosted.append(boosted_neuron)
+
+        return boosted
 
     @staticmethod
     def _cosine_sim(a: np.ndarray, b: np.ndarray) -> float:

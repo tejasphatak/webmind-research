@@ -242,6 +242,52 @@ class BrainCore:
         nid_to_word = self._nid_to_word_cache
         word_to_nid = {w: nid for nid, w in nid_to_word.items()}
 
+        # --- Positional encoding for reasoning ---
+        # Build a map of query word positions: nid → position in query.
+        # Used to bias search results toward concepts that appeared at
+        # similar positions in taught sentences. This lets the system
+        # reason about word order during search, not just at output time.
+        query_positions = {}
+        for i, t in enumerate(content):
+            nid = self._word_neurons.get(t)
+            if nid is not None:
+                query_positions[nid] = i
+
+        # Build nid → set of taught positions (across all sentences)
+        nid_taught_positions = {}
+        if content_nids:
+            all_sentences = self.db.get_sentences_for_neurons(content_nids)
+            for sid, nid_pos_list in all_sentences.items():
+                for nid, pos in nid_pos_list:
+                    if nid not in nid_taught_positions:
+                        nid_taught_positions[nid] = set()
+                    nid_taught_positions[nid].add(pos)
+
+        def _position_bias(nid: int) -> float:
+            """Compute position similarity bias for a neuron.
+
+            Returns a multiplier >= 1.0. Concepts that appeared at
+            positions similar to query word positions get boosted.
+            Max boost is 1.5 (50% increase for perfect position match).
+            """
+            taught_pos = nid_taught_positions.get(nid)
+            if not taught_pos or not query_positions:
+                return 1.0
+            # For each query word position, find the closest taught
+            # position for this concept. Average the inverse distances.
+            total_sim = 0.0
+            count = 0
+            for q_nid, q_pos in query_positions.items():
+                min_dist = min(abs(q_pos - tp) for tp in taught_pos)
+                # Position similarity: 1 / (1 + distance)
+                total_sim += 1.0 / (1.0 + min_dist)
+                count += 1
+            if count == 0:
+                return 1.0
+            avg_sim = total_sim / count
+            # Scale to [1.0, 1.5] range — modest boost, not dominant
+            return 1.0 + 0.5 * avg_sim
+
         # Collect concepts from multi-hop convergence
         concepts = []
         seen = set()
@@ -255,6 +301,22 @@ class BrainCore:
         weights = [1.0 / (1.0 + 0.1 * i) for i in range(len(content_indices))]
         query_cooc = self._sparse_blend(content_indices, weights)
         search_results = self._sparse_search(query_cooc, k=10)
+
+        # Apply position bias to sparse search results for re-ranking
+        if nid_taught_positions:
+            biased_results = []
+            for word_idx, sim in search_results:
+                if word_idx < len(self._words):
+                    word = self._words[word_idx]
+                    nid = word_to_nid.get(word)
+                    if nid:
+                        biased_results.append((word_idx, sim * _position_bias(nid)))
+                    else:
+                        biased_results.append((word_idx, sim))
+                else:
+                    biased_results.append((word_idx, sim))
+            biased_results.sort(key=lambda x: x[1], reverse=True)
+            search_results = biased_results
 
         for word_idx, sim in search_results:
             if word_idx < len(self._words):

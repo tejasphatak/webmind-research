@@ -277,6 +277,15 @@ def make_completion_response(content: str, model: str, prompt_tokens: int) -> di
         },
     }
 
+# Words to ignore when checking question-answer relevance
+FILTER_WORDS = frozenset({
+    'the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'what', 'who',
+    'how', 'when', 'where', 'which', 'why', 'do', 'does', 'did', 'can', 'could',
+    'will', 'would', 'should', 'of', 'in', 'to', 'for', 'with', 'on', 'at', 'by',
+    'from', 'and', 'or', 'but', 'not', 'it', 'its', 'this', 'that', 'me', 'tell',
+    'about', 'please', 'know', 'explain', 'describe', 'current', 'today',
+})
+
 # --- Session WAL ---
 # Per-session co-occurrence edges. Dies when session ends.
 # Only the teach API and explicit corrections write to global LMDB.
@@ -292,11 +301,12 @@ def _get_session_wal(session_id: str) -> dict:
         _session_wals[session_id] = {}
     return _session_wals[session_id]
 
-def brain_respond(message: str, messages: List[ChatMessage] = None, session_id: str = None, max_tokens: int = 30, temperature: float = 0.7) -> str:
+def brain_respond(message: str, messages: List[ChatMessage] = None, session_id: str = None, max_tokens: int = 30, temperature: float = 0.7) -> dict:
     """Ask the brain with session-scoped context.
 
+    Returns dict with: answer, source, strategy, hops, confidence.
     Session WAL: conversation edges stay local to the session.
-    Global LMDB: only written by /v1/teach, /v1/correct, /v1/protect.
+    Global LMDB: only written by /v1/teach, /v1/correct, /v1/protect + web search results.
     """
     session_wal = _get_session_wal(session_id) if session_id else {}
 
@@ -312,33 +322,55 @@ def brain_respond(message: str, messages: List[ChatMessage] = None, session_id: 
     # Intercept: math/code queries handled by eval before brain
     eval_result = tools.on_query(message, brain)
     if eval_result:
-        return eval_result
+        return {"answer": eval_result, "source": "compute", "strategy": "math", "hops": 0, "confidence": 1.0}
 
     try:
         ask_result = brain.ask(query, auto_learn=False, session_edges=session_wal)
     except Exception as e:
         error_msg = f"Error during reasoning: {type(e).__name__}: {e}"
         brain.teach(f"query failed {message} error {type(e).__name__} {e}", confidence=0.1)
-        return error_msg
+        return {"answer": error_msg, "source": "error", "strategy": "error", "hops": 0, "confidence": 0.0}
 
     strategy = ask_result.get("strategy", "abstain")
+    hops = ask_result.get("convergence_rounds", 0)
+    confidence = ask_result.get("confidence", 0.0)
 
-    if strategy == "abstain":
-        tool_result = tools.on_miss(message, brain)
-        if tool_result:
-            return tool_result
-        return "I don't know the answer to that yet. Can you teach me? Just tell me the answer and I'll remember it."
-
+    # Filter garbage from convergence
     answer = ask_result.get("answer", "")
+    is_garbage = (
+        not answer
+        or "may refer to" in answer
+        or (strategy != "qa_direct" and answer.strip().endswith("?") and len(answer) > 50)
+    )
 
-    # Don't return questions as answers — convergence sometimes pulls trivia questions from seed
-    # But allow Q→A direct responses (they're trusted) and short friendly closers
-    if not answer or "may refer to" in answer:
-        return "I don't know the answer to that yet. Can you teach me? Just tell me the answer and I'll remember it."
-    if strategy != "qa_direct" and answer.strip().endswith("?") and len(answer) > 50:
-        return "I don't know the answer to that yet. Can you teach me? Just tell me the answer and I'll remember it."
+    # For non-direct answers, check if the answer is actually relevant to the question
+    # If none of the question's key words appear in the answer, it's probably a wrong-topic match
+    if not is_garbage and strategy != "qa_direct":
+        import re
+        q_words = set(re.findall(r'[a-z]+', message.lower())) - FILTER_WORDS
+        a_words = set(re.findall(r'[a-z]+', answer.lower()))
+        overlap = q_words & a_words
+        if len(q_words) >= 2 and len(overlap) < 2:
+            is_garbage = True
 
-    return answer
+    if strategy != "abstain" and not is_garbage:
+        return {"answer": answer, "source": "brain", "strategy": strategy, "hops": hops, "confidence": confidence}
+
+    # Brain doesn't know — try web search
+    web_result = tools.on_miss(message, brain)
+    if web_result:
+        # Teach the brain so it knows next time
+        brain.correct(message, web_result)
+        return {"answer": web_result, "source": "web", "strategy": "web_search", "hops": 0, "confidence": 0.7}
+
+    # Nothing found anywhere
+    return {
+        "answer": "I don't know the answer to that yet. Can you teach me? Just tell me the answer and I'll remember it.",
+        "source": "none",
+        "strategy": "abstain",
+        "hops": hops,
+        "confidence": 0.0,
+    }
 
 # --- Streaming helpers ---
 
@@ -485,8 +517,16 @@ async def chat_completions(request: ChatCompletionRequest):
         )
 
     sid = request.session_id or str(uuid.uuid4())
-    content = brain_respond(message, messages=request.messages, session_id=sid, max_tokens=max_tokens, temperature=temperature)
-    return make_chat_response(content, model, prompt_tokens)
+    result = brain_respond(message, messages=request.messages, session_id=sid, max_tokens=max_tokens, temperature=temperature)
+    response = make_chat_response(result["answer"], model, prompt_tokens)
+    # Add Guru metadata to response
+    response["guru"] = {
+        "source": result["source"],
+        "strategy": result["strategy"],
+        "hops": result["hops"],
+        "confidence": result["confidence"],
+    }
+    return response
 
 class TeachRequest(BaseModel):
     sentences: List[str] = Field(default=None, description="Sentences to teach (bulk)")
@@ -541,7 +581,8 @@ async def completions(request: CompletionRequest):
             media_type="text/event-stream",
         )
 
-    content = brain_respond(request.prompt, max_tokens=max_tokens, temperature=temperature)
+    result = brain_respond(request.prompt, max_tokens=max_tokens, temperature=temperature)
+    content = result["answer"]
     return make_completion_response(content, model, prompt_tokens)
 
 # --- Main ---

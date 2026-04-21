@@ -27,6 +27,19 @@ class WebSearch:
     def __init__(self, enabled=True):
         self.enabled = enabled
 
+    # Words to strip from queries for better search results
+    _STRIP_WORDS = frozenset({
+        'who', 'what', 'when', 'where', 'why', 'how', 'is', 'are', 'was', 'were',
+        'the', 'a', 'an', 'of', 'in', 'to', 'for', 'do', 'does', 'did', 'can',
+        'tell', 'me', 'about', 'please', 'explain', 'describe', 'current', 'currently',
+    })
+
+    def _clean_query(self, query: str) -> str:
+        """Strip question words for better search API results."""
+        words = query.lower().strip().rstrip('?').split()
+        content = [w for w in words if w not in self._STRIP_WORDS]
+        return ' '.join(content) if content else query
+
     def search(self, query: str, max_results: int = 3) -> Optional[str]:
         """Search and return top results as text."""
         if not self.enabled:
@@ -34,9 +47,12 @@ class WebSearch:
 
         try:
             # DuckDuckGo instant answer API (no key needed)
+            from urllib.parse import quote_plus
+            clean = self._clean_query(query)
+            encoded_query = quote_plus(clean)
             result = subprocess.run(
                 ["curl", "-s", "-m", "5",
-                 f"https://api.duckduckgo.com/?q={query}&format=json&no_html=1"],
+                 f"https://api.duckduckgo.com/?q={encoded_query}&format=json&no_html=1"],
                 capture_output=True, text=True, timeout=10
             )
             if result.returncode != 0:
@@ -68,7 +84,9 @@ class WebSearch:
     def _try_wikipedia(self, query: str) -> Optional[str]:
         """Fallback: Wikipedia REST API."""
         try:
+            from urllib.parse import quote
             topic = "_".join(query.lower().split()[:5])
+            topic = quote(topic)
             result = subprocess.run(
                 ["curl", "-s", "-m", "5",
                  f"https://en.wikipedia.org/api/rest_v1/page/summary/{topic}"],

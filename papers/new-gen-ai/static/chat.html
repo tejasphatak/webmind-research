@@ -256,10 +256,19 @@ async function sendQuery() {
     });
     const j = await r.json();
     const a = j.choices?.[0]?.message?.content || "I don't know.";
+    const guru = j.guru || {};
     const ms = Math.round(performance.now()-t0);
     history.push({role:'assistant', content:a});
     lb.innerHTML = esc(a);
-    const m = document.createElement('div'); m.className='meta'; m.textContent=ms+'ms';
+
+    // Build meta line with source info
+    let metaText = ms + 'ms';
+    if (guru.source === 'web') metaText += ' | searched the web';
+    else if (guru.source === 'brain') metaText += ' | from knowledge graph';
+    else if (guru.source === 'compute') metaText += ' | computed';
+    if (guru.hops > 0) metaText += ' | ' + guru.hops + ' hops';
+    if (guru.strategy === 'qa_direct') metaText += ' | direct match';
+    const m = document.createElement('div'); m.className='meta'; m.textContent=metaText;
     lb.parentElement.appendChild(m);
 
     // If Guru asked to be taught, remember the original question

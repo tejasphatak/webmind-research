@@ -72,11 +72,23 @@ from fastapi.staticfiles import StaticFiles
 STATIC_DIR = os.path.join(os.path.dirname(__file__), 'static')
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
-@app.get("/", response_class=HTMLResponse)
+from starlette.responses import Response
+
+@app.get("/")
 async def root():
     chat_path = os.path.join(STATIC_DIR, 'chat.html')
     if os.path.exists(chat_path):
-        return FileResponse(chat_path)
+        with open(chat_path, 'r') as f:
+            html = f.read()
+        return Response(
+            content=html,
+            media_type="text/html",
+            headers={
+                "Cache-Control": "no-cache, no-store, must-revalidate",
+                "Pragma": "no-cache",
+                "Expires": "0",
+            },
+        )
     return HTMLResponse("<h1>Guru API</h1><p>Use /v1/chat/completions or /health</p>")
 
 @app.get("/status", response_class=HTMLResponse)
@@ -265,27 +277,45 @@ def make_completion_response(content: str, model: str, prompt_tokens: int) -> di
         },
     }
 
-def brain_respond(message: str, messages: List[ChatMessage] = None, session_id: str = None, max_tokens: int = 30, temperature: float = 0.7) -> str:
-    """Ask the brain. The server is just a pipe — pass everything through.
+# --- Session WAL ---
+# Per-session co-occurrence edges. Dies when session ends.
+# Only the teach API and explicit corrections write to global LMDB.
+_session_wals = {}  # session_id → {(i,j): weight}
+_SESSION_MAX = 1000  # max concurrent sessions
 
-    The full conversation goes to the brain as one string.
-    The brain's WAL, Q→A map, and convergence handle context from there.
+def _get_session_wal(session_id: str) -> dict:
+    if session_id not in _session_wals:
+        if len(_session_wals) >= _SESSION_MAX:
+            # Evict oldest
+            oldest = next(iter(_session_wals))
+            del _session_wals[oldest]
+        _session_wals[session_id] = {}
+    return _session_wals[session_id]
+
+def brain_respond(message: str, messages: List[ChatMessage] = None, session_id: str = None, max_tokens: int = 30, temperature: float = 0.7) -> str:
+    """Ask the brain with session-scoped context.
+
+    Session WAL: conversation edges stay local to the session.
+    Global LMDB: only written by /v1/teach, /v1/correct, /v1/protect.
     """
-    # Teach prior messages so the graph learns conversation flow
-    # But query with ONLY the last user message — don't pollute the Q→A key
+    session_wal = _get_session_wal(session_id) if session_id else {}
+
+    # Teach prior messages to SESSION WAL only — not global graph
     if messages and len(messages) > 1:
         for msg in messages[:-1]:
-            brain.teach(msg.content, confidence=0.2)
+            edges = brain.teach_session(msg.content)
+            for k, v in edges.items():
+                session_wal[k] = session_wal.get(k, 0.0) + v
+
     query = message
 
     # Intercept: math/code queries handled by eval before brain
     eval_result = tools.on_query(message, brain)
     if eval_result:
-        brain.correct(message, eval_result)
         return eval_result
 
     try:
-        ask_result = brain.ask(query)
+        ask_result = brain.ask(query, auto_learn=False, session_edges=session_wal)
     except Exception as e:
         error_msg = f"Error during reasoning: {type(e).__name__}: {e}"
         brain.teach(f"query failed {message} error {type(e).__name__} {e}", confidence=0.1)
@@ -296,16 +326,17 @@ def brain_respond(message: str, messages: List[ChatMessage] = None, session_id: 
     if strategy == "abstain":
         tool_result = tools.on_miss(message, brain)
         if tool_result:
-            brain.correct(message, tool_result)
             return tool_result
-        return ask_result.get("answer", "I don't know.")
+        return "I don't know the answer to that yet. Can you teach me? Just tell me the answer and I'll remember it."
 
-    answer = ask_result.get("answer", "I don't know.")
-    confidence = ask_result.get("confidence", 0.0)
+    answer = ask_result.get("answer", "")
 
-    # Only learn from confident responses — don't poison the Q→A map with garbage
-    if strategy != "qa_direct" and answer and answer != "I don't know." and confidence >= 0.5:
-        brain.correct(message, answer)
+    # Don't return questions as answers — convergence sometimes pulls trivia questions from seed
+    # But allow Q→A direct responses (they're trusted) and short friendly closers
+    if not answer or "may refer to" in answer:
+        return "I don't know the answer to that yet. Can you teach me? Just tell me the answer and I'll remember it."
+    if strategy != "qa_direct" and answer.strip().endswith("?") and len(answer) > 50:
+        return "I don't know the answer to that yet. Can you teach me? Just tell me the answer and I'll remember it."
 
     return answer
 

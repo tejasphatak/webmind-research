@@ -348,11 +348,14 @@ class BrainCSR:
         content = [t for t in tokens if t not in FUNCTION_WORDS]
         return ' '.join(sorted(content))
 
-    def ask(self, question: str, auto_learn: bool = True) -> dict:
+    def ask(self, question: str, auto_learn: bool = True, session_edges: dict = None) -> dict:
         """Ask the brain a question using sparse convergence over CSR.
 
         Tier 1: Direct Q→A lookup (instant, from correct() calls).
         Tier 2: Convergence + sentence retrieval (if Tier 1 misses).
+
+        session_edges: optional dict of {(i,j): weight} from session WAL.
+            These edges boost convergence without writing to global graph.
         """
         # Tier 1: direct Q→A lookup (LRU memory cache → LMDB fallback)
         qkey = self._qa_key(question)
@@ -430,6 +433,14 @@ class BrainCSR:
         # Sparse co-occurrence search (complementary)
         weights = [1.0 / (1.0 + 0.1 * i) for i in range(len(content_indices))]
         query_cooc = self._sparse_blend(content_indices, weights)
+
+        # Blend session edges into query profile — boosts context-relevant words
+        if session_edges:
+            for (i, j), w in session_edges.items():
+                if i in set(content_indices) or j in set(content_indices):
+                    query_cooc[i] = query_cooc.get(i, 0.0) + w * 0.5
+                    query_cooc[j] = query_cooc.get(j, 0.0) + w * 0.5
+
         search_results = self._sparse_search(query_cooc, k=10)
 
         # Positional encoding
@@ -924,6 +935,26 @@ class BrainCSR:
     def teach_batch(self, sentences, confidence=0.5):
         return [self.teach(s, confidence) for s in sentences]
 
+    def teach_session(self, sentence: str) -> dict:
+        """Parse a sentence into co-occurrence edges WITHOUT writing to global WAL.
+        Returns a dict of {(i,j): weight} edges for session-local use."""
+        tokens = self._tokenize(sentence)
+        content = [t for t in tokens if t not in FUNCTION_WORDS]
+        if not content:
+            return {}
+
+        edges = {}
+        with self._lock:
+            for word in content:
+                self._learn_word(word)
+            if len(content) >= 2:
+                indices = [self._word_idx[w] for w in content]
+                for i in range(len(indices)):
+                    for j in range(i + 1, len(indices)):
+                        key = (min(indices[i], indices[j]), max(indices[i], indices[j]))
+                        edges[key] = edges.get(key, 0.0) + COOCCURRENCE_PULL
+        return edges
+
     _protected_keys = set()  # Q→A keys that cannot be overwritten (identity, safety)
 
     def protect(self, question: str, answer: str):
@@ -953,7 +984,11 @@ class BrainCSR:
 
         with self._lock:
             if len(self._qa_map) >= self._QA_MAP_MEMORY_MAX and qkey not in self._qa_map:
-                self._qa_map.popitem(last=False)
+                # Evict oldest non-protected entry
+                for evict_key in list(self._qa_map.keys()):
+                    if evict_key not in self._protected_keys:
+                        del self._qa_map[evict_key]
+                        break
             self._qa_map[qkey] = answer
             self._qa_map.move_to_end(qkey)
 

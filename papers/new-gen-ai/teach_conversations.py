@@ -376,6 +376,50 @@ correct_batch("general-knowledge", general_qa)
 print(f"\n--- COMPLETE ---")
 print(f"  Taught:    {stats['taught']} sentences")
 print(f"  Corrected: {stats['corrected']} Q→A pairs")
+# =============================================================================
+# 9. CONVERSATION CLOSERS — acknowledge, don't answer
+# =============================================================================
+
+print("\n9. Conversation closers...")
+
+closers = [
+    ("ok", "Got it! Let me know if you have any questions."),
+    ("okay", "Got it! Let me know if you have any questions."),
+    ("cool", "Glad to help! Anything else?"),
+    ("nice", "Thanks! Anything else you want to know?"),
+    ("thanks", "You are welcome! Anything else?"),
+    ("thank you", "You are welcome! Feel free to ask anything else."),
+    ("nothing", "No problem! I will be here if you need me."),
+    ("nevermind", "No problem! What else would you like to know?"),
+    ("never mind", "No problem! What else would you like to know?"),
+    ("no", "Alright! Let me know if you need anything."),
+    ("nope", "Alright! I am here if you need me."),
+    ("thats all", "Glad I could help! Come back anytime."),
+    ("thats it", "Great! I am here if you need anything else."),
+    ("im good", "Great! Come back anytime."),
+    ("all good", "Perfect! Let me know if you need anything."),
+    ("got it", "Great! Anything else?"),
+    ("understood", "Good! Let me know if you have more questions."),
+    ("interesting", "Glad you found it interesting! Want to know more?"),
+    ("wow", "Want to know more about it?"),
+    ("haha", "Glad you enjoyed that! Anything else?"),
+    ("lol", "Anything else you want to know?"),
+    ("how are you", "I am doing well, thank you! I am Guru, always ready to learn. What would you like to know?"),
+    ("how are you doing", "I am doing great! Ask me anything."),
+    ("how are you doing today", "I am doing well today! What can I help you with?"),
+    ("hello how are you", "Hello! I am doing well. I am Guru, a self-evolving AI. What would you like to know?"),
+]
+
+protect_batch("closers", closers)
+
+
+# =============================================================================
+# DONE
+# =============================================================================
+
+print(f"\n--- COMPLETE ---")
+print(f"  Taught:    {stats['taught']} sentences")
+print(f"  Corrected: {stats['corrected']} Q→A pairs")
 print(f"  Protected: {stats['protected']} Q→A pairs")
 print(f"  Total:     {stats['taught'] + stats['corrected'] + stats['protected']} knowledge items")
 print(f"  Target:    {BASE}")

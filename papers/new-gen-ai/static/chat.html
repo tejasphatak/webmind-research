@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Guru — Self-Evolving AI</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -181,6 +184,7 @@ const chat = document.getElementById('chat');
 const input = document.getElementById('input');
 const sendBtn = document.getElementById('send');
 let history = [];
+let pendingTeachQuestion = null; // when Guru says "teach me", store the original question
 
 input.addEventListener('keydown', e => { if (e.key === 'Enter' && !sendBtn.disabled) sendQuery(); });
 
@@ -223,6 +227,25 @@ async function sendQuery() {
   const q = input.value.trim(); if (!q) return;
   addMsg('user', esc(q));
   input.value = ''; sendBtn.disabled = true;
+
+  // If Guru asked to be taught, pipe the user's answer as a correction
+  if (pendingTeachQuestion) {
+    try {
+      await fetch('/v1/correct', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({question: pendingTeachQuestion, answer: q})
+      });
+      const lb = addMsg('bot', 'Thank you! I learned that. Try asking me again.');
+      const m = document.createElement('div'); m.className='meta'; m.textContent='taught';
+      lb.parentElement.appendChild(m);
+      history.push({role:'user', content:q});
+      history.push({role:'assistant', content:'Thank you! I learned that.'});
+    } catch(e) { addMsg('bot', 'Error learning: '+e.message); }
+    pendingTeachQuestion = null;
+    sendBtn.disabled = false; input.focus();
+    return;
+  }
+
   history.push({role:'user', content:q});
   const lb = addMsg('bot', '<span class="dots">Thinking</span>');
   const t0 = performance.now();
@@ -238,6 +261,14 @@ async function sendQuery() {
     lb.innerHTML = esc(a);
     const m = document.createElement('div'); m.className='meta'; m.textContent=ms+'ms';
     lb.parentElement.appendChild(m);
+
+    // If Guru asked to be taught, remember the original question
+    if (a.includes("teach me") || a.includes("Can you teach")) {
+      pendingTeachQuestion = q;
+      input.placeholder = "Type the answer to teach Guru...";
+    } else {
+      input.placeholder = "Ask a question...";
+    }
   } catch(e) { lb.innerHTML = 'Error: '+e.message; }
   sendBtn.disabled = false; input.focus(); chat.scrollTop = chat.scrollHeight;
 }

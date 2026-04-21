@@ -18,6 +18,18 @@ from collections import defaultdict
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 from brain import Brain
 
+def load_brain(db_path):
+    """Load brain — auto-detect CSR > LMDB > SQLite."""
+    csr_path = os.path.join(db_path, 'cooc_csr', 'indptr.bin')
+    lmdb_path = os.path.join(db_path, 'brain.lmdb')
+    if os.path.exists(csr_path) and os.path.exists(lmdb_path):
+        from brain_csr_adapter import BrainCSR
+        return BrainCSR(db_path=db_path)
+    if os.path.exists(lmdb_path):
+        from brain_lmdb_adapter import BrainLMDB
+        return BrainLMDB(db_path=db_path)
+    return Brain(db_path=db_path)
+
 DATA_DIR = Path.home() / "webmind-research" / "data"
 
 
@@ -188,11 +200,26 @@ def rlhf_epoch(brain, test_records, epoch_num):
         # Reinforce or weaken based on quality
         if f1 > 0.5:
             for nid in neuron_ids:
-                brain.db.update_confidence(nid, useful=True)
+                if hasattr(brain.db, 'update_confidence'):
+                    brain.db.update_confidence(nid, useful=True)
+                # Also boost co-occurrence edges for participating words
+                widx = brain._word_idx.get(
+                    next((w for w, n in brain._word_neurons.items() if n == nid), None)
+                )
+                if widx is not None and widx in brain._cooc:
+                    for neighbor in brain._cooc[widx]:
+                        brain._cooc[widx][neighbor] *= 1.1
                 reinforced += 1
         elif f1 < 0.2:
             for nid in neuron_ids:
-                brain.db.update_confidence(nid, useful=False)
+                if hasattr(brain.db, 'update_confidence'):
+                    brain.db.update_confidence(nid, useful=False)
+                widx = brain._word_idx.get(
+                    next((w for w, n in brain._word_neurons.items() if n == nid), None)
+                )
+                if widx is not None and widx in brain._cooc:
+                    for neighbor in brain._cooc[widx]:
+                        brain._cooc[widx][neighbor] *= 0.9
                 weakened += 1
 
     n = len(test_records)
@@ -261,9 +288,8 @@ def run_benchmark(args):
               f"{brain.db.count():,} neurons")
     else:
         db_path = args.db_path or os.path.expanduser('~/nexus-brain')
-        brain = Brain(db_path=db_path)
-        print(f"\nUsing existing brain: {len(brain._words):,} words, "
-              f"{brain.db.count():,} neurons")
+        brain = load_brain(db_path)
+        print(f"\nUsing existing brain: {len(brain._words):,} words")
 
     # RLHF epochs (if requested)
     if args.epochs > 0:

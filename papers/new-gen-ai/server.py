@@ -30,8 +30,19 @@ PORT = int(os.environ.get("PORT", "8000"))
 MODEL_NAME = os.environ.get("MODEL_NAME", "webmind-brain-v1")
 WEB_SEARCH = os.environ.get("WEB_SEARCH", "true").lower() in ("true", "1", "yes")
 
-# --- Init brain + tools ---
-brain = Brain(db_path=DB_PATH)
+# --- Init brain (auto-detect CSR > LMDB > SQLite) ---
+def _load_brain(db_path):
+    csr_path = os.path.join(db_path, 'cooc_csr', 'indptr.bin')
+    lmdb_path = os.path.join(db_path, 'brain.lmdb')
+    if os.path.exists(csr_path) and os.path.exists(lmdb_path):
+        from brain_csr_adapter import BrainCSR
+        return BrainCSR(db_path=db_path)
+    if os.path.exists(lmdb_path):
+        from brain_lmdb_adapter import BrainLMDB
+        return BrainLMDB(db_path=db_path)
+    return Brain(db_path=db_path)
+
+brain = _load_brain(DB_PATH)
 tools = ToolRouter(web_search=WEB_SEARCH)
 
 # --- FastAPI app ---

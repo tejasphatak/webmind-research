@@ -151,8 +151,9 @@ class SparseConvergenceLoop:
     via ensure_cooc callback.
     """
 
-    def __init__(self, cooc, word_idx, words, word_neurons,
+    def __init__(self, cooc=None, word_idx=None, words=None, word_neurons=None,
                  ensure_cooc=None,
+                 get_profile=None,
                  max_hops=10, k=5,
                  convergence_threshold=0.99,
                  min_confidence=0.1,
@@ -160,11 +161,13 @@ class SparseConvergenceLoop:
                  temperature=1.0):
         """
         Args:
-            cooc: dict of dicts — word_idx → {neighbor_idx: weight}
+            cooc: dict of dicts — word_idx → {neighbor_idx: weight} (legacy)
             word_idx: dict — word → index
             words: list — index → word
             word_neurons: dict — word → neuron_id
-            ensure_cooc: callable(word_idx) — lazy-loads cooc for a word
+            ensure_cooc: callable(word_idx) — lazy-loads cooc for a word (legacy)
+            get_profile: callable(word_idx) → dict — replaces cooc+ensure_cooc.
+                         If provided, cooc and ensure_cooc are ignored.
             max_hops: maximum reasoning steps
             k: neighbors per hop
             convergence_threshold: cosine threshold for "stable"
@@ -172,11 +175,9 @@ class SparseConvergenceLoop:
             min_relevance: minimum cosine between query and best neighbor
             temperature: softmax temperature for blend weighting
         """
-        self.cooc = cooc
         self.word_idx = word_idx
         self.words = words
         self.word_neurons = word_neurons
-        self.ensure_cooc = ensure_cooc or (lambda idx: None)
         self.max_hops = max_hops
         self.k = k
         self.convergence_threshold = convergence_threshold
@@ -184,8 +185,22 @@ class SparseConvergenceLoop:
         self.min_relevance = min_relevance
         self.temperature = temperature
 
+        # Profile access: prefer get_profile callback, fall back to cooc dict
+        if get_profile is not None:
+            self._get_profile_fn = get_profile
+        else:
+            self.cooc = cooc or {}
+            self.ensure_cooc = ensure_cooc or (lambda idx: None)
+            self._get_profile_fn = None
+
     def _get_word_profile(self, idx: int) -> dict:
-        """Get a word's co-occurrence profile, triggering lazy load."""
+        """Get a word's co-occurrence profile.
+
+        Uses get_profile callback if provided (CSR+WAL path),
+        else falls back to cooc dict + ensure_cooc (legacy path).
+        """
+        if self._get_profile_fn is not None:
+            return self._get_profile_fn(idx)
         self.ensure_cooc(idx)
         return self.cooc.get(idx, {})
 
@@ -224,13 +239,9 @@ class SparseConvergenceLoop:
         if q_norm == 0:
             return []
 
-        # Load cooc for just the top candidates
-        for widx, _ in top_candidates:
-            self.ensure_cooc(widx)
-
         refined = []
         for widx, _ in top_candidates:
-            word_profile = self.cooc.get(widx, {})
+            word_profile = self._get_word_profile(widx)
             if not word_profile:
                 continue
             dot = sum(query_profile.get(j, 0) * v for j, v in word_profile.items())
@@ -258,7 +269,7 @@ class SparseConvergenceLoop:
         # Get profiles
         profiles = []
         for widx, sim in neighbors:
-            profiles.append(self.cooc.get(widx, {}))
+            profiles.append(self._get_word_profile(widx))
 
         n = len(neighbors)
         # Compute pairwise cosine
@@ -309,7 +320,7 @@ class SparseConvergenceLoop:
         # Blend profiles
         profiles = []
         for widx, _ in neighbors:
-            profiles.append(self.cooc.get(widx, {}))
+            profiles.append(self._get_word_profile(widx))
 
         return sparse_blend(profiles, weights)
 
@@ -334,11 +345,7 @@ class SparseConvergenceLoop:
             query_weights = [1.0 / (1.0 + 0.1 * i)
                              for i in range(len(query_word_indices))]
 
-        # Ensure cooc loaded for query words
-        for idx in query_word_indices:
-            self.ensure_cooc(idx)
-
-        profiles = [self.cooc.get(idx, {}) for idx in query_word_indices]
+        profiles = [self._get_word_profile(idx) for idx in query_word_indices]
         query_profile = sparse_blend(profiles, query_weights)
         query_profile = sparse_normalize(query_profile)
 
@@ -414,7 +421,7 @@ class SparseConvergenceLoop:
             if sim >= self.convergence_threshold:
                 # Check relevance: are the neighbors actually related to query?
                 best_relevance = max(
-                    sparse_cosine(self.cooc.get(widx, {}), query_profile)
+                    sparse_cosine(self._get_word_profile(widx), query_profile)
                     for widx, _ in neighbors
                 )
                 if best_relevance < self.min_relevance:

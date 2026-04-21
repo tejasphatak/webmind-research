@@ -19,7 +19,8 @@ import threading
 import numpy as np
 
 try:
-    from scipy.sparse import csr_matrix as scipy_csr
+    from scipy.sparse import csr_matrix as scipy_csr, coo_matrix as scipy_coo
+    from scipy.sparse.linalg import norm as sparse_norm_scipy
     HAS_SCIPY = True
 except ImportError:
     HAS_SCIPY = False
@@ -149,6 +150,25 @@ class MMapCSR:
             result[i] = np.dot(vals, query_vec[cols])
         return result
 
+    @property
+    def row_norms_vec(self):
+        """Precomputed L2 norms for all rows. Lazy, cached."""
+        if self._row_norms is None:
+            if HAS_SCIPY:
+                mat = self.scipy_matrix
+                # Per-row L2 norm
+                self._row_norms = np.sqrt(
+                    np.asarray(mat.multiply(mat).sum(axis=1)).ravel()
+                )
+            else:
+                norms = np.zeros(self.num_rows, dtype=np.float32)
+                for i in range(self.num_rows):
+                    _, vals = self.get_row(i)
+                    if len(vals) > 0:
+                        norms[i] = float(np.sqrt(np.dot(vals, vals)))
+                self._row_norms = norms
+        return self._row_norms
+
     def stats(self) -> dict:
         """Return size stats."""
         return {
@@ -235,11 +255,153 @@ class CSRWriteAheadLog:
         with self._lock:
             self._log.clear()
             self._count = 0
+            self._scipy_cache = None
 
     def snapshot(self) -> dict:
         """Get a frozen copy of all WAL entries (for CSR rebuild)."""
         with self._lock:
             return {k: dict(v) for k, v in self._log.items()}
+
+    # --- Persistence (LMDB-backed, crash-safe) ---
+
+    _EDGE_FMT = '<iif'  # word_a, word_b, weight — 12 bytes per edge
+    _EDGE_SIZE = 12
+
+    def persist_to_lmdb(self, env, wal_db):
+        """Write all WAL edges to LMDB wal_edges sub-db. Atomic transaction."""
+        import struct
+        snapshot = self.snapshot()
+        if not snapshot:
+            return 0
+        # Flatten to unique directed edges (a→b, not both a→b and b→a)
+        seen = set()
+        edges = []
+        for word_a, neighbors in snapshot.items():
+            for word_b, weight in neighbors.items():
+                key = (min(word_a, word_b), max(word_a, word_b))
+                if key not in seen:
+                    seen.add(key)
+                    # Clamp to float32 range to prevent overflow
+                    clamped = max(-1e30, min(1e30, weight))
+                    edges.append((word_a, word_b, clamped))
+        with env.begin(write=True) as txn:
+            # Clear old WAL entries
+            txn.drop(wal_db, delete=False)
+            # Write all edges as sequential keys
+            for i, (a, b, w) in enumerate(edges):
+                txn.put(
+                    struct.pack('<i', i),
+                    struct.pack(self._EDGE_FMT, a, b, w),
+                    db=wal_db,
+                )
+            txn.put(b'__count__', struct.pack('<i', len(edges)), db=wal_db)
+        return len(edges)
+
+    def load_from_lmdb(self, env, wal_db):
+        """Load persisted WAL edges from LMDB into memory. Called at startup."""
+        import struct
+        loaded = 0
+        with env.begin(db=wal_db) as txn:
+            count_raw = txn.get(b'__count__', db=wal_db)
+            if not count_raw:
+                return 0
+            count = struct.unpack('<i', count_raw)[0]
+            for i in range(count):
+                val = txn.get(struct.pack('<i', i), db=wal_db)
+                if val and len(val) == self._EDGE_SIZE:
+                    a, b, w = struct.unpack(self._EDGE_FMT, val)
+                    # Add directly to log without double-counting
+                    if a not in self._log:
+                        self._log[a] = {}
+                    if b not in self._log:
+                        self._log[b] = {}
+                    self._log[a][b] = self._log[a].get(b, 0) + w
+                    self._log[b][a] = self._log[b].get(a, 0) + w
+                    self._count += 2
+                    loaded += 1
+        return loaded
+
+    # --- Background flush thread ---
+
+    _flush_thread = None
+    _flush_stop = None
+    _flush_env = None
+    _flush_db = None
+    _last_persisted_count = 0
+
+    def start_background_flush(self, env, wal_db, interval_sec: float = 5.0):
+        """Start background thread that persists WAL to LMDB every interval_sec."""
+        import time as _time
+        self._flush_env = env
+        self._flush_db = wal_db
+        self._flush_stop = threading.Event()
+        self._last_persisted_count = self._count
+
+        def _flush_loop():
+            while not self._flush_stop.is_set():
+                self._flush_stop.wait(interval_sec)
+                if self._flush_stop.is_set():
+                    break
+                if self._count != self._last_persisted_count:
+                    self.persist_to_lmdb(env, wal_db)
+                    self._last_persisted_count = self._count
+
+        self._flush_thread = threading.Thread(target=_flush_loop, daemon=True)
+        self._flush_thread.start()
+
+    def stop_background_flush(self):
+        """Stop background flush and do a final persist."""
+        if self._flush_stop:
+            self._flush_stop.set()
+        if self._flush_thread:
+            self._flush_thread.join(timeout=5)
+        # Final flush
+        if self._flush_env and self._flush_db and self._count > self._last_persisted_count:
+            self.persist_to_lmdb(self._flush_env, self._flush_db)
+
+    _scipy_cache = None
+    _scipy_cache_count = -1
+
+    def effective_scipy_matrix(self, csr: 'MMapCSR'):
+        """Get CSR + WAL merged as a single scipy sparse matrix. Cached.
+
+        Rebuilds only when WAL has changed since last call.
+        """
+        if not HAS_SCIPY:
+            raise ImportError("scipy required")
+        if self._scipy_cache is not None and self._scipy_cache_count == self._count:
+            return self._scipy_cache
+        base = csr.scipy_matrix
+        if self._count == 0:
+            self._scipy_cache = base
+            self._scipy_cache_count = 0
+            return base
+        # Build COO from WAL entries
+        rows, cols, vals = [], [], []
+        with self._lock:
+            for word_idx, neighbors in self._log.items():
+                for neighbor_idx, weight in neighbors.items():
+                    rows.append(word_idx)
+                    cols.append(neighbor_idx)
+                    vals.append(weight)
+            count_now = self._count
+        if not rows:
+            self._scipy_cache = base
+            self._scipy_cache_count = count_now
+            return base
+        # Expand shape if WAL has new words beyond CSR
+        max_idx = max(max(rows), max(cols), base.shape[0] - 1)
+        shape = (max_idx + 1, max_idx + 1)
+        if shape != base.shape:
+            base.resize(shape)  # in-place, returns None
+        wal_sparse = scipy_coo(
+            (np.array(vals, dtype=np.float32),
+             (np.array(rows, dtype=np.int32), np.array(cols, dtype=np.int32))),
+            shape=shape,
+        ).tocsr()
+        self._scipy_cache = base + wal_sparse
+        self._scipy_cache_count = count_now
+        return self._scipy_cache
 
 
 def build_csr_from_dicts(cooc: dict, num_words: int, output_path: str):

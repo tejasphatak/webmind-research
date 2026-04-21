@@ -115,7 +115,10 @@ def evaluate(brain, test_records, verbose=False):
         gold = rec['answer']
 
         t0 = time.time()
-        result = brain.ask(question)
+        try:
+            result = brain.ask(question, auto_learn=False)
+        except TypeError:
+            result = brain.ask(question)
         latency = (time.time() - t0) * 1000
 
         prediction = result['answer']
@@ -159,27 +162,34 @@ def evaluate(brain, test_records, verbose=False):
 
 def rlhf_epoch(brain, test_records, epoch_num):
     """
-    One RLHF epoch: evaluate → reinforce good neurons → weaken bad ones.
+    One RLHF epoch: evaluate → reinforce good edges → weaken bad ones.
 
     For each test question:
-      - Ask the brain (get answer + participating neurons via trace)
+      - Ask the brain (get answer + participating words)
       - Score against gold (F1)
-      - If F1 > 0.5: reinforce participating neurons
-      - If F1 < 0.2: weaken participating neurons
+      - If F1 > 0.5: boost co-occurrence edges for answer words (×1.1)
+      - If F1 < 0.2: weaken co-occurrence edges (×0.9)
       - Between: no change (uncertain)
 
-    Returns: (f1_avg, exact_match_pct, reinforced_count, weakened_count)
+    Works with both BrainCSR (WAL) and dict-based Brain (_cooc).
     """
     f1_sum = 0.0
     em_count = 0
     reinforced = 0
     weakened = 0
 
+    # Check which backend we're using
+    has_wal = hasattr(brain, '_wal')
+    has_cooc = hasattr(brain, '_cooc')
+
     for rec in test_records:
         question = rec['question']
         gold = rec['answer']
 
-        result = brain.ask(question)
+        try:
+            result = brain.ask(question, auto_learn=False)
+        except TypeError:
+            result = brain.ask(question)
         prediction = result['answer']
         strategy = result['strategy']
 
@@ -191,35 +201,42 @@ def rlhf_epoch(brain, test_records, epoch_num):
         if exact_match(prediction, gold):
             em_count += 1
 
-        # Get neurons that participated (from sentence chain)
+        # Get word indices that participated in the answer
         content_words = [t for t in tokenize(prediction)
-                         if t in brain._word_neurons]
-        neuron_ids = [brain._word_neurons[w] for w in content_words
-                      if w in brain._word_neurons]
+                         if t in brain._word_idx]
+        word_indices = [brain._word_idx[w] for w in content_words]
+
+        if not word_indices:
+            continue
 
         # Reinforce or weaken based on quality
         if f1 > 0.5:
-            for nid in neuron_ids:
-                if hasattr(brain.db, 'update_confidence'):
-                    brain.db.update_confidence(nid, useful=True)
-                # Also boost co-occurrence edges for participating words
-                widx = brain._word_idx.get(
-                    next((w for w, n in brain._word_neurons.items() if n == nid), None)
-                )
-                if widx is not None and widx in brain._cooc:
-                    for neighbor in brain._cooc[widx]:
-                        brain._cooc[widx][neighbor] *= 1.1
+            # Good answer — reinforce edges
+            for widx in word_indices:
+                profile = brain._get_profile(widx)
+                for neighbor, weight in profile.items():
+                    if neighbor == widx:
+                        continue
+                    boost = weight * 0.5  # 50% boost (was 10%)
+                    if has_wal:
+                        brain._wal.add_edge(widx, neighbor, boost)
+                    elif has_cooc and widx in brain._cooc:
+                        brain._cooc[widx][neighbor] = weight * 1.5
                 reinforced += 1
         elif f1 < 0.2:
-            for nid in neuron_ids:
-                if hasattr(brain.db, 'update_confidence'):
-                    brain.db.update_confidence(nid, useful=False)
-                widx = brain._word_idx.get(
-                    next((w for w, n in brain._word_neurons.items() if n == nid), None)
-                )
-                if widx is not None and widx in brain._cooc:
-                    for neighbor in brain._cooc[widx]:
-                        brain._cooc[widx][neighbor] *= 0.9
+            # Bad answer — weaken edges AND teach correct answer via Q→A map
+            if hasattr(brain, 'correct'):
+                brain.correct(question, gold)  # direct Q→A mapping + strong edge boost
+            for widx in word_indices:
+                profile = brain._get_profile(widx)
+                for neighbor, weight in profile.items():
+                    if neighbor == widx:
+                        continue
+                    penalty = -weight * 0.5  # 50% reduction (was 10%)
+                    if has_wal:
+                        brain._wal.add_edge(widx, neighbor, penalty)
+                    elif has_cooc and widx in brain._cooc:
+                        brain._cooc[widx][neighbor] = weight * 0.5
                 weakened += 1
 
     n = len(test_records)

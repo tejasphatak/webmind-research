@@ -23,7 +23,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 from neuron import Neuron, Level, DEFAULT_CONFIDENCE
 from sparse_convergence import (
-    SparseConvergenceLoop, SparseMultiHop,
+    SparseConvergenceLoop, SparseMultiHop, VectorizedConvergenceLoop,
     sparse_cosine, sparse_blend, sparse_norm, sparse_normalize,
 )
 from sparse_csr import MMapCSR, CSRWriteAheadLog
@@ -213,6 +213,8 @@ class BrainCSR:
         self._word_neurons = {}
         self._templates = []
         self._nid_to_word_cache = None
+        from collections import OrderedDict
+        self._qa_map = OrderedDict()  # question_key → answer text (LRU, Tier 1 direct lookup)
 
         # CSR + WAL
         self._csr = MMapCSR(csr_path, readonly=True)
@@ -222,14 +224,16 @@ class BrainCSR:
         self._pool = ThreadPoolExecutor(max_workers=4)
         self._lock = Lock()
 
-        # Open LMDB (read-only, for sentences/neurons/successors)
-        self._env = lmdb.open(lmdb_path, max_dbs=10, readonly=True, lock=False,
+        # Open LMDB (read-write for WAL persistence)
+        self._env = lmdb.open(lmdb_path, max_dbs=16, readonly=False,
                               map_size=4 * 1024 * 1024 * 1024)
         self._words_db = self._env.open_db(b'words')
         self._sentences_db = self._env.open_db(b'sentences')
         self._sent_index_db = self._env.open_db(b'sent_index')
         self._successors_db = self._env.open_db(b'successors')
         self._neurons_db = self._env.open_db(b'neurons')
+        self._sent_text_db = self._env.open_db(b'sentence_text')
+        self._qa_db = self._env.open_db(b'qa_map')
 
         self.db = _LMDBReader(self._env, self._sentences_db,
                               self._sent_index_db, self._neurons_db,
@@ -249,9 +253,28 @@ class BrainCSR:
             self._words.append(word)
             self._word_idx[word] = idx
 
-        # Convergence loop with CSR+WAL get_profile callback
-        self._convergence = SparseConvergenceLoop(
-            get_profile=self._get_profile,
+        # WAL persistence — load saved edges, start background flush
+        self._wal_db = self._env.open_db(b'wal_edges')
+        wal_loaded = self._wal.load_from_lmdb(self._env, self._wal_db)
+        if wal_loaded:
+            print(f"  WAL: {wal_loaded:,} persisted edges restored")
+        self._wal.start_background_flush(self._env, self._wal_db, interval_sec=5.0)
+
+        # Load Q→A direct lookup map from LMDB
+        try:
+            with self._env.begin(db=self._qa_db) as txn:
+                cursor = txn.cursor(db=self._qa_db)
+                for key, val in cursor:
+                    self._qa_map[key.decode('utf-8')] = val.decode('utf-8')
+            if self._qa_map:
+                print(f"  Q→A map: {len(self._qa_map):,} direct answers loaded")
+        except Exception:
+            pass
+
+        # Convergence loop — vectorized (scipy spmv, all CPUs) with dict fallback
+        effective_mat = self._wal.effective_scipy_matrix(self._csr)
+        self._convergence = VectorizedConvergenceLoop(
+            scipy_mat=effective_mat,
             word_idx=self._word_idx,
             words=self._words,
             word_neurons=self._word_neurons,
@@ -313,10 +336,57 @@ class BrainCSR:
 
     # --- Querying ---
 
-    def ask(self, question: str) -> dict:
-        """Ask the brain a question using sparse convergence over CSR."""
+    _QA_MAP_MEMORY_MAX = 50_000  # LRU cache in memory (hot queries), rest on disk via LMDB
+
+    def _qa_key(self, question: str) -> str:
+        """Normalize question to a stable lookup key. Strips function words, sorts content."""
+        tokens = re.findall(r'[a-z0-9]+', question.lower())
+        content = [t for t in tokens if t not in FUNCTION_WORDS]
+        return ' '.join(sorted(content))
+
+    def ask(self, question: str, auto_learn: bool = True) -> dict:
+        """Ask the brain a question using sparse convergence over CSR.
+
+        Tier 1: Direct Q→A lookup (instant, from correct() calls).
+        Tier 2: Convergence + sentence retrieval (if Tier 1 misses).
+        """
+        # Tier 1: direct Q→A lookup (LRU memory cache → LMDB fallback)
+        qkey = self._qa_key(question)
+        answer_direct = None
+        if qkey in self._qa_map:
+            self._qa_map.move_to_end(qkey)
+            answer_direct = self._qa_map[qkey]
+        else:
+            # Check LMDB (disk) for Q→A entries not in memory cache
+            try:
+                with self._env.begin() as txn:
+                    val = txn.get(qkey.encode('utf-8'), db=self._qa_db)
+                    if val:
+                        answer_direct = val.decode('utf-8')
+                        # Promote to memory cache (LRU)
+                        if len(self._qa_map) >= self._QA_MAP_MEMORY_MAX:
+                            self._qa_map.popitem(last=False)
+                        self._qa_map[qkey] = answer_direct
+            except Exception:
+                pass
+        if answer_direct:
+            return {
+                "answer": answer_direct,
+                "confidence": 1.0,
+                "strategy": "qa_direct",
+                "trace": f"Direct Q→A match: {qkey[:50]}",
+                "convergence_trace": "",
+                "converged": True,
+                "convergence_rounds": 0,
+            }
+
+        # Tier 2: convergence
         tokens = self._tokenize(question)
         content = [t for t in tokens if t not in FUNCTION_WORDS]
+
+        # Auto-learn: teach the question text (adds co-occurrence edges)
+        if auto_learn and len(content) >= 2:
+            self.teach(question, confidence=0.3)
 
         content_indices = [self._word_idx[t] for t in content
                            if t in self._word_idx]
@@ -413,20 +483,31 @@ class BrainCSR:
                         concepts.append((n, word))
                         seen.add(nid)
 
-        # Sentence disambiguation
+        # Sentence disambiguation — score by overlap with query, not sentence length
         best_sentence_nids = None
         if content_nids:
+            query_nid_set = set(content_nids)
             sentences = self.db.get_sentences_for_neurons(content_nids)
             if sentences:
-                scored = [(sid, len(nids)) for sid, nids in sentences.items()]
+                scored = []
+                for sid, nids in sentences.items():
+                    sent_nid_set = set(nid for nid, pos in nids)
+                    overlap = len(sent_nid_set & query_nid_set)
+                    # Normalize by sentence length to avoid long-sentence bias
+                    if len(sent_nid_set) > 0:
+                        score = overlap / len(sent_nid_set) * overlap
+                    else:
+                        score = 0
+                    scored.append((sid, score))
                 scored.sort(key=lambda x: x[1], reverse=True)
                 best_score = scored[0][1]
                 best_sentence_nids = set()
-                for sid, score in scored:
-                    if score < best_score:
-                        break
-                    for nid, pos in self.db.get_sentence_neurons(sid):
-                        best_sentence_nids.add(nid)
+                if best_score > 0:
+                    for sid, score in scored:
+                        if score < best_score:
+                            break
+                        for nid, pos in self.db.get_sentence_neurons(sid):
+                            best_sentence_nids.add(nid)
 
         if best_sentence_nids:
             for nid in best_sentence_nids:
@@ -473,10 +554,11 @@ class BrainCSR:
         template_result = template_future.result()
         chain_result = chain_future.result()
 
-        if template_result:
-            return template_result
+        # Sentence chain returns full text (grammatical) — prefer it
         if chain_result:
             return chain_result
+        if template_result:
+            return template_result
 
         import numpy as np
         avg_conf = float(np.mean([n.confidence for n in concept_neurons]))
@@ -556,17 +638,27 @@ class BrainCSR:
             if not w.startswith("__")
         }
 
+        concept_id_set = set(concept_ids)
         scored = []
         for sid, matched in sentences.items():
             sent_neurons = self.db.get_sentence_neurons(sid)
             if not sent_neurons:
                 continue
-            scored.append((sid, len(matched), sent_neurons))
+            sent_nid_set = set(nid for nid, pos in sent_neurons)
+            overlap = len(sent_nid_set & concept_id_set)
+            # Score: overlap normalized by length (avoid long-sentence dominance)
+            if len(sent_nid_set) > 0 and overlap > 0:
+                score = overlap / len(sent_nid_set) * overlap
+            else:
+                score = 0
+            scored.append((sid, score, sent_neurons))
         if not scored:
             return None
 
         scored.sort(key=lambda x: x[1], reverse=True)
         sid, score, sent_neurons = scored[0]
+        if score <= 0:
+            return None
 
         ordered = sorted(sent_neurons, key=lambda x: x[1])
         words = [nid_to_word.get(nid, "") for nid, pos in ordered]
@@ -591,12 +683,28 @@ class BrainCSR:
 
         if convergence <= 0:
             return None
+
+        # Try to get full original text (preserves grammar)
+        full_text = self._get_sentence_text(sid)
+        answer_text = full_text if full_text else " ".join(words)
+
         return {
-            "answer": " ".join(words),
+            "answer": answer_text,
             "confidence": convergence,
             "strategy": "sentence_chain",
             "trace": f"Sentence {sid} (convergence={convergence:.3f}): {words}",
         }
+
+    def _get_sentence_text(self, sentence_id: int) -> str:
+        """Get the original full text of a sentence from LMDB."""
+        try:
+            with self._env.begin() as txn:
+                val = txn.get(_ID_FMT.pack(sentence_id), db=self._sent_text_db)
+                if val:
+                    return val.decode('utf-8')
+        except Exception:
+            pass
+        return None
 
     def _get_sentence_order(self, concept_ids) -> dict:
         if len(concept_ids) < 2:
@@ -813,7 +921,33 @@ class BrainCSR:
         return [self.teach(s, confidence) for s in sentences]
 
     def correct(self, question: str, answer: str):
+        """Learn from a correction. Stores direct Q→A mapping + teaches the answer."""
         self.teach(answer, confidence=0.6)
+
+        # Tier 1: direct Q→A mapping (circular buffer)
+        qkey = self._qa_key(question)
+        with self._lock:
+            # LRU eviction on memory cache only — LMDB stores everything
+            if len(self._qa_map) >= self._QA_MAP_MEMORY_MAX and qkey not in self._qa_map:
+                self._qa_map.popitem(last=False)  # evict LRU from memory
+            self._qa_map[qkey] = answer
+            self._qa_map.move_to_end(qkey)
+
+        # Persist to LMDB
+        try:
+            with self._env.begin(write=True) as txn:
+                txn.put(qkey.encode('utf-8'), answer.encode('utf-8'), db=self._qa_db)
+        except Exception:
+            pass
+
+        # Stronger RLHF: boost answer edges by 50%
+        answer_tokens = self._tokenize(answer)
+        answer_content = [t for t in answer_tokens if t not in FUNCTION_WORDS]
+        if len(answer_content) >= 2:
+            indices = [self._word_idx[w] for w in answer_content if w in self._word_idx]
+            for i in range(len(indices)):
+                for j in range(i + 1, min(i + 10, len(indices))):
+                    self._wal.add_edge(indices[i], indices[j], COOCCURRENCE_PULL * 1.5)
 
     # --- Template extraction ---
 
@@ -923,5 +1057,6 @@ class BrainCSR:
         pass
 
     def close(self):
+        self._wal.stop_background_flush()
         self._pool.shutdown(wait=False)
         self._env.close()

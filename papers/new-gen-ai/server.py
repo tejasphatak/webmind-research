@@ -114,6 +114,13 @@ def extract_user_message(messages: List[ChatMessage]) -> str:
             return msg.content
     return messages[-1].content if messages else ""
 
+def extract_context(messages: List[ChatMessage]) -> str:
+    """Build context from full conversation (last 10 messages)."""
+    parts = []
+    for msg in messages[-10:]:
+        parts.append(msg.content)
+    return ' '.join(parts)
+
 def count_tokens(text: str) -> int:
     """Rough token count (whitespace split)."""
     return len(text.split())
@@ -156,15 +163,22 @@ def make_completion_response(content: str, model: str, prompt_tokens: int) -> di
         },
     }
 
-def brain_respond(message: str, max_tokens: int = 30, temperature: float = 0.7) -> str:
-    """Ask the brain and return a coherent response."""
+def brain_respond(message: str, context: str = None, max_tokens: int = 30, temperature: float = 0.7) -> str:
+    """Ask the brain with conversation context."""
+    # Teach context (previous messages) so convergence can use them
+    if context and context != message:
+        brain.teach(context, confidence=0.2)
+
     # Intercept: math/code queries handled by eval before brain
     eval_result = tools.on_query(message, brain)
     if eval_result:
         return eval_result
 
+    # Use last message as primary query — context already taught to WAL
+    query = message
+
     try:
-        ask_result = brain.ask(message)
+        ask_result = brain.ask(query)
     except Exception as e:
         return f"Error during reasoning: {type(e).__name__}: {e}"
 
@@ -314,6 +328,7 @@ async def list_models():
 @app.post("/v1/chat/completions")
 async def chat_completions(request: ChatCompletionRequest):
     message = extract_user_message(request.messages)
+    context = extract_context(request.messages) if len(request.messages) > 1 else None
     model = request.model or MODEL_NAME
     prompt_tokens = sum(count_tokens(m.content) for m in request.messages)
     max_tokens = request.max_tokens or 30
@@ -325,7 +340,7 @@ async def chat_completions(request: ChatCompletionRequest):
             media_type="text/event-stream",
         )
 
-    content = brain_respond(message, max_tokens=max_tokens, temperature=temperature)
+    content = brain_respond(message, context=context, max_tokens=max_tokens, temperature=temperature)
     return make_chat_response(content, model, prompt_tokens)
 
 @app.post("/v1/completions")

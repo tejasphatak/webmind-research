@@ -45,8 +45,8 @@ FUNCTION_WORDS = frozenset({
     "off", "over", "under", "and", "but", "or", "nor", "not", "so",
     "yet", "both", "either", "neither", "each", "every", "all", "any",
     "few", "more", "most", "other", "some", "such", "no", "only", "own",
-    "same", "than", "too", "very", "just", "about", "up", "what", "which",
-    "who", "whom", "this", "that", "these", "those", "am", "if", "then",
+    "same", "than", "too", "very", "just", "about", "up",
+    "this", "that", "these", "those", "am", "if", "then",
     "because", "while", "although", "though", "even", "also", "it", "its",
 })
 

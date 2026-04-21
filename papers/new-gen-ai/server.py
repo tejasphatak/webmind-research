@@ -97,6 +97,7 @@ class ChatCompletionRequest(BaseModel):
     temperature: Optional[float] = 0.7
     max_tokens: Optional[int] = 30
     stream: Optional[bool] = False
+    session_id: Optional[str] = None  # client can pass; auto-generated if missing
 
 class CompletionRequest(BaseModel):
     model: Optional[str] = None
@@ -163,37 +164,47 @@ def make_completion_response(content: str, model: str, prompt_tokens: int) -> di
         },
     }
 
-def brain_respond(message: str, context: str = None, max_tokens: int = 30, temperature: float = 0.7) -> str:
-    """Ask the brain with conversation context."""
-    # Teach context (previous messages) so convergence can use them
-    if context and context != message:
-        brain.teach(context, confidence=0.2)
+def brain_respond(message: str, messages: List[ChatMessage] = None, session_id: str = None, max_tokens: int = 30, temperature: float = 0.7) -> str:
+    """Ask the brain. The server is just a pipe — pass everything through.
+
+    The full conversation goes to the brain as one string.
+    The brain's WAL, Q→A map, and convergence handle context from there.
+    """
+    # Build the full conversation as a single query — let the brain figure it out
+    if messages and len(messages) > 1:
+        query = " ".join(msg.content for msg in messages)
+    else:
+        query = message
 
     # Intercept: math/code queries handled by eval before brain
     eval_result = tools.on_query(message, brain)
     if eval_result:
+        brain.correct(message, eval_result)
         return eval_result
-
-    # Use last message as primary query — context already taught to WAL
-    query = message
 
     try:
         ask_result = brain.ask(query)
     except Exception as e:
-        return f"Error during reasoning: {type(e).__name__}: {e}"
+        error_msg = f"Error during reasoning: {type(e).__name__}: {e}"
+        brain.teach(f"query failed {message} error {type(e).__name__} {e}", confidence=0.1)
+        return error_msg
 
     strategy = ask_result.get("strategy", "abstain")
 
     if strategy == "abstain":
-        # Try tools (web search) before giving up
         tool_result = tools.on_miss(message, brain)
         if tool_result:
+            brain.correct(message, tool_result)
             return tool_result
         return ask_result.get("answer", "I don't know.")
 
-    # Return ask() result directly — sentence retrieval gives grammatical text
-    # generate() graph walk is unreliable (loops, incoherent output)
-    return ask_result.get("answer", "I don't know.")
+    answer = ask_result.get("answer", "I don't know.")
+
+    # Brain learns from its own responses
+    if strategy != "qa_direct" and answer and answer != "I don't know.":
+        brain.correct(message, answer)
+
+    return answer
 
 # --- Streaming helpers ---
 
@@ -328,7 +339,6 @@ async def list_models():
 @app.post("/v1/chat/completions")
 async def chat_completions(request: ChatCompletionRequest):
     message = extract_user_message(request.messages)
-    context = extract_context(request.messages) if len(request.messages) > 1 else None
     model = request.model or MODEL_NAME
     prompt_tokens = sum(count_tokens(m.content) for m in request.messages)
     max_tokens = request.max_tokens or 30
@@ -340,8 +350,49 @@ async def chat_completions(request: ChatCompletionRequest):
             media_type="text/event-stream",
         )
 
-    content = brain_respond(message, context=context, max_tokens=max_tokens, temperature=temperature)
+    sid = request.session_id or str(uuid.uuid4())
+    content = brain_respond(message, messages=request.messages, session_id=sid, max_tokens=max_tokens, temperature=temperature)
     return make_chat_response(content, model, prompt_tokens)
+
+class TeachRequest(BaseModel):
+    sentences: List[str] = Field(default=None, description="Sentences to teach (bulk)")
+    sentence: Optional[str] = Field(default=None, description="Single sentence to teach")
+    confidence: Optional[float] = 0.5
+
+class CorrectRequest(BaseModel):
+    question: str
+    answer: str
+
+class ProtectRequest(BaseModel):
+    question: str
+    answer: str
+
+@app.post("/v1/teach")
+async def teach(request: TeachRequest):
+    """Teach the brain new knowledge. Accepts single sentence or bulk list."""
+    taught = []
+    if request.sentences:
+        for s in request.sentences:
+            brain.teach(s, confidence=request.confidence)
+            taught.append(s)
+    elif request.sentence:
+        brain.teach(request.sentence, confidence=request.confidence)
+        taught.append(request.sentence)
+    else:
+        return {"error": "Provide 'sentence' or 'sentences'"}
+    return {"taught": len(taught), "status": "ok"}
+
+@app.post("/v1/correct")
+async def correct(request: CorrectRequest):
+    """Correct a Q→A pair. Brain learns the mapping."""
+    brain.correct(request.question, request.answer)
+    return {"question": request.question, "status": "ok"}
+
+@app.post("/v1/protect")
+async def protect(request: ProtectRequest):
+    """Set a protected Q→A pair (cannot be overwritten)."""
+    brain.protect(request.question, request.answer)
+    return {"question": request.question, "status": "ok"}
 
 @app.post("/v1/completions")
 async def completions(request: CompletionRequest):

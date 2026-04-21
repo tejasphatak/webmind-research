@@ -13,6 +13,7 @@ import os
 import struct
 import re
 import math
+from typing import List, Tuple, Optional, Dict
 from threading import Lock
 from concurrent.futures import ThreadPoolExecutor
 
@@ -36,6 +37,12 @@ _SENT_ENTRY_FMT = struct.Struct('<ii')
 _NEURON_FMT = struct.Struct('<fq?b')
 
 COOCCURRENCE_PULL = 0.3
+
+# Minimum confidence to return a convergence result.
+# Research (Google, "Deeper Insights into RAG") shows returning bad context
+# is worse than returning nothing — systems hallucinate MORE with insufficient
+# context than with no context at all. Abstain > weak convergence.
+CONFIDENCE_FLOOR = 0.15
 
 FUNCTION_WORDS = frozenset({
     "the", "a", "an", "is", "are", "was", "were", "be", "been", "being",
@@ -589,6 +596,17 @@ class BrainCSR:
         result["convergence_trace"] = convergence_trace
         result["converged"] = multi_hop_result.converged
         result["convergence_rounds"] = len(multi_hop_result.rounds)
+
+        # Confidence floor: abstain rather than return weak convergence.
+        # Bad context is worse than no context (Google RAG research).
+        if result.get("confidence", 0) < CONFIDENCE_FLOOR and result.get("strategy") != "qa_direct":
+            return {"answer": "I don't know.", "confidence": 0.0,
+                    "strategy": "abstain",
+                    "trace": f"Below confidence floor ({result.get('confidence', 0):.3f} < {CONFIDENCE_FLOOR})",
+                    "convergence_trace": convergence_trace,
+                    "converged": False,
+                    "convergence_rounds": len(multi_hop_result.rounds)}
+
         return result
 
     # --- Answer Generation ---
@@ -1186,6 +1204,90 @@ class BrainCSR:
     def semantic_search(self, query: str, k: int = 10) -> list:
         """O(1) semantic search via LSH bucket lookup."""
         return self._vocab_filter.semantic_search(query, k=k)
+
+    def score_vocabulary(self) -> List[Tuple[str, float]]:
+        """Score each word by its convergence contribution.
+
+        Uses the Sequential Attention principle: words that participate in
+        more/stronger co-occurrence edges contribute more to convergence.
+        Score = sum of edge weights for the word (degree-weighted).
+
+        Returns [(word, score), ...] sorted by score ascending (worst first).
+        """
+        scores = []
+        for word in self._words:
+            idx = self._word_idx.get(word)
+            if idx is None:
+                scores.append((word, 0.0))
+                continue
+            profile = self._get_profile(idx)
+            # Score = sum of all edge weights (excluding self-loop)
+            total = sum(v for k, v in profile.items() if k != idx)
+            scores.append((word, total))
+        scores.sort(key=lambda x: x[1])
+        return scores
+
+    def prune_vocabulary(self, min_score: float = 0.0, max_remove: int = None,
+                         dry_run: bool = True) -> dict:
+        """Remove low-contribution words from the vocabulary.
+
+        Words with total edge weight below min_score are candidates for removal.
+        Protected words (in _protected_keys or _qa_map values) are never removed.
+
+        Args:
+            min_score: minimum total edge weight to keep
+            max_remove: cap on how many words to remove (safety)
+            dry_run: if True, only report what would be removed
+
+        Returns dict with removal stats.
+        """
+        scores = self.score_vocabulary()
+
+        # Identify protected words (from Q→A map keys and values)
+        protected = set()
+        for qkey, answer in self._qa_map.items():
+            protected.update(self._tokenize(qkey))
+            protected.update(self._tokenize(answer))
+        for pkey in self._protected_keys:
+            protected.update(self._tokenize(pkey))
+
+        candidates = []
+        for word, score in scores:
+            if score > min_score:
+                break  # sorted ascending, rest are above threshold
+            if word in protected:
+                continue
+            if word in FUNCTION_WORDS:
+                continue  # already filtered from reasoning
+            candidates.append((word, score))
+
+        if max_remove is not None:
+            candidates = candidates[:max_remove]
+
+        result = {
+            "total_words": len(self._words),
+            "candidates": len(candidates),
+            "min_score": min_score,
+            "dry_run": dry_run,
+            "examples": [(w, round(s, 4)) for w, s in candidates[:10]],
+        }
+
+        if not dry_run and candidates:
+            removed = 0
+            for word, score in candidates:
+                idx = self._word_idx.get(word)
+                if idx is not None:
+                    # Zero out edges in WAL (CSR is immutable, but WAL overlay masks)
+                    profile = self._get_profile(idx)
+                    for neighbor in profile:
+                        if neighbor != idx:
+                            self._wal.add_edge(idx, neighbor, -profile[neighbor])
+                    removed += 1
+            result["removed"] = removed
+            # Invalidate caches
+            self._nid_to_word_cache = None
+
+        return result
 
     def stats(self) -> dict:
         csr_stats = self._csr.stats()

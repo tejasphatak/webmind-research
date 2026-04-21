@@ -76,16 +76,19 @@ class ConvergenceLoop:
         attention in transformer self-attention.
     """
 
-    def __init__(self, db: NeuronDB,
+    def __init__(self, db: NeuronDB = None,
                  max_hops: int = 10,
                  k: int = 5,
                  convergence_threshold: float = 0.99,
                  min_confidence: float = 0.1,
                  min_relevance: float = 0.3,
-                 temperature: float = 1.0):
+                 temperature: float = 1.0,
+                 search_fn=None,
+                 blend_fn=None,
+                 cosine_fn=None):
         """
         Args:
-            db: NeuronDB to search in
+            db: NeuronDB to search in (optional if search_fn provided)
             max_hops: maximum reasoning steps before abort
             k: number of neighbors to retrieve per hop
             convergence_threshold: cosine sim threshold for "stable"
@@ -99,6 +102,13 @@ class ConvergenceLoop:
                         Default 1.0 gives true softmax behavior.
                         Use float('inf') to recover pre-softmax linear
                         normalization for backward compatibility.
+            search_fn: optional callable(query, k) → list of Neuron-like objects.
+                      Allows plugging in sparse search or any other backend.
+                      Each returned object must have .id, .vector, .confidence.
+            blend_fn: optional callable(neurons) → blended vector.
+                     If None, uses default _weighted_blend.
+            cosine_fn: optional callable(a, b) → float similarity.
+                      If None, uses default numpy cosine.
         """
         self.db = db
         self.max_hops = max_hops
@@ -107,6 +117,9 @@ class ConvergenceLoop:
         self.min_confidence = min_confidence
         self.min_relevance = min_relevance
         self.temperature = temperature
+        self._search_fn = search_fn
+        self._blend_fn = blend_fn
+        self._cosine_fn = cosine_fn
 
     def converge(self, query_vector: np.ndarray) -> ConvergenceResult:
         """
@@ -149,7 +162,10 @@ class ConvergenceLoop:
             hop_min_conf = self.min_confidence * (1.0 + 0.5 * progress)
 
             # 1. Search nearest neurons with per-hop k
-            neighbors = self.db.search(current, k=hop_k)
+            if self._search_fn:
+                neighbors = self._search_fn(current, k=hop_k)
+            else:
+                neighbors = self.db.search(current, k=hop_k)
 
             # Filter by per-hop minimum confidence
             neighbors = [n for n in neighbors if n.confidence >= hop_min_conf]
@@ -171,7 +187,10 @@ class ConvergenceLoop:
 
             # 3. Blend neighbors weighted by confidence → activation
             #    Uses softmax (exponential sharpening) over confidences.
-            activation = self._weighted_blend(neighbors)
+            if self._blend_fn:
+                activation = self._blend_fn(neighbors)
+            else:
+                activation = self._weighted_blend(neighbors)
 
             # 4. Anchor to query (prevents drift)
             #    Early hops: explore (more activation)
@@ -298,17 +317,25 @@ class ConvergenceLoop:
         if len(neurons) <= 1:
             return neurons
 
-        # Compute pairwise cosine similarity matrix
-        vectors = np.array([n.vector for n in neurons])
-        norms = np.linalg.norm(vectors, axis=1, keepdims=True)
-        norms = np.maximum(norms, 1e-8)
-        normed = vectors / norms
-        sim_matrix = normed @ normed.T  # NxN
+        n = len(neurons)
+
+        # Compute pairwise similarity — uses pluggable cosine if provided
+        if self._cosine_fn:
+            sim_matrix = np.zeros((n, n), dtype=np.float32)
+            for i in range(n):
+                for j in range(i + 1, n):
+                    s = self._cosine_fn(neurons[i].vector, neurons[j].vector)
+                    sim_matrix[i, j] = s
+                    sim_matrix[j, i] = s
+        else:
+            vectors = np.array([nn.vector for nn in neurons])
+            norms = np.linalg.norm(vectors, axis=1, keepdims=True)
+            norms = np.maximum(norms, 1e-8)
+            normed = vectors / norms
+            sim_matrix = normed @ normed.T  # NxN
+            np.fill_diagonal(sim_matrix, 0.0)
 
         # Each neuron's mutual relevance = mean similarity to all others
-        # (excluding self, which is always 1.0)
-        n = len(neurons)
-        np.fill_diagonal(sim_matrix, 0.0)
         mutual_scores = sim_matrix.sum(axis=1) / max(n - 1, 1)
 
         # Boost confidence by mutual relevance:
@@ -332,9 +359,10 @@ class ConvergenceLoop:
 
         return boosted
 
-    @staticmethod
-    def _cosine_sim(a: np.ndarray, b: np.ndarray) -> float:
-        """Cosine similarity between two vectors."""
+    def _cosine_sim(self, a, b) -> float:
+        """Cosine similarity. Uses pluggable cosine_fn if provided."""
+        if self._cosine_fn:
+            return self._cosine_fn(a, b)
         dot = float(np.dot(a, b))
         na = np.linalg.norm(a)
         nb = np.linalg.norm(b)

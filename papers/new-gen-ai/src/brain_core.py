@@ -371,7 +371,182 @@ class BrainCore:
         result["convergence_rounds"] = len(multi_hop_result.rounds)
         return result
 
-    # --- Generation ---
+    # --- Text Generation (fluent output from the graph) ---
+
+    def generate(self, query: str, max_tokens: int = 30, temperature: float = 0.7,
+                 min_score: float = 0.01) -> dict:
+        """
+        Generate fluent text from the graph, steered by a query.
+
+        Algorithm:
+          1. Run ask() to find starting concepts via convergence
+          2. Pick best starting word (highest confidence, not a query word)
+          3. Walk the graph: score words by context_similarity × (1 + successor_confidence)
+          4. Apply softmax with temperature, pick top word
+          5. Update running context profile, loop detection, min-score stopping
+
+        Returns dict with 'text', 'trace' list, 'tokens_generated'.
+        """
+        import math
+
+        # Need vocabulary to generate from
+        if not self._words:
+            return {"text": "", "trace": ["No vocabulary"], "tokens_generated": 0}
+
+        # Step 1: find starting concepts via ask()
+        ask_result = self.ask(query)
+        query_tokens_set = set(self._tokenize(query))
+
+        # Build nid→word lookup
+        nid_to_word = {nid: w for w, nid in self._word_neurons.items()
+                       if not w.startswith("__")}
+
+        # Step 2: pick starting word — highest confidence concept not in query
+        start_word = None
+        start_score = -1.0
+
+        # Try concepts from ask result
+        answer_words = self._tokenize(ask_result.get("answer", ""))
+        for w in answer_words:
+            if w in self._word_idx and w not in FUNCTION_WORDS and w not in query_tokens_set:
+                nid = self._word_neurons.get(w)
+                conf = 0.5
+                if nid:
+                    n = self.db.get(nid)
+                    if n:
+                        conf = n.confidence
+                if conf > start_score:
+                    start_score = conf
+                    start_word = w
+
+        # Fallback: best connected word to query
+        if start_word is None:
+            query_content = [t for t in self._tokenize(query) if t in self._word_idx]
+            if query_content:
+                q_indices = [self._word_idx[t] for t in query_content]
+                q_cooc = self._sparse_blend(q_indices)
+                search = self._sparse_search(q_cooc, k=20)
+                for widx, sim in search:
+                    w = self._words[widx]
+                    if w not in FUNCTION_WORDS and w not in query_tokens_set:
+                        start_word = w
+                        start_score = sim
+                        break
+
+        if start_word is None:
+            return {"text": "", "trace": ["No starting word found"], "tokens_generated": 0}
+
+        # Step 3: walk the graph
+        generated = [start_word]
+        trace = [{"token": start_word, "score": start_score, "reason": "start (best concept)"}]
+        recent_window = 6  # loop detection window
+
+        # Initialize running context profile from start word
+        start_idx = self._word_idx[start_word]
+        context_profile = dict(self._cooc.get(start_idx, {}))
+
+        for pos in range(1, max_tokens):
+            prev_word = generated[-1]
+            prev_idx = self._word_idx.get(prev_word)
+
+            # Get predecessor's successor list for bonus scoring
+            prev_successors = {}
+            if prev_word in self._word_neurons:
+                prev_nid = self._word_neurons[prev_word]
+                prev_neuron = self.db.get(prev_nid)
+                if prev_neuron and prev_neuron.successors:
+                    for succ_nid, succ_conf in prev_neuron.successors:
+                        succ_word = nid_to_word.get(succ_nid)
+                        if succ_word:
+                            prev_successors[succ_word] = succ_conf
+
+            # Score every word in vocabulary
+            best_word = None
+            best_raw_score = -1.0
+            scores = []
+
+            for widx, word in enumerate(self._words):
+                if word in FUNCTION_WORDS:
+                    continue
+
+                # Context similarity: sparse cosine between word's cooc and running context
+                word_cooc = self._cooc.get(widx, {})
+                ctx_sim = self._sparse_cosine(word_cooc, context_profile)
+
+                # Successor confidence bonus
+                succ_conf = prev_successors.get(word, 0.0)
+                raw_score = ctx_sim * (1.0 + succ_conf)
+
+                if raw_score > 0:
+                    scores.append((widx, word, raw_score))
+
+            if not scores:
+                trace.append({"token": "[STOP]", "score": 0, "reason": "no candidates"})
+                break
+
+            # Sort by score descending
+            scores.sort(key=lambda x: x[2], reverse=True)
+
+            # Apply softmax with temperature over top candidates (cap at 50 for speed)
+            top_n = min(50, len(scores))
+            top_scores = scores[:top_n]
+
+            if temperature > 0:
+                max_raw = top_scores[0][2]
+                exp_scores = []
+                for widx, word, raw in top_scores:
+                    exp_scores.append((widx, word, raw, math.exp((raw - max_raw) / temperature)))
+                total_exp = sum(e for _, _, _, e in exp_scores)
+                if total_exp > 0:
+                    softmax_scores = [(widx, word, raw, e / total_exp) for widx, word, raw, e in exp_scores]
+                else:
+                    softmax_scores = [(widx, word, raw, 0.0) for widx, word, raw, _ in exp_scores]
+            else:
+                # Greedy: just pick top
+                softmax_scores = [(top_scores[0][0], top_scores[0][1], top_scores[0][2], 1.0)]
+
+            # Pick top word (deterministic top-1 from softmax ranking)
+            # Filter out recent words (loop detection) and below min_score
+            chosen = None
+            recent_set = set(generated[-recent_window:]) if len(generated) >= recent_window else set(generated)
+
+            for widx, word, raw, prob in softmax_scores:
+                if word in recent_set:
+                    continue
+                if raw < min_score:
+                    continue
+                chosen = (widx, word, raw, prob)
+                break
+
+            if chosen is None:
+                trace.append({"token": "[STOP]", "score": 0,
+                              "reason": "all candidates below threshold or in loop"})
+                break
+
+            widx, word, raw, prob = chosen
+            generated.append(word)
+            trace.append({"token": word, "score": round(raw, 4),
+                          "prob": round(prob, 4),
+                          "reason": f"ctx_sim×(1+succ), prob={prob:.3f}"})
+
+            # Update running context profile by blending in new word's cooc
+            new_cooc = self._cooc.get(widx, {})
+            # Blend: 70% existing context + 30% new word
+            blend_weight = 0.3
+            for k, v in new_cooc.items():
+                context_profile[k] = context_profile.get(k, 0) * (1 - blend_weight) + v * blend_weight
+            # Decay old entries slightly
+            for k in list(context_profile.keys()):
+                if k not in new_cooc:
+                    context_profile[k] *= (1 - blend_weight)
+
+        return {
+            "text": " ".join(generated),
+            "trace": trace,
+            "tokens_generated": len(generated),
+        }
+
+    # --- Answer Generation (internal, from concepts) ---
 
     def _generate(self, concepts, query_vec, query_tokens, question) -> dict:
         """Generate an answer from concepts. Template and chain race in parallel."""
@@ -925,7 +1100,7 @@ if __name__ == "__main__":
     brain = BrainCore()
 
     print("Brain — self-growing reasoning system")
-    print("Commands: teach <sentence>, ask <question>, inspect <word>, stats, quit")
+    print("Commands: teach <sentence>, ask <question>, generate <query>, inspect <word>, stats, quit")
     print()
 
     while True:
@@ -950,6 +1125,13 @@ if __name__ == "__main__":
             result = brain.ask(arg)
             print(f"A: {result['answer']}")
             print(f"   [{result['strategy']}, conf={result['confidence']:.3f}]")
+        elif cmd == "generate":
+            result = brain.generate(arg)
+            print(f"Generated: {result['text']}")
+            print(f"   [{result['tokens_generated']} tokens]")
+            for step in result['trace']:
+                print(f"   {step['token']}: score={step.get('score', '?')}"
+                      f" ({step.get('reason', '')})")
         elif cmd == "inspect":
             info = brain.inspect(arg)
             if info["known"]:

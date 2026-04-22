@@ -328,9 +328,96 @@ class BrainCSR:
         except Exception:
             pass
 
+        # Semantic bootstrap — pre-computed embedding neighbors as weak edges
+        # Separate sparse matrix (not WAL — WAL caps at 100K, bootstrap can be 4M+)
+        import numpy as np
+        from scipy.sparse import coo_matrix as scipy_coo
+        bootstrap_path = os.path.join(db_path, 'bootstrap_edges.npz')
+        self._bootstrap_mat = None
+        if os.path.exists(bootstrap_path):
+            try:
+                data = np.load(bootstrap_path, allow_pickle=False)
+                n_words = len(self._words)
+                rows = data['rows']
+                cols = data['cols']
+                weights = data['weights']
+                # Filter out-of-range indices (vocabulary may have changed)
+                mask = (rows < n_words) & (cols < n_words)
+                self._bootstrap_mat = scipy_coo(
+                    (weights[mask], (rows[mask], cols[mask])),
+                    shape=(n_words, n_words)
+                ).tocsr()
+                factor = float(data.get('bootstrap_factor', [0.3])[0])
+                print(f"  Bootstrap: {int(mask.sum()):,} semantic edges "
+                      f"(factor={factor:.2f})")
+            except Exception as e:
+                print(f"  Bootstrap: failed to load ({e})")
+
+        # Learned attention weights — from extract_model_weights.py
+        # Supports any model dim (MiniLM=384, GPT-2=768, etc.)
+        word_embeddings = None
+        attn_weights = None
+        # Check model_weights/ subdirs, fall back to lsh_index embeddings
+        weights_dirs = []
+        model_weights_dir = os.path.join(db_path, 'model_weights')
+        if os.path.isdir(model_weights_dir):
+            for name in sorted(os.listdir(model_weights_dir)):
+                wdir = os.path.join(model_weights_dir, name)
+                if os.path.isfile(os.path.join(wdir, 'W_Q.npy')):
+                    weights_dirs.append(wdir)
+
+        if weights_dirs:
+            # Use the first available model weights (can be extended to multi-model)
+            wdir = weights_dirs[0]
+            try:
+                attn_weights = {
+                    'W_Q': np.load(os.path.join(wdir, 'W_Q.npy')),
+                    'W_K': np.load(os.path.join(wdir, 'W_K.npy')),
+                    'W_V': np.load(os.path.join(wdir, 'W_V.npy')),
+                    'b_Q': np.load(os.path.join(wdir, 'b_Q.npy')),
+                    'b_K': np.load(os.path.join(wdir, 'b_K.npy')),
+                    'b_V': np.load(os.path.join(wdir, 'b_V.npy')),
+                }
+                # Load corresponding embeddings
+                emb_path = os.path.join(wdir, 'embeddings.npy')
+                if not os.path.exists(emb_path):
+                    emb_path = os.path.join(lsh_path, 'embeddings.npy')
+                if os.path.exists(emb_path):
+                    word_embeddings = np.load(emb_path)
+                    # Reconcile: model embeddings may have different word count
+                    # than our vocabulary. Pad or truncate to match.
+                    if len(word_embeddings) < len(self._words):
+                        pad = np.zeros((len(self._words) - len(word_embeddings),
+                                        word_embeddings.shape[1]),
+                                       dtype=np.float32)
+                        word_embeddings = np.vstack([word_embeddings, pad])
+                    elif len(word_embeddings) > len(self._words):
+                        word_embeddings = word_embeddings[:len(self._words)]
+
+                import json
+                meta_path = os.path.join(wdir, 'meta.json')
+                model_name = os.path.basename(wdir)
+                if os.path.exists(meta_path):
+                    with open(meta_path) as f:
+                        meta = json.load(f)
+                    model_name = meta.get('model_name', model_name)
+                    dim = meta.get('dim', '?')
+                    layer = meta.get('layer_used', '?')
+                else:
+                    dim = attn_weights['W_Q'].shape[0]
+                    layer = '?'
+                print(f"  Attention: {model_name} layer {layer} "
+                      f"({dim}-dim Q/K/V)")
+            except Exception as e:
+                print(f"  Attention: failed to load from {wdir} ({e})")
+                attn_weights = None
+                word_embeddings = None
+
         # Convergence loop — vectorized (scipy spmv, all CPUs) with dict fallback
-        # Two-phase: sparse shortlist (N=64) → dense Q×K^T attention (64×64)
+        # Three features: sparse shortlist → dense attention → learned Q/K/V
         effective_mat = self._wal.effective_scipy_matrix(self._csr)
+        if self._bootstrap_mat is not None:
+            effective_mat = effective_mat + self._bootstrap_mat
         self._convergence = VectorizedConvergenceLoop(
             scipy_mat=effective_mat,
             word_idx=self._word_idx,
@@ -342,14 +429,23 @@ class BrainCSR:
             min_relevance=0.3,
             dense_candidates=64,
             use_dense_attention=True,
+            embeddings=word_embeddings,
+            attn_weights=attn_weights,
         )
         self._multi_hop = SparseMultiHop(
             self._convergence, max_rounds=3, concept_blend_weight=0.4,
         )
 
         csr_stats = self._csr.stats()
+        features = []
+        if self._bootstrap_mat is not None:
+            features.append('bootstrap')
+        if attn_weights is not None:
+            features.append('learned-attn')
+        feat_str = f" [{', '.join(features)}]" if features else ""
         print(f"BrainCSR loaded: {len(self._words):,} words, "
-              f"{csr_stats['nnz']:,} edges ({csr_stats['disk_mb']:.1f} MB CSR)")
+              f"{csr_stats['nnz']:,} edges ({csr_stats['disk_mb']:.1f} MB CSR)"
+              f"{feat_str}")
 
     def _get_profile(self, word_idx: int) -> dict:
         """Get co-occurrence profile: CSR row + WAL overlay merged."""

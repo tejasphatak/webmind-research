@@ -481,7 +481,9 @@ class VectorizedConvergenceLoop:
                  min_relevance=0.3,
                  temperature=1.0,
                  dense_candidates=64,
-                 use_dense_attention=True):
+                 use_dense_attention=True,
+                 embeddings=None,
+                 attn_weights=None):
         self._mat = scipy_mat  # scipy.sparse.csr_matrix (V x V)
         self._V = scipy_mat.shape[0]
         self.words = words
@@ -495,6 +497,15 @@ class VectorizedConvergenceLoop:
         self.temperature = temperature
         self.dense_candidates = dense_candidates
         self.use_dense_attention = use_dense_attention
+
+        # Learned attention weights (from extract_model_weights.py)
+        # embeddings: (V, model_dim) — per-word vectors from any pretrained model
+        # attn_weights: {'W_Q', 'W_K', 'W_V', 'b_Q', 'b_K', 'b_V'} — attention matrices
+        self._embeddings = embeddings
+        self._attn_weights = attn_weights
+        self._use_learned_attention = (embeddings is not None and attn_weights is not None)
+        if self._use_learned_attention:
+            self._model_dim = attn_weights['W_Q'].shape[0]
 
         # Precompute row norms for cosine (clamp to prevent overflow)
         row_sq = np.asarray(scipy_mat.multiply(scipy_mat).sum(axis=1)).ravel()
@@ -511,21 +522,20 @@ class VectorizedConvergenceLoop:
             self._row_norms = np.sqrt(row_sq).astype(np.float32)
 
     def _dense_attention(self, candidate_indices: np.ndarray,
-                         query_vec: np.ndarray) -> tuple:
+                         query_vec: np.ndarray,
+                         query_word_indices: list = None) -> tuple:
         """Phase 2: Dense transformer attention on narrowed candidate set.
 
-        Given N candidate word indices (from sparse Phase 1 shortlisting),
-        extracts the N×N submatrix and runs full scaled dot-product attention
-        with N×N self-attention among candidates.
+        Two modes:
+        1. **Learned attention** (when embeddings + W_Q/W_K/W_V available):
+           Q/K scoring in model embedding space (384/768/etc dim).
+           V projection in CSR co-occurrence space (408K dim).
+           Model decides WHAT to attend to, our KB provides values.
+
+        2. **Raw cosine** (fallback, no model weights):
+           Q/K/V all in CSR co-occurrence space.
 
         For N=64: 64×64 matmul = 4,096 ops. Trivial on CPU (<0.01ms).
-
-        Transformer correspondence:
-          - Q: query_vec (the current convergence state)
-          - K: candidate rows from CSR (co-occurrence profiles)
-          - V: same candidate rows (self-attention)
-          - Softmax: temperature-scaled over combined scores
-          - Self-attention: N×N mutual coherence among candidates
 
         Returns: (output_vec, neighbors_list)
           output_vec: np.ndarray shape (V,) — attention output
@@ -535,31 +545,62 @@ class VectorizedConvergenceLoop:
         if N == 0:
             return np.zeros(self._V, dtype=np.float32), []
 
-        # Extract N rows from CSR — the candidate co-occurrence profiles
+        # Extract N rows from CSR — always needed for V projection
         sub = self._mat[candidate_indices, :]  # N × V sparse
 
-        # Q×K^T: each candidate scored against query
-        scores = np.asarray(sub @ query_vec).ravel()  # (N,)
+        if self._use_learned_attention:
+            # === LEARNED ATTENTION: Q/K in embedding space, V in CSR space ===
+            aw = self._attn_weights
 
-        # Normalize to cosine similarity
-        cand_norms = self._row_norms[candidate_indices]
-        q_norm = float(np.linalg.norm(query_vec))
-        with np.errstate(divide='ignore', invalid='ignore'):
-            cosines = scores / (cand_norms * q_norm + 1e-10)
+            # Build query embedding from word embeddings (weighted blend)
+            if query_word_indices is not None:
+                valid = [i for i in query_word_indices
+                         if i < len(self._embeddings)]
+                if valid:
+                    query_emb = self._embeddings[valid].mean(axis=0)
+                else:
+                    query_emb = np.zeros(self._model_dim, dtype=np.float32)
+            else:
+                # Fallback: use candidate centroid as query proxy
+                query_emb = self._embeddings[candidate_indices].mean(axis=0)
 
-        # N×N self-attention: mutual coherence among candidates
-        # Candidates that co-occur with each other form coherent clusters
-        sim_mat = (sub @ sub.T).toarray().astype(np.float32)  # N×N dense
-        with np.errstate(divide='ignore', invalid='ignore'):
-            norm_outer = np.outer(cand_norms, cand_norms) + 1e-10
-            sim_mat /= norm_outer
+            # Q projection: query in model space
+            Q = query_emb @ aw['W_Q'] + aw['b_Q']  # (model_dim,)
 
-        # Mutual boost: mean similarity to other candidates
-        np.fill_diagonal(sim_mat, 0.0)
-        mutual = sim_mat.sum(axis=1) / max(N - 1, 1)
+            # K projection: candidates in model space
+            cand_embs = self._embeddings[candidate_indices]  # (N, model_dim)
+            K = cand_embs @ aw['W_K'].T + aw['b_K']  # (N, model_dim)
 
-        # Combined score: query relevance × (1 + mutual coherence)
-        combined = cosines * (1.0 + mutual)
+            # Attention scores: Q·K^T / sqrt(d)
+            scores = K @ Q / np.sqrt(self._model_dim)  # (N,)
+
+            # N×N self-attention among candidates (in embedding space)
+            K_all = K  # already projected
+            sim_mat = (K_all @ K_all.T).astype(np.float32)  # N×N
+            k_norms = np.linalg.norm(K_all, axis=1, keepdims=True) + 1e-10
+            sim_mat /= (k_norms @ k_norms.T)
+
+            np.fill_diagonal(sim_mat, 0.0)
+            mutual = sim_mat.sum(axis=1) / max(N - 1, 1)
+
+            combined = scores * (1.0 + mutual)
+        else:
+            # === RAW COSINE: Q/K/V all in CSR co-occurrence space ===
+            scores = np.asarray(sub @ query_vec).ravel()
+            cand_norms = self._row_norms[candidate_indices]
+            q_norm = float(np.linalg.norm(query_vec))
+            with np.errstate(divide='ignore', invalid='ignore'):
+                cosines = scores / (cand_norms * q_norm + 1e-10)
+
+            sim_mat = (sub @ sub.T).toarray().astype(np.float32)
+            with np.errstate(divide='ignore', invalid='ignore'):
+                norm_outer = np.outer(cand_norms, cand_norms) + 1e-10
+                sim_mat /= norm_outer
+
+            np.fill_diagonal(sim_mat, 0.0)
+            mutual = sim_mat.sum(axis=1) / max(N - 1, 1)
+
+            combined = cosines * (1.0 + mutual)
 
         # Softmax attention weights (temperature-scaled)
         if self.temperature > 0:
@@ -570,7 +611,8 @@ class VectorizedConvergenceLoop:
             weights = np.zeros(N, dtype=np.float32)
             weights[combined.argmax()] = 1.0
 
-        # V projection: weighted blend of candidate rows → output
+        # V projection: weighted blend of CSR rows → output
+        # (always in co-occurrence space — our learned knowledge)
         output = np.asarray(sub.T @ weights).ravel().astype(np.float32)
 
         # Build trace (top 10 candidates by score)
@@ -728,7 +770,9 @@ class VectorizedConvergenceLoop:
 
                 # Phase 2: Dense attention on candidate set
                 t0 = time.perf_counter()
-                activation, scored = self._dense_attention(candidate_indices, current)
+                activation, scored = self._dense_attention(
+                    candidate_indices, current,
+                    query_word_indices=query_word_indices)
                 t_dense += time.perf_counter() - t0
 
                 # Normalize activation

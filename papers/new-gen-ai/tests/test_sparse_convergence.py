@@ -417,6 +417,143 @@ class TestVectorizedDenseAttention:
         assert word_idx["london"] in concept_indices or word_idx["thames"] in concept_indices or word_idx["tower"] in concept_indices
 
 
+class TestLearnedAttention:
+    """Tests for dual-space attention with pretrained model weights."""
+
+    def _make_scipy_loop_with_weights(self, **kwargs):
+        """Build a VectorizedConvergenceLoop with mock learned attention weights."""
+        try:
+            from scipy.sparse import csr_matrix as scipy_csr
+        except ImportError:
+            import pytest
+            pytest.skip("scipy not installed")
+
+        import numpy as np
+
+        cooc, word_idx, words, word_neurons = make_graph()
+
+        # Build scipy CSR from cooc dict
+        n = len(words)
+        rows, cols, data = [], [], []
+        for i, neighbors in cooc.items():
+            for j, w in neighbors.items():
+                rows.append(i)
+                cols.append(j)
+                data.append(w)
+        mat = scipy_csr((data, (rows, cols)), shape=(n, n))
+
+        # Create mock embeddings (10 words × 16 dim)
+        # Semantically: paris/capital/france close, london/england close
+        rng = np.random.RandomState(42)
+        embeddings = rng.randn(n, 16).astype(np.float32)
+        # Make paris-cluster similar
+        base_paris = rng.randn(16).astype(np.float32)
+        for i in [word_idx["paris"], word_idx["capital"], word_idx["france"]]:
+            embeddings[i] = base_paris + rng.randn(16).astype(np.float32) * 0.3
+        # Make london-cluster similar
+        base_london = rng.randn(16).astype(np.float32)
+        for i in [word_idx["london"], word_idx["england"], word_idx["tower"]]:
+            embeddings[i] = base_london + rng.randn(16).astype(np.float32) * 0.3
+
+        # Normalize embeddings
+        norms = np.linalg.norm(embeddings, axis=1, keepdims=True)
+        embeddings = embeddings / (norms + 1e-10)
+
+        # Create mock attention weights (16×16)
+        # Use near-identity + small perturbation (reasonable approximation)
+        dim = 16
+        attn_weights = {
+            'W_Q': (np.eye(dim) + rng.randn(dim, dim) * 0.1).astype(np.float32),
+            'W_K': (np.eye(dim) + rng.randn(dim, dim) * 0.1).astype(np.float32),
+            'W_V': (np.eye(dim) + rng.randn(dim, dim) * 0.1).astype(np.float32),
+            'b_Q': np.zeros(dim, dtype=np.float32),
+            'b_K': np.zeros(dim, dtype=np.float32),
+            'b_V': np.zeros(dim, dtype=np.float32),
+        }
+
+        defaults = dict(max_hops=10, k=5, convergence_threshold=0.99,
+                        min_confidence=0.05, min_relevance=0.1,
+                        dense_candidates=8, use_dense_attention=True)
+        defaults.update(kwargs)
+
+        loop = VectorizedConvergenceLoop(
+            scipy_mat=mat, words=words, word_idx=word_idx,
+            word_neurons=word_neurons,
+            embeddings=embeddings,
+            attn_weights=attn_weights,
+            **defaults)
+        return loop, word_idx
+
+    def test_learned_attention_converges(self):
+        """Learned Q/K/V attention should converge on related words."""
+        loop, word_idx = self._make_scipy_loop_with_weights()
+        result = loop.converge([word_idx["paris"], word_idx["france"]])
+
+        assert result.converged is True
+        assert len(result.concepts) > 0
+        assert result.confidence > 0
+
+    def test_learned_attention_finds_cluster(self):
+        """Learned attention: query [capital, france] should find paris."""
+        loop, word_idx = self._make_scipy_loop_with_weights()
+        result = loop.converge([word_idx["capital"], word_idx["france"]])
+
+        concept_indices = {widx for widx, _ in result.concepts}
+        assert word_idx["paris"] in concept_indices
+
+    def test_learned_attention_empty_abstains(self):
+        """Empty query should abstain even with learned weights."""
+        loop, word_idx = self._make_scipy_loop_with_weights()
+        result = loop.converge([])
+
+        assert result.converged is False
+        assert result.confidence == 0.0
+
+    def test_learned_attention_timings(self):
+        """Phase timings should be populated with learned attention."""
+        loop, word_idx = self._make_scipy_loop_with_weights()
+        result = loop.converge([word_idx["paris"]])
+
+        assert 'sparse_ms' in result.phase_timings
+        assert 'dense_ms' in result.phase_timings
+        assert 'total_ms' in result.phase_timings
+
+    def test_learned_vs_raw_both_converge(self):
+        """Both learned and raw cosine should converge (same graph, different scoring)."""
+        loop_learned, word_idx = self._make_scipy_loop_with_weights()
+        result_learned = loop_learned.converge([word_idx["paris"], word_idx["france"]])
+
+        # Create a raw-cosine loop (no learned weights) by disabling after construction
+        loop_raw, _ = self._make_scipy_loop_with_weights()
+        loop_raw._embeddings = None
+        loop_raw._attn_weights = None
+        loop_raw._use_learned_attention = False
+        result_raw = loop_raw.converge([word_idx["paris"], word_idx["france"]])
+
+        assert result_learned.converged is True
+        assert result_raw.converged is True
+
+    def test_dual_space_v_from_csr(self):
+        """V projection should use CSR co-occurrence space (not embedding space)."""
+        import numpy as np
+        loop, word_idx = self._make_scipy_loop_with_weights()
+
+        # Run dense attention directly
+        candidates = np.array([word_idx["paris"], word_idx["capital"],
+                               word_idx["france"]], dtype=np.int32)
+        query_vec = np.zeros(loop._V, dtype=np.float32)
+        query_vec[word_idx["paris"]] = 1.0
+
+        output, scored = loop._dense_attention(
+            candidates, query_vec,
+            query_word_indices=[word_idx["paris"]])
+
+        # Output should be in CSR space (V dimensions, not model_dim)
+        assert output.shape == (loop._V,)
+        # Output should have non-zero entries (from CSR rows)
+        assert np.any(output != 0)
+
+
 if __name__ == "__main__":
     import pytest
     pytest.main([__file__, "-v"])

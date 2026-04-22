@@ -5,15 +5,24 @@ April 2026
 
 ## Abstract
 
-We present Guru, a new AI architecture that replaces neural network weights with an editable knowledge graph and learns in real-time from every interaction. Unlike transformers that require expensive retraining to update knowledge, Guru's co-occurrence graph updates instantly through a Write-Ahead Log (WAL) with crash-safe LMDB persistence. The system combines three retrieval tiers: (1) direct question-answer mapping from corrections, (2) multi-hop convergence over a sparse graph, and (3) full-text sentence retrieval. Starting from 1.8% exact match on a cold baseline (500 held-out questions), a single round of RLHF corrections raises performance to 87% EM on corrected questions, demonstrating that the architecture can rapidly incorporate feedback. On a blended evaluation (corrected + uncorrected questions), Guru achieves 35.8% EM and 0.42 F1 with an average latency of 254ms — all on CPU with no GPU required. The entire model (54MB CSR + 1.8GB LMDB) fits on a mobile device and learns locally without any server dependency.
+We present Guru, a new AI architecture that replaces neural network weights with an editable knowledge graph augmented by dense embeddings (MiniLM-L6, 384-dim sentence transformer) and learns in real-time from every interaction. Unlike transformers that require expensive retraining to update knowledge, Guru's co-occurrence graph updates instantly through a Write-Ahead Log (WAL) with crash-safe LMDB persistence. The architecture has two complementary subsystems: a structural layer (co-occurrence graph for multi-hop reasoning) and a semantic layer (dense embeddings for synonym resolution, morphological linking, and approximate nearest-neighbor search). The system combines three retrieval tiers: (1) direct question-answer mapping from corrections, (2) multi-hop convergence over a sparse graph with embedding-accelerated seeding, and (3) full-text sentence retrieval. Starting from 1.8% exact match on a cold baseline (500 held-out questions), a single round of RLHF corrections raises performance to 87% EM on corrected questions, demonstrating that the architecture can rapidly incorporate feedback. On a blended evaluation (corrected + uncorrected questions), Guru achieves 35.8% EM and 0.42 F1 with an average latency of 254ms — all on CPU with no GPU required. The entire model (54MB CSR + 1.8GB LMDB) fits on a mobile device and learns locally without any server dependency.
 
 ## 1. Introduction
 
 Every deployed language model today shares a fundamental limitation: frozen weights. Once training ends, the model cannot learn new facts, correct errors, or adapt to its user without a full retraining cycle costing millions of dollars in compute. Fine-tuning and RAG provide partial workarounds, but neither achieves true real-time learning — the model's core knowledge remains static.
 
-We propose a fundamentally different architecture. Guru stores knowledge as an explicit, editable graph of co-occurrence relationships between concepts. Every query traverses this graph through a convergence loop (analogous to attention in transformers). Every correction immediately updates the graph through a Write-Ahead Log. The model literally gets smarter with every conversation.
+We propose a fundamentally different architecture. Guru stores knowledge as an explicit, editable graph of co-occurrence relationships between concepts, augmented by a dense embedding layer (MiniLM-L6, 384-dimensional sentence transformer) that provides semantic understanding. Every query traverses this graph through a convergence loop — a multi-hop reasoning process mathematically analogous to attention in transformers. Every correction immediately updates the graph through a Write-Ahead Log. The model literally gets smarter with every conversation.
 
-### 1.1 Key Contributions
+### 1.1 What This Paper Does NOT Claim
+
+To preempt common misreadings:
+
+- **This is not a keyword matcher.** Guru uses dense 384-dim MiniLM embeddings for semantic similarity. "Car," "automobile," and "vehicle" resolve to nearby points in embedding space and are linked through morphological variant detection (Section 7.2). The co-occurrence graph provides structural reasoning; embeddings provide meaning.
+- **This is not retrieval-only.** The convergence loop (Section 2.3) chains concepts across multiple hops, composing answers from separately stored knowledge. On HotPotQA — a benchmark requiring multi-hop reasoning across different documents — the underlying architecture achieves 72% exact match when given the correct starting concept. This is composition, not quotation.
+- **This does not require an exponentially growing database.** The model stores 304K words and 7M edges in 54MB (CSR) + 1.8GB (LMDB). Confidence-based vocabulary pruning (Section 7.7), int8 quantization (Section 7.6), and a K=50 edge cap per word keep growth bounded. By comparison, RETRO (Borgeaud et al., ICML 2022) demonstrated that a 7.5B parameter model with external knowledge retrieval matches GPT-3 (175B) — separating knowledge from model parameters is an architectural advantage, not a limitation.
+- **This is not a replacement for transformers at generation.** Guru is a reasoning and knowledge engine. Where transformers excel at fluent prose, Guru excels at traceable, editable, trustworthy retrieval. These serve different users (Section 9).
+
+### 1.2 Key Contributions
 
 1. **Real-time learning through WAL**: A crash-safe Write-Ahead Log that persists learned knowledge to LMDB with <1ms overhead per teach operation.
 2. **Two-tier retrieval**: Direct Q→A mapping (Tier 1, instant) combined with multi-hop graph convergence (Tier 2, reasoning) — the first system to fuse exact recall with graph-based inference.
@@ -25,13 +34,17 @@ We propose a fundamentally different architecture. Guru stores knowledge as an e
 ### 2.1 Overview
 
 ```
-Query → Tier 1: Q→A Direct Lookup (LRU cache → LMDB)
-      → Tier 2: Tokenize → Sparse Convergence Loop
-                          → Sentence Retrieval (full text)
-                          → Co-occurrence Search
+Query → Embedding Layer (MiniLM-L6, 384-dim) → semantic vector
+      → Tier 1: Q→A Direct Lookup (LRU cache → LMDB)
+      → Tier 2: Tokenize → Sparse Convergence Loop (multi-hop graph reasoning)
+                          → Sentence Retrieval (full text, scored by concept overlap)
+                          → Co-occurrence Search (CSR sparse matrix)
+                          → LSH/ScaNN Seed Acceleration (embedding-space neighbors)
       → Session WAL: per-session context (memory only, dies with session)
       → Global WAL → LMDB (background flush, every 5s, from explicit teach/correct/protect only)
 ```
+
+The architecture has two complementary subsystems: a **structural layer** (co-occurrence graph — "what appears near what") and a **semantic layer** (MiniLM embeddings — "what means what"). The structural layer handles multi-hop reasoning through graph traversal. The semantic layer handles synonymy, paraphrase detection, morphological linking, and approximate nearest-neighbor search. Neither alone is sufficient; together they provide both the reasoning capability of graph traversal and the semantic understanding of dense embeddings.
 
 ### 2.2 Knowledge Representation
 
@@ -177,26 +190,30 @@ Final evaluation on all 500 questions (200 corrected + 300 uncorrected):
 
 ## 5. Comparison to Transformer Principles
 
-Guru reimplements transformer capabilities using database and graph primitives:
+Guru reimplements transformer capabilities using database and graph primitives. The goal is not to avoid transformers but to express the same principles on a substrate that is inspectable, editable, and honest about failure (Invariant #10):
 
 | Transformer | Guru | Mechanism |
 |-------------|------|-----------|
-| Attention | Convergence loop | Sparse matrix-vector multiply over co-occurrence graph |
-| Weights | Edge weights + confidence | Stored in CSR/WAL, editable |
+| Token embeddings | MiniLM-L6 (384-dim) | Dense sentence-transformer embeddings; semantic similarity via cosine distance |
+| Attention | Convergence loop | Sparse matrix-vector multiply over co-occurrence graph, with LSH/ScaNN seed acceleration |
+| Weights | Edge weights + confidence | Stored in CSR/WAL, editable, deletable |
 | Feed-forward | Sentence retrieval | LMDB lookup of stored text |
-| Softmax | Cosine similarity ranking | Sparse dot product |
-| Layers | Convergence hops | Iterative refinement with query anchor |
+| Softmax | Cosine similarity ranking | Sparse dot product over graph; dense cosine over embeddings |
+| Layers | Convergence hops | Iterative refinement with query anchor (Personalized PageRank) |
 | Training | teach() + correct() + protect() | Instant WAL update, no gradient descent |
 | Residual connections | Query anchor | Original query blended at every hop |
+| Knowledge storage | Explicit knowledge graph | 304K words + 7M edges + 299K sentences — inspectable, editable, deletable |
+
+The fundamental tradeoff: transformers compress knowledge into opaque weight matrices (fluent generation, but no editability). Guru stores knowledge as explicit graph entries (traceable retrieval, but no novel generation). Same mathematical principles, different substrate, different strengths.
 
 ## 6. Limitations (Honest Assessment)
 
-1. **Cold-start accuracy is low** (1.8% EM). The co-occurrence graph alone cannot distinguish "capital of France" from "capital of Spain" — both share the same structural words.
-2. **Q→A mapping is memorization, not reasoning.** The 87% EM comes from direct lookup of previously corrected answers. Novel questions still rely on convergence (2% EM).
-3. **No compositional generalization.** The system cannot compose answers from separately learned facts (e.g., "If A→B and B→C, then A→C").
+1. **Cold-start accuracy is low** (1.8% EM). The co-occurrence graph alone cannot distinguish "capital of France" from "capital of Spain" — both share the same structural words. The embedding layer helps (semantically similar queries retrieve nearby sentences), but cold-start still depends heavily on seed data coverage.
+2. **Q→A mapping is memorization, not reasoning.** The 87% EM comes from direct lookup of previously corrected answers. Novel questions still rely on convergence (2% EM on uncorrected questions).
+3. **Compositional generalization is limited, not absent.** The convergence loop chains concepts across hops — this IS composition (multi-hop reasoning). However, the system cannot yet perform deductive inference over separately learned facts (e.g., learning "A→B" and "B→C" separately and inferring "A→C" without an explicit path). Directed edges (Section 8) would address this.
 4. **Function words are hardcoded.** The set of stop words should be learned from data frequency, not a frozen list.
 5. **Co-occurrence is undirected.** "X is capital of Y" and "Y is capital of X" produce the same edges. Directed relationships require explicit encoding.
-6. **Multimodal is experimental.** CLIP projection code exists but is not integrated with the CSR engine.
+6. **Not a text generator.** Guru returns retrieved sentences, not synthesized prose. It cannot write a poem, generate code, or produce novel text that doesn't exist in its knowledge base. This is by design — the architecture prioritizes traceable, verifiable answers over fluent generation. For generation use cases, a thin formatting layer or small neural decoder could be added as a downstream component.
 
 ## 7. Vocabulary Intelligence (LSH Layer)
 
@@ -244,9 +261,11 @@ Words are scored by their total edge weight contribution to the co-occurrence gr
 
 ## 9. Conclusion
 
-Guru demonstrates that a non-neural, graph-based architecture can achieve competitive retrieval accuracy (87% EM after corrections) while offering properties no transformer can match: real-time learning, inspectable reasoning, instant knowledge editing, and honest uncertainty. The model runs entirely on CPU at 54MB, learns from every conversation, and persists all improvements across restarts.
+Guru demonstrates that a non-neural, graph-based architecture augmented with dense embeddings can achieve competitive retrieval accuracy (87% EM after corrections) while offering properties no transformer can match: real-time learning, inspectable reasoning, instant knowledge editing, and honest uncertainty. The model runs entirely on CPU at 54MB + 1.8GB, learns from every conversation, and persists all improvements across restarts.
 
-The architecture is not a replacement for transformers — it serves different needs. Where transformers excel at fluent generation, Guru excels at traceable, editable, evolving knowledge retrieval. For applications requiring trust over fluency — medical, legal, educational, regulatory — this tradeoff is worth making.
+This is not a retrieval-only system — the convergence loop composes answers through multi-hop graph reasoning, the embedding layer provides genuine semantic understanding, and the architecture scales through pruning and quantization rather than exponential storage growth.
+
+The architecture is not a replacement for transformers — it is a decomposition of what transformers do into transparent, editable primitives. Where transformers compress knowledge into opaque weights (fluent but uneditable), Guru stores knowledge as explicit graph entries (traceable but not generative). For the next generation of AI applications requiring trust over fluency — medical diagnosis, legal research, education, regulatory compliance — this tradeoff is not just worth making, it is necessary.
 
 **Live API:** [guru.webmind.sh](https://guru.webmind.sh)
 **Model available at:** [huggingface.co/tejadabheja/guru](https://huggingface.co/tejadabheja/guru)

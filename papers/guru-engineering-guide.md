@@ -8,11 +8,17 @@ Tejas Phatak | April 2026 | [guru.webmind.sh](https://guru.webmind.sh) | [GitHub
 
 ## What Guru Is
 
-A knowledge engine that replaces neural network weights with an editable graph database. No GPU. No gradient descent. No training. Learns from every conversation in real-time.
+A knowledge engine that replaces neural network weights with an editable graph database, augmented by dense embeddings (MiniLM-L6, 384-dim sentence transformer) for semantic understanding. No GPU. No gradient descent. No training. Learns from every conversation in real-time.
 
 ```
 304K neurons | 7M edges | 39K Q→A pairs | 54MB CSR + 1.8GB LMDB | CPU only
 ```
+
+**Two complementary subsystems:**
+- **Structural layer** (co-occurrence graph): multi-hop reasoning through sparse graph traversal
+- **Semantic layer** (MiniLM embeddings): synonym resolution, morphological linking, approximate nearest-neighbor search via LSH/ScaNN
+
+This is not a keyword matcher — the embedding layer provides genuine semantic understanding ("car," "automobile," and "vehicle" map to nearby points in embedding space). This is not retrieval-only — the convergence loop chains concepts across multiple hops to compose answers from separately stored knowledge.
 
 ---
 
@@ -20,7 +26,8 @@ A knowledge engine that replaces neural network weights with an editable graph d
 
 ```mermaid
 flowchart TD
-    User[User Query] --> API["/v1/chat/completions"]
+    User[User Query] --> Embed["Embedding Layer\n(MiniLM-L6, 384-dim)"]
+    Embed --> API["/v1/chat/completions"]
     API --> SessionWAL["Session WAL\n(per-session memory)"]
     API --> Tier1{"Tier 1:\nQ→A Lookup"}
     
@@ -107,14 +114,16 @@ Where `CSR` is the co-occurrence matrix (304K x 304K sparse), `profile` is the c
 
 | Transformer Concept | Guru Equivalent | Implementation |
 |---|---|---|
-| Q (query) | Query word indices | `content_indices = [word_idx[w] for w in content_words]` |
-| K (keys) | CSR column entries | `CSR[word_idx, :]` |
+| Token embeddings | MiniLM-L6 (384-dim) | Dense sentence-transformer embeddings; semantic similarity via cosine distance |
+| Q (query) | Query word indices + embedding | `content_indices = [word_idx[w] for w in content_words]` + LSH seed lookup |
+| K (keys) | CSR column entries + LSH buckets | `CSR[word_idx, :]` + ScaNN approximate NN |
 | V (values) | CSR edge weights | `CSR.data` |
 | Attention scores | Cosine similarity | `dot(profile, CSR[j]) / (norm(profile) * norm(CSR[j]))` |
 | Softmax | L2 normalization | `profile /= norm(profile)` |
 | Residual connection | Query anchor | `profile = α * profile + (1-α) * query_profile` |
 | Layers | Convergence hops | Loop until `||profile_new - profile_old|| < threshold` |
 | Feed-forward | Sentence retrieval | `LMDB.get_sentences_for_neurons(concept_nids)` |
+| Knowledge storage | Explicit graph entries | 304K words + 7M edges + 299K sentences — inspectable, editable, deletable |
 
 ---
 
@@ -436,6 +445,8 @@ OpenAI-compatible. Returns standard response + `guru` metadata.
 | Blended (corrected + uncorrected) | 35.8% | 0.42 | 254ms | Real-world mix |
 
 **Honest caveat:** The 87% is memorization (Q→A lookup). The 1.8% is the real reasoning capability of the convergence loop alone. The useful number is 35.8% blended — what a real user would experience.
+
+**Scaling:** The model stores 304K words and 7M edges in 54MB (CSR) + 1.8GB (LMDB). Growth is bounded by: K=50 edge cap per word, confidence-based vocabulary pruning (Section 7.7 of the research paper), and int8 quantization (4x memory reduction on embedding index). The system scales in storage, not exponentially — RETRO (Borgeaud et al., ICML 2022) proved that separating knowledge from model parameters is an architectural advantage (7.5B + external KB matched 175B GPT-3).
 
 ---
 

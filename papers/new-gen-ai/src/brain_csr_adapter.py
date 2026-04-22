@@ -385,12 +385,9 @@ class BrainCSR:
             word_cooc = self._get_profile(word_idx)
             if not word_cooc:
                 continue
-            dot = sum(query_cooc.get(j, 0) * v for j, v in word_cooc.items())
-            if dot > 0:
-                w_norm = sparse_norm(word_cooc)
-                if w_norm > 0:
-                    sim = dot / (q_norm * w_norm)
-                    scores.append((word_idx, sim))
+            sim = sparse_cosine(query_cooc, word_cooc)
+            if sim > 0:
+                scores.append((word_idx, sim))
         scores.sort(key=lambda x: x[1], reverse=True)
         return scores[:k]
 
@@ -847,43 +844,71 @@ class BrainCSR:
             return None
 
         scored.sort(key=lambda x: x[1], reverse=True)
-        sid, score, sent_neurons = scored[0]
-        if score <= 0:
-            return None
 
-        ordered = sorted(sent_neurons, key=lambda x: x[1])
-        words = [nid_to_word.get(nid, "") for nid, pos in ordered]
-        words = [w for w in words if w]
+        # Chain top-N non-overlapping sentences for richer answers.
+        # For short factual answers 1 sentence suffices.
+        # For explanations, chain up to 3.
+        max_chain = 3
+        used_nids = set()
+        chain_texts = []
+        chain_sids = []
+        best_convergence = 0.0
 
-        if len(words) < 2:
-            return None
-
-        answer_indices = [self._word_idx[w] for w in words if w in self._word_idx]
-        if not answer_indices:
-            return None
-
-        answer_cooc = self._sparse_blend(answer_indices)
-        query_words = [nid_to_word.get(nid) for nid in concept_ids]
-        q_indices = [self._word_idx[w] for w in query_words
+        query_words_list = [nid_to_word.get(nid) for nid in concept_ids]
+        q_indices = [self._word_idx[w] for w in query_words_list
                      if w and w in self._word_idx]
         if not q_indices:
             q_indices = list(query_indices)
-
         query_cooc = self._sparse_blend(q_indices)
-        convergence = sparse_cosine(query_cooc, answer_cooc)
 
-        if convergence <= 0:
+        for sid, score, sent_neurons in scored:
+            if score <= 0:
+                break
+            if len(chain_texts) >= max_chain:
+                break
+
+            # Skip if too much overlap with already-chained sentences
+            sent_nid_set = set(nid for nid, pos in sent_neurons)
+            if used_nids and len(sent_nid_set & used_nids) > len(sent_nid_set) * 0.5:
+                continue  # >50% overlap — redundant
+
+            full_text = self._get_sentence_text(sid)
+            if not full_text:
+                ordered = sorted(sent_neurons, key=lambda x: x[1])
+                words = [nid_to_word.get(nid, "") for nid, pos in ordered]
+                words = [w for w in words if w]
+                if len(words) < 2:
+                    continue
+                full_text = " ".join(words)
+
+            # Skip questions
+            if _is_interrogative(full_text):
+                continue
+
+            # Compute convergence for this sentence
+            answer_indices = [self._word_idx[w] for w in self._tokenize(full_text)
+                              if w in self._word_idx]
+            if not answer_indices:
+                continue
+            answer_cooc = self._sparse_blend(answer_indices)
+            convergence = sparse_cosine(query_cooc, answer_cooc)
+            if convergence <= 0:
+                continue
+
+            chain_texts.append(full_text)
+            chain_sids.append(sid)
+            used_nids.update(sent_nid_set)
+            best_convergence = max(best_convergence, convergence)
+
+        if not chain_texts:
             return None
 
-        # Try to get full original text (preserves grammar)
-        full_text = self._get_sentence_text(sid)
-        answer_text = full_text if full_text else " ".join(words)
-
+        answer_text = " ".join(chain_texts)
         return {
             "answer": answer_text,
-            "confidence": convergence,
+            "confidence": best_convergence,
             "strategy": "sentence_chain",
-            "trace": f"Sentence {sid} (convergence={convergence:.3f}): {words}",
+            "trace": f"Chain({len(chain_texts)}): sids={chain_sids}, convergence={best_convergence:.3f}",
         }
 
     def _get_sentence_text(self, sentence_id: int) -> str:
@@ -908,157 +933,135 @@ class BrainCSR:
             return {}
         return {nid: pos for nid, pos in self.db.get_sentence_neurons(best_sid)}
 
-    # --- Generation ---
+    # --- Generation (convergence-as-decoder) ---
 
-    def generate(self, query: str, max_tokens: int = 30, temperature: float = 0.7,
+    def generate(self, query: str, max_tokens: int = 50, temperature: float = 0.7,
                  min_score: float = 0.01) -> dict:
-        """Generate text via sparse successor walk over CSR."""
+        """Generate text using convergence as the decoder.
+
+        Each token = one convergence loop. The convergence loop IS the decoder.
+        No neural network. Same architecture as the thinking module.
+
+        Transformer correspondence:
+          - Self-attention on prior tokens → convergence on generated_so_far
+          - Cross-attention to concepts   → query anchor (residual connection)
+          - Next token prediction          → top convergence result
+          - Causal mask                    → only generated tokens influence next
+          - Temperature + softmax          → stochastic selection from top-k
+
+        Step 0: converge(query_concepts) → first content word
+        Step N: converge(query_concepts + generated[0:N]) → next word
+        Stop:   no new high-confidence word → done
+        """
         if not self._words:
             return {"text": "", "trace": ["No vocabulary"], "tokens_generated": 0}
 
-        ask_result = self.ask(query)
-        query_tokens_set = set(self._tokenize(query))
+        # Get query concepts from convergence (the THINKING phase)
+        tokens = self._tokenize(query)
+        content = [t for t in tokens if t not in FUNCTION_WORDS]
+        query_indices = [self._word_idx[t] for t in content if t in self._word_idx]
+        if not query_indices:
+            return {"text": "", "trace": ["No known query words"], "tokens_generated": 0}
 
-        nid_to_word = self._nid_to_word_cache or {
-            nid: w for w, nid in self._word_neurons.items()
-            if not w.startswith("__")
-        }
+        query_tokens_set = set(content)
 
-        # Find starting word from ask result
-        start_word = None
-        start_score = -1.0
-        answer_words = self._tokenize(ask_result.get("answer", ""))
-        for w in answer_words:
-            if w in self._word_idx and w not in FUNCTION_WORDS and w not in query_tokens_set:
-                nid = self._word_neurons.get(w)
-                conf = 0.5
-                if nid:
-                    n = self.db.get(nid)
-                    if n:
-                        conf = n.confidence
-                if conf > start_score:
-                    start_score = conf
-                    start_word = w
+        # Build per-word weights (verb downweighting)
+        query_weights = []
+        real_pos = 0
+        for t in content:
+            if t in self._word_idx:
+                if t in QUERY_VERBS:
+                    query_weights.append(QUERY_VERB_WEIGHT)
+                else:
+                    query_weights.append(1.0 / (1.0 + 0.1 * real_pos))
+                    real_pos += 1
 
-        if start_word is None:
-            query_content = [t for t in self._tokenize(query) if t in self._word_idx]
-            if query_content:
-                q_indices = [self._word_idx[t] for t in query_content]
-                q_cooc = self._sparse_blend(q_indices)
-                search = self._sparse_search(q_cooc, k=20)
-                for widx, sim in search:
-                    w = self._words[widx]
-                    if w not in FUNCTION_WORDS and w not in query_tokens_set:
-                        start_word = w
-                        start_score = sim
-                        break
+        generated = []
+        trace = []
+        seen = set(query_indices)  # don't repeat query words
+        recent_window = 8
 
-        if start_word is None:
-            return {"text": "", "trace": ["No starting word found"], "tokens_generated": 0}
+        for step in range(max_tokens):
+            # Build input for this step: query concepts + generated tokens so far
+            # This is autoregressive: each step sees all prior output
+            gen_indices = [self._word_idx[w] for w in generated if w in self._word_idx]
+            step_indices = query_indices + gen_indices
 
-        generated = [start_word]
-        trace = [{"token": start_word, "score": start_score, "reason": "start (best concept)"}]
-        recent_window = 6
+            # Weights: query words get base weight, generated words get decaying weight
+            gen_weights = [0.5 / (1.0 + 0.1 * i) for i in range(len(gen_indices))]
+            step_weights = query_weights[:len(query_indices)] + gen_weights
 
-        start_idx = self._word_idx[start_word]
-        context_profile = dict(self._get_profile(start_idx))
+            # Run convergence (THIS IS THE DECODER STEP)
+            result = self._convergence.converge(step_indices, step_weights)
 
-        for pos in range(1, max_tokens):
-            prev_word = generated[-1]
+            if not result.concepts:
+                trace.append({"token": "[STOP]", "score": 0, "reason": "no concepts"})
+                break
 
-            # Get successors for sequence ordering
-            prev_successors = {}
-            if prev_word in self._word_neurons:
-                prev_nid = self._word_neurons[prev_word]
-                prev_neuron = self.db.get(prev_nid)
-                if prev_neuron and prev_neuron.successors:
-                    for succ_nid, succ_conf in prev_neuron.successors:
-                        succ_word = nid_to_word.get(succ_nid)
-                        if succ_word:
-                            prev_successors[succ_word] = succ_conf
+            # Select next token from convergence results
+            recent_set = set(generated[-recent_window:]) if generated else set()
+            chosen = None
 
-            # Score candidates
-            candidate_indices = set(context_profile.keys())
-            for sw in prev_successors:
-                if sw in self._word_idx:
-                    candidate_indices.add(self._word_idx[sw])
-
-            top_by_weight = sorted(
-                ((idx, context_profile.get(idx, 0)) for idx in candidate_indices),
-                key=lambda x: x[1], reverse=True
-            )[:100]
-            candidate_indices = {idx for idx, _ in top_by_weight}
-
-            scores = []
-            for widx in candidate_indices:
+            # Collect candidates with their scores
+            candidates = []
+            for widx, sim in result.concepts:
                 if widx >= len(self._words):
                     continue
                 word = self._words[widx]
-                if word in FUNCTION_WORDS:
+                if word in FUNCTION_WORDS or word in QUERY_VERBS:
                     continue
-                word_cooc = self._get_profile(widx)
-                ctx_sim = sparse_cosine(word_cooc, context_profile)
-                succ_conf = prev_successors.get(word, 0.0)
-                raw_score = ctx_sim * (1.0 + succ_conf)
-                if raw_score > 0:
-                    scores.append((widx, word, raw_score))
-
-            if not scores:
-                trace.append({"token": "[STOP]", "score": 0, "reason": "no candidates"})
-                break
-
-            scores.sort(key=lambda x: x[2], reverse=True)
-            top_n = min(50, len(scores))
-            top_scores = scores[:top_n]
-
-            if temperature > 0:
-                max_raw = top_scores[0][2]
-                exp_scores = []
-                for widx, word, raw in top_scores:
-                    exp_scores.append((widx, word, raw, math.exp((raw - max_raw) / temperature)))
-                total_exp = sum(e for _, _, _, e in exp_scores)
-                if total_exp > 0:
-                    softmax_scores = [(widx, word, raw, e / total_exp)
-                                      for widx, word, raw, e in exp_scores]
-                else:
-                    softmax_scores = [(widx, word, raw, 0.0)
-                                      for widx, word, raw, _ in exp_scores]
-            else:
-                softmax_scores = [(top_scores[0][0], top_scores[0][1],
-                                   top_scores[0][2], 1.0)]
-
-            chosen = None
-            recent_set = (set(generated[-recent_window:])
-                          if len(generated) >= recent_window else set(generated))
-
-            for widx, word, raw, prob in softmax_scores:
-                if word in recent_set:
+                if widx in seen and word in recent_set:
                     continue
-                if raw < min_score:
+                if sim < min_score:
                     continue
-                chosen = (widx, word, raw, prob)
-                break
+                candidates.append((widx, word, sim))
 
-            if chosen is None:
+            if not candidates:
                 trace.append({"token": "[STOP]", "score": 0,
-                              "reason": "all candidates below threshold or in loop"})
+                              "reason": "no new candidates above threshold"})
                 break
 
-            widx, word, raw, prob = chosen
-            generated.append(word)
-            trace.append({"token": word, "score": round(raw, 4),
-                          "prob": round(prob, 4),
-                          "reason": f"ctx_sim*(1+succ), prob={prob:.3f}"})
+            # Temperature-based selection (softmax over candidates)
+            if temperature > 0 and len(candidates) > 1:
+                sims = [s for _, _, s in candidates]
+                max_sim = max(sims)
+                exp_scores = [math.exp((s - max_sim) / temperature) for s in sims]
+                total_exp = sum(exp_scores)
+                if total_exp > 0:
+                    probs = [e / total_exp for e in exp_scores]
+                    # Weighted random selection
+                    import random
+                    r = random.random()
+                    cumulative = 0
+                    for i, p in enumerate(probs):
+                        cumulative += p
+                        if r <= cumulative:
+                            chosen = candidates[i]
+                            break
+                    if chosen is None:
+                        chosen = candidates[0]
+                else:
+                    chosen = candidates[0]
+            else:
+                chosen = candidates[0]
 
-            # Update context profile from CSR
-            new_cooc = self._get_profile(widx)
-            blend_weight = 0.3
-            for k, v in new_cooc.items():
-                context_profile[k] = (context_profile.get(k, 0) * (1 - blend_weight)
-                                      + v * blend_weight)
-            for k in list(context_profile.keys()):
-                if k not in new_cooc:
-                    context_profile[k] *= (1 - blend_weight)
+            widx, word, sim = chosen
+            generated.append(word)
+            seen.add(widx)
+            trace.append({
+                "token": word,
+                "score": round(sim, 4),
+                "hop": step,
+                "reason": f"convergence top (step {step})",
+            })
+
+            # Convergence check: if the last 3 tokens all have low scores, stop
+            if len(trace) >= 3:
+                recent_scores = [t.get("score", 0) for t in trace[-3:]]
+                if all(s < min_score * 2 for s in recent_scores):
+                    trace.append({"token": "[STOP]", "score": 0,
+                                  "reason": "3 consecutive low-confidence tokens"})
+                    break
 
         return {
             "text": " ".join(generated),

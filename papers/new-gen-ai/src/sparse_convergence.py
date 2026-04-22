@@ -86,11 +86,14 @@ class SparseMultiHopResult:
 
 # --- Sparse math utilities ---
 
+_CLAMP = 1e18  # prevent overflow in float64 multiply (1e18² = 1e36, safe)
+
+
 def sparse_norm(d: dict) -> float:
     """L2 norm of a sparse vector."""
     if not d:
         return 0.0
-    return math.sqrt(sum(v * v for v in d.values()))
+    return math.sqrt(sum(min(v * v, _CLAMP) for v in d.values()))
 
 
 def sparse_cosine(a: dict, b: dict) -> float:
@@ -99,14 +102,15 @@ def sparse_cosine(a: dict, b: dict) -> float:
         return 0.0
     if len(a) > len(b):
         a, b = b, a
-    dot = sum(v * b.get(k, 0) for k, v in a.items())
-    if dot == 0:
+    dot = sum(min(v * b.get(k, 0), _CLAMP) for k, v in a.items())
+    if dot == 0 or math.isnan(dot) or math.isinf(dot):
         return 0.0
     na = sparse_norm(a)
     nb = sparse_norm(b)
-    if na == 0 or nb == 0:
+    if na == 0 or nb == 0 or math.isnan(na) or math.isnan(nb):
         return 0.0
-    return dot / (na * nb)
+    result = dot / (na * nb)
+    return min(result, 1.0) if not math.isnan(result) else 0.0
 
 
 def sparse_blend(profiles: list, weights: list = None) -> dict:
@@ -492,19 +496,19 @@ class VectorizedConvergenceLoop:
         self.dense_candidates = dense_candidates
         self.use_dense_attention = use_dense_attention
 
-        # Precompute row norms for cosine
-        self._row_norms = np.sqrt(
-            np.asarray(scipy_mat.multiply(scipy_mat).sum(axis=1)).ravel()
-        ).astype(np.float32)
+        # Precompute row norms for cosine (clamp to prevent overflow)
+        row_sq = np.asarray(scipy_mat.multiply(scipy_mat).sum(axis=1)).ravel()
+        np.clip(row_sq, 0, 1e30, out=row_sq)
+        self._row_norms = np.sqrt(row_sq).astype(np.float32)
 
     def update_matrix(self, scipy_mat):
         """Hot-swap the matrix (e.g., when WAL changes)."""
         self._mat = scipy_mat
         if scipy_mat.shape[0] != self._V:
             self._V = scipy_mat.shape[0]
-            self._row_norms = np.sqrt(
-                np.asarray(scipy_mat.multiply(scipy_mat).sum(axis=1)).ravel()
-            ).astype(np.float32)
+            row_sq = np.asarray(scipy_mat.multiply(scipy_mat).sum(axis=1)).ravel()
+            np.clip(row_sq, 0, 1e30, out=row_sq)
+            self._row_norms = np.sqrt(row_sq).astype(np.float32)
 
     def _dense_attention(self, candidate_indices: np.ndarray,
                          query_vec: np.ndarray) -> tuple:

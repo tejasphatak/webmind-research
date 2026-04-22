@@ -148,9 +148,6 @@ All code is at: github.com/tejasphatak/webmind-research/papers/cfq
 | `weight_uniqueness_proof.md` | Full uniqueness data across 3 models |
 | `dict_inference.py` | Lossless dictionary-pointer inference test (Qwen2-0.5B) |
 | `analyze_bit_slicing.py` | BF16 value distribution analysis (Gemma-2-27B) |
-| `test_gemma_delta.py` | Constant-fraction delta analysis |
-| `gemma4_compress.py` | CFQ compressor for Gemma 4 27B |
-| `gemma4_alu_engine.py` | CFQ inference engine (full 60-layer forward pass) |
 
 ## 5. Related Work
 

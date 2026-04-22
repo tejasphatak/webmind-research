@@ -204,8 +204,12 @@ class CSRWriteAheadLog:
     def entry_count(self) -> int:
         return self._count
 
+    # Maximum absolute edge weight. Prevents explosion from RLHF boosting.
+    # At 100.0, cosine similarity stays numerically stable in float32.
+    WEIGHT_CLAMP = 100.0
+
     def add_edge(self, word_a: int, word_b: int, weight: float):
-        """Buffer a co-occurrence edge update."""
+        """Buffer a co-occurrence edge update. Weights clamped to ±WEIGHT_CLAMP."""
         with self._lock:
             if word_a not in self._log:
                 self._log[word_a] = {}
@@ -213,8 +217,10 @@ class CSRWriteAheadLog:
                 self._log[word_b] = {}
             old_a = self._log[word_a].get(word_b, 0)
             old_b = self._log[word_b].get(word_a, 0)
-            self._log[word_a][word_b] = old_a + weight
-            self._log[word_b][word_a] = old_b + weight
+            new_a = max(-self.WEIGHT_CLAMP, min(self.WEIGHT_CLAMP, old_a + weight))
+            new_b = max(-self.WEIGHT_CLAMP, min(self.WEIGHT_CLAMP, old_b + weight))
+            self._log[word_a][word_b] = new_a
+            self._log[word_b][word_a] = new_b
             self._count += 2
 
     def get_overlay(self, word_idx: int) -> dict:
@@ -242,10 +248,11 @@ class CSRWriteAheadLog:
                 return {word_idx: 1.0}
             return base
 
-        # Merge: WAL adds to base
+        # Merge: WAL adds to base, clamped
         merged = dict(base)
+        clamp = self.WEIGHT_CLAMP
         for k, v in overlay.items():
-            merged[k] = merged.get(k, 0) + v
+            merged[k] = max(-clamp, min(clamp, merged.get(k, 0) + v))
         if not merged:
             merged[word_idx] = 1.0
         return merged
@@ -310,13 +317,17 @@ class CSRWriteAheadLog:
                 val = txn.get(struct.pack('<i', i), db=wal_db)
                 if val and len(val) == self._EDGE_SIZE:
                     a, b, w = struct.unpack(self._EDGE_FMT, val)
+                    # Clamp on load — repair any exploded weights from prior sessions
+                    w = max(-self.WEIGHT_CLAMP, min(self.WEIGHT_CLAMP, w))
                     # Add directly to log without double-counting
                     if a not in self._log:
                         self._log[a] = {}
                     if b not in self._log:
                         self._log[b] = {}
-                    self._log[a][b] = self._log[a].get(b, 0) + w
-                    self._log[b][a] = self._log[b].get(a, 0) + w
+                    new_ab = max(-self.WEIGHT_CLAMP, min(self.WEIGHT_CLAMP, self._log[a].get(b, 0) + w))
+                    new_ba = max(-self.WEIGHT_CLAMP, min(self.WEIGHT_CLAMP, self._log[b].get(a, 0) + w))
+                    self._log[a][b] = new_ab
+                    self._log[b][a] = new_ba
                     self._count += 2
                     loaded += 1
         return loaded
@@ -399,7 +410,14 @@ class CSRWriteAheadLog:
              (np.array(rows, dtype=np.int32), np.array(cols, dtype=np.int32))),
             shape=shape,
         ).tocsr()
-        self._scipy_cache = base + wal_sparse
+        merged = base + wal_sparse
+
+        # Clamp extreme values in merged matrix.
+        # Don't row-normalize — cosine computation in convergence already normalizes.
+        # Row-normalization destroys frequency information (rare words look as important as common ones).
+        merged.data = np.clip(merged.data, -self.WEIGHT_CLAMP, self.WEIGHT_CLAMP)
+
+        self._scipy_cache = merged
         self._scipy_cache_count = count_now
         return self._scipy_cache
 

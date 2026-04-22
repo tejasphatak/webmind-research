@@ -937,35 +937,42 @@ class BrainCSR:
 
     def generate(self, query: str, max_tokens: int = 50, temperature: float = 0.7,
                  min_score: float = 0.01) -> dict:
-        """Generate text using convergence as the decoder.
+        """Generate text using convergence + successor lists as the decoder.
 
-        Each token = one convergence loop. The convergence loop IS the decoder.
-        No neural network. Same architecture as the thinking module.
+        Two signals per token:
+          1. Convergence: which concepts are relevant to (query + generated_so_far)?
+          2. Successors: which words follow the last generated word?
+
+        The intersection of these two signals = the next token.
+        Convergence = attention (what to talk about).
+        Successors = grammar (what word comes next).
 
         Transformer correspondence:
-          - Self-attention on prior tokens → convergence on generated_so_far
-          - Cross-attention to concepts   → query anchor (residual connection)
-          - Next token prediction          → top convergence result
-          - Causal mask                    → only generated tokens influence next
-          - Temperature + softmax          → stochastic selection from top-k
+          - Cross-attention to concepts   → convergence on query
+          - Self-attention on prior tokens → successor lists
+          - Combined score                → attention × grammar
+          - Temperature + softmax          → stochastic selection
 
-        Step 0: converge(query_concepts) → first content word
-        Step N: converge(query_concepts + generated[0:N]) → next word
-        Stop:   no new high-confidence word → done
+        This is the design doc's "two-speed generation":
+        successor confidence > threshold → emit (grammar path, fast)
+        else → convergence search (content path, slower)
         """
         if not self._words:
             return {"text": "", "trace": ["No vocabulary"], "tokens_generated": 0}
 
-        # Get query concepts from convergence (the THINKING phase)
+        nid_to_word = self._nid_to_word_cache or {
+            nid: w for w, nid in self._word_neurons.items()
+            if not w.startswith("__")
+        }
+
+        # THINKING phase: convergence finds concepts
         tokens = self._tokenize(query)
         content = [t for t in tokens if t not in FUNCTION_WORDS]
         query_indices = [self._word_idx[t] for t in content if t in self._word_idx]
         if not query_indices:
             return {"text": "", "trace": ["No known query words"], "tokens_generated": 0}
 
-        query_tokens_set = set(content)
-
-        # Build per-word weights (verb downweighting)
+        # Build query weights (verb downweighting)
         query_weights = []
         real_pos = 0
         for t in content:
@@ -976,91 +983,151 @@ class BrainCSR:
                     query_weights.append(1.0 / (1.0 + 0.1 * real_pos))
                     real_pos += 1
 
+        # Get concept set from convergence
+        multi_hop = self._multi_hop.reason(query_indices, query_weights)
+        concept_indices = set()
+        for widx, sim in multi_hop.concepts:
+            concept_indices.add(widx)
+        # Also include query words as concepts
+        concept_indices.update(query_indices)
+
+        # Build concept profile for relevance scoring
+        concept_list = list(concept_indices)
+        concept_cooc = self._sparse_blend(
+            [idx for idx in concept_list if idx < len(self._words)]
+        )
+
         generated = []
         trace = []
-        seen = set(query_indices)  # don't repeat query words
         recent_window = 8
+        query_set = set(content)
 
-        for step in range(max_tokens):
-            # Build input for this step: query concepts + generated tokens so far
-            # This is autoregressive: each step sees all prior output
-            gen_indices = [self._word_idx[w] for w in generated if w in self._word_idx]
-            step_indices = query_indices + gen_indices
+        # Find starting word: highest-relevance concept not in query
+        start_candidates = []
+        for widx, sim in multi_hop.concepts:
+            if widx < len(self._words):
+                w = self._words[widx]
+                if w not in FUNCTION_WORDS and w not in query_set:
+                    start_candidates.append((widx, w, sim))
+        if not start_candidates:
+            # Fallback: use query words themselves
+            for idx in query_indices:
+                w = self._words[idx]
+                start_candidates.append((idx, w, 1.0))
 
-            # Weights: query words get base weight, generated words get decaying weight
-            gen_weights = [0.5 / (1.0 + 0.1 * i) for i in range(len(gen_indices))]
-            step_weights = query_weights[:len(query_indices)] + gen_weights
+        if not start_candidates:
+            return {"text": "", "trace": ["No starting concept"], "tokens_generated": 0}
 
-            # Run convergence (THIS IS THE DECODER STEP)
-            result = self._convergence.converge(step_indices, step_weights)
+        # Pick best start
+        start_candidates.sort(key=lambda x: x[2], reverse=True)
+        start_idx, start_word, start_sim = start_candidates[0]
+        generated.append(start_word)
+        trace.append({"token": start_word, "score": round(start_sim, 4),
+                       "reason": "start (best concept)"})
 
-            if not result.concepts:
-                trace.append({"token": "[STOP]", "score": 0, "reason": "no concepts"})
-                break
+        # SPEAKING phase: successor walk guided by concept relevance
+        for step in range(1, max_tokens):
+            prev_word = generated[-1]
 
-            # Select next token from convergence results
-            recent_set = set(generated[-recent_window:]) if generated else set()
-            chosen = None
+            # Get successors of previous word (grammar signal)
+            prev_successors = {}
+            if prev_word in self._word_neurons:
+                prev_nid = self._word_neurons[prev_word]
+                prev_neuron = self.db.get(prev_nid)
+                if prev_neuron and prev_neuron.successors:
+                    for succ_nid, succ_conf in prev_neuron.successors:
+                        succ_word = nid_to_word.get(succ_nid)
+                        if succ_word and succ_word not in FUNCTION_WORDS:
+                            prev_successors[succ_word] = succ_conf
 
-            # Collect candidates with their scores
-            candidates = []
-            for widx, sim in result.concepts:
-                if widx >= len(self._words):
+            # Get co-occurrence neighbors (concept relevance signal)
+            prev_idx = self._word_idx.get(prev_word, -1)
+            cooc_neighbors = {}
+            if prev_idx >= 0:
+                profile = self._get_profile(prev_idx)
+                for widx, weight in profile.items():
+                    if widx < len(self._words) and weight > 0:
+                        w = self._words[widx]
+                        if w not in FUNCTION_WORDS:
+                            cooc_neighbors[w] = weight
+
+            # Merge candidates from both signals
+            all_candidates = set(prev_successors.keys()) | set(cooc_neighbors.keys())
+            recent_set = set(generated[-recent_window:])
+
+            scored = []
+            for word in all_candidates:
+                if word in recent_set or word in query_set:
                     continue
-                word = self._words[widx]
-                if word in FUNCTION_WORDS or word in QUERY_VERBS:
+                widx = self._word_idx.get(word, -1)
+                if widx < 0:
                     continue
-                if widx in seen and word in recent_set:
-                    continue
-                if sim < min_score:
-                    continue
-                candidates.append((widx, word, sim))
 
-            if not candidates:
+                # Score = successor_confidence × concept_relevance
+                succ_score = prev_successors.get(word, 0.0)
+                # Concept relevance: does this word appear in the concept profile?
+                relevance = concept_cooc.get(widx, 0.0)
+
+                if succ_score > 0 and relevance > 0:
+                    # Both signals agree: strong candidate
+                    score = succ_score * (1.0 + relevance)
+                elif succ_score > 0.5:
+                    # Strong successor even without concept match (grammar word)
+                    score = succ_score * 0.3
+                elif relevance > 0:
+                    # Concept-relevant but not a successor (topic drift — weaker)
+                    score = relevance * 0.1
+                else:
+                    continue
+
+                if score > min_score:
+                    scored.append((widx, word, score))
+
+            if not scored:
                 trace.append({"token": "[STOP]", "score": 0,
-                              "reason": "no new candidates above threshold"})
+                              "reason": "no candidates with both signals"})
                 break
 
-            # Temperature-based selection (softmax over candidates)
-            if temperature > 0 and len(candidates) > 1:
-                sims = [s for _, _, s in candidates]
-                max_sim = max(sims)
-                exp_scores = [math.exp((s - max_sim) / temperature) for s in sims]
-                total_exp = sum(exp_scores)
-                if total_exp > 0:
-                    probs = [e / total_exp for e in exp_scores]
-                    # Weighted random selection
+            scored.sort(key=lambda x: x[2], reverse=True)
+
+            # Temperature + softmax selection
+            if temperature > 0 and len(scored) > 1:
+                top_n = min(20, len(scored))
+                top = scored[:top_n]
+                sims = [s for _, _, s in top]
+                max_s = max(sims)
+                exp_s = [math.exp((s - max_s) / temperature) for s in sims]
+                total = sum(exp_s)
+                if total > 0:
                     import random
                     r = random.random()
-                    cumulative = 0
-                    for i, p in enumerate(probs):
-                        cumulative += p
-                        if r <= cumulative:
-                            chosen = candidates[i]
+                    cumul = 0
+                    chosen = top[0]
+                    for i, e in enumerate(exp_s):
+                        cumul += e / total
+                        if r <= cumul:
+                            chosen = top[i]
                             break
-                    if chosen is None:
-                        chosen = candidates[0]
                 else:
-                    chosen = candidates[0]
+                    chosen = scored[0]
             else:
-                chosen = candidates[0]
+                chosen = scored[0]
 
-            widx, word, sim = chosen
+            widx, word, score = chosen
             generated.append(word)
-            seen.add(widx)
             trace.append({
                 "token": word,
-                "score": round(sim, 4),
+                "score": round(score, 4),
                 "hop": step,
-                "reason": f"convergence top (step {step})",
+                "reason": "succ×concept" if prev_successors.get(word, 0) > 0 else "concept",
             })
 
-            # Convergence check: if the last 3 tokens all have low scores, stop
+            # Stop if 3 consecutive low scores
             if len(trace) >= 3:
                 recent_scores = [t.get("score", 0) for t in trace[-3:]]
                 if all(s < min_score * 2 for s in recent_scores):
                     trace.append({"token": "[STOP]", "score": 0,
-                                  "reason": "3 consecutive low-confidence tokens"})
+                                  "reason": "3 low-confidence tokens"})
                     break
 
         return {

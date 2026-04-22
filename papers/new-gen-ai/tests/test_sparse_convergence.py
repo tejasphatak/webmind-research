@@ -19,7 +19,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from sparse_convergence import (
-    SparseConvergenceLoop, SparseMultiHop,
+    SparseConvergenceLoop, SparseMultiHop, VectorizedConvergenceLoop,
     sparse_cosine, sparse_blend, sparse_norm, sparse_normalize,
     SparseConvergenceResult, SparseMultiHopResult,
 )
@@ -314,6 +314,107 @@ class TestSparseUtils:
         d = {0: 3.0, 1: 4.0}
         n = sparse_normalize(d)
         assert abs(sparse_norm(n) - 1.0) < 1e-6
+
+
+class TestVectorizedDenseAttention:
+    """Tests for the two-phase dense attention upgrade on VectorizedConvergenceLoop."""
+
+    def _make_scipy_loop(self, use_dense=True, **kwargs):
+        """Build a VectorizedConvergenceLoop from the test graph using scipy."""
+        try:
+            from scipy.sparse import csr_matrix as scipy_csr
+        except ImportError:
+            import pytest
+            pytest.skip("scipy not installed")
+
+        cooc, word_idx, words, word_neurons = make_graph()
+
+        # Build scipy CSR from cooc dict
+        n = len(words)
+        rows, cols, data = [], [], []
+        for i, neighbors in cooc.items():
+            for j, w in neighbors.items():
+                rows.append(i)
+                cols.append(j)
+                data.append(w)
+
+        import numpy as np
+        mat = scipy_csr((np.array(data), (np.array(rows), np.array(cols))),
+                        shape=(n, n), dtype=np.float32)
+
+        defaults = dict(max_hops=10, k=5, convergence_threshold=0.99,
+                        min_confidence=0.05, min_relevance=0.1, temperature=1.0,
+                        dense_candidates=8, use_dense_attention=use_dense)
+        defaults.update(kwargs)
+
+        loop = VectorizedConvergenceLoop(
+            scipy_mat=mat, words=words, word_idx=word_idx,
+            word_neurons=word_neurons, **defaults)
+        return loop, word_idx
+
+    def test_dense_converges_on_related_words(self):
+        """Dense attention: query [paris, france] should converge."""
+        loop, word_idx = self._make_scipy_loop(use_dense=True)
+        result = loop.converge([word_idx["paris"], word_idx["france"]])
+
+        assert result.converged is True
+        assert len(result.concepts) > 0
+        assert result.confidence > 0
+
+    def test_dense_finds_correct_cluster(self):
+        """Dense attention: query [capital, france] should find paris."""
+        loop, word_idx = self._make_scipy_loop(use_dense=True)
+        result = loop.converge([word_idx["capital"], word_idx["france"]])
+
+        concept_indices = {widx for widx, _ in result.concepts}
+        assert word_idx["paris"] in concept_indices
+
+    def test_dense_empty_query_abstains(self):
+        """Dense attention: empty query should not converge (honest abstention)."""
+        loop, word_idx = self._make_scipy_loop(use_dense=True)
+        result = loop.converge([])
+        assert result.converged is False
+        assert result.concepts == []
+
+    def test_dense_phase_timings_populated(self):
+        """Phase timings should be present and non-negative."""
+        loop, word_idx = self._make_scipy_loop(use_dense=True)
+        result = loop.converge([word_idx["paris"]])
+
+        assert 'sparse_ms' in result.phase_timings
+        assert 'dense_ms' in result.phase_timings
+        assert 'total_ms' in result.phase_timings
+        assert result.phase_timings['sparse_ms'] >= 0
+        assert result.phase_timings['dense_ms'] >= 0
+        assert result.phase_timings['total_ms'] >= 0
+
+    def test_sparse_fallback_matches_original(self):
+        """use_dense_attention=False should still converge correctly."""
+        loop, word_idx = self._make_scipy_loop(use_dense=False)
+        result = loop.converge([word_idx["paris"], word_idx["france"]])
+
+        assert result.converged is True
+        assert len(result.concepts) > 0
+        # Dense timing should be 0 in sparse-only mode
+        assert result.phase_timings.get('dense_ms', 0) == 0
+
+    def test_dense_trace_inspectable(self):
+        """Trace should show hop details (invariant #2)."""
+        loop, word_idx = self._make_scipy_loop(use_dense=True)
+        result = loop.converge([word_idx["paris"]])
+
+        assert len(result.hops) > 0
+        trace_str = result.trace()
+        assert "Hop 0" in trace_str
+
+    def test_dense_london_cluster(self):
+        """Dense attention: query [london, england] should find london-related words."""
+        loop, word_idx = self._make_scipy_loop(use_dense=True)
+        result = loop.converge([word_idx["london"], word_idx["england"]])
+
+        concept_indices = {widx for widx, _ in result.concepts}
+        # Should find london-cluster words, not paris
+        assert word_idx["london"] in concept_indices or word_idx["thames"] in concept_indices or word_idx["tower"] in concept_indices
 
 
 if __name__ == "__main__":

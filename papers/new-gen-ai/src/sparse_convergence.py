@@ -46,6 +46,7 @@ class SparseConvergenceResult:
     concepts: list              # [(word_idx, confidence)] — final concept set
     hops: list = field(default_factory=list)
     confidence: float = 0.0
+    phase_timings: dict = field(default_factory=dict)  # {'sparse_ms', 'dense_ms', 'total_ms', 'hops'}
 
     def trace(self) -> str:
         lines = []
@@ -68,6 +69,7 @@ class SparseMultiHopResult:
     concepts: list
     rounds: list = field(default_factory=list)
     confidence: float = 0.0
+    phase_timings: dict = field(default_factory=dict)
 
     def trace(self) -> str:
         lines = []
@@ -473,7 +475,9 @@ class VectorizedConvergenceLoop:
                  convergence_threshold=0.99,
                  min_confidence=0.1,
                  min_relevance=0.3,
-                 temperature=1.0):
+                 temperature=1.0,
+                 dense_candidates=64,
+                 use_dense_attention=True):
         self._mat = scipy_mat  # scipy.sparse.csr_matrix (V x V)
         self._V = scipy_mat.shape[0]
         self.words = words
@@ -485,6 +489,8 @@ class VectorizedConvergenceLoop:
         self.min_confidence = min_confidence
         self.min_relevance = min_relevance
         self.temperature = temperature
+        self.dense_candidates = dense_candidates
+        self.use_dense_attention = use_dense_attention
 
         # Precompute row norms for cosine
         self._row_norms = np.sqrt(
@@ -499,6 +505,75 @@ class VectorizedConvergenceLoop:
             self._row_norms = np.sqrt(
                 np.asarray(scipy_mat.multiply(scipy_mat).sum(axis=1)).ravel()
             ).astype(np.float32)
+
+    def _dense_attention(self, candidate_indices: np.ndarray,
+                         query_vec: np.ndarray) -> tuple:
+        """Phase 2: Dense transformer attention on narrowed candidate set.
+
+        Given N candidate word indices (from sparse Phase 1 shortlisting),
+        extracts the N×N submatrix and runs full scaled dot-product attention
+        with N×N self-attention among candidates.
+
+        For N=64: 64×64 matmul = 4,096 ops. Trivial on CPU (<0.01ms).
+
+        Transformer correspondence:
+          - Q: query_vec (the current convergence state)
+          - K: candidate rows from CSR (co-occurrence profiles)
+          - V: same candidate rows (self-attention)
+          - Softmax: temperature-scaled over combined scores
+          - Self-attention: N×N mutual coherence among candidates
+
+        Returns: (output_vec, neighbors_list)
+          output_vec: np.ndarray shape (V,) — attention output
+          neighbors_list: [(word_idx, score)] — for trace (top 10)
+        """
+        N = len(candidate_indices)
+        if N == 0:
+            return np.zeros(self._V, dtype=np.float32), []
+
+        # Extract N rows from CSR — the candidate co-occurrence profiles
+        sub = self._mat[candidate_indices, :]  # N × V sparse
+
+        # Q×K^T: each candidate scored against query
+        scores = np.asarray(sub @ query_vec).ravel()  # (N,)
+
+        # Normalize to cosine similarity
+        cand_norms = self._row_norms[candidate_indices]
+        q_norm = float(np.linalg.norm(query_vec))
+        with np.errstate(divide='ignore', invalid='ignore'):
+            cosines = scores / (cand_norms * q_norm + 1e-10)
+
+        # N×N self-attention: mutual coherence among candidates
+        # Candidates that co-occur with each other form coherent clusters
+        sim_mat = (sub @ sub.T).toarray().astype(np.float32)  # N×N dense
+        with np.errstate(divide='ignore', invalid='ignore'):
+            norm_outer = np.outer(cand_norms, cand_norms) + 1e-10
+            sim_mat /= norm_outer
+
+        # Mutual boost: mean similarity to other candidates
+        np.fill_diagonal(sim_mat, 0.0)
+        mutual = sim_mat.sum(axis=1) / max(N - 1, 1)
+
+        # Combined score: query relevance × (1 + mutual coherence)
+        combined = cosines * (1.0 + mutual)
+
+        # Softmax attention weights (temperature-scaled)
+        if self.temperature > 0:
+            scaled = (combined - combined.max()) / self.temperature
+            weights = np.exp(scaled)
+            weights /= weights.sum() + 1e-10
+        else:
+            weights = np.zeros(N, dtype=np.float32)
+            weights[combined.argmax()] = 1.0
+
+        # V projection: weighted blend of candidate rows → output
+        output = np.asarray(sub.T @ weights).ravel().astype(np.float32)
+
+        # Build trace (top 10 candidates by score)
+        scored = sorted(zip(candidate_indices.tolist(), combined.tolist()),
+                        key=lambda x: x[1], reverse=True)
+
+        return output, scored[:10]
 
     def _search(self, query_vec: np.ndarray, k: int) -> list:
         """Top-k words by spmv attention. Uses all CPUs via BLAS."""
@@ -576,7 +651,16 @@ class VectorizedConvergenceLoop:
 
     def converge(self, query_word_indices: list,
                  query_weights: list = None) -> SparseConvergenceResult:
-        """Run vectorized convergence. Same interface as SparseConvergenceLoop."""
+        """Run vectorized convergence with two-phase attention.
+
+        Phase 1 (sparse): spmv search narrows V words → N candidates.
+        Phase 2 (dense): full Q×K^T attention + N×N self-attention on candidates.
+        Residual: additive (output + query), standard transformer pattern.
+
+        Falls back to original sparse-only path when use_dense_attention=False.
+        """
+        import time
+
         if not query_word_indices:
             return SparseConvergenceResult(converged=False, concepts=[], confidence=0.0)
 
@@ -604,60 +688,111 @@ class VectorizedConvergenceLoop:
         hops = []
         last_neighbors = []
 
+        t_start = time.perf_counter()
+        t_sparse = 0.0
+        t_dense = 0.0
+
         for hop_num in range(self.max_hops):
             previous = current.copy()
             progress = hop_num / max(self.max_hops - 1, 1)
 
-            hop_k = max(2, int(self.k * (1.5 - 0.7 * progress)))
-            hop_min_sim = self.min_confidence * (1.0 + 0.5 * progress)
+            if self.use_dense_attention:
+                # === TWO-PHASE DENSE ATTENTION PATH ===
 
-            # 1. Search via spmv
-            neighbors = self._search(current, k=hop_k)
+                # Phase 1: Sparse shortlist — wider net than original k=5
+                hop_N = max(16, int(self.dense_candidates * (1.3 - 0.3 * progress)))
+                hop_min_sim = self.min_confidence * (1.0 + 0.3 * progress)
 
-            # 2. Filter by minimum similarity
-            neighbors = [(w, s) for w, s in neighbors if s >= hop_min_sim]
-            if not neighbors:
-                return SparseConvergenceResult(
-                    converged=False, concepts=last_neighbors,
-                    hops=hops, confidence=0.0)
+                t0 = time.perf_counter()
+                neighbors = self._search(current, k=hop_N)
+                neighbors = [(w, s) for w, s in neighbors if s >= hop_min_sim]
+                t_sparse += time.perf_counter() - t0
 
-            # 3. Mutual attention
-            neighbors = self._mutual_attention(neighbors)
-            neighbors.sort(key=lambda x: x[1], reverse=True)
+                if not neighbors:
+                    return SparseConvergenceResult(
+                        converged=False, concepts=last_neighbors,
+                        hops=hops, confidence=0.0,
+                        phase_timings={
+                            'sparse_ms': round(t_sparse * 1000, 2),
+                            'dense_ms': round(t_dense * 1000, 2),
+                            'total_ms': round((time.perf_counter() - t_start) * 1000, 2),
+                            'hops': len(hops),
+                        })
 
-            # 4. Softmax blend → activation vector
-            activation = self._softmax_blend(neighbors)
-            an = np.linalg.norm(activation)
-            if an > 0:
-                activation /= an
+                candidate_indices = np.array([idx for idx, _ in neighbors],
+                                             dtype=np.int32)
 
-            # 5. Query anchor (residual connection)
-            alpha = hop_num / self.max_hops
-            current = (1.0 - alpha) * activation + alpha * query_profile
-            cn = np.linalg.norm(current)
-            if cn > 0:
-                current /= cn
+                # Phase 2: Dense attention on candidate set
+                t0 = time.perf_counter()
+                activation, scored = self._dense_attention(candidate_indices, current)
+                t_dense += time.perf_counter() - t0
 
-            # 6. Movement
+                # Normalize activation
+                an = np.linalg.norm(activation)
+                if an > 0:
+                    activation /= an
+
+                # Additive residual: output + query (standard transformer)
+                current = activation + query_profile
+                cn = np.linalg.norm(current)
+                if cn > 0:
+                    current /= cn
+
+                last_neighbors = scored
+
+            else:
+                # === ORIGINAL SPARSE-ONLY PATH (fallback) ===
+                hop_k = max(2, int(self.k * (1.5 - 0.7 * progress)))
+                hop_min_sim = self.min_confidence * (1.0 + 0.5 * progress)
+
+                t0 = time.perf_counter()
+                neighbors = self._search(current, k=hop_k)
+                neighbors = [(w, s) for w, s in neighbors if s >= hop_min_sim]
+                t_sparse += time.perf_counter() - t0
+
+                if not neighbors:
+                    return SparseConvergenceResult(
+                        converged=False, concepts=last_neighbors,
+                        hops=hops, confidence=0.0,
+                        phase_timings={
+                            'sparse_ms': round(t_sparse * 1000, 2),
+                            'dense_ms': 0.0,
+                            'total_ms': round((time.perf_counter() - t_start) * 1000, 2),
+                            'hops': len(hops),
+                        })
+
+                neighbors = self._mutual_attention(neighbors)
+                neighbors.sort(key=lambda x: x[1], reverse=True)
+
+                activation = self._softmax_blend(neighbors)
+                an = np.linalg.norm(activation)
+                if an > 0:
+                    activation /= an
+
+                alpha = hop_num / self.max_hops
+                current = (1.0 - alpha) * activation + alpha * query_profile
+                cn = np.linalg.norm(current)
+                if cn > 0:
+                    current /= cn
+
+                last_neighbors = neighbors
+
+            # Movement (shared by both paths)
             dot = float(np.dot(current, previous))
             movement = 1.0 - min(dot, 1.0)
 
-            # Build sparse hop trace (convert to dict for compatibility)
             hops.append(SparseHop(
                 hop_number=hop_num,
-                neighbors=[(w, s) for w, s in neighbors],
-                query_profile={},  # skip for perf — dict conversion expensive
+                neighbors=[(w, s) for w, s in last_neighbors],
+                query_profile={},
                 current={},
                 movement=movement,
             ))
 
-            last_neighbors = neighbors
-
-            # 7. Convergence check
+            # Convergence check (shared by both paths)
             if dot >= self.convergence_threshold:
-                # Relevance check
-                best_idx = neighbors[0][0]
-                if best_idx < self._V:
+                best_idx = last_neighbors[0][0] if last_neighbors else -1
+                if best_idx >= 0 and best_idx < self._V:
                     row = np.asarray(self._mat[best_idx, :].todense()).ravel()
                     rn = self._row_norms[best_idx]
                     qn2 = np.linalg.norm(query_profile)
@@ -668,24 +803,39 @@ class VectorizedConvergenceLoop:
                 else:
                     best_relevance = 0.0
 
+                timings = {
+                    'sparse_ms': round(t_sparse * 1000, 2),
+                    'dense_ms': round(t_dense * 1000, 2),
+                    'total_ms': round((time.perf_counter() - t_start) * 1000, 2),
+                    'hops': len(hops),
+                }
+
                 if best_relevance < self.min_relevance:
                     return SparseConvergenceResult(
                         converged=False,
                         concepts=[(w, s) for w, s in last_neighbors],
-                        hops=hops, confidence=0.0)
+                        hops=hops, confidence=0.0,
+                        phase_timings=timings)
 
-                avg_sim = sum(s for _, s in neighbors) / len(neighbors)
+                avg_sim = sum(s for _, s in last_neighbors) / len(last_neighbors)
                 return SparseConvergenceResult(
                     converged=True,
                     concepts=[(w, s) for w, s in last_neighbors],
-                    hops=hops, confidence=avg_sim)
+                    hops=hops, confidence=avg_sim,
+                    phase_timings=timings)
 
         avg_sim = (sum(s for _, s in last_neighbors) / len(last_neighbors)
                    if last_neighbors else 0.0)
         return SparseConvergenceResult(
             converged=False,
             concepts=[(w, s) for w, s in last_neighbors],
-            hops=hops, confidence=avg_sim * 0.5)
+            hops=hops, confidence=avg_sim * 0.5,
+            phase_timings={
+                'sparse_ms': round(t_sparse * 1000, 2),
+                'dense_ms': round(t_dense * 1000, 2),
+                'total_ms': round((time.perf_counter() - t_start) * 1000, 2),
+                'hops': len(hops),
+            })
 
 
 class SparseMultiHop:
@@ -756,6 +906,12 @@ class SparseMultiHop:
                 current_indices = list(query_word_indices) + new_indices
                 current_weights = orig_w + new_weights_list
 
+        # Aggregate phase timings across rounds
+        agg_timings = {'sparse_ms': 0.0, 'dense_ms': 0.0, 'total_ms': 0.0, 'hops': 0}
+        for r in rounds:
+            for k in ('sparse_ms', 'dense_ms', 'total_ms', 'hops'):
+                agg_timings[k] += r.phase_timings.get(k, 0)
+
         any_converged = any(r.converged for r in rounds)
         if all_concepts and any_converged:
             avg_conf = sum(s for _, s in all_concepts) / len(all_concepts)
@@ -764,6 +920,7 @@ class SparseMultiHop:
                 concepts=all_concepts,
                 rounds=rounds,
                 confidence=avg_conf,
+                phase_timings=agg_timings,
             )
         else:
             return SparseMultiHopResult(
@@ -771,4 +928,5 @@ class SparseMultiHop:
                 concepts=all_concepts,
                 rounds=rounds,
                 confidence=0.0,
+                phase_timings=agg_timings,
             )

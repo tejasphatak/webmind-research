@@ -10,6 +10,14 @@ RSS target: <2GB for 408K words, 43M edges.
 """
 
 import os
+
+# Cap BLAS/OMP threads before numpy/scipy imports to prevent over-subscription
+# with ThreadPoolExecutor(4). Must happen before any numpy import.
+_ncpu = os.cpu_count() or 2
+_blas_threads = str(max(1, _ncpu // 2))
+for _ev in ('OMP_NUM_THREADS', 'MKL_NUM_THREADS', 'OPENBLAS_NUM_THREADS'):
+    os.environ.setdefault(_ev, _blas_threads)
+
 import struct
 import re
 import math
@@ -66,6 +74,31 @@ STRUCTURAL_WORDS = FUNCTION_WORDS | frozenset({
     "run", "cut", "hit", "cost", "read", "sing", "sang", "sung",
     "where", "when", "how", "why", "much", "many",
 })
+
+# Intent verbs: carry query intent, not semantic content.
+# "explain gravity" → the user wants gravity info, not dictionary info.
+# Downweighted in convergence (0.2x), stripped from _qa_key().
+QUERY_VERBS = frozenset({
+    "explain", "describe", "tell", "define", "list", "show",
+    "give", "name", "state", "discuss", "summarize", "clarify",
+    "compare", "contrast", "illustrate", "elaborate", "outline",
+    "mention", "identify", "provide", "present",
+})
+QUERY_VERB_WEIGHT = 0.2
+
+# Interrogative detection — skip question sentences when looking for answers
+_WH_WORDS = frozenset({"who", "what", "when", "where", "why", "how", "which", "whom", "whose"})
+
+
+def _is_interrogative(text: str) -> bool:
+    """Heuristic: is this sentence a question?"""
+    if not text:
+        return False
+    stripped = text.strip()
+    if stripped.endswith('?'):
+        return True
+    first_word = stripped.split()[0].lower() if stripped.split() else ""
+    return first_word in _WH_WORDS
 
 
 class _LMDBReader:
@@ -296,6 +329,7 @@ class BrainCSR:
             pass
 
         # Convergence loop — vectorized (scipy spmv, all CPUs) with dict fallback
+        # Two-phase: sparse shortlist (N=64) → dense Q×K^T attention (64×64)
         effective_mat = self._wal.effective_scipy_matrix(self._csr)
         self._convergence = VectorizedConvergenceLoop(
             scipy_mat=effective_mat,
@@ -306,6 +340,8 @@ class BrainCSR:
             convergence_threshold=0.99,
             min_confidence=0.1,
             min_relevance=0.3,
+            dense_candidates=64,
+            use_dense_attention=True,
         )
         self._multi_hop = SparseMultiHop(
             self._convergence, max_rounds=3, concept_blend_weight=0.4,
@@ -363,9 +399,10 @@ class BrainCSR:
     _QA_MAP_MEMORY_MAX = 50_000  # LRU cache in memory (hot queries), rest on disk via LMDB
 
     def _qa_key(self, question: str) -> str:
-        """Normalize question to a stable lookup key. Strips function words, sorts content."""
+        """Normalize question to a stable lookup key. Strips function/intent/WH words, sorts content."""
         tokens = re.findall(r'[a-z0-9]+', question.lower())
-        content = [t for t in tokens if t not in FUNCTION_WORDS]
+        content = [t for t in tokens
+                   if t not in FUNCTION_WORDS and t not in QUERY_VERBS and t not in _WH_WORDS]
         return ' '.join(sorted(content))
 
     def ask(self, question: str, auto_learn: bool = True, session_edges: dict = None) -> dict:
@@ -397,15 +434,18 @@ class BrainCSR:
             except Exception:
                 pass
         if answer_direct:
-            return {
-                "answer": answer_direct,
-                "confidence": 1.0,
-                "strategy": "qa_direct",
-                "trace": f"Direct Q→A match: {qkey[:50]}",
-                "convergence_trace": "",
-                "converged": True,
-                "convergence_rounds": 0,
-            }
+            # Validate stored answer has relevance — skip poisoned/stale entries
+            if self._has_relevance(question, answer_direct):
+                return {
+                    "answer": answer_direct,
+                    "confidence": 1.0,
+                    "strategy": "qa_direct",
+                    "trace": f"Direct Q→A match: {qkey[:50]}",
+                    "convergence_trace": "",
+                    "converged": True,
+                    "convergence_rounds": 0,
+                }
+            # else: fall through to Tier 2 convergence (stale/poisoned entry)
 
         # Tier 1.5: O(1) semantic search via LSH (fast-path before convergence)
         if self._vocab_filter.is_ready:
@@ -432,14 +472,51 @@ class BrainCSR:
         content_nids = [self._word_neurons[t] for t in content
                         if t in self._word_neurons]
 
+        # Session concept injection: when query is short (pronoun-heavy),
+        # inject the strongest session concepts as extra convergence inputs.
+        # This lets "when was he born" + session(Bell, telephone) converge on Bell.
+        if session_edges and len(content_indices) <= 3:
+            # Find the most active session word indices (by total edge weight)
+            session_word_scores = {}
+            for (i, j), w in session_edges.items():
+                session_word_scores[i] = session_word_scores.get(i, 0.0) + w
+                session_word_scores[j] = session_word_scores.get(j, 0.0) + w
+            # Take top-5 session concepts not already in query
+            content_set = set(content_indices)
+            session_ranked = sorted(session_word_scores.items(),
+                                    key=lambda x: x[1], reverse=True)
+            for sidx, sw in session_ranked[:5]:
+                if sidx not in content_set and sidx < len(self._words):
+                    content_indices.append(sidx)
+                    # These get lower weight than explicit query words
+                    nid = self._word_neurons.get(self._words[sidx])
+                    if nid:
+                        content_nids.append(nid)
+
         if not content_indices or len(self._words) == 0:
             return {"answer": "I don't know.", "confidence": 0.0,
                     "strategy": "abstain", "trace": "No known words in query",
                     "convergence_trace": "", "converged": False,
                     "convergence_rounds": 0}
 
+        # Build per-word weights: query verbs get 0.2x, content words get position decay
+        # Session-injected concepts (appended to content_indices above) get 0.3x
+        content_weights = []
+        real_pos = 0
+        n_original = len([t for t in content if t in self._word_idx])
+        for t in content:
+            if t in self._word_idx:
+                if t in QUERY_VERBS:
+                    content_weights.append(QUERY_VERB_WEIGHT)
+                else:
+                    content_weights.append(1.0 / (1.0 + 0.1 * real_pos))
+                    real_pos += 1
+        # Pad for session-injected indices
+        while len(content_weights) < len(content_indices):
+            content_weights.append(0.3)  # session context weight
+
         # Multi-hop sparse convergence
-        multi_hop_result = self._multi_hop.reason(content_indices)
+        multi_hop_result = self._multi_hop.reason(content_indices, content_weights)
         convergence_trace = multi_hop_result.trace()
 
         # Build nid->word lookup
@@ -477,16 +554,23 @@ class BrainCSR:
                         concepts.append((n, lsh_word))
                         seen.add(nid)
 
-        # Sparse co-occurrence search (complementary)
-        weights = [1.0 / (1.0 + 0.1 * i) for i in range(len(content_indices))]
+        # Sparse co-occurrence search (complementary) — reuse verb-downweighted weights
+        weights = content_weights if len(content_weights) == len(content_indices) else [
+            1.0 / (1.0 + 0.1 * i) for i in range(len(content_indices))]
         query_cooc = self._sparse_blend(content_indices, weights)
 
-        # Blend session edges into query profile — boosts context-relevant words
+        # Blend ALL session edges into query profile with recency decay.
+        # No gate on current query words — session context is ambient.
+        # Recent edges (from last turn's answer) get full weight; older edges decay.
         if session_edges:
-            for (i, j), w in session_edges.items():
-                if i in set(content_indices) or j in set(content_indices):
-                    query_cooc[i] = query_cooc.get(i, 0.0) + w * 0.5
-                    query_cooc[j] = query_cooc.get(j, 0.0) + w * 0.5
+            session_items = list(session_edges.items())
+            n_edges = len(session_items)
+            for rank, ((i, j), w) in enumerate(session_items):
+                recency = (rank + 1) / n_edges  # 0..1, higher = more recent
+                decay = 0.3 + 0.7 * recency     # range [0.3, 1.0]
+                blend_w = w * 0.5 * decay
+                query_cooc[i] = query_cooc.get(i, 0.0) + blend_w
+                query_cooc[j] = query_cooc.get(j, 0.0) + blend_w
 
         search_results = self._sparse_search(query_cooc, k=10)
 
@@ -552,6 +636,11 @@ class BrainCSR:
             sentences = self.db.get_sentences_for_neurons(content_nids)
             if sentences:
                 scored = []
+                query_word_set_d = set()
+                for cnid in content_nids:
+                    w = nid_to_word.get(cnid)
+                    if w:
+                        query_word_set_d.add(w)
                 for sid, nids in sentences.items():
                     sent_nid_set = set(nid for nid, pos in nids)
                     overlap = len(sent_nid_set & query_nid_set)
@@ -560,6 +649,16 @@ class BrainCSR:
                         score = overlap / len(sent_nid_set) * overlap
                     else:
                         score = 0
+                    # Penalize interrogative sentences — we want answers, not questions
+                    sent_text = self._get_sentence_text(sid)
+                    if sent_text and _is_interrogative(sent_text):
+                        score *= 0.1
+                    # Novelty bonus: sentences with NEW words are more likely answers
+                    if score > 0:
+                        sent_words = {nid_to_word.get(n, "") for n in sent_nid_set} - {""}
+                        novel = sent_words - query_word_set_d - FUNCTION_WORDS
+                        if sent_words:
+                            score *= (1.0 + len(novel) / len(sent_words))
                     scored.append((sid, score))
                 scored.sort(key=lambda x: x[1], reverse=True)
                 best_score = scored[0][1]
@@ -596,6 +695,7 @@ class BrainCSR:
         result["convergence_trace"] = convergence_trace
         result["converged"] = multi_hop_result.converged
         result["convergence_rounds"] = len(multi_hop_result.rounds)
+        result["phase_timings"] = multi_hop_result.phase_timings
 
         # Confidence floor: abstain rather than return weak convergence.
         # Bad context is worse than no context (Google RAG research).
@@ -712,6 +812,13 @@ class BrainCSR:
         }
 
         concept_id_set = set(concept_ids)
+        # Build query word set for novelty scoring
+        query_word_set = set()
+        for cid in concept_ids:
+            w = nid_to_word.get(cid)
+            if w:
+                query_word_set.add(w)
+
         scored = []
         for sid, matched in sentences.items():
             sent_neurons = self.db.get_sentence_neurons(sid)
@@ -724,6 +831,17 @@ class BrainCSR:
                 score = overlap / len(sent_nid_set) * overlap
             else:
                 score = 0
+            # Penalize interrogative sentences — we want answers, not questions
+            sent_text = self._get_sentence_text(sid)
+            if sent_text and _is_interrogative(sent_text):
+                score *= 0.1
+            # Novelty bonus: sentences with NEW words (not in query) are more likely answers
+            if score > 0:
+                sent_words = {nid_to_word.get(nid, "") for nid in sent_nid_set} - {""}
+                novel = sent_words - query_word_set - FUNCTION_WORDS
+                if sent_words:
+                    novelty = len(novel) / len(sent_words)
+                    score *= (1.0 + novelty)
             scored.append((sid, score, sent_neurons))
         if not scored:
             return None
@@ -984,6 +1102,31 @@ class BrainCSR:
                     return False
         return True
 
+    def _has_relevance(self, question: str, answer: str) -> bool:
+        """Check if question and answer share semantic relevance.
+
+        Returns True if there's word overlap or strong co-occurrence overlap.
+        Used to gate correct() against poisoning and validate qa_direct hits.
+        """
+        stop = FUNCTION_WORDS | QUERY_VERBS | _WH_WORDS
+        q_tokens = [t for t in self._tokenize(question) if t not in stop]
+        a_tokens = [t for t in self._tokenize(answer) if t not in stop]
+        if not q_tokens or not a_tokens:
+            return len(q_tokens) == 0 and len(a_tokens) == 0
+        # Direct word overlap
+        if set(q_tokens) & set(a_tokens):
+            return True
+        # Co-occurrence overlap: answer words must have meaningful co-occurrence
+        q_indices = [self._word_idx[t] for t in q_tokens if t in self._word_idx]
+        a_indices = [self._word_idx[t] for t in a_tokens if t in self._word_idx]
+        if not q_indices or not a_indices:
+            return True  # unknown words — can't validate, allow through
+        # Compute cosine between query profile and answer profile
+        q_cooc = self._sparse_blend(q_indices)
+        a_cooc = self._sparse_blend(a_indices)
+        sim = sparse_cosine(q_cooc, a_cooc)
+        return sim > 0.004  # require meaningful overlap, not just noise
+
     # --- Learning ---
 
     def _learn_word(self, word: str) -> int:
@@ -1087,8 +1230,11 @@ class BrainCSR:
     def correct(self, question: str, answer: str):
         """Learn from a correction. Stores direct Q→A mapping + teaches the answer.
         Cannot overwrite protected entries (identity, safety).
-        Rejects garbage input (non-meaningful text)."""
+        Rejects garbage input and semantically unrelated Q/A pairs."""
         if not self._is_meaningful(question) or not self._is_meaningful(answer):
+            return
+        # Relevance gate: reject Q/A pairs with no semantic connection
+        if not self._has_relevance(question, answer):
             return
         self.teach(answer, confidence=0.6)
 

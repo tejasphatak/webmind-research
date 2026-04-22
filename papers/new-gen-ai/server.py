@@ -354,6 +354,11 @@ def brain_respond(message: str, messages: List[ChatMessage] = None, session_id: 
             is_garbage = True
 
     if strategy != "abstain" and not is_garbage:
+        # Teach brain's answer to session WAL so follow-up questions can resolve pronouns
+        if session_id:
+            answer_edges = brain.teach_session(answer)
+            for k, v in answer_edges.items():
+                session_wal[k] = session_wal.get(k, 0.0) + v
         return {"answer": answer, "source": "brain", "strategy": strategy, "hops": hops, "confidence": confidence}
 
     # Brain doesn't know — try web search
@@ -361,6 +366,11 @@ def brain_respond(message: str, messages: List[ChatMessage] = None, session_id: 
     if web_result:
         # Teach the brain so it knows next time
         brain.correct(message, web_result)
+        # Also add to session WAL for follow-up context
+        if session_id:
+            web_edges = brain.teach_session(web_result)
+            for k, v in web_edges.items():
+                session_wal[k] = session_wal.get(k, 0.0) + v
         return {"answer": web_result, "source": "web", "strategy": "web_search", "hops": 0, "confidence": 0.7}
 
     # Nothing found anywhere

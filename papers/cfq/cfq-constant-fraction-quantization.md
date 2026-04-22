@@ -141,7 +141,7 @@ But 1 bit of delta per weight is not enough to preserve the signal through 60 tr
 
 ## 4. Reproducing
 
-All code is at: github.com/tejasphatak/webmind-research/dfs-model
+All code is at: github.com/tejasphatak/webmind-research/papers/cfq
 
 | File | Purpose |
 |------|---------|

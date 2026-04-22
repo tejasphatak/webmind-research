@@ -32,9 +32,7 @@ The entire dictionary is ~8-12 KB. That fits in CPU L1 cache.
 - Every BF16 model shares the same ~6K codebook. The "knowledge" isn't in what values are used — it's in where they're placed (the index pattern).
 - The constant-fraction decomposition separates the "what" (constant) from the "how much" (fraction) in each weight block. At higher bit-widths this structure might be useful.
 
-Code and data: github.com/tejasphatak/webmind-research/dfs-model
-
-Paper: github.com/tejasphatak/webmind-research/papers/cfq-constant-fraction-quantization.md
+Code and paper: github.com/tejasphatak/webmind-research/papers/cfq
 
 Happy to answer questions. We tried not to oversell this — the dictionary finding is real and exact, the compression method needs work.
 

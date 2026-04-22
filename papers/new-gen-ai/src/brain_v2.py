@@ -309,18 +309,23 @@ class BrainV2:
                     self._cooc[b][a] = min(WEIGHT_CLAMP,
                         self._cooc[b].get(a, 0) + COOC_WEIGHT)
 
-            # Successor pairs (for generation)
-            for i in range(len(tokens) - 1):
-                curr = tokens[i]
-                nxt = tokens[i + 1]
-                if curr in self._word_idx and nxt in self._word_idx:
-                    cidx = self._word_idx[curr]
-                    nidx = self._word_idx[nxt]
-                    if cidx not in self._successors:
-                        self._successors[cidx] = {}
-                    self._successors[cidx][nidx] = (
-                        self._successors[cidx].get(nidx, 0) + 1.0
-                    )
+            # Successor pairs (for generation) — sentence-bounded.
+            # Split on sentence boundaries so "...gravity. Persian..." doesn't
+            # create gravity→persian. Each sentence gets its own chain.
+            sub_sentences = re.split(r'(?<=[.!?])\s+', sentence)
+            for sub in sub_sentences:
+                sub_tokens = _tokenize(sub)
+                for i in range(len(sub_tokens) - 1):
+                    curr = sub_tokens[i]
+                    nxt = sub_tokens[i + 1]
+                    if curr in self._word_idx and nxt in self._word_idx:
+                        cidx = self._word_idx[curr]
+                        nidx = self._word_idx[nxt]
+                        if cidx not in self._successors:
+                            self._successors[cidx] = {}
+                        self._successors[cidx][nidx] = (
+                            self._successors[cidx].get(nidx, 0) + 1.0
+                        )
 
         return sid
 
@@ -460,36 +465,14 @@ class BrainV2:
         best_sim = float(sims[best_idx])
         best_text = self._sent_texts[best_idx]
 
-        if best_sim < 0.3:
-            return {
-                "answer": "I don't know.",
-                "confidence": 0.0,
-                "strategy": "abstain",
-                "trace": f"Best match too weak: {best_sim:.3f}",
-            }
-
-        # Chain top non-overlapping sentences for richer answers
-        answer_parts = [best_text]
-        used_words = set(_tokenize(best_text))
-        for idx in top_indices[1:]:
-            if float(sims[idx]) < 0.4:
-                break
-            text = self._sent_texts[idx]
-            text_words = set(_tokenize(text))
-            # Skip if >50% overlap with already-used words
-            if len(text_words & used_words) > len(text_words) * 0.5:
-                continue
-            answer_parts.append(text)
-            used_words.update(text_words)
-            if len(answer_parts) >= 3:
-                break
-
-        answer = " ".join(answer_parts)
+        # Return best match. Confidence = similarity (from data, not threshold).
+        # The caller decides what to do with low confidence — not us.
+        answer = best_text
         return {
             "answer": answer,
             "confidence": best_sim,
             "strategy": "embedding_search",
-            "trace": f"Top match: sim={best_sim:.3f}, sentences={len(answer_parts)}",
+            "trace": f"Top match: sim={best_sim:.3f}",
         }
 
     # --- Generation (convergence × successors) ---
@@ -498,8 +481,11 @@ class BrainV2:
                  temperature: float = 0.7) -> dict:
         """Generate text: embedding search for concepts, successor walk for words.
 
-        1. Find relevant concepts via embedding search
-        2. Walk successors guided by concept relevance
+        Zero hardcoding. Score = successor_count × concept_relevance.
+        That's it. Everything else comes from data.
+
+        Invariant #1: intelligence from data, not code.
+        Invariant #10: same math as transformer, transparent substrate.
         """
         if not self._words or self._embeddings is None:
             return {"text": "", "trace": [], "tokens_generated": 0}
@@ -513,93 +499,66 @@ class BrainV2:
         else:
             top_indices = np.argpartition(-sims, top_k)[:top_k]
 
-        # Extract content words from top sentences
-        concept_words = set()
+        # Extract concept words + their similarity as relevance weight
+        concept_scores = {}  # word_idx → relevance
         query_words = set(_tokenize(query))
         for idx in top_indices:
-            if float(sims[idx]) < 0.3:
+            sim = float(sims[idx])
+            if sim <= 0:
                 continue
             words = _tokenize(self._sent_texts[idx])
             for w in words:
-                if w not in FUNCTION_WORDS and w not in query_words and w in self._word_idx:
-                    concept_words.add(w)
+                if w not in query_words and w in self._word_idx:
+                    widx = self._word_idx[w]
+                    # Relevance = sentence similarity (from data, not hardcoded)
+                    concept_scores[widx] = max(concept_scores.get(widx, 0.0), sim)
 
-        if not concept_words:
+        if not concept_scores:
             return {"text": "", "trace": ["No concepts found"], "tokens_generated": 0}
 
-        # Build concept relevance scores
-        concept_scores = {}
-        for w in concept_words:
-            idx = self._word_idx[w]
-            concept_scores[idx] = 1.0
-
-        # Find best starting word
+        # Start with highest-relevance concept that has successors
+        start_candidates = sorted(concept_scores.items(), key=lambda x: x[1], reverse=True)
         start_word = None
-        best_score = -1
-        for w in concept_words:
-            widx = self._word_idx[w]
-            # Prefer words with successors (can continue the chain)
-            n_succ = len(self._successors.get(widx, {}))
-            score = n_succ * 0.1 + 1.0
-            if score > best_score:
-                best_score = score
-                start_word = w
-
+        for widx, rel in start_candidates:
+            if self._successors.get(widx):
+                start_word = self._words[widx]
+                break
         if not start_word:
-            return {"text": "", "trace": ["No starting word"], "tokens_generated": 0}
+            start_word = self._words[start_candidates[0][0]]
 
         generated = [start_word]
-        trace = [{"token": start_word, "score": round(best_score, 4), "reason": "start"}]
-        recent_window = 8
+        trace = [{"token": start_word, "score": round(concept_scores.get(self._word_idx[start_word], 0), 4)}]
 
         for step in range(1, max_tokens):
-            prev = generated[-1]
-            prev_idx = self._word_idx.get(prev, -1)
+            prev_idx = self._word_idx.get(generated[-1], -1)
             if prev_idx < 0:
                 break
 
-            # Get successors
             succs = self._successors.get(prev_idx, {})
             if not succs:
-                trace.append({"token": "[STOP]", "score": 0, "reason": "no successors"})
                 break
 
-            recent_set = set(generated[-recent_window:])
-
-            # Score each successor: concept relevance FIRST, successor count as tiebreaker.
-            # Without this, high-frequency corpus artifacts dominate.
-            # A concept-relevant successor with count=1 beats an irrelevant one with count=20.
+            # Score = successor_count × concept_relevance
+            # No filters. No special cases. Data decides.
             scored = []
-            total_succ_count = sum(succs.values()) or 1.0
             for nidx, count in succs.items():
                 if nidx >= len(self._words):
                     continue
-                word = self._words[nidx]
-                if word in recent_set or word in FUNCTION_WORDS:
-                    continue
                 relevance = concept_scores.get(nidx, 0.0)
-                normalized_count = count / total_succ_count  # 0..1
-                if relevance > 0:
-                    # Concept-relevant: relevance dominates, count is bonus
-                    score = relevance * 10.0 + normalized_count
-                else:
-                    # Not concept-relevant: only count, heavily penalized
-                    score = normalized_count * 0.1
-                scored.append((nidx, word, score))
+                score = count * (1.0 + relevance)
+                scored.append((nidx, self._words[nidx], score))
 
             if not scored:
-                trace.append({"token": "[STOP]", "score": 0, "reason": "no valid successors"})
                 break
 
             scored.sort(key=lambda x: x[2], reverse=True)
 
-            # Temperature selection
+            # Softmax selection (temperature from transformer decoder)
             if temperature > 0 and len(scored) > 1:
-                top_n = min(10, len(scored))
-                top = scored[:top_n]
-                scores = [s for _, _, s in top]
-                max_s = max(scores)
-                exp_s = [math.exp((s - max_s) / temperature) for s in scores]
+                top = scored[:min(20, len(scored))]
+                scores_list = [s for _, _, s in top]
+                max_s = max(scores_list)
+                exp_s = [math.exp((s - max_s) / temperature) for s in scores_list]
                 total = sum(exp_s)
                 if total > 0:
                     import random
@@ -618,8 +577,7 @@ class BrainV2:
 
             nidx, word, score = chosen
             generated.append(word)
-            trace.append({"token": word, "score": round(score, 4),
-                          "reason": "succ×concept" if concept_scores.get(nidx, 0) > 0 else "succ"})
+            trace.append({"token": word, "score": round(score, 4)})
 
         return {
             "text": " ".join(generated),

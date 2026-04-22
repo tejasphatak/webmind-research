@@ -1007,7 +1007,7 @@ class BrainCSR:
         for widx, sim in multi_hop.concepts:
             if widx < len(self._words):
                 w = self._words[widx]
-                if w not in FUNCTION_WORDS and w not in query_set:
+                if w not in FUNCTION_WORDS and w not in query_set :
                     start_candidates.append((widx, w, sim))
         if not start_candidates:
             # Fallback: use query words themselves
@@ -1037,7 +1037,7 @@ class BrainCSR:
                 if prev_neuron and prev_neuron.successors:
                     for succ_nid, succ_conf in prev_neuron.successors:
                         succ_word = nid_to_word.get(succ_nid)
-                        if succ_word and succ_word not in FUNCTION_WORDS:
+                        if succ_word and succ_word not in FUNCTION_WORDS :
                             prev_successors[succ_word] = succ_conf
 
             # Get co-occurrence neighbors (concept relevance signal)
@@ -1048,7 +1048,7 @@ class BrainCSR:
                 for widx, weight in profile.items():
                     if widx < len(self._words) and weight > 0:
                         w = self._words[widx]
-                        if w not in FUNCTION_WORDS:
+                        if w not in FUNCTION_WORDS :
                             cooc_neighbors[w] = weight
 
             # Merge candidates from both signals

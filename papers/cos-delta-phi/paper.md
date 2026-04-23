@@ -427,7 +427,15 @@ RoPE [Su et al., 2024](https://doi.org/10.1016/j.neucom.2023.127063) encodes pos
 
 ## 6. Limitations and Open Questions
 
-1. **Interference is not propagation.** Re(ψ · ψ†) computes interference — how waves interact when they meet. It does NOT compute propagation — how waves travel through space. Propagation requires the wave equation (∇²ψ, the Laplacian). We verified this limitation: a double-slit simulation using only Re(ψ · ψ†) failed to reproduce the expected diffraction pattern because the wave could not properly propagate from source through slits to screen. The computation experiments (MNIST, language) succeed precisely because they do not require propagation — all positions exist simultaneously and interfere directly. This is a fundamental distinction: interference is the computation; propagation is the transport.
+1. **Interference is not coherent propagation.** Re(ψ · ψ†) computes interference — how waves interact when they meet. It does NOT produce coherent wave propagation — the transport of a phase-structured wavefront through space. We tested this extensively:
+
+   - **Zero vacuum (ψ=0):** Wave does not reach the screen at all. Re(ψ · ψ†) is multiplicative — |ψ|·|0|·cos(Δφ) = 0. No amplitude at the destination means no interaction.
+   - **Vacuum fluctuations (ψ=ε):** Wave reaches the screen (amplitude propagates via interference with the background). However, the resulting pattern is uniform — not the cos²(πd·sinθ/λ) fringe pattern predicted by the Schrödinger equation. The slits do not produce wavelength-scale interference fringes.
+   - **Interpretation:** Vacuum ε enables amplitude transport (the source interferes with the background, amplifying it along the propagation path). But this transport does not preserve the coherent phase front required for precise double-slit fringes. Interference with vacuum spreads amplitude; it does not create phase-coherent wavefronts.
+
+   The computation experiments (MNIST, language) succeed precisely because they do not require propagation — all positions exist simultaneously and interfere directly. This is a fundamental distinction: **interference is the computation; coherent propagation requires additional physics** (the wave equation or the Schrödinger equation).
+
+   **Script:** `playground/double_slit_emergence.py` — reproduces both the zero-vacuum failure and the ε-vacuum partial result.
 
 2. **Scale.** MNIST and character-level language are small benchmarks. Whether interference attention scales to the complexity of large language models is unknown.
 

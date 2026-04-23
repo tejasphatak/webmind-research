@@ -320,7 +320,7 @@ These values are properties of the formula Re(ψ · ψ†) itself. They do not d
 
 Mathematically: lim(t→∞) disorder = 0, but disorder ≠ 0 for any finite t.
 
-This is analogous to the Nernst unattainability principle — "any process cannot reach absolute zero in a finite number of steps" (Nernst, 1912) and the reason the simulation — and by analogy, any system governed by interference — never reaches a final state. It is always approaching, never arriving. This is why it persists.
+This is analogous to the [Nernst unattainability principle](https://en.wikipedia.org/wiki/Nernst_heat_theorem) — "It is impossible for any procedure to lead to the isotherm T = 0 in a finite number of steps" (Nernst, *Sitzber. Kgl. Preuss. Akad. Wiss.*, 134, 1912) — and the reason the simulation — and by analogy, any system governed by interference — never reaches a final state. It is always approaching, never arriving. This is why it persists.
 
 ### 3.9 The Arrow of Time and the Fate of the System
 
@@ -399,23 +399,29 @@ All wave systems have these three ingredients. Therefore, all wave systems compu
 
 ### 5.1 Attention in AI is a special case of interference
 
-The standard attention formula (Vaswani et al., 2017):
+The standard scaled dot-product attention formula [Vaswani et al., 2017, Eq. 1](https://arxiv.org/abs/1706.03762):
 
 ```
-Attention(Q,K,V) = softmax(Q·K^T / √d) · V
+Attention(Q,K,V) = softmax(Q·K^T / √d_k) · V
 ```
 
 When Q and K are real-valued, Q·K^T is mathematically equivalent to Re(⟨Q|K⟩) with zero phase (since all imaginary components are zero). In this sense, standard real-valued attention computes the interference formula with cos(Δφ) = cos(0) = 1 — it uses only the amplitude term and discards phase information entirely.
 
 Our result shows that restoring the phase — and making it learnable — adds 57% accuracy while using 256× fewer parameters. The phase was discarded by convention, not by necessity.
 
+**What Vaswani et al. actually compute:** The scaling factor 1/√d_k was introduced because "for large values of d_k, the dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients." Our interference formulation naturally includes this through the phase: cos(Δφ) bounds each term to [-1, +1] regardless of dimension.
+
 ### 5.2 Connection to rotary position embeddings
 
-RoPE (Su et al., 2024; Neurocomputing) applies phase rotations for positional encoding. Our work extends this: rotations for Q/K/V transformation, not just position. RoPE is a special case where only positional phase is used; we show that learned non-positional phase rotations add discriminative power.
+RoPE [Su et al., 2024](https://doi.org/10.1016/j.neucom.2023.127063) encodes position by "multiplying the context representations with a rotation matrix" such that "the inner product of the context embeddings will become only depending on the relative position." Our work extends this principle: we apply phase rotations not only for positional encoding but for the Q/K/V transformation itself. RoPE rotates Q and K by position-dependent angles; we rotate by learned, position-independent angles. Both use the same mathematical operation (complex multiplication by e^(iθ)), but for different purposes.
 
 ### 5.3 Relation to unitary evolution
 
-Arjovsky et al. (2016; ICML) showed that unitary weight matrices prevent gradient explosion in RNNs. Our orthogonally-initialized complex feed-forward layer is approximately unitary, serving the same stabilization role. The interference step itself is inherently unitary (phase rotation preserves norm).
+[Arjovsky et al., 2016](https://proceedings.mlr.press/v48/arjovsky16.html) proposed learning "a unitary weight matrix, with eigenvalues of absolute value exactly 1" to address vanishing and exploding gradients in RNNs. Our orthogonally-initialized complex feed-forward layer is approximately unitary, serving the same stabilization role — gradients neither explode nor vanish because the operator preserves norm. The interference step itself is inherently unitary (phase rotation preserves |ψ|).
+
+### 5.4 Relation to deep complex networks
+
+[Trabelsi et al., 2018](https://openreview.net/forum?id=H1T2hmZAb) provided "key atomic components for complex-valued deep neural networks" including complex convolutions, complex batch normalization, and complex weight initialization. Their work demonstrated that complex-valued networks are competitive with real-valued counterparts on vision and audio tasks. Our work differs in a specific way: Trabelsi et al. use general complex-valued weight matrices (complex W ∈ ℂ^{d×d}); we constrain the attention mechanism to use ONLY phase rotations (θ ∈ ℝ^d), reducing attention parameters from O(d²) to O(d). The key finding — that the cos(Δφ) cross-term carries 57% of discriminative information — was not identified in their work.
 
 ---
 
@@ -486,7 +492,12 @@ Each step was driven by a question, tested by a script, and verified by the data
 
 ## References
 
-- Arjovsky, M., Shah, A. & Bengio, Y. (2016). Unitary Evolution Recurrent Neural Networks. *Proceedings of the 33rd International Conference on Machine Learning (ICML)*, 48:1120-1128.
-- Su, J., Ahmed, M., Lu, Y., Pan, S., Bo, W. & Liu, Y. (2024). RoFormer: Enhanced Transformer with Rotary Position Embedding. *Neurocomputing*, 568:127063. (Originally arXiv:2104.09864, 2021.)
-- Trabelsi, C., Bilaniuk, O., Zhang, Y., et al. (2018). Deep Complex Networks. *International Conference on Learning Representations (ICLR)*. [Note: Trabelsi et al. introduced general-purpose complex-valued layers. Our work differs in using ONLY phase rotations (not complex-valued weight matrices) for the attention mechanism, and in identifying the cos(Δφ) cross-term as the information-carrying operation.]
-- Vaswani, A., Shazeer, N., Parmar, N., et al. (2017). Attention Is All You Need. *Advances in Neural Information Processing Systems (NeurIPS)*, 30:6000-6010.
+- **[Arjovsky et al., 2016]** Arjovsky, M., Shah, A. & Bengio, Y. (2016). Unitary Evolution Recurrent Neural Networks. *Proceedings of the 33rd International Conference on Machine Learning (ICML)*, 48:1120-1128. [PDF](https://proceedings.mlr.press/v48/arjovsky16.html). **Cited in:** Section 5.3 — unitary weight matrices prevent gradient explosion. **Our use:** orthogonal initialization of the complex feed-forward layer.
+
+- **[Nernst, 1912]** Nernst, W. (1912). *Sitzungsberichte der Königlich Preussischen Akademie der Wissenschaften*, 134. See also: Martín-Olalla, J.-M. (2024). Proof of the Nernst heat theorem. [arXiv:2401.04069](https://arxiv.org/abs/2401.04069). **Cited in:** Section 3.8 — the unattainability principle ("impossible to reach T=0 in finite steps"). **Our use:** analogy to phase order approaching 1.0 asymptotically.
+
+- **[Su et al., 2024]** Su, J., Ahmed, M., Lu, Y., Pan, S., Bo, W. & Liu, Y. (2024). RoFormer: Enhanced Transformer with Rotary Position Embedding. *Neurocomputing*, 568:127063. [arXiv:2104.09864](https://arxiv.org/abs/2104.09864). **Cited in:** Section 5.2 — position encoding via rotation matrices. **Our use:** we extend rotations from position-only to Q/K/V transformation.
+
+- **[Trabelsi et al., 2018]** Trabelsi, C., Bilaniuk, O., Zhang, Y., et al. (2018). Deep Complex Networks. *International Conference on Learning Representations (ICLR)*. [OpenReview](https://openreview.net/forum?id=H1T2hmZAb). **Cited in:** Section 5.4 — complex-valued convolutions, normalization, initialization. **Our difference:** they use general complex weight matrices (O(d²)); we use phase rotations only (O(d)).
+
+- **[Vaswani et al., 2017]** Vaswani, A., Shazeer, N., Parmar, N., et al. (2017). Attention Is All You Need. *Advances in Neural Information Processing Systems (NeurIPS)*, 30:6000-6010. [arXiv:1706.03762](https://arxiv.org/abs/1706.03762). **Cited in:** Section 5.1 — the scaled dot-product attention formula. **Our claim:** real-valued Q·K^T is mathematically equivalent to Re(⟨Q|K⟩) with zero phase.

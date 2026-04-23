@@ -109,7 +109,7 @@ The output at each position is a weighted superposition of value states:
 output_i = Σ_j P(i,j) · V_j
 ```
 
-This is the standard quantum mechanical formula for the expected value of an observable — the state after "measurement" weighted by the interference probabilities.
+This is a weighted sum over value states, where the weights come from the interference pattern. The output is determined by which positions interfere constructively with the query position.
 
 ---
 
@@ -154,7 +154,7 @@ More heads = more simultaneous interference measurements = higher accuracy. This
 | Without phase | 41.44% | A₁·A₂ — amplitude only |
 | **Difference** | **57.10%** | **= contribution of cos(Δφ)** |
 
-The interference cross-term carries 57% of the discriminative information. Amplitude alone is near-random (10-class baseline = 10%).
+The interference cross-term carries 57% of the discriminative information. Amplitude alone achieves 41.44% — well above the 10% random baseline, indicating that magnitude carries some information, but far below the 98.54% achieved with phase. The cos(Δφ) term is responsible for the difference.
 
 **This is the central result.** The same cos(Δφ) term that governs physical wave interference governs the information content of the computation.
 
@@ -235,9 +235,9 @@ From a field indistinguishable from zero, the interference cross-term alone crea
 
 But the states ARE different at each step. That difference IS time.
 
-If Re(ψ · ψ†) = 0 everywhere (no interference), the state never changes. There IS no time. Time exists only because interference exists. Time is not a container that interference happens inside. **Interference IS time** — it is the mechanism by which one state becomes a different state.
+If Re(ψ · ψ†) = 0 everywhere (no interference), the state never changes. There IS no time. Time exists only because interference exists. Time is not a container that interference happens inside — it is the fact that interference produces different states from the same rule.
 
-This is consistent with the Wheeler-DeWitt equation (1967): the total wavefunction of the universe is timeless. Time emerges from interference between subsystems of the wavefunction. Our simulation demonstrates this: the field has no external clock, but local interference between neighboring cells creates local change — which we observe as the passage of time.
+In the simulation, there is no external clock. The field has no `t` variable in its physics. What we observe as time is the successive application of Re(ψ · ψ†) — each application produces a different state, and that difference is what we call a "moment."
 
 ### The complete `interference.py`
 
@@ -320,7 +320,7 @@ These values are properties of the formula Re(ψ · ψ†) itself. They do not d
 
 Mathematically: lim(t→∞) disorder = 0, but disorder ≠ 0 for any finite t.
 
-This is the computational equivalent of the third law of thermodynamics (absolute zero is unreachable) and the reason the simulation — and by analogy, any system governed by interference — never reaches a final state. It is always approaching, never arriving. This is why it persists.
+This is analogous to the Nernst unattainability principle — "any process cannot reach absolute zero in a finite number of steps" (Nernst, 1912) and the reason the simulation — and by analogy, any system governed by interference — never reaches a final state. It is always approaching, never arriving. This is why it persists.
 
 ### 3.9 The Arrow of Time and the Fate of the System
 
@@ -371,8 +371,8 @@ I(i,j) = Σ_dim |ψ_i| · |ψ_j| · cos(θ_i - θ_j)
 This is the interference cross-term. It appears in:
 - Optics (Young's double slit: intensity pattern from path-length phase differences)
 - Acoustics (beat frequencies from phase differences between sound waves)
-- Quantum mechanics (probability amplitudes from wavefunction overlap integrals)
-- Crystallography (diffraction patterns from atomic phase arrays)
+- Quantum interference (electron double-slit: detection probability from wavefunction phase differences)
+- Crystallography (X-ray diffraction patterns from atomic phase arrays)
 
 We show it also performs:
 - **Classification** (98.54% MNIST, 768 parameters)
@@ -405,7 +405,7 @@ The standard attention formula (Vaswani et al., 2017):
 Attention(Q,K,V) = softmax(Q·K^T / √d) · V
 ```
 
-When Q and K are real-valued, Q·K^T computes cosine similarity scaled by magnitudes — which is Re(⟨Q|K⟩) with zero phase. Standard attention is interference **with the phase discarded.**
+When Q and K are real-valued, Q·K^T is mathematically equivalent to Re(⟨Q|K⟩) with zero phase (since all imaginary components are zero). In this sense, standard real-valued attention computes the interference formula with cos(Δφ) = cos(0) = 1 — it uses only the amplitude term and discards phase information entirely.
 
 Our result shows that restoring the phase — and making it learnable — adds 57% accuracy while using 256× fewer parameters. The phase was discarded by convention, not by necessity.
 
@@ -487,7 +487,6 @@ Each step was driven by a question, tested by a script, and verified by the data
 ## References
 
 - Arjovsky, M., Shah, A. & Bengio, Y. (2016). Unitary Evolution Recurrent Neural Networks. *Proceedings of the 33rd International Conference on Machine Learning (ICML)*, 48:1120-1128.
-- DeWitt, B. (1967). Quantum Theory of Gravity. I. The Canonical Theory. *Physical Review*, 160(5):1113-1148.
 - Su, J., Ahmed, M., Lu, Y., Pan, S., Bo, W. & Liu, Y. (2024). RoFormer: Enhanced Transformer with Rotary Position Embedding. *Neurocomputing*, 568:127063. (Originally arXiv:2104.09864, 2021.)
 - Trabelsi, C., Bilaniuk, O., Zhang, Y., et al. (2018). Deep Complex Networks. *International Conference on Learning Representations (ICLR)*. [Note: Trabelsi et al. introduced general-purpose complex-valued layers. Our work differs in using ONLY phase rotations (not complex-valued weight matrices) for the attention mechanism, and in identifying the cos(Δφ) cross-term as the information-carrying operation.]
 - Vaswani, A., Shazeer, N., Parmar, N., et al. (2017). Attention Is All You Need. *Advances in Neural Information Processing Systems (NeurIPS)*, 30:6000-6010.

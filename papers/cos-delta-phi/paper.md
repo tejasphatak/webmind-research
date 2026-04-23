@@ -235,9 +235,9 @@ From a field indistinguishable from zero, the interference cross-term alone crea
 
 But the states ARE different at each step. That difference IS time.
 
-If Re(ψ · ψ†) = 0 everywhere (no interference), the state never changes. There IS no time. Time exists only because interference exists. Time is not a container that interference happens inside. **Interference IS time** — it is the mechanism by which one state becomes a different state.
+If Re(ψ · ψ†) = 0 everywhere (no interference), the state never changes. There IS no time. Time exists only because interference exists. Time is not a container that interference happens inside — it is the fact that interference produces different states from the same rule.
 
-This is consistent with the Wheeler-DeWitt equation (1967): the total wavefunction of the universe is timeless. Time emerges from interference between subsystems of the wavefunction. Our simulation demonstrates this: the field has no external clock, but local interference between neighboring cells creates local change — which we observe as the passage of time.
+In the simulation, there is no external clock. The field has no `t` variable in its physics. What we observe as time is the successive application of Re(ψ · ψ†) — each application produces a different state, and that difference is what we call a "moment."
 
 ### The complete `interference.py`
 
@@ -487,7 +487,6 @@ Each step was driven by a question, tested by a script, and verified by the data
 ## References
 
 - Arjovsky, M., Shah, A. & Bengio, Y. (2016). Unitary Evolution Recurrent Neural Networks. *Proceedings of the 33rd International Conference on Machine Learning (ICML)*, 48:1120-1128.
-- DeWitt, B. (1967). Quantum Theory of Gravity. I. The Canonical Theory. *Physical Review*, 160(5):1113-1148.
 - Su, J., Ahmed, M., Lu, Y., Pan, S., Bo, W. & Liu, Y. (2024). RoFormer: Enhanced Transformer with Rotary Position Embedding. *Neurocomputing*, 568:127063. (Originally arXiv:2104.09864, 2021.)
 - Trabelsi, C., Bilaniuk, O., Zhang, Y., et al. (2018). Deep Complex Networks. *International Conference on Learning Representations (ICLR)*. [Note: Trabelsi et al. introduced general-purpose complex-valued layers. Our work differs in using ONLY phase rotations (not complex-valued weight matrices) for the attention mechanism, and in identifying the cos(Δφ) cross-term as the information-carrying operation.]
 - Vaswani, A., Shazeer, N., Parmar, N., et al. (2017). Attention Is All You Need. *Advances in Neural Information Processing Systems (NeurIPS)*, 30:6000-6010.

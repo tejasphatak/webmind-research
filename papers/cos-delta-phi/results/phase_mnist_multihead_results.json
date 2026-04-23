@@ -1,0 +1,29 @@
+[
+  {
+    "label": "4-head, embed=128, 10K train",
+    "best_acc": 0.954,
+    "ablated_acc": 0.3655,
+    "params": 42122,
+    "attn_params": 384,
+    "num_heads": 4,
+    "embed_dim": 128
+  },
+  {
+    "label": "8-head, embed=256, 10K train",
+    "best_acc": 0.9595,
+    "ablated_acc": 0.4005,
+    "params": 149770,
+    "attn_params": 768,
+    "num_heads": 8,
+    "embed_dim": 256
+  },
+  {
+    "label": "8-head, embed=256, FULL 60K train",
+    "best_acc": 0.9854,
+    "ablated_acc": 0.4144,
+    "params": 149770,
+    "attn_params": 768,
+    "num_heads": 8,
+    "embed_dim": 256
+  }
+]

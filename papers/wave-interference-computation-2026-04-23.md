@@ -17,7 +17,7 @@ We demonstrate that the interference cross-term from wave physics — A₁·A₂
 
 ## TL;DR
 
-One formula from wave physics — `A₁·A₂·cos(Δφ)` — the interference cross-term that makes noise-canceling headphones work, that creates diffraction patterns, that holds atoms together — also performs classification (98.54% MNIST) and generates language (perplexity 2.0). When you remove the phase (set Δφ=0), leaving only amplitude, performance drops 57%. The information is in the interference pattern, not in the amplitudes.
+One formula from wave physics — `A₁·A₂·cos(Δφ)` — the interference cross-term that makes noise-canceling headphones work, that creates diffraction patterns in Young's double-slit experiment, that governs beat frequencies in acoustics — also performs classification (98.54% MNIST) and generates language (perplexity 2.0). When you remove the phase (set Δφ=0), leaving only amplitude, performance drops 57%. The information is in the interference pattern, not in the amplitudes.
 
 We provide Python scripts. Run them yourself. The numbers reproduce.
 
@@ -37,7 +37,7 @@ The third term — the **interference cross-term** — is what makes interferenc
 - Δφ ≈ π → cos(Δφ) ≈ -1 → destructive (cancel)
 - Δφ ≈ π/2 → cos(Δφ) ≈ 0 → no interaction
 
-This is foundational physics. It governs light (Young's double slit), sound (beats), quantum mechanics (electron orbitals), and all wave phenomena.
+This is foundational physics. It governs optical interference (Young's double slit, thin films), acoustics (beats, noise cancellation), and quantum interference (electron diffraction, photon bunching).
 
 **Our observation:** This same cross-term, when computed between complex-valued representations of data, produces functional computation — pattern recognition, sequence prediction, and structure formation.
 

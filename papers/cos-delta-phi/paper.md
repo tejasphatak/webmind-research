@@ -17,7 +17,7 @@ We demonstrate that the interference cross-term from wave physics — A₁·A₂
 
 ## TL;DR
 
-One formula from wave physics — `A₁·A₂·cos(Δφ)` — the interference cross-term that makes noise-canceling headphones work, that creates diffraction patterns, that holds atoms together — also performs classification (98.54% MNIST) and generates language (perplexity 2.0). When you remove the phase (set Δφ=0), leaving only amplitude, performance drops 57%. The information is in the interference pattern, not in the amplitudes.
+One formula from wave physics — `A₁·A₂·cos(Δφ)` — the interference cross-term that makes noise-canceling headphones work, that creates diffraction patterns in Young's double-slit experiment, that governs beat frequencies in acoustics — also performs classification (98.54% MNIST) and generates language (perplexity 2.0). When you remove the phase (set Δφ=0), leaving only amplitude, performance drops 57%. The information is in the interference pattern, not in the amplitudes.
 
 We provide Python scripts. Run them yourself. The numbers reproduce.
 
@@ -37,7 +37,7 @@ The third term — the **interference cross-term** — is what makes interferenc
 - Δφ ≈ π → cos(Δφ) ≈ -1 → destructive (cancel)
 - Δφ ≈ π/2 → cos(Δφ) ≈ 0 → no interaction
 
-This is foundational physics. It governs light (Young's double slit), sound (beats), quantum mechanics (electron orbitals), and all wave phenomena.
+This is foundational physics. It governs optical interference (Young's double slit, thin films), acoustics (beats, noise cancellation), and quantum interference (electron diffraction, photon bunching).
 
 **Our observation:** This same cross-term, when computed between complex-valued representations of data, produces functional computation — pattern recognition, sequence prediction, and structure formation.
 
@@ -109,7 +109,7 @@ The output at each position is a weighted superposition of value states:
 output_i = Σ_j P(i,j) · V_j
 ```
 
-This is the standard quantum mechanical formula for the expected value of an observable — the state after "measurement" weighted by the interference probabilities.
+This is a weighted sum over value states, where the weights come from the interference pattern. The output is determined by which positions interfere constructively with the query position.
 
 ---
 
@@ -154,7 +154,7 @@ More heads = more simultaneous interference measurements = higher accuracy. This
 | Without phase | 41.44% | A₁·A₂ — amplitude only |
 | **Difference** | **57.10%** | **= contribution of cos(Δφ)** |
 
-The interference cross-term carries 57% of the discriminative information. Amplitude alone is near-random (10-class baseline = 10%).
+The interference cross-term carries 57% of the discriminative information. Amplitude alone achieves 41.44% — well above the 10% random baseline, indicating that magnitude carries some information, but far below the 98.54% achieved with phase. The cos(Δφ) term is responsible for the difference.
 
 **This is the central result.** The same cos(Δφ) term that governs physical wave interference governs the information content of the computation.
 
@@ -320,7 +320,7 @@ These values are properties of the formula Re(ψ · ψ†) itself. They do not d
 
 Mathematically: lim(t→∞) disorder = 0, but disorder ≠ 0 for any finite t.
 
-This is the computational equivalent of the third law of thermodynamics (absolute zero is unreachable) and the reason the simulation — and by analogy, any system governed by interference — never reaches a final state. It is always approaching, never arriving. This is why it persists.
+This is analogous to the Nernst unattainability principle — "any process cannot reach absolute zero in a finite number of steps" (Nernst, 1912) and the reason the simulation — and by analogy, any system governed by interference — never reaches a final state. It is always approaching, never arriving. This is why it persists.
 
 ### 3.9 The Arrow of Time and the Fate of the System
 
@@ -371,8 +371,8 @@ I(i,j) = Σ_dim |ψ_i| · |ψ_j| · cos(θ_i - θ_j)
 This is the interference cross-term. It appears in:
 - Optics (Young's double slit: intensity pattern from path-length phase differences)
 - Acoustics (beat frequencies from phase differences between sound waves)
-- Quantum mechanics (probability amplitudes from wavefunction overlap integrals)
-- Crystallography (diffraction patterns from atomic phase arrays)
+- Quantum interference (electron double-slit: detection probability from wavefunction phase differences)
+- Crystallography (X-ray diffraction patterns from atomic phase arrays)
 
 We show it also performs:
 - **Classification** (98.54% MNIST, 768 parameters)
@@ -405,7 +405,7 @@ The standard attention formula (Vaswani et al., 2017):
 Attention(Q,K,V) = softmax(Q·K^T / √d) · V
 ```
 
-When Q and K are real-valued, Q·K^T computes cosine similarity scaled by magnitudes — which is Re(⟨Q|K⟩) with zero phase. Standard attention is interference **with the phase discarded.**
+When Q and K are real-valued, Q·K^T is mathematically equivalent to Re(⟨Q|K⟩) with zero phase (since all imaginary components are zero). In this sense, standard real-valued attention computes the interference formula with cos(Δφ) = cos(0) = 1 — it uses only the amplitude term and discards phase information entirely.
 
 Our result shows that restoring the phase — and making it learnable — adds 57% accuracy while using 256× fewer parameters. The phase was discarded by convention, not by necessity.
 

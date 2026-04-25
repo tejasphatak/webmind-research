@@ -1,7 +1,6 @@
 # cos(Δφ): The Interference Cross-Term as Computation
 
 **Authors:** Tejas Phatak¹  
-¹University of Colorado Boulder  
 
 **Date:** April 23, 2026  
 **Correspondence:** tejasphatak@gmail.com  

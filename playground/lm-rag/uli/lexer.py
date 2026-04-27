@@ -257,8 +257,9 @@ def _get_spacy(lang='en'):
     return _spacy_models[lang]
 
 
-def tokenize(text: str, lang: str = 'en') -> List[Token]:
-    """Tokenize text using spaCy + per-token language detection."""
+def tokenize(text: str, lang: str = 'en'):
+    """Tokenize text using spaCy. Returns (tokens, entity_spans).
+    entity_spans are spaCy's grouped multi-word entities."""
     nlp = _get_spacy(lang)
     doc = nlp(text)
 
@@ -276,7 +277,10 @@ def tokenize(text: str, lang: str = 'en') -> List[Token]:
             entity_type=tok.ent_type_,
         ))
 
-    return tokens
+    # spaCy's grouped entity spans (multi-word: "Leonardo da Vinci", "World War II")
+    entity_spans = [(ent.text, ent.label_) for ent in doc.ents]
+
+    return tokens, entity_spans
 
 
 # ============================================================

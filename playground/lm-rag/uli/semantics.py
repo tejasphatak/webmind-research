@@ -36,22 +36,24 @@ QUESTION_TARGET = {
 }
 
 
-def tokens_to_ast(tokens: List[Token], text: str = '') -> MeaningAST:
+def tokens_to_ast(tokens: List[Token], text: str = '',
+                   entity_spans: list = None) -> MeaningAST:
     """Convert tokenized + parsed text into MeaningAST.
-    This is the core semantic interpretation — all rule-based."""
+    Uses spaCy's entity spans for grouped multi-word entities.
+    Handles passive voice correctly (nsubjpass = patient, by-agent = agent)."""
 
     ast = MeaningAST(source=text)
 
     if not tokens:
         return ast
 
-    # Detect language (majority vote on tokens)
+    # Detect language
     langs = {}
     for t in tokens:
         langs[t.lang] = langs.get(t.lang, 0) + 1
     ast.source_language = max(langs, key=langs.get) if langs else 'en'
 
-    # Find root verb (the main predicate)
+    # Find root verb
     root = _find_root(tokens)
 
     # Detect question
@@ -63,45 +65,95 @@ def tokens_to_ast(tokens: List[Token], text: str = '') -> MeaningAST:
     elif text.rstrip().endswith('?'):
         ast.type = 'question'
 
-    # Detect command/imperative
-    if root and root.pos == 'VERB' and _is_imperative(tokens, root):
-        ast.type = 'command'
-
     # Extract predicate
     if root:
         ast.predicate = root.lemma or root.text.lower()
         ast.tense = _detect_tense(tokens, root)
 
-    # Extract semantic roles from dependencies
+    # Detect passive voice
+    is_passive = any(tok.dep == 'nsubjpass' for tok in tokens)
+
+    # DON'T detect imperative for passive ("was painted" is not a command)
+    if not is_passive and root and root.pos == 'VERB' and _is_imperative(tokens, root):
+        ast.type = 'command'
+
+    # Extract semantic roles — passive-aware
     for tok in tokens:
-        if tok.dep in ('nsubj', 'nsubjpass'):
+        if tok.dep == 'nsubj':
             if ast.type == 'question' and tok.text.lower() in ('who', 'what', 'which'):
                 ast.agent = Entity(text='?', type='unknown')
             else:
                 ast.agent = _make_entity(tok, tokens)
+        elif tok.dep == 'nsubjpass':
+            # Passive subject = PATIENT (thing being acted on)
+            ast.patient = _make_entity(tok, tokens)
+        elif tok.dep == 'pobj':
+            # Check if this is the agent in a passive "by" phrase
+            head = tokens[tok.head_idx] if tok.head_idx < len(tokens) else None
+            if head and head.dep == 'agent' and is_passive:
+                ast.agent = _make_entity(tok, tokens)
+            elif head and head.text.lower() in ('in', 'at', 'on', 'near', 'from', 'to'):
+                if tok.entity_type in ('GPE', 'LOC', 'FAC'):
+                    ast.location = _make_entity(tok, tokens)
+                elif tok.entity_type in ('DATE', 'TIME'):
+                    ast.time = Entity(text=tok.text, type='time')
+                else:
+                    ast.location = _make_entity(tok, tokens)
         elif tok.dep in ('dobj', 'obj'):
             ast.patient = _make_entity(tok, tokens)
-        elif tok.dep in ('iobj',):
+        elif tok.dep == 'attr':
             ast.theme = _make_entity(tok, tokens)
-        elif tok.dep in ('prep', 'obl') and _is_location_prep(tok, tokens):
-            ast.location = _make_entity(tok, tokens)
-        elif tok.dep in ('advmod', 'npadvmod') and tok.entity_type in ('DATE', 'TIME'):
+        elif tok.entity_type in ('DATE', 'TIME') and not ast.time:
             ast.time = Entity(text=tok.text, type='time')
 
-    # Extract named entities
-    ast.entities = _extract_entities(tokens)
+    # Extract entities from spaCy's GROUPED spans (not per-token)
+    if entity_spans:
+        ast.entities = _extract_entities_from_spans(entity_spans, tokens)
+    else:
+        ast.entities = _extract_entities(tokens)
 
     # Detect negation
     ast.negation = any(t.dep == 'neg' or t.text.lower() in ('not', "n't", 'no', 'never')
                        for t in tokens)
 
-    # Detect nested clauses (for multi-hop)
+    # Detect nested clauses
     ast.sub_clauses = _extract_subclauses(tokens)
 
     # Classify intent
     ast.intent = _classify_intent(ast, tokens, text)
 
     return ast
+
+
+def _extract_entities_from_spans(entity_spans, tokens):
+    """Use spaCy's grouped entity spans — "Leonardo da Vinci" as one entity."""
+    stop = {'the', 'a', 'an', 'is', 'are', 'was', 'were', 'what', 'who',
+            'where', 'when', 'why', 'how', 'which'}
+    entities = []
+    seen = set()
+
+    # spaCy grouped entities first (highest quality)
+    for ent_text, ent_type in entity_spans:
+        # Strip leading determiners
+        clean = ent_text
+        for prefix in ('the ', 'a ', 'an ', 'The ', 'A ', 'An '):
+            if clean.startswith(prefix):
+                clean = clean[len(prefix):]
+        if clean and clean.lower() not in seen and clean.lower() not in stop:
+            entities.append(clean)
+            seen.add(clean.lower())
+
+    # Content words not already covered by entity spans
+    for tok in tokens:
+        if (tok.pos in ('NOUN', 'PROPN', 'VERB') and
+            tok.text.lower() not in seen and
+            tok.text.lower() not in stop and
+            len(tok.text) > 2 and
+            tok.pos != 'DET'):
+            entities.append(tok.text)
+            seen.add(tok.text.lower())
+
+    return entities
 
 
 def _find_root(tokens: List[Token]) -> Optional[Token]:

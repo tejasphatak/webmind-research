@@ -42,13 +42,15 @@ class MarathiModule(LanguageModule):
                 result.append(normalized)
         return ' '.join(result)
 
-    def tokenize(self, text: str) -> List[Token]:
-        # spaCy English model for parsing (universal dependency labels)
-        # Each token gets language tag via detect_token_language
-        return tokenize(text, lang='en')  # Uses English parser for universal deps
+    def tokenize(self, text: str):
+        return tokenize(text, lang='en')
 
-    def to_ast(self, tokens: List[Token], text: str = '') -> MeaningAST:
-        ast = tokens_to_ast(tokens, text)
+    def to_ast(self, tokens, text: str = '') -> MeaningAST:
+        if isinstance(tokens, tuple):
+            toks, spans = tokens
+            ast = tokens_to_ast(toks, text, entity_spans=spans)
+        else:
+            ast = tokens_to_ast(tokens, text)
         ast.source_language = 'mr'
         return ast
 

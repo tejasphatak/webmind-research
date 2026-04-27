@@ -230,7 +230,7 @@ class Engine:
                     # Find most recent proper noun in conversation
                     for turn in reversed(self.conversation):
                         from uli.lexer import tokenize
-                        tokens = tokenize(turn['text'])
+                        tokens, _ = tokenize(turn['text'])
                         for tok in tokens:
                             if tok.pos == 'PROPN' and tok.text.lower() not in (
                                 'the', 'a', 'i', 'what', 'who'):
@@ -242,7 +242,8 @@ class Engine:
                         break
 
         # Feed tokens to learner (flag unknown words)
-        tokens = module.tokenize(module.normalize(text))
+        tok_result = module.tokenize(module.normalize(text))
+        tokens = tok_result[0] if isinstance(tok_result, tuple) else tok_result
         self.learner.on_tokens(tokens, text=text,
                                lang=question_ast.source_language or 'en')
 

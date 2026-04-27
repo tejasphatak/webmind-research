@@ -26,10 +26,13 @@ class EnglishModule(LanguageModule):
         text, _ = extract_special(text)
         return self.normalizer.normalize(text)
 
-    def tokenize(self, text: str) -> List[Token]:
+    def tokenize(self, text: str):
         return tokenize(text, lang='en')
 
-    def to_ast(self, tokens: List[Token], text: str = '') -> MeaningAST:
+    def to_ast(self, tokens, text: str = '') -> MeaningAST:
+        if isinstance(tokens, tuple):
+            toks, spans = tokens
+            return tokens_to_ast(toks, text, entity_spans=spans)
         return tokens_to_ast(tokens, text)
 
     def from_ast(self, ast: MeaningAST, form: str = 'statement',

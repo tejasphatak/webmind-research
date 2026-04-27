@@ -1,0 +1,30 @@
+{
+  "words": {
+    "the": {"pos": ["DET"], "frequency": 0.07},
+    "is": {"pos": ["AUX", "VERB"], "lemma": "be", "frequency": 0.03},
+    "was": {"pos": ["AUX", "VERB"], "lemma": "be", "frequency": 0.02},
+    "are": {"pos": ["AUX", "VERB"], "lemma": "be", "frequency": 0.02},
+    "what": {"pos": ["PRON"], "question": true, "targets": ["patient", "theme"]},
+    "who": {"pos": ["PRON"], "question": true, "targets": ["agent"]},
+    "where": {"pos": ["ADV"], "question": true, "targets": ["location"]},
+    "when": {"pos": ["ADV"], "question": true, "targets": ["time"]},
+    "why": {"pos": ["ADV"], "question": true, "targets": ["reason"]},
+    "how": {"pos": ["ADV"], "question": true, "targets": ["manner"]},
+    "which": {"pos": ["DET"], "question": true, "targets": ["patient"]},
+    "capital": {"pos": ["NOUN"], "senses": ["city_seat", "uppercase_letter", "financial_wealth"]},
+    "paint": {"pos": ["VERB", "NOUN"], "forms": {"past": "painted", "participle": "painting"}},
+    "ceiling": {"pos": ["NOUN"]},
+    "country": {"pos": ["NOUN"]},
+    "language": {"pos": ["NOUN"]},
+    "planet": {"pos": ["NOUN"]},
+    "river": {"pos": ["NOUN"]},
+    "mountain": {"pos": ["NOUN"]},
+    "president": {"pos": ["NOUN"]},
+    "population": {"pos": ["NOUN"]},
+    "largest": {"pos": ["ADJ"], "lemma": "large"},
+    "first": {"pos": ["ADJ", "ADV"]},
+    "current": {"pos": ["ADJ"]}
+  },
+  "question_words": ["what", "who", "where", "when", "why", "how", "which", "whom"],
+  "stop_words": ["the", "a", "an", "is", "are", "was", "were", "of", "in", "to", "for", "on", "at", "by", "with"]
+}

@@ -1,0 +1,26 @@
+{
+  "abbreviations": {
+    "ppl": "people", "bc": "because", "rn": "right now", "ngl": "not gonna lie",
+    "tbh": "to be honest", "imo": "in my opinion", "fyi": "for your information",
+    "btw": "by the way", "afaik": "as far as I know", "iirc": "if I recall correctly",
+    "smh": "shaking my head", "lol": "laughing out loud", "brb": "be right back",
+    "idk": "I don't know", "omg": "oh my god", "tho": "though", "thru": "through",
+    "abt": "about", "w": "with", "b4": "before", "2day": "today", "2morrow": "tomorrow",
+    "u": "you", "ur": "your", "r": "are", "n": "and", "pls": "please", "thx": "thanks",
+    "msg": "message", "info": "information", "govt": "government", "dept": "department"
+  },
+  "contractions": {
+    "dont": "don't", "cant": "can't", "wont": "won't", "im": "I'm",
+    "ive": "I've", "id": "I'd", "ill": "I'll", "isnt": "isn't",
+    "arent": "aren't", "wasnt": "wasn't", "werent": "weren't",
+    "doesnt": "doesn't", "didnt": "didn't", "hasnt": "hasn't",
+    "havent": "haven't", "hadnt": "hadn't", "shouldnt": "shouldn't",
+    "wouldnt": "wouldn't", "couldnt": "couldn't", "lets": "let's",
+    "thats": "that's", "whats": "what's", "whos": "who's",
+    "hes": "he's", "shes": "she's", "theyre": "they're",
+    "youre": "you're", "weve": "we've", "theyd": "they'd"
+  },
+  "substitutions": {
+    "3": "e", "1": "i", "0": "o", "@": "a"
+  }
+}

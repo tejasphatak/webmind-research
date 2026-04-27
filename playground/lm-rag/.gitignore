@@ -1,0 +1,14 @@
+# Model files (large, not for git)
+*.gguf
+*.safetensors
+*.pth
+smollm_orchestrator_v*/
+SmolLM2*/
+
+# Python cache
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# OS files
+.DS_Store

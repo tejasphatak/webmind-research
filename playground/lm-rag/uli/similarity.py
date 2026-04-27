@@ -343,6 +343,36 @@ def _matrix_similarity(set_a: Set[str], set_b: Set[str]) -> float:
         cloud_score = weighted_inter / min(total_a, total_b) if min(total_a, total_b) > 0 else 0.0
         scores.append(cloud_score)
 
+    # PARAPHRASE BRIDGE (recursive): for Q words NOT in P, check if P
+    # contains DEFINITION words of any SPECIFIC SENSE of the Q word.
+    # Per-sense matching avoids dilution from polysemous Q words:
+    # "light" has 50+ senses → all bridge words = 85 → 2/85 = 0.02
+    # BUT electromagnetic sense alone = 10 words → 2/10 = 0.20
+    if unique_a and unique_b:
+        best_bridge = 0.0
+        for qw in unique_a:
+            try:
+                from nltk.corpus import wordnet as wn
+                for ss in wn.synsets(qw)[:3]:
+                    # Build bridge words for THIS SPECIFIC SENSE
+                    sense_bridge = set()
+                    for lemma in ss.lemmas():
+                        sense_bridge.add(lemma.name().replace('_', ' ').lower())
+                    for w in re.findall(r'[a-z]+', ss.definition().lower()):
+                        lemma = _simple_lemma(w)
+                        if len(lemma) > 2 and lemma not in _SKIP_WORDS:
+                            sense_bridge.add(lemma)
+                    sense_bridge.discard(qw)
+                    if sense_bridge:
+                        overlap = sense_bridge & unique_b
+                        if overlap:
+                            coverage = len(overlap) / len(sense_bridge)
+                            best_bridge = max(best_bridge, coverage)
+            except Exception:
+                pass
+        if best_bridge > 0:
+            scores.append(best_bridge)
+
     if direct:
         base = len(direct) / min(len(set_a), len(set_b))
 

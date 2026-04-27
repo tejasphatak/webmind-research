@@ -108,7 +108,7 @@ class TestTokenizer(unittest.TestCase):
 
     def test_basic_tokenize(self):
         from uli.lexer import tokenize
-        tokens = tokenize("What is the capital of France?")
+        tokens, _ = tokenize("What is the capital of France?")
         self.assertGreater(len(tokens), 0)
         texts = [t.text for t in tokens]
         self.assertIn('What', texts)
@@ -116,19 +116,19 @@ class TestTokenizer(unittest.TestCase):
 
     def test_tokens_have_pos(self):
         from uli.lexer import tokenize
-        tokens = tokenize("Paris is beautiful")
+        tokens, _ = tokenize("Paris is beautiful")
         pos_tags = [t.pos for t in tokens]
         self.assertTrue(any(p != '' for p in pos_tags))
 
     def test_tokens_have_deps(self):
         from uli.lexer import tokenize
-        tokens = tokenize("The cat sat on the mat")
+        tokens, _ = tokenize("The cat sat on the mat")
         deps = [t.dep for t in tokens]
         self.assertTrue(any(d != '' for d in deps))
 
     def test_code_switching_detection(self):
         from uli.lexer import tokenize
-        tokens = tokenize("मला हे project complete करायचं आहे")
+        tokens, _ = tokenize("मला हे project complete करायचं आहे")
         langs = set(t.lang for t in tokens)
         # Should detect at least one non-English token
         self.assertTrue(len(langs) >= 1)
@@ -143,44 +143,44 @@ class TestSemanticsBasic(unittest.TestCase):
     def test_question_detection(self):
         from uli.lexer import tokenize
         from uli.semantics import tokens_to_ast
-        tokens = tokenize("What is the capital of France?")
-        ast = tokens_to_ast(tokens, "What is the capital of France?")
+        tokens, spans = tokenize("What is the capital of France?")
+        ast = tokens_to_ast(tokens, "What is the capital of France?", entity_spans=spans)
         self.assertEqual(ast.type, 'question')
 
     def test_question_word_extraction(self):
         from uli.lexer import tokenize
         from uli.semantics import tokens_to_ast
-        tokens = tokenize("Who painted the Mona Lisa?")
-        ast = tokens_to_ast(tokens, "Who painted the Mona Lisa?")
+        tokens, spans = tokenize("Who painted the Mona Lisa?")
+        ast = tokens_to_ast(tokens, "Who painted the Mona Lisa?", entity_spans=spans)
         self.assertEqual(ast.question_word, 'who')
         self.assertEqual(ast.question_target, 'agent')
 
     def test_entity_extraction(self):
         from uli.lexer import tokenize
         from uli.semantics import tokens_to_ast
-        tokens = tokenize("Paris is the capital of France")
-        ast = tokens_to_ast(tokens, "Paris is the capital of France")
+        tokens, spans = tokenize("Paris is the capital of France")
+        ast = tokens_to_ast(tokens, "Paris is the capital of France", entity_spans=spans)
         self.assertTrue(len(ast.entities) > 0)
 
     def test_predicate_extraction(self):
         from uli.lexer import tokenize
         from uli.semantics import tokens_to_ast
-        tokens = tokenize("Michelangelo painted the ceiling")
-        ast = tokens_to_ast(tokens, "Michelangelo painted the ceiling")
+        tokens, spans = tokenize("Michelangelo painted the ceiling")
+        ast = tokens_to_ast(tokens, "Michelangelo painted the ceiling", entity_spans=spans)
         self.assertTrue(ast.predicate != '')
 
     def test_negation_detection(self):
         from uli.lexer import tokenize
         from uli.semantics import tokens_to_ast
-        tokens = tokenize("I did not go there")
-        ast = tokens_to_ast(tokens, "I did not go there")
+        tokens, spans = tokenize("I did not go there")
+        ast = tokens_to_ast(tokens, "I did not go there", entity_spans=spans)
         self.assertTrue(ast.negation)
 
     def test_non_negation(self):
         from uli.lexer import tokenize
         from uli.semantics import tokens_to_ast
-        tokens = tokenize("I went there")
-        ast = tokens_to_ast(tokens, "I went there")
+        tokens, spans = tokenize("I went there")
+        ast = tokens_to_ast(tokens, "I went there", entity_spans=spans)
         self.assertFalse(ast.negation)
 
 
@@ -189,22 +189,22 @@ class TestIntentClassification(unittest.TestCase):
     def test_factual(self):
         from uli.lexer import tokenize
         from uli.semantics import tokens_to_ast
-        tokens = tokenize("What is the capital of France?")
-        ast = tokens_to_ast(tokens, "What is the capital of France?")
+        tokens, spans = tokenize("What is the capital of France?")
+        ast = tokens_to_ast(tokens, "What is the capital of France?", entity_spans=spans)
         self.assertEqual(ast.intent, 'factual')
 
     def test_explanation(self):
         from uli.lexer import tokenize
         from uli.semantics import tokens_to_ast
-        tokens = tokenize("Why is the sky blue?")
-        ast = tokens_to_ast(tokens, "Why is the sky blue?")
+        tokens, spans = tokenize("Why is the sky blue?")
+        ast = tokens_to_ast(tokens, "Why is the sky blue?", entity_spans=spans)
         self.assertEqual(ast.intent, 'explanation')
 
     def test_comparison(self):
         from uli.lexer import tokenize
         from uli.semantics import tokens_to_ast
-        tokens = tokenize("Which is larger, Jupiter or Saturn?")
-        ast = tokens_to_ast(tokens, "Which is larger, Jupiter or Saturn?")
+        tokens, spans = tokenize("Which is larger, Jupiter or Saturn?")
+        ast = tokens_to_ast(tokens, "Which is larger, Jupiter or Saturn?", entity_spans=spans)
         self.assertEqual(ast.intent, 'comparison')
 
 
@@ -213,8 +213,8 @@ class TestSearchQueryExtraction(unittest.TestCase):
     def test_search_query_from_ast(self):
         from uli.lexer import tokenize
         from uli.semantics import tokens_to_ast
-        tokens = tokenize("What is the capital of France?")
-        ast = tokens_to_ast(tokens, "What is the capital of France?")
+        tokens, spans = tokenize("What is the capital of France?")
+        ast = tokens_to_ast(tokens, "What is the capital of France?", entity_spans=spans)
         query = ast.search_query()
         self.assertTrue(len(query) > 0)
         # Should contain content words, not stop words
@@ -223,8 +223,8 @@ class TestSearchQueryExtraction(unittest.TestCase):
     def test_who_question_query(self):
         from uli.lexer import tokenize
         from uli.semantics import tokens_to_ast
-        tokens = tokenize("Who painted the Mona Lisa?")
-        ast = tokens_to_ast(tokens, "Who painted the Mona Lisa?")
+        tokens, spans = tokenize("Who painted the Mona Lisa?")
+        ast = tokens_to_ast(tokens, "Who painted the Mona Lisa?", entity_spans=spans)
         query = ast.search_query()
         self.assertIn('paint', query.lower())
 

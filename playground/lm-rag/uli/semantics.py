@@ -143,13 +143,14 @@ def _extract_entities_from_spans(entity_spans, tokens):
             entities.append(clean)
             seen.add(clean.lower())
 
-    # Content words not already covered by entity spans
+    # Content NOUNS not already covered by entity spans
+    # (verbs excluded — they're too polysemous for entity matching;
+    #  "work" matches "knead", "develop", "shape" via WordNet)
     for tok in tokens:
-        if (tok.pos in ('NOUN', 'PROPN', 'VERB') and
+        if (tok.pos in ('NOUN', 'PROPN') and
             tok.text.lower() not in seen and
             tok.text.lower() not in stop and
-            len(tok.text) > 2 and
-            tok.pos != 'DET'):
+            len(tok.text) > 2):
             entities.append(tok.text)
             seen.add(tok.text.lower())
 
@@ -249,12 +250,12 @@ def _extract_entities(tokens: List[Token]) -> List[str]:
             entities.append(tok.text)
             seen.add(tok.text.lower())
 
-    # Content words (nouns, proper nouns, verbs — not stop words)
+    # Content NOUNS (not verbs — too polysemous for entity matching)
     stop_words = {'the', 'a', 'an', 'is', 'are', 'was', 'were', 'of', 'in',
                   'to', 'for', 'on', 'at', 'by', 'with', 'what', 'who',
                   'where', 'when', 'why', 'how', 'which', 'do', 'does', 'did'}
     for tok in tokens:
-        if (tok.pos in ('NOUN', 'PROPN', 'VERB') and
+        if (tok.pos in ('NOUN', 'PROPN') and
             tok.text.lower() not in seen and
             tok.text.lower() not in stop_words and
             len(tok.text) > 2):

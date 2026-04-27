@@ -49,58 +49,51 @@ def _get_grammar(lang: str = 'en') -> dict:
 
 # ============================================================
 # POS TAGGER — vocab lookup + morphological fallback
+# All rules loaded from grammar/{lang}.json — nothing hardcoded.
 # ============================================================
 
-# Function words that don't need vocab lookup
-_FUNCTION_WORDS = {
-    # Determiners
-    'the': 'DET', 'a': 'DET', 'an': 'DET', 'this': 'DET', 'that': 'DET',
-    'these': 'DET', 'those': 'DET', 'my': 'DET', 'your': 'DET', 'his': 'DET',
-    'her': 'DET', 'its': 'DET', 'our': 'DET', 'their': 'DET', 'some': 'DET',
-    'any': 'DET', 'every': 'DET', 'each': 'DET', 'no': 'DET',
-    # Prepositions
-    'in': 'ADP', 'on': 'ADP', 'at': 'ADP', 'to': 'ADP', 'for': 'ADP',
-    'with': 'ADP', 'by': 'ADP', 'from': 'ADP', 'of': 'ADP', 'about': 'ADP',
-    'into': 'ADP', 'through': 'ADP', 'during': 'ADP', 'before': 'ADP',
-    'after': 'ADP', 'above': 'ADP', 'below': 'ADP', 'between': 'ADP',
-    'under': 'ADP', 'near': 'ADP', 'across': 'ADP', 'behind': 'ADP',
-    # Conjunctions
-    'and': 'CCONJ', 'or': 'CCONJ', 'but': 'CCONJ', 'nor': 'CCONJ',
-    'because': 'SCONJ', 'although': 'SCONJ', 'while': 'SCONJ',
-    'if': 'SCONJ', 'when': 'SCONJ', 'where': 'SCONJ', 'since': 'SCONJ',
-    'until': 'SCONJ', 'unless': 'SCONJ', 'though': 'SCONJ',
-    # Auxiliaries
-    'is': 'AUX', 'are': 'AUX', 'was': 'AUX', 'were': 'AUX', 'am': 'AUX',
-    'be': 'AUX', 'been': 'AUX', 'being': 'AUX',
-    'has': 'AUX', 'have': 'AUX', 'had': 'AUX', 'having': 'AUX',
-    'do': 'AUX', 'does': 'AUX', 'did': 'AUX',
-    'will': 'AUX', 'would': 'AUX', 'shall': 'AUX', 'should': 'AUX',
-    'can': 'AUX', 'could': 'AUX', 'may': 'AUX', 'might': 'AUX',
-    'must': 'AUX',
-    # Pronouns
-    'i': 'PRON', 'me': 'PRON', 'we': 'PRON', 'us': 'PRON',
-    'you': 'PRON', 'he': 'PRON', 'him': 'PRON', 'she': 'PRON',
-    'it': 'PRON', 'they': 'PRON', 'them': 'PRON',
-    'who': 'PRON', 'whom': 'PRON', 'what': 'PRON', 'which': 'PRON',
-    'how': 'ADV', 'why': 'ADV', 'where': 'ADV', 'when': 'ADV',
-    # Adverbs (common)
-    'not': 'ADV', 'very': 'ADV', 'also': 'ADV', 'too': 'ADV',
-    'then': 'ADV', 'there': 'ADV', 'here': 'ADV', 'now': 'ADV',
-    'just': 'ADV', 'only': 'ADV', 'never': 'ADV', 'always': 'ADV',
-    # Particles
-    'up': 'PART', 'out': 'PART', 'off': 'PART',
-}
+# Loaded from grammar JSON, cached per language
+_function_words_cache: Dict[str, Dict[str, str]] = {}
+_suffix_pos_cache: Dict[str, List[tuple]] = {}
+_lemma_rules_cache: Dict[str, List[dict]] = {}
 
-# Suffix → POS for unknown words
-_SUFFIX_POS = [
-    ('tion', 'NOUN'), ('sion', 'NOUN'), ('ment', 'NOUN'), ('ness', 'NOUN'),
-    ('ity', 'NOUN'), ('ance', 'NOUN'), ('ence', 'NOUN'), ('ism', 'NOUN'),
-    ('ist', 'NOUN'), ('ology', 'NOUN'),
-    ('ous', 'ADJ'), ('ful', 'ADJ'), ('less', 'ADJ'), ('able', 'ADJ'),
-    ('ible', 'ADJ'), ('ive', 'ADJ'), ('ical', 'ADJ'),
-    ('ize', 'VERB'), ('ise', 'VERB'), ('ify', 'VERB'), ('ate', 'VERB'),
-    ('ly', 'ADV'),
-]
+
+def _get_function_words(lang: str = 'en') -> Dict[str, str]:
+    """Load function words from grammar JSON. Cached."""
+    if lang in _function_words_cache:
+        return _function_words_cache[lang]
+    grammar = _get_grammar(lang)
+    fw_data = grammar.get('function_words', {})
+    # Flatten {POS: [words]} → {word: POS}
+    result = {}
+    for pos, words in fw_data.items():
+        for w in words:
+            result[w] = pos
+    _function_words_cache[lang] = result
+    return result
+
+
+def _get_suffix_pos(lang: str = 'en') -> List[tuple]:
+    """Load suffix→POS mapping from grammar JSON. Cached."""
+    if lang in _suffix_pos_cache:
+        return _suffix_pos_cache[lang]
+    grammar = _get_grammar(lang)
+    morphology = grammar.get('morphology', {})
+    suffix_data = morphology.get('suffix_to_pos', [])
+    result = [(item['suffix'], item['pos']) for item in suffix_data]
+    _suffix_pos_cache[lang] = result
+    return result
+
+
+def _get_lemma_rules(lang: str = 'en') -> List[dict]:
+    """Load lemma stripping rules from grammar JSON. Cached."""
+    if lang in _lemma_rules_cache:
+        return _lemma_rules_cache[lang]
+    grammar = _get_grammar(lang)
+    morphology = grammar.get('morphology', {})
+    rules = morphology.get('lemma_strip_rules', [])
+    _lemma_rules_cache[lang] = rules
+    return rules
 
 
 def _tag_word(word: str, vocab: dict, is_sentence_start: bool = False,
@@ -117,9 +110,10 @@ def _tag_word(word: str, vocab: dict, is_sentence_start: bool = False,
     if word.replace('.', '').replace(',', '').replace('-', '').isdigit():
         return 'NUM'
 
-    # Function words (closed class — these don't change across domains)
-    if lower in _FUNCTION_WORDS:
-        return _FUNCTION_WORDS[lower]
+    # Function words — loaded from grammar/{lang}.json
+    function_words = _get_function_words(lang='en')
+    if lower in function_words:
+        return function_words[lower]
 
     # ALL-CAPS abbreviation (GPS, DNA, RNA, USA)
     if word.isupper() and len(word) > 1:
@@ -170,8 +164,8 @@ def _tag_word(word: str, vocab: dict, is_sentence_start: bool = False,
     if lower.endswith('ing') and len(lower) > 4:
         return 'VERB'
 
-    # Morphological fallback
-    for suffix, pos in _SUFFIX_POS:
+    # Morphological fallback — loaded from grammar/{lang}.json
+    for suffix, pos in _get_suffix_pos(lang='en'):
         if lower.endswith(suffix) and len(lower) > len(suffix) + 2:
             return pos
 
@@ -189,27 +183,24 @@ def _lemmatize(word: str, pos: str, vocab: dict) -> str:
     if word.isupper() and len(word) > 1:
         return lower
 
-    # Try stripping inflections first — prefer base forms
-    # "banks" is in vocab but "bank" is the better lemma
-    candidates = []
-    if lower.endswith('s') and not lower.endswith('ss'):
-        candidates.append(lower[:-1])
-    if lower.endswith('es'):
-        candidates.append(lower[:-2])
-    if lower.endswith('ed'):
-        candidates.extend([lower[:-2], lower[:-1]])
-    if lower.endswith('ing'):
-        candidates.extend([lower[:-3], lower[:-3] + 'e'])
-    if lower.endswith('ies'):
-        candidates.append(lower[:-3] + 'y')
-    if lower.endswith('er'):
-        candidates.extend([lower[:-2], lower[:-1]])
-    if lower.endswith('est'):
-        candidates.extend([lower[:-3], lower[:-2]])
+    # Strip inflections using rules from grammar/{lang}.json
+    # Prefer base forms: "banks"→"bank", "painted"→"paint"
+    for rule in _get_lemma_rules(lang='en'):
+        suffix = rule['suffix']
+        replacement = rule.get('replacement', '')
+        min_stem = rule.get('min_stem', 1)
+        not_after = rule.get('not_after', '')
 
-    for c in candidates:
-        if c in vocab:
-            return c
+        if lower.endswith(suffix) and len(lower) - len(suffix) >= min_stem:
+            if not_after and lower.endswith(not_after + suffix[-1]):
+                continue  # e.g., "ss" → don't strip 's' from "mass"
+            candidate = lower[:-len(suffix)] + replacement
+            if candidate in vocab:
+                return candidate
+
+    # Fallback: return as-is (or from vocab if present)
+    if lower in vocab:
+        return lower
     return lower
 
 

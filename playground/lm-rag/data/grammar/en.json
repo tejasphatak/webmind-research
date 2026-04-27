@@ -2,59 +2,78 @@
   "language": "english",
   "word_order": "SVO",
   "dependency_rules": [
-    {
-      "rel": "nsubj",
-      "head": "verb",
-      "dep": "noun",
-      "position": "before_head"
-    },
-    {
-      "rel": "dobj",
-      "head": "verb",
-      "dep": "noun",
-      "position": "after_head"
-    },
-    {
-      "rel": "amod",
-      "head": "noun",
-      "dep": "adj",
-      "position": "before_head"
-    },
-    {
-      "rel": "advmod",
-      "head": "verb",
-      "dep": "adv",
-      "position": "flexible"
-    }
+    {"rel": "nsubj", "head": "verb", "dep": "noun", "position": "before_head"},
+    {"rel": "dobj", "head": "verb", "dep": "noun", "position": "after_head"},
+    {"rel": "amod", "head": "noun", "dep": "adj", "position": "before_head"},
+    {"rel": "advmod", "head": "verb", "dep": "adv", "position": "flexible"}
   ],
   "question_formation": {
     "yes_no": "AUX SUBJ VERB OBJ",
     "wh": "WH AUX SUBJ VERB"
   },
   "agreement": [
-    {
-      "between": [
-        "subject",
-        "verb"
-      ],
-      "feature": "number"
-    },
-    {
-      "between": [
-        "determiner",
-        "noun"
-      ],
-      "feature": "number"
-    }
+    {"between": ["subject", "verb"], "feature": "number"},
+    {"between": ["determiner", "noun"], "feature": "number"}
   ],
-  "negation": {
-    "marker": "not",
-    "position": "after_aux"
-  },
+  "negation": {"marker": "not", "position": "after_aux"},
   "tense_markers": {
     "past": "-ed (regular), irregular forms",
     "future": "will + base",
     "progressive": "be + -ing",
     "perfect": "have + -ed/-en"
+  },
+  "morphology": {
+    "inflection_suffixes": {
+      "plural": ["s", "es", "ies"],
+      "past_tense": ["ed"],
+      "progressive": ["ing"],
+      "comparative": ["er"],
+      "superlative": ["est"]
+    },
+    "suffix_to_pos": [
+      {"suffix": "tion", "pos": "NOUN"},
+      {"suffix": "sion", "pos": "NOUN"},
+      {"suffix": "ment", "pos": "NOUN"},
+      {"suffix": "ness", "pos": "NOUN"},
+      {"suffix": "ity", "pos": "NOUN"},
+      {"suffix": "ance", "pos": "NOUN"},
+      {"suffix": "ence", "pos": "NOUN"},
+      {"suffix": "ism", "pos": "NOUN"},
+      {"suffix": "ist", "pos": "NOUN"},
+      {"suffix": "ology", "pos": "NOUN"},
+      {"suffix": "ous", "pos": "ADJ"},
+      {"suffix": "ful", "pos": "ADJ"},
+      {"suffix": "less", "pos": "ADJ"},
+      {"suffix": "able", "pos": "ADJ"},
+      {"suffix": "ible", "pos": "ADJ"},
+      {"suffix": "ive", "pos": "ADJ"},
+      {"suffix": "ical", "pos": "ADJ"},
+      {"suffix": "ize", "pos": "VERB"},
+      {"suffix": "ise", "pos": "VERB"},
+      {"suffix": "ify", "pos": "VERB"},
+      {"suffix": "ate", "pos": "VERB"},
+      {"suffix": "ly", "pos": "ADV"}
+    ],
+    "lemma_strip_rules": [
+      {"suffix": "ies", "replacement": "y", "min_stem": 2},
+      {"suffix": "es", "replacement": "", "min_stem": 1},
+      {"suffix": "s", "replacement": "", "min_stem": 2, "not_after": "s"},
+      {"suffix": "ed", "replacement": "", "min_stem": 2},
+      {"suffix": "ed", "replacement": "e", "min_stem": 2},
+      {"suffix": "ing", "replacement": "", "min_stem": 3},
+      {"suffix": "ing", "replacement": "e", "min_stem": 3},
+      {"suffix": "er", "replacement": "", "min_stem": 2},
+      {"suffix": "est", "replacement": "", "min_stem": 2}
+    ]
+  },
+  "function_words": {
+    "DET": ["the", "a", "an", "this", "that", "these", "those", "my", "your", "his", "her", "its", "our", "their", "some", "any", "every", "each", "no"],
+    "ADP": ["in", "on", "at", "to", "for", "with", "by", "from", "of", "about", "into", "through", "during", "before", "after", "above", "below", "between", "under", "near", "across", "behind"],
+    "CCONJ": ["and", "or", "but", "nor"],
+    "SCONJ": ["because", "although", "while", "if", "when", "where", "since", "until", "unless", "though"],
+    "AUX": ["is", "are", "was", "were", "am", "be", "been", "being", "has", "have", "had", "having", "do", "does", "did", "will", "would", "shall", "should", "can", "could", "may", "might", "must"],
+    "PRON": ["i", "me", "we", "us", "you", "he", "him", "she", "it", "they", "them", "who", "whom", "what", "which"],
+    "ADV": ["how", "why", "where", "when", "not", "very", "also", "too", "then", "there", "here", "now", "just", "only", "never", "always"],
+    "PART": ["up", "out", "off"]
   }
 }

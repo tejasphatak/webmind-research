@@ -426,9 +426,14 @@ def _matrix_similarity(set_a: Set[str], set_b: Set[str]) -> float:
                                  default=0)
                     p_score = len(sense_defs[p_best] & p_ctx)
 
-                    # Same sense? Discount if different.
+                    # Cross-attention decision:
                     if q_best != p_best and (q_score > 0 or p_score > 0):
                         base *= 0.1  # Different senses → heavy discount
+                    elif q_score == 0 and p_score == 0 and len(synsets) > 1:
+                        # ZERO attention on both sides → ambiguous
+                        # Can't tell if same sense. Don't give full credit.
+                        # Discount by 1/num_senses (random chance of matching)
+                        base *= 1.0 / len(synsets)
             except Exception:
                 pass
 

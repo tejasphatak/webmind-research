@@ -180,12 +180,12 @@ def _tag_word(word: str, vocab: dict, is_sentence_start: bool = False,
 
 
 def _lemmatize(word: str, pos: str, vocab: dict) -> str:
-    """Get lemma from vocab or suffix stripping."""
+    """Get lemma from vocab or suffix stripping.
+    Prefers base form: 'banks'→'bank', 'painted'→'paint'."""
     lower = word.lower()
-    if lower in vocab:
-        return lower
 
-    # Try stripping inflections
+    # ALWAYS try stripping inflections first — prefer base forms
+    # "banks" is in vocab but "bank" is the better lemma
     candidates = []
     if lower.endswith('s') and not lower.endswith('ss'):
         candidates.append(lower[:-1])

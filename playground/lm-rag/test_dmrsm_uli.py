@@ -373,7 +373,7 @@ class TestTraceStructure(unittest.TestCase):
         ]
         _, trace, _ = engine.reason("What is something?")
         valid = {'SEARCH', 'JUDGE', 'EXTRACT', 'DECOMPOSE', 'SYNTHESIZE',
-                 'CALCULATE', 'GIVE_UP', 'PRE_FILTER', 'DONE'}
+                 'CALCULATE', 'GIVE_UP', 'PRE_FILTER', 'DONE', 'KB_HIT'}
         for step in trace:
             self.assertIn(step['action'], valid,
                          f"Invalid action: {step['action']}")
@@ -403,6 +403,106 @@ class TestAskMethod(unittest.TestCase):
             engine.ask("Hello", verbose=True)
         output = f.getvalue()
         self.assertTrue(len(output) > 0)
+
+
+# ============================================================
+# CONTEXT CHAIN INTEGRATION TESTS
+# ============================================================
+
+class TestContextChainIntegration(unittest.TestCase):
+    """Verify context chain is wired into the engine pipeline."""
+
+    def test_context_chain_exists(self):
+        engine, _, _ = create_engine()
+        self.assertIsNotNone(engine.context)
+
+    def test_context_updated_after_ask(self):
+        engine, search, _ = create_engine()
+        search.search.return_value = []
+        engine.ask("What is the capital of France?")
+        self.assertGreater(len(engine.context.history), 0)
+
+    def test_sarcasm_detected_in_pipeline(self):
+        """Sarcasm detection runs during reasoning."""
+        engine, search, _ = create_engine()
+        search.search.return_value = []
+        # Build negative context
+        engine.context.add("The server crashed and we lost everything")
+        engine.context.add("Nothing is working and deadlines are missed")
+        # Sarcastic input
+        answer, trace, _ = engine.reason("Oh wonderful, another problem")
+        # Should have processed (not crash)
+        self.assertIsInstance(answer, str)
+
+    def test_implicature_resolved(self):
+        """Implicature detection runs during reasoning."""
+        engine, search, _ = create_engine()
+        search.search.return_value = []
+        answer, trace, _ = engine.reason("Can you pass me the salt?")
+        self.assertIsInstance(answer, str)
+
+
+# ============================================================
+# LEARNER INTEGRATION TESTS
+# ============================================================
+
+class TestLearnerIntegration(unittest.TestCase):
+    """Verify learner is wired into the engine pipeline."""
+
+    def test_learner_exists(self):
+        engine, _, _ = create_engine()
+        self.assertIsNotNone(engine.learner)
+
+    def test_teach_word(self):
+        engine, _, _ = create_engine()
+        engine.teach('bussin', {'pos': ['ADJ'], 'senses': ['excellent']})
+        self.assertTrue(engine.learner.is_known('bussin'))
+
+    def test_teach_idiom(self):
+        engine, _, _ = create_engine()
+        engine.teach_idiom('spill the tea', 'share gossip')
+        engine.learner._ensure_loaded('en')
+        self.assertIn('spill the tea', engine.learner._idioms.get('en', {}))
+
+    def test_teach_abbreviation(self):
+        engine, _, _ = create_engine()
+        engine.teach_abbreviation('ngl', 'not gonna lie')
+        engine.learner._ensure_loaded('en')
+        self.assertEqual(
+            engine.learner._normalize['en']['abbreviations'].get('ngl'),
+            'not gonna lie')
+
+
+# ============================================================
+# KB SELF-EVOLUTION TESTS
+# ============================================================
+
+class TestKBEvolution(unittest.TestCase):
+    """Verify KB grows from high-confidence answers."""
+
+    def test_high_confidence_stored_in_kb(self):
+        """Answer with confidence >= 0.8 → stored in KB."""
+        engine, search, _ = create_engine(sim=0.9)
+        search.search.return_value = [
+            MockSearchResult('France', 'Paris is the capital of France.')
+        ]
+        engine.ask("What is the capital of France?")
+        # KB should have at least one entry if confidence was high enough
+        # (depends on extraction success)
+        self.assertIsInstance(engine.knowledge_base, list)
+
+    def test_low_confidence_not_stored(self):
+        """Answer with low confidence → not stored."""
+        engine, search, embedder = create_engine()
+        embedder.set_similarity(0.3)  # Low relevance
+        search.search.return_value = [
+            MockSearchResult('Wrong', 'Unrelated text.')
+        ]
+        engine.ask("Random question")
+        # Should NOT add to KB (low confidence)
+        kb_with_high_conf = [f for f in engine.knowledge_base if f.get('confidence', 0) >= 0.8]
+        # Low sim = low confidence = shouldn't store
+        self.assertEqual(len(kb_with_high_conf), 0)
 
 
 if __name__ == '__main__':

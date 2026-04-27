@@ -18,6 +18,8 @@ from uli.protocol import MeaningAST, Entity, Token
 from uli.modules.english import EnglishModule
 from uli.modules.marathi import MarathiModule
 from uli.lexer import detect_language
+from uli.context_chain import ContextChain
+from uli.learner import Learner
 from search_providers import create_default_engine
 
 log = logging.getLogger('dmrsm-uli')
@@ -179,7 +181,7 @@ class Engine:
     text → ULI reads → AST → DMRSM thinks → AST → ULI writes → text
     """
 
-    def __init__(self, embedder=None, search_engine=None):
+    def __init__(self, embedder=None, search_engine=None, learner=None):
         # Language modules (pluggable)
         self.modules = {
             'en': EnglishModule(),
@@ -193,10 +195,19 @@ class Engine:
         # Embedder (only neural component)
         self.embedder = embedder or Embedder()
 
+        # Context chain (disambiguation, sarcasm, pronouns)
+        self.context = ContextChain(self.embedder, window=10)
+
+        # Learner (train by talking / feeding data)
+        self.learner = learner or Learner()
+
         # Conversation memory
         self.conversation: List[dict] = []
 
-        log.info("DMRSM-ULI engine ready. No LM. Rules + MiniLM only.")
+        # Verified facts KB (grows from conversation)
+        self.knowledge_base: List[dict] = []
+
+        log.info("DMRSM-ULI engine ready. No LM. Rules + MiniLM + context chain.")
 
     def _get_module(self, text):
         """Auto-detect language and return appropriate module."""
@@ -227,11 +238,50 @@ class Engine:
         if not is_safe:
             return response, [{'action': 'PRE_FILTER', 'signal': filter_type, 'confidence': 1.0}], 1.0
 
+        # Phase 0.5: Context chain — check for sarcasm, resolve pronouns
+        sarcasm, sarcasm_conf = self.context.detect_sarcasm(text)
+        implicature = self.context.resolve_implicature(text)
+
         # Phase 1: READ (ULI)
         module = self._get_module(text)
         question_ast = module.read(text)
+
+        # Apply context chain insights to AST
+        if sarcasm:
+            question_ast.negation = not question_ast.negation  # Invert meaning
+            log.info(f"[CONTEXT] Sarcasm detected (conf={sarcasm_conf:.2f}), inverting")
+        if implicature:
+            question_ast.intent = implicature
+            log.info(f"[CONTEXT] Implicature resolved: {implicature}")
+
+        # Resolve pronouns from conversation context
+        if question_ast.question_word in ('', ) and question_ast.entities:
+            for i, entity in enumerate(question_ast.entities):
+                if entity.lower() in ('it', 'its', 'he', 'she', 'they', 'them'):
+                    resolved = self.context.resolve_pronoun(entity)
+                    if resolved:
+                        question_ast.entities[i] = resolved
+                        log.info(f"[CONTEXT] Resolved '{entity}' → '{resolved}'")
+
+        # Feed tokens to learner (flag unknown words)
+        tokens = module.tokenize(module.normalize(text))
+        self.learner.on_tokens(tokens, text=text,
+                               lang=question_ast.source_language or 'en')
+
+        # Add to context chain for future turns
+        self.context.add(text)
+
         log.info(f"[READ] type={question_ast.type} intent={question_ast.intent} "
                  f"entities={question_ast.entities[:3]} q_word={question_ast.question_word}")
+
+        # Check KB first — if we already know the answer, skip search
+        kb_answer = self._check_kb(question_ast)
+        if kb_answer:
+            log.info(f"[KB] Found cached answer: {kb_answer[:40]}")
+            self.conversation.append({'role': 'user', 'text': text})
+            self.conversation.append({'role': 'assistant', 'text': kb_answer})
+            return kb_answer, [{'action': 'KB_HIT', 'signal': 'cached',
+                               'confidence': 1.0, 'answer': kb_answer}], 1.0
 
         # Phase 2: THINK (DMRSM state machine on ASTs)
         start = STARTING_STATE.get(question_ast.intent, 'SEARCH')
@@ -294,9 +344,67 @@ class Engine:
         self.conversation.append({'role': 'user', 'text': text})
         self.conversation.append({'role': 'assistant', 'text': answer})
 
+        # Add answer to context chain (for future pronoun resolution etc.)
+        self.context.add(answer)
+
+        # If high confidence, store as verified fact in KB (self-evolution)
+        if state.confidence >= 0.8 and answer and "couldn't find" not in answer:
+            fact = self.learner.on_verified_answer(text, answer)
+            self.knowledge_base.append(fact)
+            log.info(f"[KB] Stored: '{text[:30]}' → '{answer[:30]}' (conf={state.confidence:.2f})")
+
+        # Commit any learned words that reached threshold
+        committed = self.learner.commit_queue(lang='all')
+        if committed:
+            log.info(f"[LEARN] Committed {len(committed)} new words: {committed[:3]}")
+
         return answer, state.trace, state.confidence
 
     # ── Transition ───────────────────────────────────────
+
+    def _check_kb(self, question_ast: MeaningAST) -> Optional[str]:
+        """Check knowledge base for a cached answer."""
+        if not self.knowledge_base:
+            return None
+        query = question_ast.search_query()
+        if not query:
+            return None
+        # Find best match by embedding similarity
+        try:
+            q_emb = self.embedder.encode(query)
+            best_answer = None
+            best_sim = 0.0
+            for fact in self.knowledge_base:
+                fact_emb = self.embedder.encode(fact['question'])
+                sim = float(np.dot(q_emb, fact_emb))
+                if sim > best_sim:
+                    best_sim = sim
+                    best_answer = fact['answer']
+            if best_sim > 0.85:  # High threshold for KB hit
+                return best_answer
+        except Exception:
+            pass
+        return None
+
+    # ── Teaching Interface ───────────────────────────────
+
+    def teach(self, word: str, definition: dict, lang: str = 'en'):
+        """Explicitly teach a new word."""
+        self.learner.teach_word(word, definition, lang=lang)
+
+    def teach_idiom(self, phrase: str, meaning: str, lang: str = 'en'):
+        """Explicitly teach a new idiom."""
+        self.learner.teach_idiom(phrase, meaning, lang=lang)
+
+    def teach_abbreviation(self, abbrev: str, expansion: str, lang: str = 'en'):
+        """Explicitly teach a new abbreviation."""
+        self.learner.teach_abbreviation(abbrev, expansion, lang=lang)
+
+    def save_learned(self):
+        """Persist all learned data to disk."""
+        return self.learner.save()
+
+    # ── Transition ──────────────────���────────────────────
 
     def _transition(self, state: ReasoningState, result: ActionResult) -> str:
         key = (state.action, result.signal)

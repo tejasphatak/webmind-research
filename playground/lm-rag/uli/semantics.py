@@ -264,26 +264,38 @@ def _extract_entities(tokens: List[Token]) -> List[str]:
     return entities
 
 
+_subclause_depth = 0
+
 def _extract_subclauses(tokens: List[Token]) -> List[MeaningAST]:
     """Extract relative clauses and subordinate clauses as sub-ASTs."""
+    global _subclause_depth
+    if _subclause_depth > 1:
+        return []  # Prevent infinite recursion
     subclauses = []
-    # Find relative clause markers (where, which, that, who as relative)
     for i, tok in enumerate(tokens):
         if tok.dep in ('relcl', 'advcl', 'acl'):
-            # This token heads a subclause — extract its subtree
             subtree_tokens = _get_subtree(tokens, i)
             if len(subtree_tokens) > 2:
-                sub_ast = tokens_to_ast(subtree_tokens, '')
-                subclauses.append(sub_ast)
+                _subclause_depth += 1
+                try:
+                    sub_ast = tokens_to_ast(subtree_tokens, '')
+                    subclauses.append(sub_ast)
+                finally:
+                    _subclause_depth -= 1
     return subclauses
 
 
-def _get_subtree(tokens: List[Token], head_idx: int) -> List[Token]:
+def _get_subtree(tokens: List[Token], head_idx: int, _visited=None) -> List[Token]:
     """Get all tokens in the subtree rooted at head_idx."""
+    if _visited is None:
+        _visited = set()
+    if head_idx in _visited or head_idx >= len(tokens):
+        return []
+    _visited.add(head_idx)
     result = [tokens[head_idx]]
     for i, tok in enumerate(tokens):
-        if tok.head_idx == head_idx and i != head_idx:
-            result.extend(_get_subtree(tokens, i))
+        if tok.head_idx == head_idx and i != head_idx and i not in _visited:
+            result.extend(_get_subtree(tokens, i, _visited))
     result.sort(key=lambda t: tokens.index(t))
     return result
 

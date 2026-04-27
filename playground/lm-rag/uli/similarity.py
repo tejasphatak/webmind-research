@@ -202,7 +202,6 @@ def _context_meaning(word: str, context_words: Set[str]) -> Dict[str, float]:
 
     max_votes = max(vote_count.values())
 
-    # Graded activation: voted meanings keep weight, unvoted get 0.1x
     graded: Dict[str, float] = {}
     for meaning, base_weight in full.items():
         votes = vote_count.get(meaning, 0)
@@ -388,49 +387,50 @@ def _matrix_similarity(set_a: Set[str], set_b: Set[str]) -> float:
     if direct:
         base = len(direct) / min(len(set_a), len(set_b))
 
-        # DEFINITION CHECK: for each shared word, check if the OTHER text
-        # contains words from its dictionary definition. If zero overlap →
-        # the texts use the word in different senses. Data-driven from vocab.
+        # CROSS-ATTENTION: for each shared word, Q and P each attend to
+        # their best-matching sense. If they select DIFFERENT senses →
+        # the word means different things → discount.
         #
-        # DOMAIN QUALIFIER: if Q has domain words like "in biology," use them
-        # to select which SENSE to check. "cell in biology" → only check the
-        # biology sense's definition against the passage.
-        all_other = (unique_a | unique_b)
-        if all_other:
-            def_coverage = 0.0
-            # Check if set_a has domain qualifiers (words that appear in sense definitions)
-            domain_words = unique_a  # Q's unique words can serve as domain context
-            for word in direct:
-                try:
-                    from nltk.corpus import wordnet as wn
-                    synsets = wn.synsets(word)
-                    # If domain words exist, find the MATCHING sense
-                    best_sense_coverage = 0.0
-                    for ss in synsets[:5]:
-                        defn = ss.definition().lower()
-                        # Does this sense's definition mention any domain word?
-                        domain_match = any(dw in defn for dw in domain_words)
-                        # Get this sense's definition words
-                        sense_def = set()
-                        for w in re.findall(r'[a-z]+', defn):
-                            lemma = _simple_lemma(w)
-                            if len(lemma) > 2 and lemma not in _SKIP_WORDS:
-                                sense_def.add(lemma)
-                        if sense_def:
-                            overlap = len(sense_def & all_other) / len(sense_def)
-                            if domain_match:
-                                # This is the DOMAIN-MATCHING sense → weight it higher
-                                overlap *= 2.0
-                            best_sense_coverage = max(best_sense_coverage, overlap)
-                    def_coverage = max(def_coverage, best_sense_coverage)
-                except Exception:
-                    wms = _get_weighted_meaning_set(word)
-                    def_words = set(m for m, w in wms.items() if 0.1 < w < 0.4)
-                    if def_words:
-                        overlap = len(def_words & all_other) / len(def_words)
-                        def_coverage = max(def_coverage, overlap)
-            sense_discount = 0.1 + 0.9 * min(def_coverage * 5, 1.0)
-            base *= sense_discount
+        # Q_sense = argmax(Q_context · sense_definitions)
+        # P_sense = argmax(P_context · sense_definitions)
+        # discount = 1.0 if same sense, 0.1 if different
+        for word in direct:
+            try:
+                from nltk.corpus import wordnet as wn
+                synsets = wn.synsets(word)[:5]
+                if len(synsets) > 1:  # Only for polysemous words
+                    # Build sense definition sets
+                    sense_defs = []
+                    for ss in synsets:
+                        sd = set()
+                        for lemma in ss.lemmas():
+                            sd.add(lemma.name().replace('_', ' ').lower())
+                        for w in re.findall(r'[a-z]+', ss.definition().lower()):
+                            lm = _simple_lemma(w)
+                            if len(lm) > 2 and lm not in _SKIP_WORDS:
+                                sd.add(lm)
+                        sd.discard(word)
+                        sense_defs.append(sd)
+
+                    # Q attends: which sense matches Q's context?
+                    q_ctx = unique_a if unique_a else set_a
+                    q_best = max(range(len(sense_defs)),
+                                 key=lambda i: len(sense_defs[i] & q_ctx),
+                                 default=0)
+                    q_score = len(sense_defs[q_best] & q_ctx)
+
+                    # P attends: which sense matches P's context?
+                    p_ctx = unique_b if unique_b else set_b
+                    p_best = max(range(len(sense_defs)),
+                                 key=lambda i: len(sense_defs[i] & p_ctx),
+                                 default=0)
+                    p_score = len(sense_defs[p_best] & p_ctx)
+
+                    # Same sense? Discount if different.
+                    if q_best != p_best and (q_score > 0 or p_score > 0):
+                        base *= 0.1  # Different senses → heavy discount
+            except Exception:
+                pass
 
         if scores:
             discount = 0.1 + 0.9 * min(scores[0], 1.0)

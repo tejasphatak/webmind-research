@@ -181,10 +181,15 @@ def _tag_word(word: str, vocab: dict, is_sentence_start: bool = False,
 
 def _lemmatize(word: str, pos: str, vocab: dict) -> str:
     """Get lemma from vocab or suffix stripping.
-    Prefers base form: 'banks'→'bank', 'painted'→'paint'."""
+    Prefers base form: 'banks'→'bank', 'painted'→'paint'.
+    ALL-CAPS words (GPS, DNA) are never stripped — they're abbreviations."""
     lower = word.lower()
 
-    # ALWAYS try stripping inflections first — prefer base forms
+    # ALL-CAPS = abbreviation → don't strip (GPS ≠ GP)
+    if word.isupper() and len(word) > 1:
+        return lower
+
+    # Try stripping inflections first — prefer base forms
     # "banks" is in vocab but "bank" is the better lemma
     candidates = []
     if lower.endswith('s') and not lower.endswith('ss'):

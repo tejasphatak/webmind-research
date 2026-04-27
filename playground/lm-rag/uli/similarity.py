@@ -354,7 +354,7 @@ def _matrix_similarity(set_a: Set[str], set_b: Set[str]) -> float:
             try:
                 from nltk.corpus import wordnet as wn
                 for ss in wn.synsets(qw)[:3]:
-                    # Build bridge words for THIS SPECIFIC SENSE
+                    # Hop 1: definition words of THIS SPECIFIC SENSE
                     sense_bridge = set()
                     for lemma in ss.lemmas():
                         sense_bridge.add(lemma.name().replace('_', ' ').lower())
@@ -363,6 +363,7 @@ def _matrix_similarity(set_a: Set[str], set_b: Set[str]) -> float:
                         if len(lemma) > 2 and lemma not in _SKIP_WORDS:
                             sense_bridge.add(lemma)
                     sense_bridge.discard(qw)
+
                     if sense_bridge:
                         overlap = sense_bridge & unique_b
                         if overlap:
@@ -379,18 +380,44 @@ def _matrix_similarity(set_a: Set[str], set_b: Set[str]) -> float:
         # DEFINITION CHECK: for each shared word, check if the OTHER text
         # contains words from its dictionary definition. If zero overlap →
         # the texts use the word in different senses. Data-driven from vocab.
+        #
+        # DOMAIN QUALIFIER: if Q has domain words like "in biology," use them
+        # to select which SENSE to check. "cell in biology" → only check the
+        # biology sense's definition against the passage.
         all_other = (unique_a | unique_b)
         if all_other:
             def_coverage = 0.0
+            # Check if set_a has domain qualifiers (words that appear in sense definitions)
+            domain_words = unique_a  # Q's unique words can serve as domain context
             for word in direct:
-                wms = _get_weighted_meaning_set(word)
-                def_words = set(m for m, w in wms.items() if 0.1 < w < 0.4)
-                if def_words:
-                    overlap = len(def_words & all_other) / len(def_words)
-                    def_coverage = max(def_coverage, overlap)
-            # Scale direct overlap by definition coverage
-            # coverage=0 → base*0.1 (different sense)
-            # coverage=0.1+ → base*0.2-1.0 (some definition overlap)
+                try:
+                    from nltk.corpus import wordnet as wn
+                    synsets = wn.synsets(word)
+                    # If domain words exist, find the MATCHING sense
+                    best_sense_coverage = 0.0
+                    for ss in synsets[:5]:
+                        defn = ss.definition().lower()
+                        # Does this sense's definition mention any domain word?
+                        domain_match = any(dw in defn for dw in domain_words)
+                        # Get this sense's definition words
+                        sense_def = set()
+                        for w in re.findall(r'[a-z]+', defn):
+                            lemma = _simple_lemma(w)
+                            if len(lemma) > 2 and lemma not in _SKIP_WORDS:
+                                sense_def.add(lemma)
+                        if sense_def:
+                            overlap = len(sense_def & all_other) / len(sense_def)
+                            if domain_match:
+                                # This is the DOMAIN-MATCHING sense → weight it higher
+                                overlap *= 2.0
+                            best_sense_coverage = max(best_sense_coverage, overlap)
+                    def_coverage = max(def_coverage, best_sense_coverage)
+                except Exception:
+                    wms = _get_weighted_meaning_set(word)
+                    def_words = set(m for m, w in wms.items() if 0.1 < w < 0.4)
+                    if def_words:
+                        overlap = len(def_words & all_other) / len(def_words)
+                        def_coverage = max(def_coverage, overlap)
             sense_discount = 0.1 + 0.9 * min(def_coverage * 5, 1.0)
             base *= sense_discount
 

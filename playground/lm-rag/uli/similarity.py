@@ -607,7 +607,13 @@ def _question_sentence_relevance(question: str, passage: str,
     feat_p = _extract_features(p_tokens)
     q_content = feat_q.get('content', set())
     p_content = feat_p.get('content', set())
-    graph_sim = _pairwise_wup(q_content, p_content) if q_content and p_content else 0.0
+    # Graph WUP: only compare UNIQUE (non-shared) words
+    # Self-matches (cell↔cell = 1.0) inflate polysemy FPs.
+    # Direct overlap is already handled by _matrix_similarity.
+    shared = q_content & p_content
+    q_unique = q_content - shared
+    p_unique = p_content - shared
+    graph_sim = _pairwise_wup(q_unique, p_unique) if q_unique and p_unique else 0.0
 
     combined = _combined_score(cloud_sim, graph_sim)
     signals.append(combined)

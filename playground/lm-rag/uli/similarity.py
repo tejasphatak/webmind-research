@@ -276,15 +276,13 @@ def _first_sense_wup(word_a: str, word_b: str) -> float:
 def _pairwise_wup(set_a: Set[str], set_b: Set[str]) -> float:
     """Average best-match WUP with baseline subtraction.
     Random word pairs score ~0.2 WUP (distant ancestry noise).
-    Contribution = max(0, wup - 0.2) / 0.8 — continuous, no hard cutoff.
-    WUP=0.2 → 0.0, WUP=0.5 → 0.375, WUP=0.9 → 0.875."""
+    Contribution = max(0, wup - 0.2) / 0.8 — continuous, no hard cutoff."""
     if not set_a or not set_b:
         return 0.0
     smaller, larger = (set_a, set_b) if len(set_a) <= len(set_b) else (set_b, set_a)
     total = 0.0
     for wa in smaller:
         best = max((_first_sense_wup(wa, wb) for wb in larger), default=0.0)
-        # Continuous contribution: subtract baseline, normalize
         contribution = max(0.0, (best - 0.2) / 0.8)
         total += contribution
     return total / len(smaller)
@@ -347,10 +345,26 @@ def _matrix_similarity(set_a: Set[str], set_b: Set[str]) -> float:
 
     if direct:
         base = len(direct) / min(len(set_a), len(set_b))
+
+        # DEFINITION CHECK: for each shared word, check if the OTHER text
+        # contains words from its dictionary definition. If zero overlap →
+        # the texts use the word in different senses. Data-driven from vocab.
+        all_other = (unique_a | unique_b)
+        if all_other:
+            def_coverage = 0.0
+            for word in direct:
+                wms = _get_weighted_meaning_set(word)
+                def_words = set(m for m, w in wms.items() if 0.1 < w < 0.4)
+                if def_words:
+                    overlap = len(def_words & all_other) / len(def_words)
+                    def_coverage = max(def_coverage, overlap)
+            # Scale direct overlap by definition coverage
+            # coverage=0 → base*0.1 (different sense)
+            # coverage=0.1+ → base*0.2-1.0 (some definition overlap)
+            sense_discount = 0.1 + 0.9 * min(def_coverage * 5, 1.0)
+            base *= sense_discount
+
         if scores:
-            # Continuous discount: cloud_score itself scales the direct overlap
-            # cloud=0 → base*0.1 (near-zero). cloud=0.5 → base*0.55. cloud=1.0 → base*1.0
-            # No binary gate, no cliff edge
             discount = 0.1 + 0.9 * min(scores[0], 1.0)
             base *= discount
         scores.append(base)

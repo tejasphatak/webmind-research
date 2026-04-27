@@ -522,64 +522,58 @@ def _extract_features(tokens: List[Token]) -> Dict[str, Set[str]]:
 
 
 def token_similarity(tokens_a: List[Token], tokens_b: List[Token]) -> float:
-    """Structural similarity between two token lists.
-    Combines content-word meaning overlap with all-word surface overlap.
-    Content words go through meaning expansion (WordNet clouds).
-    All words use simple overlap (surface form matching)."""
+    """Slot-matching similarity: count shared content words, bridge unmatched
+    through meaning similarity, gate Jaccard by content overlap.
+
+    From 100-pair reasoning trace: this approach models how humans
+    compare sentences — normalize both to meaning, count shared slots."""
     feat_a = _extract_features(tokens_a)
     feat_b = _extract_features(tokens_b)
 
-    # Content-based scores (meaning expansion through WordNet)
-    content_scores = []
-    for name in feat_a:
-        sa = feat_a[name]
-        sb = feat_b[name]
-        if sa and sb:
-            if name in ('content', 'nouns', 'verbs'):
-                content_scores.append(_matrix_similarity(sa, sb))
-            elif name in ('entities', 'adjectives'):
-                content_scores.append(_overlap(sa, sb))
-
-    content_sim = sum(content_scores) / len(content_scores) if content_scores else 0.0
-
-    # All-words Jaccard (surface form, includes function words)
-    all_a = feat_a.get('all_words', set())
-    all_b = feat_b.get('all_words', set())
-    if all_a and all_b:
-        all_jaccard = len(all_a & all_b) / len(all_a | all_b)
-    else:
-        all_jaccard = 0.0
-
-    # GATED combination of content and Jaccard:
-    #
-    # Case 1: Both texts have content words AND they overlap
-    #   → Content is PRIMARY, Jaccard can BOOST (MAX)
-    #   "A man is slicing a fish" vs "A man is cutting a fish" → content high, Jaccard high
-    #
-    # Case 2: Both texts have content words but they DON'T overlap
-    #   → Content says DIFFERENT MEANING → Jaccard is NOISE, ignore it
-    #   "You don't have to worry" vs "You don't have to season it"
-    #   → worry≠season, Jaccard=0.55 is misleading → use content only
-    #
-    # Case 3: No content words (function-word-only sentences)
-    #   → Jaccard is the ONLY signal
-    #   "How do you do that?" vs "How to do that?" → Jaccard=0.6 is correct
-
     content_a = feat_a.get('content', set())
     content_b = feat_b.get('content', set())
+    all_a = feat_a.get('all_words', set())
+    all_b = feat_b.get('all_words', set())
 
-    if content_a and content_b:
-        shared_content = content_a & content_b
-        if shared_content:
-            # Content matches → Jaccard can boost
-            return max(content_sim, all_jaccard)
-        else:
-            # Content DOESN'T match → Jaccard is misleading
-            # But give Jaccard a SMALL say (10%) for partial credit
-            return content_sim * 0.9 + all_jaccard * 0.1
+    # All-words Jaccard (surface form, includes function words)
+    all_jaccard = len(all_a & all_b) / len(all_a | all_b) if all_a | all_b else 0.0
+
+    # No content words → Jaccard is the only signal
+    if not content_a and not content_b:
+        return all_jaccard
+
+    # SLOT MATCHING: count shared content, bridge unmatched through synonyms
+    total_slots = max(len(content_a), len(content_b), 1)
+    shared = content_a & content_b
+    matched = float(len(shared))
+
+    # Bridge unmatched words through meaning similarity
+    # "slicing" ↔ "cutting" = 0.8 (synonyms) → partial credit
+    unique_a = content_a - shared
+    unique_b = content_b - shared
+    used_b = set()
+    for wa in unique_a:
+        best_sim = 0.0
+        best_wb = None
+        for wb in unique_b:
+            if wb not in used_b:
+                sim = _meaning_similarity(wa, wb)
+                if sim > best_sim:
+                    best_sim = sim
+                    best_wb = wb
+        if best_sim > 0.3 and best_wb:  # Threshold: at least moderate similarity
+            matched += best_sim
+            used_b.add(best_wb)
+
+    slot_score = min(matched / total_slots, 1.0)
+
+    # GATE: Jaccard only boosts when content ALSO matches
+    if shared or not (content_a and content_b):
+        return max(slot_score, all_jaccard)
     else:
-        # No content words → Jaccard is the only signal
-        return max(content_sim, all_jaccard)
+        # Content exists on both sides but DOESN'T overlap →
+        # Jaccard is noise (function words only). Slight credit.
+        return slot_score * 0.9 + all_jaccard * 0.1
 
 
 def text_similarity(text_a: str, text_b: str, lang: str = 'en') -> float:

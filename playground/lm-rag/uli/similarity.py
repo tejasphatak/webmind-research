@@ -295,9 +295,11 @@ def _extract_features(tokens: List[Token]) -> Dict[str, Set[str]]:
         lemma = (tok.lemma or tok.text).lower().strip()
         if word in stop or len(word) < 2:
             continue
-        if tok.is_entity or tok.pos == 'PROPN':
+        # ALL-CAPS words (GPS, DNA, USA) are proper nouns even if spaCy misclassifies
+        is_proper = tok.is_entity or tok.pos == 'PROPN' or (tok.text.isupper() and len(tok.text) > 1)
+        if is_proper:
             features['entities'].add(word)
-        if tok.pos in ('NOUN', 'PROPN'):
+        if tok.pos in ('NOUN', 'PROPN') or is_proper:
             features['nouns'].add(lemma)
             features['content'].add(lemma)
         elif tok.pos == 'VERB':
@@ -407,7 +409,9 @@ def _question_sentence_relevance(question: str, passage: str,
         try:
             from nltk.corpus import wordnet as wn
             pl = (len(wn.synsets(q_ast.predicate)) + len(wn.synsets(p_ast.predicate))) / 2
-            noise_floor = min(0.5, 0.03 * pl)  # 1 sense→0.03, 10→0.30, 17+→0.50
+            # Polysemous verbs are unreliable: work(34), run(57), make(51)
+            # need very high similarity to be meaningful
+            noise_floor = 1.0 - 1.0 / (1.0 + 0.1 * pl)  # 1→0.09, 5→0.33, 10→0.50, 34→0.77
         except Exception:
             noise_floor = 0.05
         if pred_sim > noise_floor:

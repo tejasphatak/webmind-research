@@ -184,7 +184,9 @@ def _lemmatize(word: str, pos: str, vocab: dict) -> str:
         return lower
 
     # Strip inflections using rules from grammar/{lang}.json
-    # Prefer base forms: "banks"→"bank", "painted"→"paint"
+    # Try ALL rules, collect valid candidates, prefer LONGEST
+    # (closest to original: "planes"→"plane" not "plan")
+    candidates = []
     for rule in _get_lemma_rules(lang='en'):
         suffix = rule['suffix']
         replacement = rule.get('replacement', '')
@@ -193,12 +195,16 @@ def _lemmatize(word: str, pos: str, vocab: dict) -> str:
 
         if lower.endswith(suffix) and len(lower) - len(suffix) >= min_stem:
             if not_after and lower.endswith(not_after + suffix[-1]):
-                continue  # e.g., "ss" → don't strip 's' from "mass"
+                continue
             candidate = lower[:-len(suffix)] + replacement
             if candidate in vocab:
-                return candidate
+                candidates.append(candidate)
 
-    # Fallback: return as-is (or from vocab if present)
+    # Prefer longest candidate (least stripping = most accurate lemma)
+    if candidates:
+        return max(candidates, key=len)
+
+    # Fallback: return as-is
     if lower in vocab:
         return lower
     return lower

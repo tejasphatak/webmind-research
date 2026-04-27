@@ -114,6 +114,68 @@ def _get_meaning_set(word: str) -> Set[str]:
         return set()
 
 
+# Weighted meaning sets — Collins & Loftus spreading activation with decay
+_weighted_meaning_cache: Dict[str, Dict[str, float]] = {}
+
+# Decay weights by relationship type (from psycholinguistic priming data)
+# Synonyms = full activation, distant hypernyms = attenuated
+_DECAY = {
+    'synonym': 1.0,
+    'hypernym1': 0.7,
+    'hypernym2': 0.49,    # 0.7^2
+    'hyponym': 0.6,
+    'definition': 0.3,
+}
+
+
+def _get_weighted_meaning_set(word: str) -> Dict[str, float]:
+    """Build WEIGHTED meaning fingerprint. Closer relationships = higher weight.
+    Spreading activation: synonyms=1.0, hypernym1=0.7, hypernym2=0.49, etc.
+    Sense index weight: first sense (most common) = 1.0, second = 0.5, third = 0.33.
+    Returns Dict[str, float] — word → activation weight."""
+    if word in _weighted_meaning_cache:
+        return _weighted_meaning_cache[word]
+    try:
+        from nltk.corpus import wordnet as wn
+        meaning: Dict[str, float] = {}
+        for i, ss in enumerate(wn.synsets(word)[:3]):
+            sense_w = 1.0 / (1.0 + i)  # Prototype effect (Rosch 1975)
+            # Synonyms
+            for lemma in ss.lemmas():
+                name = lemma.name().replace('_', ' ').lower()
+                w = _DECAY['synonym'] * sense_w
+                meaning[name] = max(meaning.get(name, 0), w)
+            # Hypernyms — 2 levels with decay
+            frontier = ss.hypernyms()
+            for level, key in enumerate(['hypernym1', 'hypernym2']):
+                next_f = []
+                for h in frontier:
+                    for lemma in h.lemmas():
+                        name = lemma.name().replace('_', ' ').lower()
+                        w = _DECAY[key] * sense_w
+                        meaning[name] = max(meaning.get(name, 0), w)
+                    next_f.extend(h.hypernyms())
+                frontier = next_f
+            # Hyponyms
+            for hypo in ss.hyponyms():
+                for lemma in hypo.lemmas():
+                    name = lemma.name().replace('_', ' ').lower()
+                    w = _DECAY['hyponym'] * sense_w
+                    meaning[name] = max(meaning.get(name, 0), w)
+            # Definition words
+            for dw in re.findall(r'[a-z]+', ss.definition().lower()):
+                lemma = _simple_lemma(dw)
+                if len(lemma) > 2 and lemma not in _SKIP_WORDS:
+                    w = _DECAY['definition'] * sense_w
+                    meaning[lemma] = max(meaning.get(lemma, 0), w)
+        meaning.pop(word, None)
+        _weighted_meaning_cache[word] = meaning
+        return meaning
+    except Exception:
+        _weighted_meaning_cache[word] = {}
+        return {}
+
+
 # ============================================================
 # CONTEXT-FILTERED MEANING CLOUDS — non-neural attention
 # ============================================================

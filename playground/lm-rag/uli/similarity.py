@@ -604,22 +604,50 @@ def _question_sentence_relevance(question: str, passage: str,
         if any(t.entity_type in ('GPE', 'LOC') for t in p_tokens):
             signals.append(1.0)
 
-    # 4. Combined cloud + graph similarity (core signal)
-    cloud_sim = token_similarity(q_tokens, p_tokens)
-
+    # 4. Entity NAME vs CONCEPT check
+    # "Mercury" (Q, standalone) vs "Freddie Mercury" (P, multi-word name)
+    # When a shared word is part of a LONGER entity span in P but not Q,
+    # the passage is using it as a NAME → different usage → discount all signals
+    name_mismatch = False
     feat_q = _extract_features(q_tokens)
     feat_p = _extract_features(p_tokens)
     q_content = feat_q.get('content', set())
     p_content = feat_p.get('content', set())
-    # Graph WUP: only compare UNIQUE (non-shared) words
-    # Self-matches (cell↔cell = 1.0) inflate polysemy FPs.
-    # Direct overlap is already handled by _matrix_similarity.
     shared = q_content & p_content
+    if shared:
+        for word in shared:
+            # Is this word part of a multi-word entity span in P?
+            for span_text, _ in p_spans:
+                span_words = span_text.lower().split()
+                if word in span_words and len(span_words) > 1:
+                    # Check: is it standalone in Q spans?
+                    q_standalone = any(
+                        text.lower() == word and len(text.split()) == 1
+                        for text, _ in q_spans
+                    )
+                    q_not_in_span = not any(
+                        word in text.lower().split() and len(text.split()) > 1
+                        for text, _ in q_spans
+                    )
+                    if q_standalone or q_not_in_span:
+                        name_mismatch = True
+                        break
+            if name_mismatch:
+                break
+
+    # 5. Combined cloud + graph similarity (core signal)
+    cloud_sim = token_similarity(q_tokens, p_tokens)
+
     q_unique = q_content - shared
     p_unique = p_content - shared
     graph_sim = _pairwise_wup(q_unique, p_unique) if q_unique and p_unique else 0.0
 
     combined = _combined_score(cloud_sim, graph_sim)
+
+    # Apply name mismatch discount to combined signal
+    if name_mismatch:
+        combined *= 0.2  # Name vs concept → heavy discount
+
     signals.append(combined)
 
     if not signals:

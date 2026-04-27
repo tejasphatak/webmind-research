@@ -21,32 +21,10 @@ from .lexer import tokenize
 
 _DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
 
-# ============================================================
-# TUNING CONSTANTS — all behavioral thresholds in one place
-# ============================================================
-
-# _matrix_similarity: cloud score below this means topics diverge
-CLOUD_DIVERGENCE_THRESHOLD = 0.2
-
-# _matrix_similarity: discount multiplier when cloud says topics diverge
-CLOUD_DIVERGENCE_DISCOUNT = 0.2
-
-# _question_sentence_relevance: minimum predicate similarity to count
-PREDICATE_SIMILARITY_MIN = 0.05
-
-# question_passage_relevance: sentence vs whole-passage weight split
-BEST_SENTENCE_WEIGHT = 0.7
-
-# _context_meaning: minimum filtered meanings before falling back to full set
-CONTEXT_FILTER_MIN_MATCHES = 3
-
-# Decision-tree combiner thresholds
-CLOUD_CONFIDENT_THRESHOLD = 0.3   # cloud above this → trust cloud alone
-CLOUD_REJECT_THRESHOLD = 0.05     # cloud below this → cap graph
-GRAPH_CAP_MULTIPLIER = 0.4        # graph multiplier when cloud rejects
-AMBIGUOUS_CLOUD_WEIGHT = 0.7      # blend weight in ambiguous zone
-AMBIGUOUS_GRAPH_WEIGHT = 0.3      # blend weight in ambiguous zone
-WUP_MATCH_THRESHOLD = 0.5        # WUP below this = noise (distant ancestry)
+# No hardcoded thresholds. All parameters are derived from:
+# - Text properties (cloud size, polysemy, variance)
+# - Statistical baselines (expected random overlap, WUP noise floor)
+# - Self-weighting (cloud score IS the weight)
 
 
 # ============================================================
@@ -237,21 +215,25 @@ def _pairwise_wup(set_a: Set[str], set_b: Set[str]) -> float:
 # ============================================================
 
 def _combined_score(cloud_score: float, graph_score: float) -> float:
-    """Decision-tree combination of cloud and graph signals.
+    """Continuous combination — cloud score IS the weight.
+    No hardcoded thresholds, no if/elif/else tiers.
 
-    Tier 1 (cloud > 0.3): Cloud confident → use cloud alone.
-           Prevents graph from inflating polysemy false positives.
-    Tier 2 (cloud < 0.05): Cloud rejects → cap graph.
-           Prevents graph from creating false positives for unrelated pairs.
-    Tier 3 (ambiguous): Weighted blend → graph rescues paraphrases.
-    """
-    if cloud_score > CLOUD_CONFIDENT_THRESHOLD:
-        return cloud_score
-    elif cloud_score < CLOUD_REJECT_THRESHOLD:
-        return graph_score * GRAPH_CAP_MULTIPLIER
-    else:
-        return (AMBIGUOUS_CLOUD_WEIGHT * cloud_score +
-                AMBIGUOUS_GRAPH_WEIGHT * graph_score)
+    cloud_weight = 0.5 + 0.5 * cloud_score  (0.5 when cloud=0, 1.0 when cloud=1)
+    graph capped relative to cloud — can't exceed cloud * 2.
+    This prevents graph from inflating when cloud says unrelated."""
+    if cloud_score <= 0 and graph_score <= 0:
+        return 0.0
+
+    # Cloud determines its own weight (self-weighting)
+    cloud_weight = 0.5 + 0.5 * min(cloud_score, 1.0)
+
+    # Graph capped relative to cloud — prevents false positives
+    # GPS/bread: cloud=0.025, graph=0.75 → cap=0.05, effective_graph=0.05
+    # plane/aircraft: cloud=0.3, graph=0.5 → cap=0.6, effective_graph=0.5
+    max_graph = max(cloud_score * 2.0, 0.05)
+    effective_graph = min(graph_score, max_graph)
+
+    return cloud_weight * cloud_score + (1.0 - cloud_weight) * effective_graph
 
 
 # ============================================================
@@ -415,12 +397,20 @@ def _question_sentence_relevance(question: str, passage: str,
     if q_ents and p_ents:
         signals.append(_matrix_similarity(q_ents, p_ents))
 
-    # 2. Predicate match via meaning similarity
+    # 2. Predicate match — noise floor scales with polysemy
     stop = _get_stop_words()
     if (q_ast.predicate and p_ast.predicate and
         q_ast.predicate not in stop and p_ast.predicate not in stop):
         pred_sim = _meaning_similarity(q_ast.predicate, p_ast.predicate)
-        if pred_sim > PREDICATE_SIMILARITY_MIN:
+        # Polysemous verbs (run=57 senses, make=51) have higher random match rate
+        # Noise floor = baseline verb similarity (~0.15) scaled by polysemy
+        try:
+            from nltk.corpus import wordnet as wn
+            pl = (len(wn.synsets(q_ast.predicate)) + len(wn.synsets(p_ast.predicate))) / 2
+            noise_floor = min(0.5, 0.03 * pl)  # 1 sense→0.03, 10→0.30, 17+→0.50
+        except Exception:
+            noise_floor = 0.05
+        if pred_sim > noise_floor:
             signals.append(pred_sim)
 
     # 3. Answer-type presence

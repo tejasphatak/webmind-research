@@ -200,13 +200,15 @@ def _lemmatize(word: str, pos: str, vocab: dict) -> str:
             if candidate in vocab:
                 candidates.append(candidate)
 
+    # Include the original word as a candidate if it's in vocab
+    # "need" IS in vocab → should be preferred over "nee" (stripped form)
+    if lower in vocab:
+        candidates.append(lower)
+
     # Prefer longest candidate (least stripping = most accurate lemma)
     if candidates:
         return max(candidates, key=len)
 
-    # Fallback: return as-is
-    if lower in vocab:
-        return lower
     return lower
 
 
@@ -222,8 +224,20 @@ _WORD_PATTERN = re.compile(r"""
 """, re.VERBOSE | re.UNICODE)
 
 
+# Common contractions → expanded forms
+_CONTRACTIONS = {
+    "n't": " not", "'s": " is", "'re": " are", "'ve": " have",
+    "'ll": " will", "'d": " would", "'m": " am",
+}
+
+
 def _split_words(text: str) -> List[str]:
-    """Split text into word tokens."""
+    """Split text into word tokens. Expands contractions and splits hyphens."""
+    # Expand contractions BEFORE tokenizing
+    for contraction, expansion in _CONTRACTIONS.items():
+        text = text.replace(contraction, expansion)
+    # Split hyphenated compounds: "rock-face" → "rock" + "face"
+    text = re.sub(r'(\w)-(\w)', r'\1 \2', text)
     return _WORD_PATTERN.findall(text)
 
 

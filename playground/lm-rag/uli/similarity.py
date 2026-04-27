@@ -542,11 +542,22 @@ def _question_sentence_relevance(question: str, passage: str,
 
     signals = []
 
-    # 1. Entity overlap via meaning matrix
-    q_ents = set(e.lower() for e in q_ast.entities)
-    p_ents = set(e.lower() for e in p_ast.entities)
-    if q_ents and p_ents:
-        signals.append(_matrix_similarity(q_ents, p_ents))
+    # 1. Entity overlap — use SPANS (multi-word names as units)
+    # "French Revolution" as a unit ≠ "Industrial Revolution"
+    # Entity spans from tokenizer group multi-word entities
+    q_span_texts = set(text.lower() for text, _ in q_spans)
+    p_span_texts = set(text.lower() for text, _ in p_spans)
+    if q_span_texts and p_span_texts:
+        # Span-level overlap: "French Revolution" vs "Industrial Revolution" → no match
+        span_overlap = len(q_span_texts & p_span_texts)
+        span_score = span_overlap / min(len(q_span_texts), len(p_span_texts))
+        signals.append(span_score)
+    elif q_span_texts or p_span_texts:
+        # One side has spans, other doesn't — fall back to word-level
+        q_ents = set(e.lower() for e in q_ast.entities)
+        p_ents = set(e.lower() for e in p_ast.entities)
+        if q_ents and p_ents:
+            signals.append(_matrix_similarity(q_ents, p_ents))
 
     # 2. Predicate match — noise floor scales with polysemy
     stop = _get_stop_words()

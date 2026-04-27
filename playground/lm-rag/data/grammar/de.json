@@ -1,0 +1,11 @@
+{
+  "language": "german",
+  "word_order": "SVO (main), SOV (subordinate)",
+  "gender": [
+    "masculine",
+    "feminine",
+    "neuter"
+  ],
+  "case_system": "4 cases (nominative, accusative, dative, genitive)",
+  "verb_position": "second (V2) in main clause, final in subordinate"
+}

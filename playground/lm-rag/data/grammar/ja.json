@@ -1,0 +1,11 @@
+{
+  "language": "japanese",
+  "word_order": "SOV",
+  "scripts": [
+    "hiragana",
+    "katakana",
+    "kanji"
+  ],
+  "particles": true,
+  "honorific_system": "keigo (sonkeigo, kenjougo, teineigo)"
+}

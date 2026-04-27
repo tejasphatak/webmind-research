@@ -1,0 +1,19 @@
+{
+  "language": "spanish",
+  "word_order": "SVO",
+  "gender": [
+    "masculine",
+    "feminine"
+  ],
+  "verb_agreement": {
+    "with": "subject",
+    "features": [
+      "number",
+      "person"
+    ]
+  },
+  "question_formation": {
+    "yes_no": "¿VERB SUBJ OBJ?",
+    "wh": "¿WH VERB SUBJ?"
+  }
+}

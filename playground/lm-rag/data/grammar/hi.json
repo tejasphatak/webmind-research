@@ -1,0 +1,35 @@
+{
+  "language": "hindi",
+  "word_order": "SOV",
+  "script": "devanagari",
+  "postpositions": true,
+  "gender": [
+    "masculine",
+    "feminine"
+  ],
+  "dependency_rules": [
+    {
+      "rel": "nsubj",
+      "head": "verb",
+      "dep": "noun",
+      "position": "before_head"
+    },
+    {
+      "rel": "dobj",
+      "head": "verb",
+      "dep": "noun",
+      "position": "before_head"
+    }
+  ],
+  "question_formation": {
+    "yes_no": "SUBJ OBJ VERB + क्या",
+    "wh": "WH(कौन/क्या/कहाँ/कब) SUBJ OBJ VERB"
+  },
+  "verb_agreement": {
+    "with": "subject",
+    "features": [
+      "number",
+      "gender"
+    ]
+  }
+}

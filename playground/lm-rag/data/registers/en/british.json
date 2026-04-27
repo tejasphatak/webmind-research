@@ -1,0 +1,125 @@
+{
+  "register": "british",
+  "parent": "english",
+  "words": {
+    "brilliant": {
+      "senses": [
+        "great",
+        "excellent"
+      ],
+      "us_equiv": "awesome"
+    },
+    "rubbish": {
+      "senses": [
+        "garbage",
+        "nonsense"
+      ],
+      "us_equiv": "trash/garbage"
+    },
+    "queue": {
+      "senses": [
+        "line"
+      ],
+      "us_equiv": "line"
+    },
+    "flat": {
+      "senses": [
+        "apartment"
+      ],
+      "us_equiv": "apartment"
+    },
+    "boot": {
+      "senses": [
+        "car trunk"
+      ],
+      "us_equiv": "trunk"
+    },
+    "bonnet": {
+      "senses": [
+        "car hood"
+      ],
+      "us_equiv": "hood"
+    },
+    "lorry": {
+      "senses": [
+        "truck"
+      ],
+      "us_equiv": "truck"
+    },
+    "biscuit": {
+      "senses": [
+        "cookie"
+      ],
+      "us_equiv": "cookie"
+    },
+    "chips": {
+      "senses": [
+        "french fries"
+      ],
+      "us_equiv": "french fries"
+    },
+    "crisps": {
+      "senses": [
+        "potato chips"
+      ],
+      "us_equiv": "potato chips"
+    },
+    "petrol": {
+      "senses": [
+        "gasoline"
+      ],
+      "us_equiv": "gas"
+    },
+    "lift": {
+      "senses": [
+        "elevator"
+      ],
+      "us_equiv": "elevator"
+    },
+    "mate": {
+      "senses": [
+        "friend"
+      ],
+      "us_equiv": "buddy"
+    },
+    "cheers": {
+      "senses": [
+        "thanks",
+        "goodbye"
+      ],
+      "us_equiv": "thanks"
+    },
+    "innit": {
+      "senses": [
+        "isn't it",
+        "right"
+      ],
+      "us_equiv": "right?"
+    },
+    "dodgy": {
+      "senses": [
+        "suspicious",
+        "unreliable"
+      ],
+      "us_equiv": "sketchy"
+    },
+    "knackered": {
+      "senses": [
+        "exhausted"
+      ],
+      "us_equiv": "exhausted"
+    },
+    "gutted": {
+      "senses": [
+        "very disappointed"
+      ],
+      "us_equiv": "devastated"
+    },
+    "chuffed": {
+      "senses": [
+        "very pleased"
+      ],
+      "us_equiv": "thrilled"
+    }
+  }
+}

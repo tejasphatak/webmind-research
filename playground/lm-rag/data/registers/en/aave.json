@@ -1,0 +1,52 @@
+{
+  "register": "aave",
+  "parent": "english",
+  "description": "African American Vernacular English — systematic grammar, not slang",
+  "words": {
+    "finna": {
+      "senses": [
+        "about to",
+        "going to"
+      ],
+      "formal": "about to"
+    },
+    "ain't": {
+      "senses": [
+        "is not",
+        "am not",
+        "have not"
+      ],
+      "formal": "is not"
+    },
+    "tryna": {
+      "senses": [
+        "trying to"
+      ],
+      "formal": "trying to"
+    },
+    "ion": {
+      "senses": [
+        "I don't"
+      ],
+      "formal": "I don't"
+    },
+    "ight": {
+      "senses": [
+        "alright"
+      ],
+      "formal": "alright"
+    },
+    "fasho": {
+      "senses": [
+        "for sure"
+      ],
+      "formal": "for sure"
+    }
+  },
+  "grammar_features": {
+    "habitual_be": "Invariant 'be' for habitual aspect: 'He be working' = he regularly works",
+    "remote_past_been": "'I been knew that' = I have known that for a long time",
+    "completive_done": "'I done told you' = I already told you",
+    "negative_concord": "Multiple negation is standard: 'I ain't never seen nobody'"
+  }
+}

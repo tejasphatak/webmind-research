@@ -1,0 +1,81 @@
+{
+  "register": "tech",
+  "parent": "english",
+  "words": {
+    "deploy": {
+      "senses": [
+        "release software to production"
+      ]
+    },
+    "refactor": {
+      "senses": [
+        "restructure code without changing behavior"
+      ]
+    },
+    "debug": {
+      "senses": [
+        "find and fix errors in code"
+      ]
+    },
+    "sprint": {
+      "senses": [
+        "short development cycle, usually 2 weeks"
+      ]
+    },
+    "standup": {
+      "senses": [
+        "brief daily team meeting"
+      ]
+    },
+    "MVP": {
+      "senses": [
+        "minimum viable product"
+      ]
+    },
+    "API": {
+      "senses": [
+        "application programming interface"
+      ]
+    },
+    "PR": {
+      "senses": [
+        "pull request — code review submission"
+      ]
+    },
+    "LGTM": {
+      "senses": [
+        "looks good to me — approval"
+      ]
+    },
+    "ship": {
+      "senses": [
+        "release to users"
+      ]
+    },
+    "bikeshed": {
+      "senses": [
+        "argue about trivial details"
+      ]
+    },
+    "yak shaving": {
+      "senses": [
+        "doing prerequisite tasks before the actual task"
+      ]
+    },
+    "rubber duck": {
+      "senses": [
+        "explain problem aloud to find solution"
+      ]
+    },
+    "tech debt": {
+      "senses": [
+        "accumulated shortcuts that need fixing"
+      ]
+    },
+    "scope creep": {
+      "senses": [
+        "uncontrolled expansion of project requirements"
+      ]
+    }
+  }
+}

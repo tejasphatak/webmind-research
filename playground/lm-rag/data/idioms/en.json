@@ -1,0 +1,140 @@
+{
+  "kick the bucket": {
+    "meaning": "die",
+    "literal": false
+  },
+  "bite the dust": {
+    "meaning": "die or fail",
+    "literal": false
+  },
+  "pushing up daisies": {
+    "meaning": "dead and buried",
+    "literal": false
+  },
+  "piece of cake": {
+    "meaning": "very easy",
+    "literal": false
+  },
+  "break a leg": {
+    "meaning": "good luck",
+    "literal": false
+  },
+  "hit the nail on the head": {
+    "meaning": "exactly right",
+    "literal": false
+  },
+  "on cloud nine": {
+    "meaning": "extremely happy",
+    "literal": false
+  },
+  "blessing in disguise": {
+    "meaning": "good thing that seemed bad at first",
+    "literal": false
+  },
+  "cost an arm and a leg": {
+    "meaning": "very expensive",
+    "literal": false
+  },
+  "under the weather": {
+    "meaning": "feeling ill",
+    "literal": false
+  },
+  "the last straw": {
+    "meaning": "final provocation",
+    "literal": false
+  },
+  "barking up the wrong tree": {
+    "meaning": "pursuing a mistaken approach",
+    "literal": false
+  },
+  "adding insult to injury": {
+    "meaning": "making a bad situation worse",
+    "literal": false
+  },
+  "burn the midnight oil": {
+    "meaning": "work late into the night",
+    "literal": false
+  },
+  "bite off more than you can chew": {
+    "meaning": "take on too much",
+    "literal": false
+  },
+  "go the extra mile": {
+    "meaning": "make extra effort",
+    "literal": false
+  },
+  "pull someone's leg": {
+    "meaning": "joke with someone",
+    "literal": false
+  },
+  "let the cat out of the bag": {
+    "meaning": "reveal a secret",
+    "literal": false
+  },
+  "spill the beans": {
+    "meaning": "reveal a secret",
+    "literal": false
+  },
+  "beat around the bush": {
+    "meaning": "avoid getting to the point",
+    "literal": false
+  },
+  "cut to the chase": {
+    "meaning": "get to the point",
+    "literal": false
+  },
+  "see eye to eye": {
+    "meaning": "agree",
+    "literal": false
+  },
+  "miss the boat": {
+    "meaning": "miss an opportunity",
+    "literal": false
+  },
+  "once in a blue moon": {
+    "meaning": "very rarely",
+    "literal": false
+  },
+  "the tip of the iceberg": {
+    "meaning": "small part of larger problem",
+    "literal": false
+  },
+  "read between the lines": {
+    "meaning": "understand the hidden meaning",
+    "literal": false
+  },
+  "at the drop of a hat": {
+    "meaning": "instantly",
+    "literal": false
+  },
+  "in the nick of time": {
+    "meaning": "just barely in time",
+    "literal": false
+  },
+  "time flies": {
+    "meaning": "time passes quickly",
+    "literal": false
+  },
+  "break the bank": {
+    "meaning": "cost too much",
+    "literal": false
+  },
+  "penny for your thoughts": {
+    "meaning": "what are you thinking",
+    "literal": false
+  },
+  "raining cats and dogs": {
+    "meaning": "raining heavily",
+    "literal": false
+  },
+  "tabling a motion": {
+    "meaning_us": "postpone",
+    "meaning_uk": "bring forward",
+    "locale_dependent": true
+  },
+  "first floor": {
+    "meaning_us": "ground level",
+    "meaning_uk": "one level up",
+    "locale_dependent": true
+  }
+}

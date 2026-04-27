@@ -1,0 +1,66 @@
+{
+  "register": "medical",
+  "parent": "english",
+  "words": {
+    "prn": {
+      "senses": [
+        "as needed"
+      ]
+    },
+    "bid": {
+      "senses": [
+        "twice daily"
+      ]
+    },
+    "tid": {
+      "senses": [
+        "three times daily"
+      ]
+    },
+    "stat": {
+      "senses": [
+        "immediately"
+      ]
+    },
+    "dx": {
+      "senses": [
+        "diagnosis"
+      ]
+    },
+    "tx": {
+      "senses": [
+        "treatment"
+      ]
+    },
+    "hx": {
+      "senses": [
+        "history"
+      ]
+    },
+    "rx": {
+      "senses": [
+        "prescription"
+      ]
+    },
+    "sx": {
+      "senses": [
+        "symptoms"
+      ]
+    },
+    "pt": {
+      "senses": [
+        "patient"
+      ]
+    },
+    "BP": {
+      "senses": [
+        "blood pressure"
+      ]
+    },
+    "HR": {
+      "senses": [
+        "heart rate"
+      ]
+    }
+  }
+}

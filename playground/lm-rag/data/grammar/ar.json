@@ -1,0 +1,11 @@
+{
+  "language": "arabic",
+  "word_order": "VSO (classical), SVO (modern)",
+  "script": "arabic (RTL)",
+  "root_system": "triliteral roots",
+  "gender": [
+    "masculine",
+    "feminine"
+  ],
+  "case_system": "3 cases"
+}

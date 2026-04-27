@@ -1,0 +1,7 @@
+{
+  "language": "chinese",
+  "word_order": "SVO",
+  "tones": true,
+  "classifiers": true,
+  "no_inflection": true
+}

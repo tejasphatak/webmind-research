@@ -1,0 +1,11 @@
+{
+  "language": "russian",
+  "word_order": "SVO (flexible)",
+  "script": "cyrillic",
+  "gender": [
+    "masculine",
+    "feminine",
+    "neuter"
+  ],
+  "case_system": "6 cases"
+}

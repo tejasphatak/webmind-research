@@ -1,0 +1,181 @@
+{
+  "email": {
+    "structure": [
+      "greeting",
+      "context?",
+      "body",
+      "closing",
+      "signature"
+    ],
+    "greeting_patterns": [
+      "Dear {name},",
+      "Hi {name},",
+      "Hello {name},",
+      "Hey {name},"
+    ],
+    "closing_patterns": [
+      "Best regards,",
+      "Thanks,",
+      "Sincerely,",
+      "Cheers,",
+      "Best,"
+    ]
+  },
+  "essay": {
+    "structure": [
+      "introduction",
+      "body_paragraph+",
+      "conclusion"
+    ],
+    "introduction": {
+      "contains": [
+        "hook",
+        "context",
+        "thesis_statement"
+      ]
+    },
+    "body_paragraph": {
+      "contains": [
+        "topic_sentence",
+        "evidence+",
+        "analysis",
+        "transition?"
+      ]
+    },
+    "conclusion": {
+      "contains": [
+        "restatement",
+        "synthesis",
+        "final_thought"
+      ]
+    }
+  },
+  "research_paper": {
+    "structure": [
+      "abstract",
+      "introduction",
+      "related_work?",
+      "method",
+      "results",
+      "discussion",
+      "conclusion",
+      "references"
+    ],
+    "abstract": {
+      "max_words": 300,
+      "contains": [
+        "problem",
+        "approach",
+        "key_result"
+      ]
+    }
+  },
+  "chat": {
+    "structure": [
+      "short_turn+"
+    ],
+    "features": [
+      "contractions",
+      "emoji",
+      "abbreviations",
+      "informal"
+    ],
+    "max_sentence_length": 15
+  },
+  "poem_haiku": {
+    "lines": 3,
+    "syllables": [
+      5,
+      7,
+      5
+    ]
+  },
+  "poem_sonnet": {
+    "lines": 14,
+    "meter": "iambic_pentameter",
+    "rhyme": "ABAB_CDCD_EFEF_GG"
+  },
+  "poem_limerick": {
+    "lines": 5,
+    "rhyme": "AABBA"
+  },
+  "poem_free_verse": {
+    "lines": "variable",
+    "meter": "none",
+    "rhyme": "none"
+  },
+  "legal_contract": {
+    "structure": [
+      "parties",
+      "recitals?",
+      "definitions",
+      "terms+",
+      "conditions+",
+      "signatures"
+    ]
+  },
+  "math_proof": {
+    "structure": [
+      "given",
+      "to_prove",
+      "proof_steps+",
+      "qed"
+    ]
+  },
+  "code_review": {
+    "structure": [
+      "summary",
+      "issues+",
+      "suggestions?",
+      "verdict"
+    ]
+  },
+  "news_article": {
+    "structure": [
+      "headline",
+      "lead",
+      "body+",
+      "conclusion?"
+    ],
+    "lead": {
+      "contains": [
+        "who",
+        "what",
+        "when",
+        "where"
+      ]
+    }
+  },
+  "recipe": {
+    "structure": [
+      "title",
+      "description?",
+      "ingredients",
+      "steps+",
+      "notes?"
+    ]
+  },
+  "cover_letter": {
+    "structure": [
+      "header",
+      "greeting",
+      "opening",
+      "body+",
+      "closing",
+      "signature"
+    ]
+  },
+  "factual_answer_short": {
+    "template": "{answer}."
+  },
+  "factual_answer_sentence": {
+    "template": "The {target} is {answer}.",
+    "alternatives": [
+      "{answer} is the {target} of {context}.",
+      "Based on available information, {answer}."
+    ]
+  },
+  "factual_answer_paragraph": {
+    "template": "{context_sentence} {answer_sentence} {elaboration_sentence}"
+  }
+}

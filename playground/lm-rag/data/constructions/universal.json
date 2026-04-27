@@ -1,0 +1,70 @@
+{
+  "constructions": [
+    {
+      "name": "comparative_correlative",
+      "pattern": "the {COMP} the {COMP}",
+      "meaning": "proportional_relationship",
+      "example_en": "the bigger the better"
+    },
+    {
+      "name": "caused_motion",
+      "pattern": "{AGENT} {VERB} {OBJ} {DIR}",
+      "meaning": "agent_causes_object_to_move",
+      "example_en": "She pushed the box off the table"
+    },
+    {
+      "name": "ditransitive",
+      "pattern": "{AGENT} {VERB} {RECIP} {THEME}",
+      "meaning": "agent_transfers_theme_to_recipient",
+      "example_en": "She gave him a book"
+    },
+    {
+      "name": "resultative",
+      "pattern": "{SUBJ} {VERB} {OBJ} {RESULT}",
+      "meaning": "action_causes_state_change",
+      "example_en": "She painted the wall red"
+    },
+    {
+      "name": "existential",
+      "pattern": "there {BE} {NP} {LOC}",
+      "meaning": "existence_assertion",
+      "example_en": "There is a book on the table"
+    },
+    {
+      "name": "passive",
+      "pattern": "{PATIENT} {BE} {VERB_PP} (by {AGENT})",
+      "meaning": "patient_focused",
+      "example_en": "The cake was eaten by the children"
+    },
+    {
+      "name": "imperative",
+      "pattern": "{VERB} {OBJ}!",
+      "meaning": "command",
+      "example_en": "Open the door!"
+    },
+    {
+      "name": "conditional",
+      "pattern": "if {CLAUSE}, {CLAUSE}",
+      "meaning": "condition_consequence",
+      "example_en": "If it rains, we stay inside"
+    },
+    {
+      "name": "rhetorical_question",
+      "pattern": "isn't {CLAIM}?",
+      "meaning": "assertion_as_question",
+      "example_en": "Isn't that obvious?"
+    },
+    {
+      "name": "serial_verb",
+      "pattern": "{SUBJ} {V1} {V2} {OBJ}",
+      "meaning": "sequential_actions",
+      "example_en": "Go get the book"
+    },
+    {
+      "name": "cleft",
+      "pattern": "it is {FOCUS} that {CLAUSE}",
+      "meaning": "emphasis",
+      "example_en": "It was John who broke the vase"
+    }
+  ]
+}

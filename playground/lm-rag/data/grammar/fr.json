@@ -1,0 +1,15 @@
+{
+  "language": "french",
+  "word_order": "SVO",
+  "gender": [
+    "masculine",
+    "feminine"
+  ],
+  "adjective_position": "after_noun (usually)",
+  "negation": {
+    "markers": [
+      "ne...pas"
+    ],
+    "position": "around_verb"
+  }
+}

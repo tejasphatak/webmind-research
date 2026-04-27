@@ -1,0 +1,44 @@
+{
+  "language": "marathi",
+  "word_order": "SOV",
+  "script": "devanagari",
+  "postpositions": true,
+  "gender": [
+    "masculine",
+    "feminine",
+    "neuter"
+  ],
+  "dependency_rules": [
+    {
+      "rel": "nsubj",
+      "head": "verb",
+      "dep": "noun",
+      "position": "before_head"
+    },
+    {
+      "rel": "dobj",
+      "head": "verb",
+      "dep": "noun",
+      "position": "before_head"
+    },
+    {
+      "rel": "amod",
+      "head": "noun",
+      "dep": "adj",
+      "position": "before_head"
+    }
+  ],
+  "question_formation": {
+    "yes_no": "SUBJ OBJ VERB + काय/का",
+    "wh": "WH(कोण/काय/कुठे/केव्हा) SUBJ OBJ VERB"
+  },
+  "verb_agreement": {
+    "with": "subject",
+    "features": [
+      "number",
+      "gender",
+      "person"
+    ]
+  },
+  "case_system": "vibhakti (8 cases)"
+}

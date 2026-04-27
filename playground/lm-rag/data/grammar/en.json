@@ -1,0 +1,60 @@
+{
+  "language": "english",
+  "word_order": "SVO",
+  "dependency_rules": [
+    {
+      "rel": "nsubj",
+      "head": "verb",
+      "dep": "noun",
+      "position": "before_head"
+    },
+    {
+      "rel": "dobj",
+      "head": "verb",
+      "dep": "noun",
+      "position": "after_head"
+    },
+    {
+      "rel": "amod",
+      "head": "noun",
+      "dep": "adj",
+      "position": "before_head"
+    },
+    {
+      "rel": "advmod",
+      "head": "verb",
+      "dep": "adv",
+      "position": "flexible"
+    }
+  ],
+  "question_formation": {
+    "yes_no": "AUX SUBJ VERB OBJ",
+    "wh": "WH AUX SUBJ VERB"
+  },
+  "agreement": [
+    {
+      "between": [
+        "subject",
+        "verb"
+      ],
+      "feature": "number"
+    },
+    {
+      "between": [
+        "determiner",
+        "noun"
+      ],
+      "feature": "number"
+    }
+  ],
+  "negation": {
+    "marker": "not",
+    "position": "after_aux"
+  },
+  "tense_markers": {
+    "past": "-ed (regular), irregular forms",
+    "future": "will + base",
+    "progressive": "be + -ing",
+    "perfect": "have + -ed/-en"
+  }
+}

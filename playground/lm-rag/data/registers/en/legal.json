@@ -1,0 +1,56 @@
+{
+  "register": "legal",
+  "parent": "english",
+  "words": {
+    "plaintiff": {
+      "senses": [
+        "person who brings a case"
+      ]
+    },
+    "defendant": {
+      "senses": [
+        "person being accused"
+      ]
+    },
+    "tort": {
+      "senses": [
+        "wrongful act leading to civil liability"
+      ]
+    },
+    "statute": {
+      "senses": [
+        "written law"
+      ]
+    },
+    "jurisdiction": {
+      "senses": [
+        "authority of a court"
+      ]
+    },
+    "habeas corpus": {
+      "senses": [
+        "right to appear before judge"
+      ]
+    },
+    "pro bono": {
+      "senses": [
+        "free legal work"
+      ]
+    },
+    "prima facie": {
+      "senses": [
+        "at first sight, on its face"
+      ]
+    },
+    "subpoena": {
+      "senses": [
+        "legal order to appear or produce documents"
+      ]
+    },
+    "affidavit": {
+      "senses": [
+        "sworn written statement"
+      ]
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "rules": [
+    {
+      "name": "transitivity",
+      "if": [
+        "A causes B",
+        "B causes C"
+      ],
+      "then": "A causes C"
+    },
+    {
+      "name": "modus_ponens",
+      "if": [
+        "if P then Q",
+        "P"
+      ],
+      "then": "Q"
+    },
+    {
+      "name": "comparison_transitive",
+      "if": [
+        "A > B",
+        "B > C"
+      ],
+      "then": "A > C"
+    },
+    {
+      "name": "temporal_order",
+      "if": [
+        "A before B",
+        "B before C"
+      ],
+      "then": "A before C"
+    },
+    {
+      "name": "set_membership",
+      "if": [
+        "X is a Y",
+        "all Y are Z"
+      ],
+      "then": "X is a Z"
+    },
+    {
+      "name": "contradiction",
+      "if": [
+        "P",
+        "not P"
+      ],
+      "then": "CONTRADICTION"
+    },
+    {
+      "name": "negation_scope",
+      "if": [
+        "not (A and B)"
+      ],
+      "then": "(not A) or (not B)"
+    },
+    {
+      "name": "superlative",
+      "if": [
+        "A > B for all B in set"
+      ],
+      "then": "A is the most/largest/first in set"
+    }
+  ]
+}

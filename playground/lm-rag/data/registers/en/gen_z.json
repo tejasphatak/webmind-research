@@ -1,0 +1,234 @@
+{
+  "register": "gen_z",
+  "parent": "english",
+  "words": {
+    "slay": {
+      "senses": [
+        "excel",
+        "impress"
+      ],
+      "formal": "did excellently"
+    },
+    "bussin": {
+      "senses": [
+        "very good",
+        "delicious"
+      ],
+      "formal": "excellent"
+    },
+    "no cap": {
+      "senses": [
+        "truthfully",
+        "seriously"
+      ],
+      "formal": "honestly"
+    },
+    "bet": {
+      "senses": [
+        "agreement",
+        "okay"
+      ],
+      "formal": "agreed"
+    },
+    "rizz": {
+      "senses": [
+        "charisma",
+        "charm"
+      ],
+      "formal": "charisma"
+    },
+    "fire": {
+      "senses": [
+        "excellent",
+        "amazing"
+      ],
+      "formal": "excellent"
+    },
+    "mid": {
+      "senses": [
+        "mediocre",
+        "average"
+      ],
+      "formal": "average"
+    },
+    "sus": {
+      "senses": [
+        "suspicious",
+        "questionable"
+      ],
+      "formal": "suspicious"
+    },
+    "vibe": {
+      "senses": [
+        "feeling",
+        "atmosphere"
+      ],
+      "formal": "atmosphere"
+    },
+    "lowkey": {
+      "senses": [
+        "somewhat",
+        "secretly"
+      ],
+      "formal": "somewhat"
+    },
+    "highkey": {
+      "senses": [
+        "very",
+        "obviously"
+      ],
+      "formal": "very much"
+    },
+    "salty": {
+      "senses": [
+        "bitter",
+        "upset"
+      ],
+      "formal": "bitter"
+    },
+    "shade": {
+      "senses": [
+        "disrespect",
+        "subtle insult"
+      ],
+      "formal": "disrespect"
+    },
+    "tea": {
+      "senses": [
+        "gossip",
+        "truth"
+      ],
+      "formal": "gossip"
+    },
+    "lit": {
+      "senses": [
+        "exciting",
+        "excellent"
+      ],
+      "formal": "exciting"
+    },
+    "fam": {
+      "senses": [
+        "close friend",
+        "family"
+      ],
+      "formal": "close friend"
+    },
+    "extra": {
+      "senses": [
+        "over the top",
+        "dramatic"
+      ],
+      "formal": "excessive"
+    },
+    "flex": {
+      "senses": [
+        "show off",
+        "boast"
+      ],
+      "formal": "boast"
+    },
+    "ghosting": {
+      "senses": [
+        "ignoring someone"
+      ],
+      "formal": "ignoring someone"
+    },
+    "simp": {
+      "senses": [
+        "someone overly attentive"
+      ],
+      "formal": "overly attentive person"
+    },
+    "ratio": {
+      "senses": [
+        "getting more replies than likes"
+      ],
+      "formal": "negative response"
+    },
+    "based": {
+      "senses": [
+        "true to oneself",
+        "admirable opinion"
+      ],
+      "formal": "authentic"
+    },
+    "w": {
+      "senses": [
+        "win"
+      ],
+      "formal": "win"
+    },
+    "l": {
+      "senses": [
+        "loss"
+      ],
+      "formal": "loss"
+    },
+    "yeet": {
+      "senses": [
+        "throw",
+        "discard forcefully"
+      ],
+      "formal": "throw"
+    },
+    "periodt": {
+      "senses": [
+        "end of discussion"
+      ],
+      "formal": "final statement"
+    },
+    "stan": {
+      "senses": [
+        "obsessive fan",
+        "strongly support"
+      ],
+      "formal": "devoted fan"
+    },
+    "understood the assignment": {
+      "senses": [
+        "performed perfectly"
+      ],
+      "formal": "executed perfectly"
+    },
+    "main character": {
+      "senses": [
+        "the focus",
+        "living fully"
+      ],
+      "formal": "protagonist"
+    },
+    "rent free": {
+      "senses": [
+        "constantly thinking about"
+      ],
+      "formal": "preoccupied with"
+    }
+  },
+  "constructions": [
+    {
+      "pattern": "it's giving {NOUN}",
+      "meaning": "resembles/evokes"
+    },
+    {
+      "pattern": "lowkey {ADJ/VERB}",
+      "meaning": "moderate degree"
+    },
+    {
+      "pattern": "that's so {ADJ}",
+      "meaning": "emphasis"
+    },
+    {
+      "pattern": "no {NOUN} was {VERB}ed",
+      "meaning": "impressive performance"
+    },
+    {
+      "pattern": "{NOUN} is {NOUN}",
+      "meaning": "identity assertion"
+    },
+    {
+      "pattern": "the way {CLAUSE}",
+      "meaning": "emphasis on surprising element"
+    }
+  ]
+}

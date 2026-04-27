@@ -433,6 +433,508 @@ Fragment: "The garden. A slow walk. Her."
 
 Facts never change. Only presentation varies. No LM needed — a random number generator + weighted selection from the database.
 
+## Learning: Training by Talking / Feeding Data
+
+### The Insight
+Neural networks learn by updating weights via gradient descent.
+DMRSM-ULI learns by **updating JSON databases via INSERT/UPDATE operations**.
+
+Same result: the system gets smarter. Different mechanism: no backprop, no GPU, no retraining.
+
+### What "Training" Means for Each Layer
+
+| Layer | What's learned | How it's learned | Storage |
+|-------|---------------|-----------------|---------|
+| Vocabulary | New words, senses, forms | Encounter unknown word → add to vocab DB | vocab/{lang}.json |
+| Normalization | New abbreviations, slang | User uses unknown abbrev → add to normalize DB | normalize/{lang}.json |
+| Idioms | New fixed expressions | Phrase doesn't compose literally → add to idiom DB | idioms/{lang}.json |
+| Register | New slang, jargon | Detect register mismatch → add to register overlay | registers/{lang}/{reg}.json |
+| Grammar | New constructions | Encounter unparseable-but-valid structure → add rule | grammar/{lang}.json |
+| Templates | New discourse forms | Analyze document structure → add template | templates/discourse.json |
+| Knowledge | New facts | Verified search result → add to KB | knowledge DB (Synapse) |
+| Inference | New reasoning patterns | Trace successful reasoning → add to transition table | transitions.json |
+
+### 3 Learning Modes
+
+#### Mode 1: Learn from Conversation (interactive)
+```
+User: "ngl that's bussin fr fr"
+System: [doesn't know "ngl", "bussin", "fr"]
+         → flags unknown tokens
+         → if user explains or context clarifies:
+           normalize/en.json: "ngl" → "not gonna lie"
+           vocab/en.json: "bussin" → {senses: ["excellent"], register: "gen_z"}
+           normalize/en.json: "fr" → "for real"
+```
+
+```
+User: "What is the capital of France?"
+System: "Paris"
+User: "That's correct!"
+         → fact verified → add to KB:
+           {question: "capital of France", answer: "Paris", confidence: 1.0, source: "verified"}
+```
+
+```
+User: "No, 'tabling a motion' in the US means postpone, not bring forward"
+System: → correction detected
+         → idioms/en.json: update "tabling a motion" with locale tag
+           {meaning_us: "postpone", meaning_uk: "bring forward"}
+```
+
+#### Mode 2: Learn from Bulk Data (batch)
+```python
+engine.learn_from_documents([
+    {"text": "Dear John, ...", "type": "email"},
+    {"text": "Abstract: We present...", "type": "paper"},
+    {"text": "yo wya lol", "type": "chat"},
+])
+# → Extracts: email templates, paper templates, chat patterns
+# → Extracts: new vocabulary, new abbreviations
+# → Updates: templates/discourse.json, normalize/en.json, vocab/en.json
+```
+
+```python
+engine.learn_vocabulary("path/to/marathi_corpus.txt", lang="mr")
+# → Scans text for words not in vocab/mr.json
+# → Infers POS from context (most frequent POS for each unknown word)
+# → Adds to vocab/mr.json with frequency counts
+```
+
+#### Mode 3: Explicit Teaching (direct)
+```python
+engine.teach("slay", {
+    "pos": ["verb"],
+    "senses": ["excel", "impress"],
+    "register": "gen_z",
+    "formal_equivalent": "did excellently"
+})
+# → Direct insert into vocab/en.json
+
+engine.teach_idiom("spill the tea", {
+    "meaning": "share gossip",
+    "literal": False,
+    "register": "gen_z"
+})
+# → Direct insert into idioms/en.json
+
+engine.teach_template("code_review", {
+    "structure": ["summary", "issues+", "suggestions", "verdict"],
+    "register": "technical"
+})
+# → Direct insert into templates/discourse.json
+```
+
+### How Each Learning Mode Works Mechanically
+
+#### Unknown Word Detection (automatic during read)
+```python
+def read(self, text):
+    tokens = self.tokenize(text)
+    for token in tokens:
+        if token.text.lower() not in self.vocab:
+            self._flag_unknown(token)  # Add to learning queue
+    # ... rest of pipeline
+```
+
+#### Learning Queue (buffer before committing)
+```python
+class LearningQueue:
+    """Buffer unknown items. Commit after threshold encounters."""
+    
+    def __init__(self, threshold=3):
+        self.threshold = threshold
+        self.unknown_words = {}  # word → {count, contexts}
+        self.corrections = []
+        self.verified_facts = []
+    
+    def flag_unknown(self, word, context):
+        if word not in self.unknown_words:
+            self.unknown_words[word] = {'count': 0, 'contexts': []}
+        self.unknown_words[word]['count'] += 1
+        self.unknown_words[word]['contexts'].append(context[:100])
+        
+        if self.unknown_words[word]['count'] >= self.threshold:
+            self._learn_word(word)
+    
+    def _learn_word(self, word):
+        """Word seen N times → infer POS from contexts → add to vocab."""
+        contexts = self.unknown_words[word]['contexts']
+        pos = self._infer_pos(word, contexts)  # Most common POS in contexts
+        # Add to vocab DB
+        self._update_vocab(word, pos)
+```
+
+#### Correction Detection (during conversation)
+```
+User says "No" or "Wrong" or "Actually, ..." or "I meant ..."
+→ Previous answer was incorrect
+→ If user provides correction:
+  1. Update fact in KB (if knowledge correction)
+  2. Update vocab/idiom/normalize (if language correction)
+  3. Log the correction in learning trace
+```
+
+#### Bulk Document Learning
+```python
+def learn_from_documents(self, docs):
+    for doc in docs:
+        # 1. Parse with ULI
+        ast = self.read(doc['text'])
+        
+        # 2. Extract new vocabulary
+        for entity in ast.entities:
+            if entity not in self.vocab:
+                self.learning_queue.flag_unknown(entity, doc['text'])
+        
+        # 3. Extract discourse template
+        if doc.get('type'):
+            template = self._extract_template(ast, doc['type'])
+            self._update_templates(doc['type'], template)
+        
+        # 4. Extract new abbreviations/slang
+        for token in self.tokenize(doc['text']):
+            if self._looks_like_abbreviation(token):
+                self.learning_queue.flag_unknown(token.text, doc['text'])
+```
+
+### What Gets Updated (and what DOESN'T)
+
+| Updated by learning | NOT updated by learning |
+|---|---|
+| vocab/{lang}.json (new words) | Grammar rules (too risky — manual only) |
+| normalize/{lang}.json (new abbreviations) | Safety filters (hardcoded, too critical) |
+| idioms/{lang}.json (new expressions) | Transition table (requires trace analysis) |
+| registers/{lang}/{reg}.json (new slang) | Core parsing logic (code, not data) |
+| templates/discourse.json (new forms) | |
+| Knowledge DB (verified facts) | |
+
+Grammar rules are NOT auto-learned — a bad grammar rule breaks parsing for everything. Grammar changes are manual (or from UD treebank updates).
+
+### Self-Evolution (same as Synapse SAQT)
+
+This is exactly Synapse's self-evolution mechanism:
+1. User asks question → system answers
+2. User confirms (explicitly or implicitly) → fact verified → add to KB
+3. System answers a question it previously couldn't → KB grew
+4. Over time, system needs fewer searches because answers are in KB
+
+**The KB IS the training data. Every conversation makes it smarter.**
+
+### Implementation
+
+New file: `uli/learner.py`
+
+```python
+class Learner:
+    """Learning layer — updates JSON databases from conversation and data."""
+    
+    def __init__(self, data_dir):
+        self.data_dir = data_dir
+        self.queue = LearningQueue(threshold=3)
+        self.corrections = []
+    
+    # Mode 1: Conversation learning
+    def on_unknown_word(self, word, context, lang='en'): ...
+    def on_correction(self, wrong, right, category): ...
+    def on_verified_answer(self, question, answer): ...
+    
+    # Mode 2: Bulk learning
+    def learn_from_documents(self, docs, lang='en'): ...
+    def learn_vocabulary(self, corpus_path, lang='en'): ...
+    
+    # Mode 3: Explicit teaching
+    def teach_word(self, word, definition, lang='en'): ...
+    def teach_idiom(self, phrase, meaning, lang='en'): ...
+    def teach_template(self, name, structure): ...
+    
+    # Persistence
+    def save(self): ...  # Write updated JSONs to disk
+```
+
+### Verification
+
+Tests for learning:
+```
+test_unknown_word_flagged:     Unknown word → added to learning queue
+test_threshold_triggers_learn: Word seen 3x → added to vocab
+test_correction_updates_db:    User corrects → DB updated
+test_teach_word_adds:          Explicit teach → vocab updated
+test_teach_idiom_adds:         Teach idiom → idiom DB updated
+test_bulk_learns_vocab:        Feed corpus → new words learned
+test_bulk_learns_templates:    Feed documents → templates extracted
+test_grammar_not_auto_updated: Grammar rules NOT changed by learning
+test_safety_not_changed:       Safety filters NOT changed by learning
+test_persist_across_restart:   Learned data survives restart (JSON on disk)
+```
+
+## Honest Gaps vs LLM — And How to Close Them
+
+### Gap 1: Long-form Generation Feels Mechanical
+
+**The problem:** Templates produce correct but flat text. No rhythm, no flow, no voice. A human writer varies sentence length, uses transitions, builds to a point.
+
+**Why it happens:** We have templates with slots. LLMs have 175B params of "how humans write."
+
+**How to close WITHOUT an LM:**
+
+The "how humans write" knowledge is codifiable — it's called **rhetoric**. 2,400 years of documented rules:
+
+```json
+{
+  "rhetorical_devices": {
+    "anaphora": {"pattern": "{X}. {X}. {X}.", "effect": "emphasis"},
+    "antithesis": {"pattern": "Not {A}, but {B}", "effect": "contrast"},
+    "rhetorical_question": {"pattern": "Is it not {claim}?", "effect": "persuasion"},
+    "tricolon": {"pattern": "{A}, {B}, and {C}", "effect": "completeness"}
+  },
+  "rhythm_rules": [
+    "After 3 long sentences, use a short one.",
+    "Vary length: 8, 15, 6, 20, 10 words.",
+    "End paragraphs with short punchy sentences."
+  ],
+  "transition_library": {
+    "addition": ["Moreover", "Furthermore", "Additionally"],
+    "contrast": ["However", "Nevertheless", "On the other hand"],
+    "consequence": ["Therefore", "As a result", "Consequently"],
+    "example": ["For instance", "Consider", "Take the case of"]
+  },
+  "voice_profiles": {
+    "conversational": {"sentence_avg": 10, "contractions": true, "questions": "frequent"},
+    "academic": {"sentence_avg": 22, "contractions": false, "passive_voice": "allowed"},
+    "storytelling": {"sentence_avg": 14, "vary_length": true, "sensory_words": true}
+  }
+}
+```
+
+**The writer composes paragraphs, not just sentences:**
+```python
+def write_paragraph(facts, profile='conversational'):
+    # 1. Pick topic sentence template
+    # 2. Pick 2-3 evidence sentence templates  
+    # 3. Add transitions between them (from transition_library)
+    # 4. Apply rhythm rules (vary sentence length)
+    # 5. Optionally insert rhetorical device
+    # 6. End with short concluding sentence
+```
+
+**Honest remaining gap:** Even with all this, it won't have the emergent "voice" of a human writer. It'll read like good technical writing, not like a conversation with a friend. That said — most practical Q&A doesn't need literary voice. It needs clear, accurate, traceable answers. We optimize for that.
+
+**Closeable: ~80%.** Rhetoric rules + rhythm + transitions + voice profiles get most of the way there.
+
+---
+
+### Gap 2: Implicit Reasoning / Deep Context
+
+**The problem:** "I saw her duck" — is it a noun (bird) or verb (dodge)? MiniLM cosine helps but it's one vector comparison, not deep contextual understanding.
+
+**Why it happens:** We compare two embeddings. LLMs attend across the entire context window with 96+ layers of transformers.
+
+**How to close WITHOUT an LM:**
+
+**Context chain** — maintain a sliding window of topic embeddings:
+
+```python
+class ContextChain:
+    """Track discourse topic as a running embedding vector."""
+    
+    def __init__(self, embedder, window=5):
+        self.embedder = embedder
+        self.window = window
+        self.history = []  # List of (text, embedding) pairs
+    
+    def add(self, text):
+        emb = self.embedder.encode(text)
+        self.history.append((text, emb))
+        if len(self.history) > self.window:
+            self.history.pop(0)
+    
+    def context_embedding(self):
+        """Average of recent embeddings = topic vector."""
+        if not self.history:
+            return None
+        return np.mean([emb for _, emb in self.history], axis=0)
+    
+    def disambiguate(self, word, senses):
+        """Pick sense closest to current context."""
+        ctx_emb = self.context_embedding()
+        best_sense, best_sim = None, -1
+        for sense, description in senses.items():
+            sense_emb = self.embedder.encode(description)
+            sim = np.dot(ctx_emb, sense_emb)
+            if sim > best_sim:
+                best_sim = sim
+                best_sense = sense
+        return best_sense
+```
+
+**Example:**
+```
+Context: "We walked to the pond. The children were feeding bread to the birds."
+Ambiguous: "I saw her duck"
+
+context_embedding ≈ average(pond, children, feeding, birds)
+cosine(context, "bird species") = 0.72
+cosine(context, "dodge/crouch") = 0.31
+→ duck = bird (noun) ✓
+```
+
+This is NOT attention in the transformer sense. It's a running average of MiniLM embeddings — simpler but surprisingly effective for topic tracking.
+
+**Honest remaining gap:** Multi-hop implicit reasoning where the disambiguating context is 20 sentences back, or where it requires world knowledge (not in the text). Example: "The pen is mightier than the sword" — knowing this is metaphorical requires cultural knowledge that a context chain doesn't capture. But idiom DB handles this specific case.
+
+**Closeable: ~70%.** Context chain handles most discourse-level ambiguity. Deep implicit reasoning remains a genuine gap.
+
+---
+
+### Gap 3: Creative Synthesis — Novel Ideas, Not Just Variation
+
+**The problem:** Temperature-controlled randomness produces variation (different words, different templates), not genuine creativity (new ideas that didn't exist in the inputs).
+
+**Why it happens:** We select from what's in the database. LLMs interpolate in latent space, sometimes producing genuinely novel combinations.
+
+**How to close WITHOUT an LM:**
+
+Creativity = **structured combination of existing concepts**. Research shows even human creativity follows patterns (Boden's 3 types):
+
+**1. Combinational creativity** — merge two unrelated concepts:
+```python
+def combine(concept_a, concept_b, embedder):
+    """Find structural bridge between two concepts."""
+    # "cloud" + "computing" → "cloud computing"
+    # "artificial" + "intelligence" → "AI"
+    
+    # Find shared properties via embedding
+    emb_a = embedder.encode(concept_a)
+    emb_b = embedder.encode(concept_b)
+    
+    # Midpoint in embedding space = the blend
+    blend = (emb_a + emb_b) / 2
+    
+    # Find words near the blend that aren't either original
+    # This is word2vec analogy: king - man + woman = queen
+    return find_nearest_words(blend, exclude=[concept_a, concept_b])
+```
+
+**2. Exploratory creativity** — push boundaries of a pattern:
+```python
+def explore(template, temperature=0.8):
+    """Fill template with increasingly unusual slot fillers."""
+    # Normal: "The {ADJ} {NOUN}" → "The big house"
+    # Creative: → "The whispering house" (synesthesia — houses don't whisper)
+    # More creative: → "The house that remembered" (personification)
+    
+    # At high temperature, select from semantically distant but 
+    # structurally valid fillers
+```
+
+**3. Analogical creativity** — map structure from one domain to another:
+```python
+def analogize(source_ast, target_domain, embedder):
+    """Map relationships from source to target domain."""
+    # Source: "The atom has a nucleus orbited by electrons"
+    # Target domain: "solar system"
+    # Output: "The solar system has a sun orbited by planets"
+    
+    # Find structural alignment between ASTs
+    # Map entities: nucleus↔sun, electrons↔planets, orbit↔orbit
+```
+
+All three use MiniLM embeddings + AST structure. No generation needed.
+
+**Honest remaining gap:** These produce structured novelty, not the fluid, surprising leaps that human creativity (or LLM hallucination, sometimes productively) achieves. The system will never write a poem that makes you cry. But it can write one that's structurally interesting.
+
+**Closeable: ~50%.** Combinational and analogical creativity are achievable. Genuine artistic voice is not.
+
+---
+
+### Gap 4: Pragmatics — Sarcasm, Implicature, Reading Between Lines
+
+**The problem:** Rule-based DMRSM will miss cases where meaning depends on social context, power dynamics, emotional state, shared history.
+
+**Why it happens:** Pragmatics requires a model of the OTHER PERSON'S mind (theory of mind). Rules can capture patterns but not the full flexibility.
+
+**How to close WITHOUT an LM:**
+
+**Pragmatic pattern library** — most pragmatic phenomena are catalogued in linguistics:
+
+```json
+{
+  "sarcasm_patterns": [
+    {"pattern": "Oh {POSITIVE}, {NEGATIVE_CONTEXT}", "meaning": "invert_sentiment"},
+    {"pattern": "Yeah, {UNLIKELY_CLAIM}", "meaning": "disbelief"},
+    {"pattern": "Thanks for {INCONVENIENCE}", "meaning": "complaint"}
+  ],
+  "implicature_patterns": [
+    {"pattern": "Can you {PHYSICAL_ACTION}?", "meaning": "request", "not": "ability_question"},
+    {"pattern": "Do you know {INFORMATION}?", "meaning": "request_info", "not": "yes_no"},
+    {"pattern": "It's cold in here", "context": "window_open", "meaning": "close_window"}
+  ],
+  "understatement_patterns": [
+    {"pattern": "not {NEGATIVE}", "meaning": "positive", "example": "not bad = good"},
+    {"pattern": "a bit {EXTREME}", "meaning": "very", "example": "a bit dangerous = very dangerous"}
+  ],
+  "politeness_markers": [
+    {"pattern": "Would you mind...", "meaning": "request", "register": "formal"},
+    {"pattern": "I was wondering if...", "meaning": "request", "register": "hedged"}
+  ]
+}
+```
+
+**Context-aware pragmatic inference:**
+```python
+def detect_sarcasm(ast, context_chain):
+    """Check if surface sentiment contradicts context."""
+    surface = ast_sentiment(ast)  # positive/negative from words
+    context = context_sentiment(context_chain)  # recent topic sentiment
+    
+    # Sarcasm signal: positive words + negative context
+    if surface == 'positive' and context == 'negative':
+        # Check for sarcasm pattern match
+        if matches_sarcasm_pattern(ast):
+            return True, 'invert'
+    return False, None
+```
+
+**Conversational history as pragmatic context:**
+```python
+def resolve_implicature(ast, conversation):
+    """Use conversation history to resolve indirect speech acts."""
+    # "Can you pass the salt?" after dinner context → request
+    # "Can you pass the salt?" after "what can you lift?" → ability question
+    
+    recent_topic = conversation[-3:]  # Last 3 turns
+    topic_embedding = embedder.encode(' '.join(t['text'] for t in recent_topic))
+    
+    # Compare to known implicature patterns
+    for pattern in IMPLICATURE_PATTERNS:
+        if pattern_matches(ast, pattern):
+            context_fit = embedder.similarity(topic_embedding, pattern['context_embedding'])
+            if context_fit > 0.5:
+                return pattern['meaning']
+    
+    return None  # No implicature detected → literal interpretation
+```
+
+**Honest remaining gap:** Subtle social dynamics. "Nice shirt" from your friend vs from someone you just beat in a competition. Same words, opposite meaning — resolved by relationship history and power dynamics. Rules can't capture every social nuance.
+
+**Closeable: ~60%.** Common patterns (sarcasm, implicature, politeness, understatement) are well-catalogued. Subtle social inference is a genuine gap.
+
+---
+
+### Summary: What's Closeable vs What's a Genuine Limitation
+
+| Gap | Closeable | Method | Genuine limitation |
+|-----|-----------|--------|-------------------|
+| Long-form generation | ~80% | Rhetoric rules, rhythm, transitions, voice profiles | Emergent personal voice |
+| Implicit reasoning | ~70% | Context chain (MiniLM sliding window) | Deep multi-hop implicit context |
+| Creative synthesis | ~50% | Combinational + analogical creativity via embeddings | Artistic surprise, emotional resonance |
+| Pragmatics | ~60% | Pattern library + context-aware inference | Subtle social dynamics, power relationships |
+
+**The meta-answer:** These gaps exist because we separated language from knowledge from reasoning. An LLM smears all three together, which gives it flexibility at the cost of traceability and size. Our system is traceable and small at the cost of some flexibility.
+
+The question isn't "can we match an LLM?" — it's "can we handle 80-90% of real-world queries with a traceable, phone-deployable system?" The answer is yes, especially for factual, procedural, and comparison tasks. For creative writing, emotional conversation, and subtle social dynamics — those are genuine gaps we should be honest about.
+
 ## Constraints
 
 1. **No LM/LLM** — only MiniLM encoder (22M) for cosine similarity

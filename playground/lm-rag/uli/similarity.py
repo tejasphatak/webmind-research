@@ -455,21 +455,31 @@ def _matrix_similarity(set_a: Set[str], set_b: Set[str]) -> float:
 # ============================================================
 
 def _extract_features(tokens: List[Token]) -> Dict[str, Set[str]]:
-    """Extract linguistic feature sets from tokens."""
+    """Extract ALL linguistic feature sets from tokens.
+    Includes every word — function words have meaning too.
+    'You can do it' ≈ 'Yes, you can do it' — EVERY word matters."""
     stop = _get_stop_words()
     features = {
         'entities': set(),
         'nouns': set(),
         'verbs': set(),
         'adjectives': set(),
-        'content': set(),
+        'content': set(),      # Content words (nouns, verbs, adj, adv)
+        'all_words': set(),    # ALL words including function words
     }
     for tok in tokens:
         word = tok.text.lower().strip()
         lemma = (tok.lemma or tok.text).lower().strip()
-        if word in stop or len(word) < 2:
+
+        if tok.pos == 'PUNCT' or len(word) < 2:
             continue
-        # ALL-CAPS words (GPS, DNA, USA) are proper nouns even if spaCy misclassifies
+
+        # ALL non-punctuation words go into all_words
+        features['all_words'].add(lemma)
+
+        if word in stop:
+            continue  # Function words skip content features
+
         is_proper = tok.is_entity or tok.pos == 'PROPN' or (tok.text.isupper() and len(tok.text) > 1)
         if is_proper:
             features['entities'].add(word)
@@ -489,23 +499,40 @@ def _extract_features(tokens: List[Token]) -> Dict[str, Set[str]]:
 
 def token_similarity(tokens_a: List[Token], tokens_b: List[Token]) -> float:
     """Structural similarity between two token lists.
-    Cloud-only (no graph). Graph injected at question_passage_relevance level."""
+    Combines content-word meaning overlap with all-word surface overlap.
+    Content words go through meaning expansion (WordNet clouds).
+    All words use simple overlap (surface form matching)."""
     feat_a = _extract_features(tokens_a)
     feat_b = _extract_features(tokens_b)
 
-    scores = []
+    # Content-based scores (meaning expansion through WordNet)
+    content_scores = []
     for name in feat_a:
         sa = feat_a[name]
         sb = feat_b[name]
         if sa and sb:
             if name in ('content', 'nouns', 'verbs'):
-                scores.append(_matrix_similarity(sa, sb))
-            else:
-                scores.append(_overlap(sa, sb))
+                content_scores.append(_matrix_similarity(sa, sb))
+            elif name in ('entities', 'adjectives'):
+                content_scores.append(_overlap(sa, sb))
 
-    if not scores:
-        return 0.0
-    return sum(scores) / len(scores)
+    content_sim = sum(content_scores) / len(content_scores) if content_scores else 0.0
+
+    # All-words Jaccard (surface form, includes function words)
+    all_a = feat_a.get('all_words', set())
+    all_b = feat_b.get('all_words', set())
+    if all_a and all_b:
+        all_jaccard = len(all_a & all_b) / len(all_a | all_b)
+    else:
+        all_jaccard = 0.0
+
+    # Content is the PRIMARY signal (topic matching).
+    # All-words Jaccard only OVERRIDES when very high (> 0.5),
+    # indicating near-identical sentences (paraphrase detection).
+    # Below 0.5, Jaccard is just function-word noise.
+    if all_jaccard > 0.5:
+        return max(content_sim, all_jaccard)
+    return content_sim
 
 
 def text_similarity(text_a: str, text_b: str, lang: str = 'en') -> float:

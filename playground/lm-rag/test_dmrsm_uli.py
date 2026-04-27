@@ -46,14 +46,13 @@ class MockSearchResult:
 
 
 def create_engine(sim=0.8):
-    """Create engine with mock search + mock embedder."""
+    """Create engine with mock search."""
     from dmrsm_uli import Engine
     mock_search = MagicMock()
     mock_search.providers = []
     mock_search.search.return_value = []
-    embedder = MockEmbedder(default_sim=sim)
-    engine = Engine(embedder=embedder, search_engine=mock_search)
-    return engine, mock_search, embedder
+    engine = Engine(search_engine=mock_search)
+    return engine, mock_search, None
 
 
 # ============================================================
@@ -409,33 +408,17 @@ class TestAskMethod(unittest.TestCase):
 # CONTEXT CHAIN INTEGRATION TESTS
 # ============================================================
 
-class TestContextChainIntegration(unittest.TestCase):
-    """Verify context chain is wired into the engine pipeline."""
+class TestConversationContext(unittest.TestCase):
+    """Verify conversation context tracking without neural models."""
 
-    def test_context_chain_exists(self):
-        engine, _, _ = create_engine()
-        self.assertIsNotNone(engine.context)
-
-    def test_context_updated_after_ask(self):
+    def test_conversation_tracked(self):
         engine, search, _ = create_engine()
         search.search.return_value = []
         engine.ask("What is the capital of France?")
-        self.assertGreater(len(engine.context.history), 0)
+        self.assertGreater(len(engine.conversation), 0)
 
-    def test_sarcasm_detected_in_pipeline(self):
-        """Sarcasm detection runs during reasoning."""
-        engine, search, _ = create_engine()
-        search.search.return_value = []
-        # Build negative context
-        engine.context.add("The server crashed and we lost everything")
-        engine.context.add("Nothing is working and deadlines are missed")
-        # Sarcastic input
-        answer, trace, _ = engine.reason("Oh wonderful, another problem")
-        # Should have processed (not crash)
-        self.assertIsInstance(answer, str)
-
-    def test_implicature_resolved(self):
-        """Implicature detection runs during reasoning."""
+    def test_no_neural_model_required(self):
+        """Engine works without any neural model."""
         engine, search, _ = create_engine()
         search.search.return_value = []
         answer, trace, _ = engine.reason("Can you pass me the salt?")

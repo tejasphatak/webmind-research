@@ -341,10 +341,7 @@ def create_default_engine() -> SearchEngine:
     brave = BraveSearchProvider()
     if brave.api_key:
         engine.register(brave)
-    # Google Custom Search — best results (100 free/day)
-    google = GoogleSearchProvider()
-    if google.api_key:
-        engine.register(google)
+    # Google Custom Search — DISABLED (API shut down globally)
     # Wikipedia — always available, full article text
     engine.register(WikipediaProvider())
     # DuckDuckGo — fallback (often rate-limited)

@@ -3,14 +3,12 @@ DMRSM-ULI: Combined Reasoning + Language System.
 
 Pipeline: text → ULI reads → AST → DMRSM thinks → AST → ULI writes → text
 
-No LM/LLM. Only MiniLM encoder (22M) for cosine similarity.
-Everything else: rules + database + algorithms.
+No LM/LLM. No neural models. Pure rules + database + structural similarity.
 """
 
 import os
 import sys
 import logging
-import numpy as np
 from dataclasses import dataclass, field
 from typing import List, Dict, Optional, Tuple
 
@@ -18,7 +16,7 @@ from uli.protocol import MeaningAST, Entity, Token
 from uli.modules.english import EnglishModule
 from uli.modules.marathi import MarathiModule
 from uli.lexer import detect_language
-from uli.context_chain import ContextChain
+from uli.similarity import text_similarity, question_passage_relevance
 from uli.learner import Learner
 from search_providers import create_default_engine
 
@@ -144,31 +142,7 @@ class ActionResult:
     terminal: bool = False
 
 
-# ============================================================
-# Embedder (MiniLM — ONLY neural component)
-# ============================================================
-
-class Embedder:
-    """MiniLM sentence encoder for cosine similarity. No generation."""
-
-    def __init__(self):
-        self._model = None
-
-    def _load(self):
-        if self._model is None:
-            from sentence_transformers import SentenceTransformer
-            self._model = SentenceTransformer('all-MiniLM-L6-v2')
-            log.info("Loaded MiniLM-L6-v2 (22M params)")
-
-    def encode(self, text: str) -> np.ndarray:
-        self._load()
-        return self._model.encode(text, normalize_embeddings=True)
-
-    def similarity(self, text_a: str, text_b: str) -> float:
-        """Cosine similarity between two texts. Returns 0-1."""
-        emb_a = self.encode(text_a)
-        emb_b = self.encode(text_b)
-        return float(np.dot(emb_a, emb_b))
+    # Embedder removed — all similarity is structural via uli/similarity.py
 
 
 # ============================================================
@@ -181,7 +155,7 @@ class Engine:
     text → ULI reads → AST → DMRSM thinks → AST → ULI writes → text
     """
 
-    def __init__(self, embedder=None, search_engine=None, learner=None):
+    def __init__(self, search_engine=None, learner=None):
         # Language modules (pluggable)
         self.modules = {
             'en': EnglishModule(),
@@ -192,12 +166,6 @@ class Engine:
         # Search engine
         self.search_engine = search_engine or create_default_engine()
 
-        # Embedder (only neural component)
-        self.embedder = embedder or Embedder()
-
-        # Context chain (disambiguation, sarcasm, pronouns)
-        self.context = ContextChain(self.embedder, window=10)
-
         # Learner (train by talking / feeding data)
         self.learner = learner or Learner()
 
@@ -207,7 +175,7 @@ class Engine:
         # Verified facts KB (grows from conversation)
         self.knowledge_base: List[dict] = []
 
-        log.info("DMRSM-ULI engine ready. No LM. Rules + MiniLM + context chain.")
+        log.info("DMRSM-ULI engine ready. No neural models. Pure rules + structural similarity.")
 
     def _get_module(self, text):
         """Auto-detect language and return appropriate module."""
@@ -238,9 +206,10 @@ class Engine:
         if not is_safe:
             return response, [{'action': 'PRE_FILTER', 'signal': filter_type, 'confidence': 1.0}], 1.0
 
-        # Phase 0.5: Context chain — check for sarcasm, resolve pronouns
-        sarcasm, sarcasm_conf = self.context.detect_sarcasm(text)
-        implicature = self.context.resolve_implicature(text)
+        # Phase 0.5: Sarcasm / implicature detection (structural, no neural model)
+        # TODO: re-wire context chain with structural similarity instead of MiniLM
+        sarcasm, sarcasm_conf = False, 0.0
+        implicature = None
 
         # Phase 1: READ (ULI)
         module = self._get_module(text)
@@ -254,22 +223,30 @@ class Engine:
             question_ast.intent = implicature
             log.info(f"[CONTEXT] Implicature resolved: {implicature}")
 
-        # Resolve pronouns from conversation context
-        if question_ast.question_word in ('', ) and question_ast.entities:
+        # Resolve pronouns from conversation history (structural, no neural model)
+        if question_ast.entities:
             for i, entity in enumerate(question_ast.entities):
                 if entity.lower() in ('it', 'its', 'he', 'she', 'they', 'them'):
-                    resolved = self.context.resolve_pronoun(entity)
-                    if resolved:
-                        question_ast.entities[i] = resolved
-                        log.info(f"[CONTEXT] Resolved '{entity}' → '{resolved}'")
+                    # Find most recent proper noun in conversation
+                    for turn in reversed(self.conversation):
+                        from uli.lexer import tokenize
+                        tokens = tokenize(turn['text'])
+                        for tok in tokens:
+                            if tok.pos == 'PROPN' and tok.text.lower() not in (
+                                'the', 'a', 'i', 'what', 'who'):
+                                question_ast.entities[i] = tok.text
+                                log.info(f"[CONTEXT] Resolved '{entity}' → '{tok.text}'")
+                                break
+                        else:
+                            continue
+                        break
 
         # Feed tokens to learner (flag unknown words)
         tokens = module.tokenize(module.normalize(text))
         self.learner.on_tokens(tokens, text=text,
                                lang=question_ast.source_language or 'en')
 
-        # Add to context chain for future turns
-        self.context.add(text)
+        # Context tracked via self.conversation (no neural model needed)
 
         log.info(f"[READ] type={question_ast.type} intent={question_ast.intent} "
                  f"entities={question_ast.entities[:3]} q_word={question_ast.question_word}")
@@ -344,8 +321,7 @@ class Engine:
         self.conversation.append({'role': 'user', 'text': text})
         self.conversation.append({'role': 'assistant', 'text': answer})
 
-        # Add answer to context chain (for future pronoun resolution etc.)
-        self.context.add(answer)
+        # Context tracked via self.conversation
 
         # If high confidence, store as verified fact in KB (self-evolution)
         if state.confidence >= 0.8 and answer and "couldn't find" not in answer:
@@ -369,21 +345,16 @@ class Engine:
         query = question_ast.search_query()
         if not query:
             return None
-        # Find best match by embedding similarity
-        try:
-            q_emb = self.embedder.encode(query)
-            best_answer = None
-            best_sim = 0.0
-            for fact in self.knowledge_base:
-                fact_emb = self.embedder.encode(fact['question'])
-                sim = float(np.dot(q_emb, fact_emb))
-                if sim > best_sim:
-                    best_sim = sim
-                    best_answer = fact['answer']
-            if best_sim > 0.85:  # High threshold for KB hit
-                return best_answer
-        except Exception:
-            pass
+        # Find best match by structural similarity
+        best_answer = None
+        best_sim = 0.0
+        for fact in self.knowledge_base:
+            sim = text_similarity(query, fact['question'])
+            if sim > best_sim:
+                best_sim = sim
+                best_answer = fact['answer']
+        if best_sim > 0.85:  # High threshold for KB hit
+            return best_answer
         return None
 
     # ── Teaching Interface ───────────────────────────────
@@ -487,18 +458,16 @@ class Engine:
         best = results[0]
         passage_text = best.text[:500]
 
-        # Relevance: MiniLM cosine similarity (NOT an LM call)
-        try:
-            q_text = state.question_ast.source or query
-            sim = self.embedder.similarity(q_text, passage_text[:300])
-        except Exception:
-            sim = 0.5  # Fallback if embedder fails
+        # Relevance: structural similarity from ULI (no neural model)
+        from uli.similarity import question_passage_relevance
+        q_text = state.question_ast.source or query
+        sim = question_passage_relevance(q_text, passage_text[:300])
 
         log.info(f"  [SEARCH] result='{best.title}' sim={sim:.3f}")
 
-        if sim > 0.5:
+        if sim > 0.4:
             return ActionResult(
-                signal='relevant_high' if sim > 0.7 else 'relevant_low',
+                signal='relevant_high' if sim > 0.6 else 'relevant_low',
                 confidence=sim,
                 fact_text=passage_text,
                 searched=True,
@@ -521,14 +490,9 @@ class Engine:
             type_ok = answer[0].isupper() if answer else False
 
         # Coverage: does answer address the question?
-        # Use embedding similarity between question and answer
-        try:
-            sim = self.embedder.similarity(
-                q.source or q.search_query(),
-                answer
-            )
-        except Exception:
-            sim = 0.5
+        # Structural similarity — no neural model
+        from uli.similarity import text_similarity
+        sim = text_similarity(q.source or q.search_query(), answer)
 
         if sim > 0.6 and type_ok:
             return ActionResult(signal='good', confidence=sim)
@@ -543,7 +507,13 @@ class Engine:
             return ActionResult(signal='needs_more', confidence=0.1)
 
         q = state.question_ast
-        passage = ' '.join(state.fact_texts[-3:])
+
+        # Use the MOST RECENT fact text (highest relevance, just added)
+        # Then fall back to combining last 3 if single doesn't work
+        if state.fact_texts:
+            passage = state.fact_texts[-1]
+        else:
+            return ActionResult(signal='needs_more', confidence=0.1)
 
         # Parse the passage to find answer
         passage_ast = module.read(passage)

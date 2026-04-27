@@ -151,7 +151,10 @@ def _context_meaning(word: str, context_words: Set[str]) -> Set[str]:
         territory.update(_get_meaning_set(cw))
         territory.add(cw)
     filtered = full & territory
-    if len(filtered) < CONTEXT_FILTER_MIN_MATCHES:
+    # Dynamic minimum: proportional to meaning set size (not fixed)
+    # Word with 10 meanings needs 1 match (10%). Word with 50 needs 5.
+    min_matches = max(2, len(full) // 5)
+    if len(filtered) < min_matches:
         return full
     return filtered
 
@@ -213,22 +216,20 @@ def _first_sense_wup(word_a: str, word_b: str) -> float:
 
 
 def _pairwise_wup(set_a: Set[str], set_b: Set[str]) -> float:
-    """Average best-match WUP across word pairs.
-    Only counts matches ABOVE WUP_MATCH_THRESHOLD (0.5) — below that
-    is just distant ancestry noise (everything connects to 'entity')."""
+    """Average best-match WUP with baseline subtraction.
+    Random word pairs score ~0.2 WUP (distant ancestry noise).
+    Contribution = max(0, wup - 0.2) / 0.8 — continuous, no hard cutoff.
+    WUP=0.2 → 0.0, WUP=0.5 → 0.375, WUP=0.9 → 0.875."""
     if not set_a or not set_b:
         return 0.0
-    if len(set_a) > len(set_b):
-        set_a, set_b = set_b, set_a
-    matches = 0
+    smaller, larger = (set_a, set_b) if len(set_a) <= len(set_b) else (set_b, set_a)
     total = 0.0
-    for wa in set_a:
-        best = max((_first_sense_wup(wa, wb) for wb in set_b), default=0.0)
-        if best >= WUP_MATCH_THRESHOLD:
-            total += best
-            matches += 1
-    # Score = average of strong matches / total words (penalizes few matches)
-    return total / len(set_a) if set_a else 0.0
+    for wa in smaller:
+        best = max((_first_sense_wup(wa, wb) for wb in larger), default=0.0)
+        # Continuous contribution: subtract baseline, normalize
+        contribution = max(0.0, (best - 0.2) / 0.8)
+        total += contribution
+    return total / len(smaller)
 
 
 # ============================================================
@@ -280,8 +281,12 @@ def _matrix_similarity(set_a: Set[str], set_b: Set[str]) -> float:
 
     if direct:
         base = len(direct) / min(len(set_a), len(set_b))
-        if scores and scores[0] < CLOUD_DIVERGENCE_THRESHOLD:
-            base *= CLOUD_DIVERGENCE_DISCOUNT
+        if scores:
+            # Continuous discount: cloud_score itself scales the direct overlap
+            # cloud=0 → base*0.1 (near-zero). cloud=0.5 → base*0.55. cloud=1.0 → base*1.0
+            # No binary gate, no cliff edge
+            discount = 0.1 + 0.9 * min(scores[0], 1.0)
+            base *= discount
         scores.append(base)
 
     if not scores:
@@ -382,7 +387,12 @@ def question_passage_relevance(question: str, passage: str,
         if scores:
             best_sentence = max(scores)
             whole_passage = _question_sentence_relevance(question, passage, lang)
-            return BEST_SENTENCE_WEIGHT * best_sentence + (1.0 - BEST_SENTENCE_WEIGHT) * whole_passage
+            # Variance-adaptive: if one sentence stands out, trust it more
+            mean_s = sum(scores) / len(scores)
+            variance = sum((s - mean_s) ** 2 for s in scores) / len(scores)
+            cv = (variance ** 0.5) / max(mean_s, 1e-6)
+            best_weight = 0.5 + 0.4 * min(cv, 1.0)  # 0.5 (uniform) to 0.9 (outlier)
+            return best_weight * best_sentence + (1.0 - best_weight) * whole_passage
     return _question_sentence_relevance(question, passage, lang)
 
 

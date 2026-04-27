@@ -526,13 +526,14 @@ def token_similarity(tokens_a: List[Token], tokens_b: List[Token]) -> float:
     else:
         all_jaccard = 0.0
 
-    # Content is the PRIMARY signal (topic matching).
-    # All-words Jaccard only OVERRIDES when very high (> 0.5),
-    # indicating near-identical sentences (paraphrase detection).
-    # Below 0.5, Jaccard is just function-word noise.
-    if all_jaccard > 0.5:
-        return max(content_sim, all_jaccard)
-    return content_sim
+    # Combine content similarity with all-words Jaccard.
+    # Content captures MEANING overlap (topic matching via WordNet).
+    # Jaccard captures SURFACE overlap (paraphrase via shared words).
+    # Both contribute — take the MAX (whichever signal is stronger wins).
+    # Jaccard naturally handles scale: short similar sentences get high
+    # Jaccard (5/6 words = 0.83), long unrelated passages get low
+    # Jaccard (3/30 words = 0.10). No threshold needed.
+    return max(content_sim, all_jaccard)
 
 
 def text_similarity(text_a: str, text_b: str, lang: str = 'en') -> float:

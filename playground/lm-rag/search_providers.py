@@ -167,6 +167,55 @@ class DuckDuckGoProvider(SearchProvider):
 
 
 # ============================================================
+# Brave Search Provider
+# ============================================================
+
+class BraveSearchProvider(SearchProvider):
+    name = 'brave'
+
+    def __init__(self):
+        creds_path = os.path.expanduser('~/.claude/secrets/brave_search.json')
+        try:
+            with open(creds_path) as f:
+                creds = json.load(f)
+            self.api_key = creds['api_key']
+        except Exception:
+            self.api_key = None
+
+    def search(self, query: str, max_results: int = 3) -> List[SearchResult]:
+        if not self.api_key:
+            return []
+        try:
+            params = urllib.parse.urlencode({
+                'q': query, 'count': min(max_results, 20),
+            })
+            req = urllib.request.Request(
+                f'https://api.search.brave.com/res/v1/web/search?{params}',
+                headers={
+                    'X-Subscription-Token': self.api_key,
+                    'Accept': 'application/json',
+                }
+            )
+            with urllib.request.urlopen(req, timeout=10) as r:
+                data = json.loads(r.read())
+
+            results = []
+            for item in data.get('web', {}).get('results', [])[:max_results]:
+                # Strip HTML tags from description
+                desc = re.sub(r'<[^>]+>', '', item.get('description', ''))
+                if desc:
+                    results.append(SearchResult(
+                        title=item.get('title', ''),
+                        text=desc,
+                        source=self.name,
+                        article_id=item.get('url', ''),
+                    ))
+            return results
+        except Exception:
+            return []
+
+
+# ============================================================
 # Google Custom Search Provider
 # ============================================================
 
@@ -288,6 +337,10 @@ class SearchEngine:
 def create_default_engine() -> SearchEngine:
     """Create search engine with default providers."""
     engine = SearchEngine()
+    # Brave Search — best snippets, $5/mo free credit
+    brave = BraveSearchProvider()
+    if brave.api_key:
+        engine.register(brave)
     # Google Custom Search — best results (100 free/day)
     google = GoogleSearchProvider()
     if google.api_key:

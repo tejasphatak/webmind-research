@@ -445,21 +445,28 @@ class Engine:
             return ActionResult(signal='done', terminal=True)
 
     def _exec_search(self, state, module) -> ActionResult:
-        """SEARCH: entities from AST → search → relevance via MiniLM cosine."""
-        # Build search query from AST entities
+        """SEARCH: iterate through entity queries one at a time.
+
+        Wikipedia opensearch matches article TITLES — single entity names
+        match precisely. Multi-word queries get fuzzy-matched to wrong titles.
+        So we search entities individually, priority-ordered.
+        """
+        # Get ordered query list from AST
         if state.sub_questions:
             sq = state.sub_questions.pop(0)
-            query = sq.search_query()
+            queries = sq.search_queries()
         else:
-            query = state.question_ast.search_query()
+            queries = state.question_ast.search_queries()
 
-        # Avoid re-searching same query
-        if query in state._search_queries_tried:
-            # Try entities directly
-            if state.question_ast.entities:
-                query = ' '.join(state.question_ast.entities[:3])
-            else:
-                return ActionResult(signal='no_results', searched=True)
+        # Find next untried query
+        query = None
+        for q in queries:
+            if q and q not in state._search_queries_tried:
+                query = q
+                break
+
+        if not query:
+            return ActionResult(signal='no_results', searched=True)
 
         state._search_queries_tried.add(query)
 

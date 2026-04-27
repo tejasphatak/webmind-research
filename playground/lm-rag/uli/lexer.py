@@ -171,12 +171,19 @@ class Normalizer:
         self.vocab = set(vocab_data.get('words', {}).keys())
 
     def normalize(self, text: str) -> str:
-        """Full normalization pipeline."""
+        """Full normalization pipeline.
+
+        NOTE: Spell correction is NOT done here. It was corrupting valid words
+        (e.g., "What" → "wheat") because it runs before the parser can identify
+        known words. Spell correction should happen post-tokenization, only on
+        tokens the parser marks as unknown/OOV. See learner.py for that path.
+        """
         text = self._normalize_unicode(text)
         text = self._expand_contractions(text)
         text = self._substitute_characters(text)
         text = self._expand_abbreviations(text)
-        text = self._correct_spelling(text)
+        # Spell correction intentionally removed from pre-parse pipeline.
+        # It belongs post-tokenization where we know which words are real.
         return text.strip()
 
     def _normalize_unicode(self, text: str) -> str:

@@ -64,30 +64,57 @@ class MeaningAST:
     source_language: str = ''
     confidence: float = 1.0
 
+    # Function words that are never useful in search queries
+    _SEARCH_STOP = {'the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been',
+                    'of', 'in', 'to', 'for', 'on', 'at', 'by', 'with', 'from',
+                    'do', 'does', 'did', 'have', 'has', 'had', 'will', 'would',
+                    'can', 'could', 'should', 'may', 'might', 'shall',
+                    'not', 'no', 'and', 'or', 'but', 'if', 'so', 'that', 'this',
+                    '?', '.', ',', '!'}
+
     def search_query(self) -> str:
-        """Extract search terms from the AST structure."""
-        parts = []
-        if self.agent and self.agent.text and self.agent.text != '?':
-            parts.append(self.agent.text)
-        if self.predicate:
-            parts.append(self.predicate)
-        if self.patient and self.patient.text:
-            parts.append(self.patient.text)
-        if self.theme and self.theme.text:
-            parts.append(self.theme.text)
-        if self.location and self.location.text:
-            parts.append(self.location.text)
-        if self.time and self.time.text:
-            parts.append(self.time.text)
-        parts.extend(self.entities)
-        # Deduplicate preserving order
+        """Single concatenated search query (used by KB lookup, tests)."""
+        return ' '.join(self.search_queries())
+
+    def search_queries(self) -> List[str]:
+        """Ordered list of search queries, best-first.
+
+        Wikipedia opensearch matches article TITLES — single entity names
+        match precisely ("France" → France article) while multi-word queries
+        get fuzzy-matched to wrong titles ("France capital" → "Finance capitalism").
+
+        Strategy: yield individual entities in priority order, then
+        a combined query as fallback (works for full-text engines like Brave/Google).
+        """
+        queries = []
         seen = set()
-        unique = []
-        for p in parts:
-            if p.lower() not in seen:
-                seen.add(p.lower())
-                unique.append(p)
-        return ' '.join(unique)
+
+        def _add(text):
+            clean = ' '.join(w for w in text.split()
+                            if w.lower() not in self._SEARCH_STOP)
+            if clean and clean.lower() not in seen:
+                seen.add(clean.lower())
+                queries.append(clean)
+
+        # 1. Individual entities (best for Wikipedia title matching)
+        for e in self.entities:
+            _add(e)
+
+        # 2. Semantic role fillers
+        for field in [self.agent, self.patient, self.theme, self.location, self.time]:
+            if field and field.text and field.text != '?':
+                _add(field.text)
+
+        # 3. Content predicate (not "be", "have", etc.)
+        if self.predicate and self.predicate not in self._SEARCH_STOP:
+            _add(self.predicate)
+
+        # 4. Combined query as fallback (works for Brave/Google/DuckDuckGo)
+        combined = ' '.join(queries[:3])
+        if combined and combined.lower() not in seen:
+            queries.append(combined)
+
+        return queries
 
     def has_nested(self) -> bool:
         return len(self.sub_clauses) > 0

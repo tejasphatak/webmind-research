@@ -550,14 +550,36 @@ def token_similarity(tokens_a: List[Token], tokens_b: List[Token]) -> float:
     else:
         all_jaccard = 0.0
 
-    # Combine content similarity with all-words Jaccard.
-    # Content captures MEANING overlap (topic matching via WordNet).
-    # Jaccard captures SURFACE overlap (paraphrase via shared words).
-    # Both contribute — take the MAX (whichever signal is stronger wins).
-    # Jaccard naturally handles scale: short similar sentences get high
-    # Jaccard (5/6 words = 0.83), long unrelated passages get low
-    # Jaccard (3/30 words = 0.10). No threshold needed.
-    return max(content_sim, all_jaccard)
+    # GATED combination of content and Jaccard:
+    #
+    # Case 1: Both texts have content words AND they overlap
+    #   → Content is PRIMARY, Jaccard can BOOST (MAX)
+    #   "A man is slicing a fish" vs "A man is cutting a fish" → content high, Jaccard high
+    #
+    # Case 2: Both texts have content words but they DON'T overlap
+    #   → Content says DIFFERENT MEANING → Jaccard is NOISE, ignore it
+    #   "You don't have to worry" vs "You don't have to season it"
+    #   → worry≠season, Jaccard=0.55 is misleading → use content only
+    #
+    # Case 3: No content words (function-word-only sentences)
+    #   → Jaccard is the ONLY signal
+    #   "How do you do that?" vs "How to do that?" → Jaccard=0.6 is correct
+
+    content_a = feat_a.get('content', set())
+    content_b = feat_b.get('content', set())
+
+    if content_a and content_b:
+        shared_content = content_a & content_b
+        if shared_content:
+            # Content matches → Jaccard can boost
+            return max(content_sim, all_jaccard)
+        else:
+            # Content DOESN'T match → Jaccard is misleading
+            # But give Jaccard a SMALL say (10%) for partial credit
+            return content_sim * 0.9 + all_jaccard * 0.1
+    else:
+        # No content words → Jaccard is the only signal
+        return max(content_sim, all_jaccard)
 
 
 def text_similarity(text_a: str, text_b: str, lang: str = 'en') -> float:

@@ -88,7 +88,20 @@ def _get_meaning_set(word: str) -> Set[str]:
     try:
         from nltk.corpus import wordnet as wn
         meaning = set()
-        for ss in wn.synsets(word)[:3]:  # Top 3 senses only
+        # Select synsets: top 2 per POS (not just first 3 overall).
+        # "drive" has 12 noun senses before any verb sense — [:3] misses
+        # the VERB sense entirely. This ensures both POS are covered.
+        all_synsets = wn.synsets(word)
+        selected = []
+        pos_counts = {}
+        for ss in all_synsets:
+            p = ss.pos()
+            pos_counts[p] = pos_counts.get(p, 0) + 1
+            if pos_counts[p] <= 2:  # Max 2 per POS
+                selected.append(ss)
+            if len(selected) >= 4:  # Max 4 total
+                break
+        for ss in selected:
             for lemma in ss.lemmas():
                 meaning.add(lemma.name().replace('_', ' ').lower())
             frontier = ss.hypernyms()
@@ -138,7 +151,18 @@ def _get_weighted_meaning_set(word: str) -> Dict[str, float]:
     try:
         from nltk.corpus import wordnet as wn
         meaning: Dict[str, float] = {}
-        for i, ss in enumerate(wn.synsets(word)[:3]):
+        # Same POS-balanced selection as _get_meaning_set
+        all_ss = wn.synsets(word)
+        sel = []
+        pc = {}
+        for ss in all_ss:
+            p = ss.pos()
+            pc[p] = pc.get(p, 0) + 1
+            if pc[p] <= 2:
+                sel.append(ss)
+            if len(sel) >= 4:
+                break
+        for i, ss in enumerate(sel):
             sense_w = 1.0 / (1.0 + i)  # Prototype effect (Rosch 1975)
             # Synonyms
             for lemma in ss.lemmas():

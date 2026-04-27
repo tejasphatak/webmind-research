@@ -486,10 +486,11 @@ def _question_sentence_relevance(question: str, passage: str,
         # Noise floor = baseline verb similarity (~0.15) scaled by polysemy
         try:
             from nltk.corpus import wordnet as wn
-            pl = (len(wn.synsets(q_ast.predicate)) + len(wn.synsets(p_ast.predicate))) / 2
-            # Polysemous verbs are unreliable: work(34), run(57), make(51)
-            # need very high similarity to be meaningful
-            noise_floor = 1.0 - 1.0 / (1.0 + 0.1 * pl)  # 1→0.09, 5→0.33, 10→0.50, 34→0.77
+            pl = max(len(wn.synsets(q_ast.predicate)), len(wn.synsets(p_ast.predicate)))
+            # Use MAX polysemy — either verb being ultra-polysemous is suspect
+            # make(51)↔form(23): max=51→floor=0.88, blocks spurious match
+            # paint(7)↔draw(7): max=7→floor=0.51, allows genuine match
+            noise_floor = 1.0 - 1.0 / (1.0 + 0.15 * pl)
         except Exception:
             noise_floor = 0.05
         if pred_sim > noise_floor:

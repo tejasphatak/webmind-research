@@ -437,6 +437,9 @@ def _matrix_similarity(set_a: Set[str], set_b: Set[str]) -> float:
             except Exception:
                 pass
 
+        # Cloud discount: catches topic divergence when cross-attention can't decide.
+        # Cross-attention: catches polysemy when context disambiguates.
+        # Both are needed — they're complementary, not redundant.
         if scores:
             discount = 0.1 + 0.9 * min(scores[0], 1.0)
             base *= discount

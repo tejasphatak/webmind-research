@@ -231,9 +231,20 @@ def _meaning_cloud(words: Set[str]) -> Dict[str, float]:
 
 
 def _meaning_similarity(word_a: str, word_b: str) -> float:
-    """Semantic similarity between two words via meaning sets."""
+    """Semantic similarity between two words via meaning sets.
+    Also checks morphological relatives (shared root ≥ 5 chars):
+    refrigerator↔refrigerant, anesthesia↔anesthetic."""
     if word_a == word_b:
         return 1.0
+    # Morphological relatives: shared root of 5+ chars = derivational relationship
+    shared_prefix = 0
+    for i in range(min(len(word_a), len(word_b))):
+        if word_a[i] == word_b[i]:
+            shared_prefix += 1
+        else:
+            break
+    if shared_prefix >= 5:
+        return 0.7
     ma = _get_meaning_set(word_a)
     mb = _get_meaning_set(word_b)
     if word_b in ma or word_a in mb:

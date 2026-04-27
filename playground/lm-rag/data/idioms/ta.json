@@ -1,0 +1,427 @@
+{
+  "கிறிஸ்துமஸ் நல்வாழ்த்துக்கள்": {
+    "meaning": "Merry Christmas",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "சௌக்கியமா": {
+    "meaning": "how are you? (Literally, “are you well?”)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "இது என்ன விலை": {
+    "meaning": "how much does it cost?, how much is it?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "உலக இடநிலை உணர்வி": {
+    "meaning": "global positioning system",
+    "literal": false,
+    "pos": "noun"
+  },
+  "காலை வணக்கம்": {
+    "meaning": "good morning",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "மாலை வணக்கம்": {
+    "meaning": "good evening",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "பிற்பகல் வணக்கம்": {
+    "meaning": "good afternoon",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "மதிய வணக்கம்": {
+    "meaning": "good afternoon",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "இரவு வணக்கம்": {
+    "meaning": "good night (greeting at the end of the day)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "எப்படி இருக்கீங்க": {
+    "meaning": "how are you?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "இனிய இரவு": {
+    "meaning": "good night",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "சாப்பிட்டீங்களா": {
+    "meaning": "have you eaten?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "நான் தொலஞ்சிட்டேன்": {
+    "meaning": "I'm lost",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "உங்களுக்கு கடவுள் நம்பிக்கை இருக்கா": {
+    "meaning": "do you believe in God?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "மின்னுவதெல்லாம் பொன்னல்ல": {
+    "meaning": "all that glitters is not gold",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "காலம் பொன் போன்றது": {
+    "meaning": "time is gold, time is money",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "சமச்சீர் வள குறிப்பான்": {
+    "meaning": "Uniform Resource Locator (URL)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "இக்கரைக்கு அக்கரை பச்சை": {
+    "meaning": "the grass is always greener on the other side",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "காக்கைக்கு தன் குஞ்சு பொன் குஞ்சு": {
+    "meaning": "Even for a crow, her chick is golden.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "அறுக்கமாட்டாதவன் இடுப்பிலே ஐம்பத்தெட்டு அரிவாள்": {
+    "meaning": "He who cannot cut owns fifty-eight sickles around his waist.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ஏட்டு சுரைக்காய் கறிக்கு உதவாது": {
+    "meaning": "Mere bookish knowledge wouldn't help in practice.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "இனிய பொங்கல் நல்வாழ்த்துக்கள்": {
+    "meaning": "happy Pongal",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "முன்னொரு காலத்துல": {
+    "meaning": "Spoken Tamil form of முன்னொரு காலத்தில் (muṉṉoru kālattil)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "தொடர்பறு அடையாளப் பாதிப்பு": {
+    "meaning": "dissociative identity disorder",
+    "literal": false,
+    "pos": "noun"
+  },
+  "எவ்வாறு": {
+    "meaning": "Used other than adverbially: see எ- (e-, “which”), ஆறு (āṟu, “river, path”, etc)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "தெற்கு ஜோர்ஜியா நெட்டைக்காலி": {
+    "meaning": "South Georgia pipit (Anthus antarcticus)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "எனக்கு தமிழ் தெரியாது": {
+    "meaning": "I don't speak Tamil",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "எவ்வளவோ": {
+    "meaning": "however much",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "நான் தமிழ் அறியேன்": {
+    "meaning": "I don't speak Tamil",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "பிறந்தநாள் வாழ்த்துக்கள்": {
+    "meaning": "happy birthday (literally, \"birthday greetings\")",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "முள்ளை முள்ளால் எடு": {
+    "meaning": "diamond cut diamond",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "முன்னொரு காலத்தில்": {
+    "meaning": "long long ago, once upon a time",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "அக்கரைக்கு இக்கரை பச்சை": {
+    "meaning": "alternative form of இக்கரைக்கு அக்கரை பச்சை (ikkaraikku akkarai paccai)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "அக்கரை மாட்டுக்கு இக்கரை பச்சை": {
+    "meaning": "alternative form of இக்கரை மாட்டுக்கு அக்கரை பச்சை (ikkarai māṭṭukku akkarai paccai)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "இக்கரை மாட்டுக்கு அக்கரை பச்சை": {
+    "meaning": "the grass is always greener on the other side",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "குண்டுச் சட்டியில் குதிரை ஓட்டு": {
+    "meaning": "to lead a restricted life without much scope for development",
+    "literal": false,
+    "pos": "verb"
+  },
+  "புலி இல்லாத ஊரில் பூனை தான் இராஜா": {
+    "meaning": "in the land of the blind, the one-eyed man is king",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "வெள்ளை காக்கா பறக்கிறது": {
+    "meaning": "Indicates a logical fallacy to the second person.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "சோழி முடிந்தது": {
+    "meaning": "game over, it's over, owari da",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ஆற்றில் ஒரு கால் சேற்றில் ஒரு கால்": {
+    "meaning": "having a foot in both camps (engaged in two activities at the same time, hence unable to commit oneself to either wholly",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ஆற்றில் ஒரு கால் சேற்றில் ஒரு கால் வை": {
+    "meaning": "to have a foot in both camps",
+    "literal": false,
+    "pos": "verb"
+  },
+  "எனக்கு தெரியாது": {
+    "meaning": "I don't know",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "எனக்கு தெரியும்": {
+    "meaning": "I know",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "தவளை தன் வாயால் கெடும்": {
+    "meaning": "alternative form of நுணலும் தன் வாயால் கெடும் (nuṇalum taṉ vāyāl keṭum)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "நுணலும் தன் வாயால் கெடும்": {
+    "meaning": "the frog perishes by its own mouth. (said of a fool who brings calamity upon himself by foolish talk or blabber)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ஆடு நனைகிறது என்று ஓநாய் அழுகிறதாம்": {
+    "meaning": "It's said that a wolf wept because the sheep were getting drenched in the rain.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "கீறல் விழுந்த ரெக்கார்டு": {
+    "meaning": "broken record; something that repeats itself constantly",
+    "literal": false,
+    "pos": "noun"
+  },
+  "சிவ பூஜையில் கரடி": {
+    "meaning": "an unwelcome person; an intruder",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "வெளுத்ததெல்லாம் பாலல்ல": {
+    "meaning": "Not everything white is milk.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "திறந்திடு சீசே": {
+    "meaning": "open sesame",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "அகத்தின் அழகு முகத்தில் தெரியும்": {
+    "meaning": "face is the index of the mind (literally, “the inner beauty is revealed in the face”)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "குற்றமுள்ள நெஞ்சு குறுகுறுக்கும்": {
+    "meaning": "The guilty heart prickles.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "குரைக்கும் நாய் கடிக்காது": {
+    "meaning": "barking dogs seldom bite",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "குரைக்கின்ற நாய் கடிக்காது": {
+    "meaning": "alternative form of குரைக்கும் நாய் கடிக்காது (kuraikkum nāy kaṭikkātu)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "குரைக்கிற நாய் கடிக்காது": {
+    "meaning": "alternative form of குரைக்கும் நாய் கடிக்காது (kuraikkum nāy kaṭikkātu)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "வினை விதைத்தவன் வினை அறுப்பான்": {
+    "meaning": "as you sow, so shall you reap",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "இதுவும் கடந்து போகும்": {
+    "meaning": "this too shall pass",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "சிறு துளி பெரு வெள்ளம்": {
+    "meaning": "little strokes fell great oaks",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ஆபத்துக்குப் பாவம் இல்லை": {
+    "meaning": "A thing done through necessity is no crime.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ஆபத்துக்கு பாவம் இல்லை": {
+    "meaning": "alternative spelling of ஆபத்துக்குப் பாவம் இல்லை (āpattukkup pāvam illai)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "இனம் இனத்தோடு சேரும்": {
+    "meaning": "birds of a feather flock together",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "யானைக்கும் அடி சறுக்கும்": {
+    "meaning": "even Homer nods",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "நல்ல மாட்டுக்கு ஒரு சூடு": {
+    "meaning": "a good person needs but one warning",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "அளவுக்கு மிஞ்சினால் அமிர்தமும் நஞ்சு": {
+    "meaning": "If in excess even nectar is poison.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "அளவுக்கு மீறினால் அமிர்தமும் நஞ்சு": {
+    "meaning": "alternative form of அளவுக்கு மிஞ்சினால் அமிர்தமும் நஞ்சு (aḷavukku miñciṉāl amirtamum nañcu)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "நாய் வாலை நிமிர்த்த முடியாது": {
+    "meaning": "It is difficult to change one's nature.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "தாயைப் போல பிள்ளை நூலைப் போல சேலை": {
+    "meaning": "A child's character is shaped by the mother, just as the quality of a cloth / sari is determined by the thread it's made",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "இஞ்சி தின்ற குரங்கு போல்": {
+    "meaning": "visibly irritated or peeved.",
+    "literal": false,
+    "pos": "adv"
+  },
+  "இஞ்சி தின்ற குரங்கு போல": {
+    "meaning": "alternative form of இஞ்சி தின்ற குரங்கு போல் (iñci tiṉṟa kuraṅku pōl)",
+    "literal": false,
+    "pos": "adv"
+  },
+  "கை வந்த கலை": {
+    "meaning": "mastered skill, second nature",
+    "literal": false,
+    "pos": "noun"
+  },
+  "குரங்கு கையில் பூமாலை போல்": {
+    "meaning": "a delicate or precious thing in unsuitable hands.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "கடுகு சிறுத்தாலும் காரம் போகாது": {
+    "meaning": "though small, the mustard seed is not without pungency.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "கடுகு சிறுத்தாலும் காரம் குறையாது": {
+    "meaning": "alternative form of கடுகு சிறுத்தாலும் காரம் போகாது (kaṭuku ciṟuttālum kāram pōkātu)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "செய் அல்லது செத்து மடி": {
+    "meaning": "do or die",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "அரசன் அன்று கொல்லும், தெய்வம் நின்று கொல்லும்": {
+    "meaning": "the mills of the gods grind slowly",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "அரசன் அன்று கொல்வான், தெய்வம் நின்று கொல்லும்": {
+    "meaning": "alternative form of அரசன் அன்று கொல்லும், தெய்வம் நின்று கொல்லும் (aracaṉ aṉṟu kollum, teyvam niṉṟu kollum)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "பந்திக்கு முந்து, படைக்குப் பிந்து": {
+    "meaning": "be first at a feast, and last at a fight.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "எதிரிக்கு எதிரி நண்பன்": {
+    "meaning": "the enemy of my enemy is my friend",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "வருமுன் காப்போம்": {
+    "meaning": "prevention is better than cure",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "வரும் முன் காப்போம்": {
+    "meaning": "alternative form of வருமுன் காப்போம் (varumuṉ kāppōm)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "வைத்த கண் வாங்காமல்": {
+    "meaning": "without taking one's eyes off; riveting one's eyes on something",
+    "literal": false,
+    "pos": "adv"
+  },
+  "ஆழம் தெரியாமல் காலை விடாதே": {
+    "meaning": "look before you leap",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ஆமாம் சாமி போடு": {
+    "meaning": "to say yes to everything (in abject servility); be a yes-man",
+    "literal": false,
+    "pos": "verb"
+  },
+  "தீதும் நன்றும் பிறர் தர வாரா": {
+    "meaning": "one is responsible for one’s own fortune and misfortune; you reap what you sow",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "பாம்பின் கால் பாம்பறியும்": {
+    "meaning": "a thief knows a thief; it sets a thief to catch a thief",
+    "literal": false,
+    "pos": "proverb"
+  }
+}

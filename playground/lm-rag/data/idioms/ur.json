@@ -1,0 +1,792 @@
+{
+  "پاد گرم ہونا": {
+    "meaning": "to be very scared",
+    "literal": false,
+    "pos": "verb"
+  },
+  "خوب": {
+    "meaning": "good, excellent",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "عام طور سے": {
+    "meaning": "usually",
+    "literal": false,
+    "pos": "adv"
+  },
+  "عام طور پر": {
+    "meaning": "usually, normally",
+    "literal": false,
+    "pos": "adv"
+  },
+  "آب و ہوا": {
+    "meaning": "atmosphere, climate",
+    "literal": false,
+    "pos": "noun"
+  },
+  "مجھے پیاس لگی ہے": {
+    "meaning": "I am thirsty",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "عید مبارک": {
+    "meaning": "eid mubarak",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "قانون بقائے توانائی": {
+    "meaning": "law of conservation of energy",
+    "literal": false,
+    "pos": "noun"
+  },
+  "لطف اندوز ہونا": {
+    "meaning": "to relish",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ایسی تیسی کرنا": {
+    "meaning": "to make a mockery of something",
+    "literal": false,
+    "pos": "verb"
+  },
+  "شہد کی مکھی": {
+    "meaning": "bee (insect)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "گانتھ کا پورا عقل کا اندھا": {
+    "meaning": "penny wise and pound foolish",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "گاتے گاتے کلاونت ہو جاتے ہیں": {
+    "meaning": "practice makes perfect (singing for a very long time inspires the perfect sound)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "نظر سے دور، دل کے قریب": {
+    "meaning": "out of sight, out of mind (gone and forgotten)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "زبان اردوئے معلی": {
+    "meaning": "\"language of the exalted camp\"; the Urdu language",
+    "literal": false,
+    "pos": "noun"
+  },
+  "خدا کا بیٹا": {
+    "meaning": "Son of God",
+    "literal": false,
+    "pos": "noun"
+  },
+  "عید میلاد مسیح": {
+    "meaning": "Christmas",
+    "literal": false,
+    "pos": "noun"
+  },
+  "خدا کا میمنہ": {
+    "meaning": "Lamb of God",
+    "literal": false,
+    "pos": "noun"
+  },
+  "یہوواہ کے گواہ": {
+    "meaning": "Jehovah's Witnesses",
+    "literal": false,
+    "pos": "noun"
+  },
+  "مقدسین آخری ایام": {
+    "meaning": "Latter-day Saint, Latter-day Saints",
+    "literal": false,
+    "pos": "noun"
+  },
+  "آگ سے بپتسمہ": {
+    "meaning": "baptism by fire",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ناچ نہ جانے آنگن ٹیڑھا": {
+    "meaning": "a bad workman always blames his tools",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "گاہے بہ گاہے": {
+    "meaning": "at times, sometimes, from time to time, not often, occasionally",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "اب سے آگے": {
+    "meaning": "henceforward",
+    "literal": false,
+    "pos": "adv"
+  },
+  "اب سے پہلے": {
+    "meaning": "heretofore",
+    "literal": false,
+    "pos": "adv"
+  },
+  "اب کے بعد": {
+    "meaning": "hereinafter",
+    "literal": false,
+    "pos": "adv"
+  },
+  "ابال کر پکانا": {
+    "meaning": "seethe",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ابتدائی طور پر": {
+    "meaning": "initially",
+    "literal": false,
+    "pos": "adv"
+  },
+  "ابتری پیدا کرنا": {
+    "meaning": "to disconcert",
+    "literal": false,
+    "pos": "verb"
+  },
+  "اپاہج کر دینا": {
+    "meaning": "hamstring, hough",
+    "literal": false,
+    "pos": "verb"
+  },
+  "اپنا حصہ ادا کرنا": {
+    "meaning": "contribute, kick in",
+    "literal": false,
+    "pos": "verb"
+  },
+  "اپنا کام نکالنا": {
+    "meaning": "to manipulate",
+    "literal": false,
+    "pos": "verb"
+  },
+  "اپنی غلطی سے": {
+    "meaning": "mea culpa, my fault",
+    "literal": false,
+    "pos": "noun"
+  },
+  "اپنی ماں کا قتل": {
+    "meaning": "matricide",
+    "literal": false,
+    "pos": "noun"
+  },
+  "اپنے ہی تک رکھنا": {
+    "meaning": "to keep to oneself",
+    "literal": false,
+    "pos": "verb"
+  },
+  "اترا کر چلنا": {
+    "meaning": "cavort",
+    "literal": false,
+    "pos": "verb"
+  },
+  "اثر انداز ہونا": {
+    "meaning": "to guide, influence",
+    "literal": false,
+    "pos": "verb"
+  },
+  "اثر نا پذیر": {
+    "meaning": "unconcerned",
+    "literal": false,
+    "pos": "adj"
+  },
+  "اجالا کرنے والا": {
+    "meaning": "illuminant",
+    "literal": false,
+    "pos": "adj"
+  },
+  "اجزا کا ملانا": {
+    "meaning": "to confect",
+    "literal": false,
+    "pos": "verb"
+  },
+  "اجوائن کی شراب": {
+    "meaning": "anisette",
+    "literal": false,
+    "pos": "noun"
+  },
+  "اجڈ پن سے": {
+    "meaning": "gruffly",
+    "literal": false,
+    "pos": "adv"
+  },
+  "اچانک بول اٹھنا": {
+    "meaning": "blurt",
+    "literal": false,
+    "pos": "verb"
+  },
+  "اچانک چل دینا": {
+    "meaning": "walk off",
+    "literal": false,
+    "pos": "verb"
+  },
+  "اچانک طور پر": {
+    "meaning": "unexpectedly",
+    "literal": false,
+    "pos": "adv"
+  },
+  "اچانک نکل بھاگنا": {
+    "meaning": "scoot",
+    "literal": false,
+    "pos": "verb"
+  },
+  "اچک اچک کر چلنا": {
+    "meaning": "hobble",
+    "literal": false,
+    "pos": "verb"
+  },
+  "اچھا وقت گزارنا": {
+    "meaning": "while away",
+    "literal": false,
+    "pos": "verb"
+  },
+  "اچھل کود کرنا": {
+    "meaning": "rollick",
+    "literal": false,
+    "pos": "verb"
+  },
+  "اچھی طرح سے": {
+    "meaning": "thoroughly",
+    "literal": false,
+    "pos": "adv"
+  },
+  "اچھے حال میں": {
+    "meaning": "kelter",
+    "literal": false,
+    "pos": "noun"
+  },
+  "اچھے خاندان کا": {
+    "meaning": "wellborn",
+    "literal": false,
+    "pos": "adj"
+  },
+  "احاطہ بندی کرنا": {
+    "meaning": "to impale",
+    "literal": false,
+    "pos": "verb"
+  },
+  "احتجاجاً چھوڑ کر چلے جانا": {
+    "meaning": "walkout",
+    "literal": false,
+    "pos": "noun"
+  },
+  "احسان مند ہونا": {
+    "meaning": "to owe",
+    "literal": false,
+    "pos": "verb"
+  },
+  "بےوقوف بنایا ہوا": {
+    "meaning": "nose-led",
+    "literal": false,
+    "pos": "adj"
+  },
+  "اخباری نامہ نگار": {
+    "meaning": "newspaperman",
+    "literal": false,
+    "pos": "noun"
+  },
+  "اختلاف کرنے والا": {
+    "meaning": "dissenting",
+    "literal": false,
+    "pos": "adj"
+  },
+  "اخروٹ کا چھلکا": {
+    "meaning": "shuck",
+    "literal": false,
+    "pos": "noun"
+  },
+  "اخروٹ کا مزہ": {
+    "meaning": "nutty",
+    "literal": false,
+    "pos": "adj"
+  },
+  "ادب آداب سے نا آشنا": {
+    "meaning": "uncouth",
+    "literal": false,
+    "pos": "adj"
+  },
+  "ادب سے متعلق": {
+    "meaning": "literary",
+    "literal": false,
+    "pos": "adj"
+  },
+  "ادب نا آشنائی": {
+    "meaning": "uncouthness",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ادبی شہ پارہ": {
+    "meaning": "brainchild",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ادراک کرنے والا": {
+    "meaning": "percipient",
+    "literal": false,
+    "pos": "adj"
+  },
+  "ادل بدل کرنا": {
+    "meaning": "to exchange, interchange, interconvert",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ادلے کا بدلا": {
+    "meaning": "tit for tat",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ادنیٰ درجہ کا مطرب": {
+    "meaning": "hamfatter",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ادنیٰ درجے کا مکان": {
+    "meaning": "kennel",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ادنیٰ عہدے دار": {
+    "meaning": "underling",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ادھ کچا ادھ پکا": {
+    "meaning": "underripe",
+    "literal": false,
+    "pos": "adj"
+  },
+  "ادھ گلا رکھنا": {
+    "meaning": "underdo",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ادھر ادھر پھرنا": {
+    "meaning": "gad, wander",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ادھر ادھر کر دینا": {
+    "meaning": "to derange",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ادھر ادھر کرنا": {
+    "meaning": "intersperse",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ادھر ادھر ہاتھ مارنا": {
+    "meaning": "fumble",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ادھر ادھر چلنا": {
+    "meaning": "expatiate",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ادھر سے ادھر": {
+    "meaning": "thwart",
+    "literal": false,
+    "pos": "adv"
+  },
+  "ادھر سے ادھر کرنا": {
+    "meaning": "wag",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ادھر کی ادھر لگانا": {
+    "meaning": "gossip",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ادھم چوکڑی مچانا": {
+    "meaning": "roister",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ادھم مچانے والا": {
+    "meaning": "wrangler",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ادھورا کام کرنا": {
+    "meaning": "underact",
+    "literal": false,
+    "pos": "verb"
+  },
+  "اذیت پہنچانے والا": {
+    "meaning": "harasser",
+    "literal": false,
+    "pos": "noun"
+  },
+  "اذیت سے لطف اٹھانا": {
+    "meaning": "masochism",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ازحد جلدی والا": {
+    "meaning": "importunate",
+    "literal": false,
+    "pos": "adj"
+  },
+  "ازحد نفرت کرنا": {
+    "meaning": "to detest",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ازالہ حساسیت کرنا": {
+    "meaning": "desensitise",
+    "literal": false,
+    "pos": "verb"
+  },
+  "اس جگہ پر": {
+    "meaning": "hither",
+    "literal": false,
+    "pos": "adv"
+  },
+  "اس دوران میں": {
+    "meaning": "meanwhile",
+    "literal": false,
+    "pos": "adv"
+  },
+  "اس کے برخلاف": {
+    "meaning": "au contraire, on the contrary",
+    "literal": false,
+    "pos": "adj"
+  },
+  "اس کے برعکس": {
+    "meaning": "vice versa",
+    "literal": false,
+    "pos": "adv"
+  },
+  "اس کے علاوہ": {
+    "meaning": "thereby",
+    "literal": false,
+    "pos": "adv"
+  },
+  "اس کے فوراً بعد": {
+    "meaning": "hereupon",
+    "literal": false,
+    "pos": "adv"
+  },
+  "اس وجہ سے": {
+    "meaning": "thence",
+    "literal": false,
+    "pos": "adv"
+  },
+  "استعمال کرنے والا": {
+    "meaning": "user, consumer",
+    "literal": false,
+    "pos": "noun"
+  },
+  "استعمال نہ کرنا": {
+    "meaning": "disuse",
+    "literal": false,
+    "pos": "verb"
+  },
+  "اسی طرح سے": {
+    "meaning": "likewise",
+    "literal": false,
+    "pos": "adv"
+  },
+  "اشارے سے بلانا": {
+    "meaning": "beckon",
+    "literal": false,
+    "pos": "verb"
+  },
+  "اشتعال بازی کرنا": {
+    "meaning": "agitate",
+    "literal": false,
+    "pos": "verb"
+  },
+  "اشکال سے متعلق": {
+    "meaning": "graphic",
+    "literal": false,
+    "pos": "adj"
+  },
+  "اصطلاح پیشہ وران": {
+    "meaning": "jargon",
+    "literal": false,
+    "pos": "noun"
+  },
+  "اصلی حالت میں": {
+    "meaning": "virgin",
+    "literal": false,
+    "pos": "adj"
+  },
+  "اصلیت سے مشابہت": {
+    "meaning": "verisimilitude",
+    "literal": false,
+    "pos": "noun"
+  },
+  "اصول تنقید کے خلاف": {
+    "meaning": "uncritically",
+    "literal": false,
+    "pos": "adv"
+  },
+  "اصل سے کم اندازہ": {
+    "meaning": "underestimation",
+    "literal": false,
+    "pos": "noun"
+  },
+  "اطلاع دینے والا": {
+    "meaning": "notifier",
+    "literal": false,
+    "pos": "noun"
+  },
+  "اظہار غم کرنا": {
+    "meaning": "deplore",
+    "literal": false,
+    "pos": "verb"
+  },
+  "زمین اور آسمان": {
+    "meaning": "Entirely different, opposite (night and day)",
+    "literal": false,
+    "pos": "adv"
+  },
+  "نااہل قرار دینا": {
+    "meaning": "to disqualify",
+    "literal": false,
+    "pos": "verb"
+  },
+  "دھونے والی مشین": {
+    "meaning": "washing machine, washer",
+    "literal": false,
+    "pos": "noun"
+  },
+  "دیر آئے درست آئے": {
+    "meaning": "better late than never",
+    "literal": false,
+    "pos": "adv"
+  },
+  "خون کا بدلہ خون": {
+    "meaning": "eye for an eye, tit for tat",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "خبر رساں ادارہ": {
+    "meaning": "news agency",
+    "literal": false,
+    "pos": "noun"
+  },
+  "صلی اللہ علیہ وسلم": {
+    "meaning": "God shower blessing and well-being upon him and grant him peace",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "صلی": {
+    "meaning": "only used in صلیٰ اللہ علیہ وسلم (sallā-llāhu 'alayhi wa-sallam)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "علیہ السلام": {
+    "meaning": "peace be upon him",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "علیہا السلام": {
+    "meaning": "peace be upon her",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "صبر کا پھل میٹھا ہوتا ہے": {
+    "meaning": "good things come to those who wait",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "بکائن کا درخت": {
+    "meaning": "buckthorn tree",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ساز و سامان": {
+    "meaning": "equipment, gear",
+    "literal": false,
+    "pos": "noun"
+  },
+  "نیا سال مبارک": {
+    "meaning": "happy New Year",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ٹگ": {
+    "meaning": "game over",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "میں پاکستانی ہوں": {
+    "meaning": "I am Pakistani",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ظلم و ستم": {
+    "meaning": "persecution",
+    "literal": false,
+    "pos": "noun"
+  },
+  "مہر و ماہ": {
+    "meaning": "sun and moon (in contrast to special people)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "سر قلم ہونا": {
+    "meaning": "to be beheaded",
+    "literal": false,
+    "pos": "verb"
+  },
+  "امپورٹڈ حکومت نا منظور": {
+    "meaning": "\"imported government disapproved,\" or \"imported government not allowed,\" a phrase used by Pakistan Tehreek-e-Insaf and I",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "طول و عرض": {
+    "meaning": "dimensions",
+    "literal": false,
+    "pos": "noun"
+  },
+  "برقی ڈاک پتہ": {
+    "meaning": "email address, e-mail address",
+    "literal": false,
+    "pos": "noun"
+  },
+  "دار پر کھینچنا": {
+    "meaning": "to impale",
+    "literal": false,
+    "pos": "verb"
+  },
+  "خاص طور پر": {
+    "meaning": "especially, for the most part, specially",
+    "literal": false,
+    "pos": "adv"
+  },
+  "برقی جاروب کش": {
+    "meaning": "vacuum cleaner, hoover, electric sweeper",
+    "literal": false,
+    "pos": "noun"
+  },
+  "بنیادی طور پر": {
+    "meaning": "basically",
+    "literal": false,
+    "pos": "adv"
+  },
+  "خواتین و حضرات": {
+    "meaning": "ladies and gentlemen",
+    "literal": false,
+    "pos": "noun"
+  },
+  "نوازش": {
+    "meaning": "grateful",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "رحمۃ اللہ علیہ": {
+    "meaning": "may God have mercy on him",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "علیہ الصلاۃ والسلام": {
+    "meaning": "blessings and peace be upon him",
+    "literal": false,
+    "pos": "noun"
+  },
+  "میرا ایک سوال ہے": {
+    "meaning": "I have a question",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "کیا حال ہے": {
+    "meaning": "how are you?, how's it going?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ہاتھ میں صفائی ہونا": {
+    "meaning": "to have sleight of hand; for one to have craftsmanship / skill in their occupation or line of work.",
+    "literal": false,
+    "pos": "verb"
+  },
+  "کوئی مسئلہ نہیں": {
+    "meaning": "no worries; no problem; you're welcome",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "آپ کا نام کیا ہے": {
+    "meaning": "what is your name (polite)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "رات گئی بات گئی": {
+    "meaning": "the ship has sailed",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ہم جنس پرست": {
+    "meaning": "homosexual, gay, lesbian, MLM, WLW",
+    "literal": false,
+    "pos": "noun"
+  },
+  "کن فیکون": {
+    "meaning": "\"Be! And thus, it is.\" (God states in the Qur'an) – used to state God's power over its creation.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "اپنی خیر منانا": {
+    "meaning": "to be a dead man walking",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ست سری اکال": {
+    "meaning": "A salutation; a greeting used for most purposes including hello, good morning/afternoon, and goodbye",
+    "literal": false,
+    "pos": "noun"
+  },
+  "جس ہانڈی میں کھانا اسی میں چھید کرنا": {
+    "meaning": "bite the hand that feeds one",
+    "literal": false,
+    "pos": "verb"
+  },
+  "الا ماشاء اللہ": {
+    "meaning": "rarely",
+    "literal": false,
+    "pos": "adv"
+  },
+  "جلتے گھر میں ہاتھ سینکنا": {
+    "meaning": "to take advantage of another's misfortune",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "آش پز خانہ": {
+    "meaning": "kitchen",
+    "literal": false,
+    "pos": "noun"
+  },
+  "چار سو بیس": {
+    "meaning": "fraudster, swindler, cheater",
+    "literal": false,
+    "pos": "noun"
+  },
+  "انا للہ ہونا": {
+    "meaning": "to be ruined, destroyed; damaged beyond repair",
+    "literal": false,
+    "pos": "verb"
+  },
+  "جئے شری رام": {
+    "meaning": "victory to Deity Rāma: Jai Shri Ram",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "خشوع و خضوع": {
+    "meaning": "self-mortification, inner humility",
+    "literal": false,
+    "pos": "noun"
+  },
+  "فوری طور پر": {
+    "meaning": "immediately, instantly, urgently, promptly, rapidly",
+    "literal": false,
+    "pos": "adv"
+  },
+  "بیڑا غرق ہونا": {
+    "meaning": "to be destroyed, devastated, lose everything",
+    "literal": false,
+    "pos": "verb"
+  }
+}

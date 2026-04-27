@@ -1,0 +1,1002 @@
+{
+  "రౌతు మెత్తనైతే గుర్రం మూడు కాళ్ళ మీద పరిగెత్తుతుంది": {
+    "meaning": "when the cat's away the mice will play (lit. “If the rider is soft, the horse runs on three legs”)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "గుండె లోతుల్లోంచి": {
+    "meaning": "from the bottom of one's heart",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ఆట పట్టించు": {
+    "meaning": "make fun of",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "కంటికి కన్ను, పంటికి పన్ను": {
+    "meaning": "eye for an eye, a tooth for a tooth",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "మేక వన్నె పులి": {
+    "meaning": "person or other performer of actions which is harmful or threatening but disguised as something peaceful or pleasant; wo",
+    "literal": false,
+    "pos": "noun"
+  },
+  "నాకు తెలుసు": {
+    "meaning": "I know",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "నాకు తెలియదు": {
+    "meaning": "I don't know",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "అసంతృప్త కొవ్వు ఆమ్లం": {
+    "meaning": "unsaturated fatty acid",
+    "literal": false,
+    "pos": "noun"
+  },
+  "సంతృప్త కొవ్వు ఆమ్లం": {
+    "meaning": "saturated fatty acid",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ఒక చెవితో విని మరో చెవితో వదిలెయ్యడం": {
+    "meaning": "go in one ear and out the other",
+    "literal": false,
+    "pos": "verb"
+  },
+  "అరిచే కుక్క కరవదు": {
+    "meaning": "barking dogs seldom bite",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కుక్కతోక వంకర తీయలేము": {
+    "meaning": "you can't teach an old dog new tricks",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "శుభాకాంక్షలు": {
+    "meaning": "greetings",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "రంగం సిద్ధం చేయు": {
+    "meaning": "lay the groundwork",
+    "literal": false,
+    "pos": "verb"
+  },
+  "అగ్నికి అజ్యం పోయు": {
+    "meaning": "to worsen a conflict between people; to inflame an already tense situation;",
+    "literal": false,
+    "pos": "verb"
+  },
+  "అభ్యాసం కూసు విద్య": {
+    "meaning": "practice makes perfect",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "నందిని పంది చేయు": {
+    "meaning": "to depict good as bad",
+    "literal": false,
+    "pos": "verb"
+  },
+  "నీవెవరు": {
+    "meaning": "who are you?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "సంబోధనా ప్రథమా విభక్తి": {
+    "meaning": "vocative case",
+    "literal": false,
+    "pos": "noun"
+  },
+  "నీ పేరు ఏమిటి": {
+    "meaning": "what is your name",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "నీవు ఏమి చేస్తున్నావు": {
+    "meaning": "what are you doing",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "నీవు నన్ను పెండ్లి చేసుకుంటావా": {
+    "meaning": "will you marry me?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "నాకు ఆకలిగా ఉన్నది": {
+    "meaning": "I am hungry",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "నాకు దాహముగా ఉన్నది": {
+    "meaning": "I am thirsty",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "మీకు స్వాగతం": {
+    "meaning": "you are welcome",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "నేను నిన్ను ప్రేమిస్తున్నాను": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "నాకు నీరు కావాలి": {
+    "meaning": "I need water",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "నాకు నీ సహాయము కావాలి": {
+    "meaning": "I need your help",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "నాకు న్యాయవాది కావాలి": {
+    "meaning": "I need a lawyer",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "నాకు వైద్యుడు కావాలి": {
+    "meaning": "I need a doctor",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "నాకు ఒక కలము కావాలి": {
+    "meaning": "I need a pen",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "నాకు జలుబు చేసింది": {
+    "meaning": "I have a cold",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "నాకు జ్వరము వచ్చినది": {
+    "meaning": "I have a fever",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "నీవు ఎక్కడ ఉంటున్నావు": {
+    "meaning": "where do you live",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "అందని పూలు దేవునికి అర్పణ": {
+    "meaning": "an offering to the deity of the flowers which cannot be reached",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అంబటికీ ఆశ, మీసాలకూ ఆశ": {
+    "meaning": "wishing for porridge and also for mustaches. (literally, \"the two don't do well together\")",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అగ్నికి వాయువు సహాయమయినట్టు": {
+    "meaning": "like wind assisting fire",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అనువు కానిచోట అధికులమనరాదు": {
+    "meaning": "in an unsuitable place we should not assert our superiority",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అర్థము లేనివాడు వ్యర్థుడు": {
+    "meaning": "a man without money is vain",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అర్థము లేనివాడు నిరర్థకుడు": {
+    "meaning": "a man without money is useless",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "గోడకు చెవులుంటాయి": {
+    "meaning": "walls have ears. (there is a risk of being heard)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అన్నమదమువల్ల అన్ని మదములు కలుగుతవి": {
+    "meaning": "food is the source of all vices",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అయితే ఆదివారం, కాకుంటే సోమవారం": {
+    "meaning": "if it's not Sunday it's Monday (if today will not, tomorrow may)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఆకాశానికి నిచ్చెన వేశేవాడు": {
+    "meaning": "a man who plants a ladder on the sky. (Ambitious)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఆరంభ శూరత్వము": {
+    "meaning": "valour in the beginning. (Dash, but not steady unflinching courage.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "నాకు అనువాదకుడు కావాలి": {
+    "meaning": "I need an interpreter",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ఆలు గుణవంతురాలు అయితే, మేలు కలుగును": {
+    "meaning": "if the wife is of good disposition, good will accrue",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఆశ లేనివానికి దేశమెందుకు": {
+    "meaning": "why should a man without desire be in the world",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఇంటి పిల్లికి పొరుగింటి పిల్లి తోడు": {
+    "meaning": "said when two people are allying to join in mischief",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఊర పిచ్చుక మీద తాటికాయ వుంచినట్టు": {
+    "meaning": "expecting a person to do what is beyond his power",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఎద్దు మోశినంత, గోనె పట్టినంత": {
+    "meaning": "as much as the bullock can carry, as much as the bag will hold. (literally, \"no more can be taken\")",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఎద్దు వలె తిని మొద్దు వలె నిద్ర పోయినట్టు": {
+    "meaning": "he eats like a bullock and sleeps like a log",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఎముకలేని నాలుక యెట్లా తిప్పినా తిరుగుతుంది": {
+    "meaning": "the boneless tongue turns in any way",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఎరువు సతము కాదు, వాక్కు తోడు కాదు": {
+    "meaning": "you cannot always depend upon getting a livelihood by your plausibility",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఎలుక యెంత యేడ్చినా, పిల్లి తన పట్టు వదలదు": {
+    "meaning": "however much the rat may cry, the cat will not let go her hold",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఎవరి జానతో వారు యెనిమిది జానలే": {
+    "meaning": "measured with his own span, every man is eight spans high",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఏట్లో కలిపిన చింతపండు": {
+    "meaning": "tamarind mixed in the river",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఏనుగ మదిస్తే నెత్తిన మన్ను వేసుకొంటున్నది": {
+    "meaning": "pride goes before and shame follows after",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఏనుగల పోట్లాటకు యేట్రింత రాయభారము": {
+    "meaning": "said of an insignificant person, a person who has no influence",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఏరు యెన్ని వంకలు పోయినా, సముద్రములోనే పడవలెను": {
+    "meaning": "alternative form of ఏఱు యెన్ని వంకలు పోయినా, సముద్రములోనే పడవలెను (ēṟu yenni vaṅkalu pōyinā, samudramulōnē paḍavalenu)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఒక అబద్ధము కమ్మడానకు వెయ్యి అబద్ధాలు కావలెను": {
+    "meaning": "to hide one lie a thousand lies are wanted. (literally, \"one lie draws ten after it\")",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఒక వరలో రెండు కత్తులు యిమడవు": {
+    "meaning": "one cannot serve two masters",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఒక్కడి సంపాద్యము పది మంది పాలు": {
+    "meaning": "one man's gains are shared by ten. (literally, \"a man's relations live on him\")",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కంటికి రెప్ప, కాలికి చెప్పు": {
+    "meaning": "a lid to the eye, a shoe to the foot. (literally, \"the protection necessary\")",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కంసాలి మాయ కంసాలికి గాని తెలియదు": {
+    "meaning": "a goldsmith's fraud is only known to a goldsmith",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కన్ను మూస్తే కల": {
+    "meaning": "if you shut your eyes, a dream. (literally, \"after death the unreality of things temporal appears\")",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కమ్మర వీధిలో సూదులు అమ్మినట్టు": {
+    "meaning": "like carrying coals to Newcastle",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కరువులో బిడ్డను అమ్ముకొన్నట్టు": {
+    "meaning": "said of selling in a bad market",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కలిగిన వారికి అందరూ చుట్టాలే": {
+    "meaning": "all are relatives of the rich man. (literally, \"a full purse never lacked friends\")",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కానివాని కొంప కాచి చెరచవలెను": {
+    "meaning": "one must watch and ruin an enemy",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కాలము పోను, మాట నిలుచును": {
+    "meaning": "time will go, an accusation will remain",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కుక్క వస్తే రాయి దొరకదు, రాయి దొరికితే కుక్క రాదు": {
+    "meaning": "a thing can never be found when it is most wanted",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కుట్టితే తేలు, కుట్టకుంటే కుమ్మర పురుగు": {
+    "meaning": "if it stings it is a scorpion, if it does not sting it is a mole cricket. (literally, \"a man's character is known by his",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కుమ్మర వీధిలో కుండలు అమ్మినట్టు": {
+    "meaning": "like selling pots in potters' street",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కొండ మీదినుండి బండ దొర్లించినట్టు": {
+    "meaning": "like rolling a boulder down a hill. (literally, \"it is easy to bowl down hill\")",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కోడలు నలుపు అయితే, కులమంతా నలుపు": {
+    "meaning": "if the daughter-in-law be black, the whole family will be blackened. (literally, \"a bad daughter-in-law will bring disgr",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "నా పేరు": {
+    "meaning": "a common way to identify oneself",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "పుట్టినరోజు శుభాకాంక్షలు": {
+    "meaning": "happy birthday!",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "నేను నాస్తికుడిని": {
+    "meaning": "indicates that the speaker is an atheist",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ఇత్యాది": {
+    "meaning": "et cetera",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "సుత్తి మరియు కొడవలి": {
+    "meaning": "hammer and sickle",
+    "literal": false,
+    "pos": "noun"
+  },
+  "నిండుకుండ తొణకదు": {
+    "meaning": "a great or strong man is not easily agitated in his mind",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "పాప్ స్మియర్ పరీక్ష": {
+    "meaning": "Pap test, Pap smear",
+    "literal": false,
+    "pos": "noun"
+  },
+  "తెగించిన వానికి తెడ్డే ఆయుధము": {
+    "meaning": "to the bold man his ladle is a weapon",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "తుపాకీ కడుపున ఫిరంగీ పుట్టినట్టు": {
+    "meaning": "like a cannon being born in the belly of a musket",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "నీవు ఇంగ్లీషు మాట్లాడ గలవా": {
+    "meaning": "do you speak English?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "కుక్కలున్నాయి జాగ్రత్త": {
+    "meaning": "beware of dogs",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "అది ఏమిటి": {
+    "meaning": "asks the interlocutor to identify an indicated object; what is that?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "అదేమిటి": {
+    "meaning": "what is that?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "నీవు ఎవరు": {
+    "meaning": "who are you?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ఎరుక పిడికెడు ధనము": {
+    "meaning": "acquaintance is a handful of money",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఈ బస్సు ఎక్కడికి పోతుంది": {
+    "meaning": "where does this bus go",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "నమ్ము నమ్మక పో": {
+    "meaning": "believe it or not",
+    "literal": false,
+    "pos": "adv"
+  },
+  "ఋషిమూలము నదీమూలము": {
+    "meaning": "the origin of a sage is as obscure as that of a river",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఒక చెంప కొట్టితే పాలు, వక చెంప కొట్టితే నీళ్లు": {
+    "meaning": "if you slap one cheek, milk (comes); If you slap the other cheek, water (comes). (Said of \"a very tender, delicate boy.\"",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "గంగలో ములిగినా కాకి హంస అవుతుందా": {
+    "meaning": "though it bathe in the Ganges, will a crow become a swan",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "గంధము అమ్మిన చోట కట్టెలు అమ్మినట్టు": {
+    "meaning": "like selling firewood where sandal had been sold. (Said of \"the ruin what once was beautiful\".)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "గంధపొడి మోశే గాడిదెవలె": {
+    "meaning": "like a donkey carrying sandal powder",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "గాడిదె గాడిదే, గుర్రము గుర్రమే": {
+    "meaning": "an ass is an ass, a horse is a horse",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అందరికీ శకునము చెప్పే బల్లి కుడితితోట్టెలో పడ్డట్టు": {
+    "meaning": "the lizard which tells the fortunes of all fell itself into the tub of rice-washings",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అందరూ అందలము యెక్కితే, మోశేవారు యెవరు": {
+    "meaning": "if all get into the palankin, who will be the bearers?",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అక్క మనది అయితే, బావ మనవాడా": {
+    "meaning": "the sister is ours, but is the sisters's husband ours also?",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అదృష్టం కలిశివస్తే, ఆలు పెండ్లామవుతుంది": {
+    "meaning": "when good fortune comes, your wife will become your spouse (said sarcastically to \"a man who fancied that he had been ve",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అత్త చచ్చిన ఆరు మాసాలకు కోడలి కంట నీరు వచ్చినదట": {
+    "meaning": "six months after the death of the mother-in-law, tears came into the eyes of the daughter-in-law",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అన్నమయం ప్రాణమయం": {
+    "meaning": "sustained by food, dependent on life (said of the body)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అదే వూరు అయితే, కోళ్లు కుయ్యవా": {
+    "meaning": "if that be a village, will the cocks not crow? (applied to \"the evidence of a fact\")",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అన్నము పెట్టినవారిల్లు కన్నము పెట్టవచ్చునా": {
+    "meaning": "may you break into the house of him who has fed you?",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అన్ని రుచులూ సరేగాని, అందులో వుప్పు లేదు": {
+    "meaning": "all the flavours are right, but there is no salt in it. Said of \"badly prepared food\".",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అన్నీ తెలిశినవాడూ లేడు, యేమీ తెలియనివాడూ లేడు": {
+    "meaning": "there is no one who knows everything, there is no one who knows nothing",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అబద్ధమాడినా గోడ పెట్టినట్టు వుండవలెను": {
+    "meaning": "if you do tell a lie, let it be like a wall",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అమావాస్య కూడు నిత్యం దొరుకునా": {
+    "meaning": "can you get new-moon food everyday?",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అభిషేకం చేశిన అగ్నివలె వున్నాడు": {
+    "meaning": "like fire inaugurated with water",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అయ్య కదురువలె, అమ్మ కుదురువలె": {
+    "meaning": "the husband like a spindle, the wife like a mortar",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అయ్యో అంటే, ఆరు నెలల పాపం వస్తున్నది": {
+    "meaning": "if you say \"Alas!\" it will equal six months' sin (applied to pitying an atrocious sinner)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "అశ్వత్థ ప్రదక్షణము చేసి, కడుపు పట్టి చూచుకొన్నదట": {
+    "meaning": "while she was going round the holy fig tree, she felt for signs of pregnancy (expecting the result to be obtained at the",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఆకలి కాకుండా నీకు ఔషధము యిస్తాను, నీ యింట్లో చద్ది నాకు పెట్టు అన్నాడట": {
+    "meaning": "\"I'll give medicine to keep away hunger, give me your breakfast\", said the quack",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఆకాశం గద్ద తన్నుకొని పోయినది": {
+    "meaning": "the sky was kicked away by the kite. (Said in answer to an impertinent question.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఆచారం ముందర, అనాచారం వెనక": {
+    "meaning": "purity first and impurity after. (Impurity always attends purity.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఆచార్యునికి ద్రోహము చేశినా, ఆత్మకు ద్రోహం చెయ్యరాదు": {
+    "meaning": "look out for number one (said by a selfish, greedy man)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఆడదాని బుద్ధి అపర బుద్ధి": {
+    "meaning": "a woman's sense is wrong sense. (Literally in the back of head.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఆయన వుంటే, విస్తరి అయినా కుట్టును": {
+    "meaning": "if he were here, he would at least stitch the leaf platter",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఆవగింజ అట్టె దాచి గుమ్మడి కాయ గుల్లకాసుగా యెంచేవాడు": {
+    "meaning": "a man who saves a mustard seed and thinks pumpkin worth a shell-coin. (penny wise and pound foolish.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఆవుల సాధుత్వమూ, బ్రాహ్మణుల పేదరికమూ లేదు": {
+    "meaning": "there is no meekness in cows, nor poverty in Brahmins",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఆశ ఆలి మీద, ఆధారం చాప మీద": {
+    "meaning": "his desire is on his wife and his support on his mat (nothing for it but resignation)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఇచ్చేటప్పుడు కాముని పండగ, పుచ్చుకొనేటప్పుడు దీపావళి పండగ": {
+    "meaning": "giving is like Kama's festival, taking is like the feast of Dipavali",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఇరుసుకు కందెన పెట్టక, పరమేశ్వరుని బండి అయినా పారదు": {
+    "meaning": "without grease to the axle, even Paramesvara's chariot will not run",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఇల్లు కాలినా యిల్లాలు చచ్చినా గొల్లు మానదు": {
+    "meaning": "if the house be burnt or the goodwife die, there will certainly be lamentations",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఈ నెలలో వడ్డీ లేదు, వచ్చే నెలలో మొదలూ లేదు": {
+    "meaning": "there is no interest for you this month, and no principal for you next month. (Said by a cheat to his creditor.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఈ పిల్లి ఆ పాలు తాగునా": {
+    "meaning": "would this cat have drunk that milk? (a demure humbug)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఉట్టిమీద వెన్న వుండగా, వూరెల్లా నేతికి దేవులాడనేల": {
+    "meaning": "while there is butter in the net why hunt through the whole village for ghee?",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఉన్నది వక కూతురు, వూరెల్లా అల్లుండ్లు": {
+    "meaning": "said of a desirable girl with many suitors",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఉపనయనమునాటి మాట వుండక పోదు": {
+    "meaning": "the word (taught) on the day of Upanayana will not be forgotten. (Said by a Lazy fellow.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఉతికేవానికిగాని చాకలి వుతకడు": {
+    "meaning": "a washerman will only wash for one who thrashes him",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఊర పిచ్చుక మీద వాడి వజ్రాయుధమా": {
+    "meaning": "is a sharp Vajrayudha (to be used) on a sparrow?",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఊరు వున్నది, చిప్ప వున్నది": {
+    "meaning": "there is the village and here is my cup. (Said by a beggar.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఎద్దును యెక్కినవాడే లింగడు, గద్దను యెక్కినవాడే రంగడు": {
+    "meaning": "he who rides on a bullock is Lingadu (Siva), he who rides on a kite is Rangadu (Vishnu) i.e. the two are but one under d",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఎద్దును అడిగా గంత కట్టడము": {
+    "meaning": "are you to ask the bullock before putting on packsaddle?",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఎక్కడ కొట్టినా, కుక్కకు కాలు కుంటు": {
+    "meaning": "wherever you strike a dog, he will limp",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఎక్కుమంటే యెద్దుకు కోపం, దిగమంటే కుంటివానికి కోపం": {
+    "meaning": "if you say \"Mount\" the bullock is angry; If you say \"Get off\" the lame man is angry. (It is hard to please every one.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఎలుక యేట్లో పోతేనేమి, పులి బోనున పోతేనేమి": {
+    "meaning": "who cares?",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఏట్లో పారే నీళ్లు యెవరు తాగితే యేమి": {
+    "meaning": "don't worry about rights common to all",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఏనుగ మీద దోమ వాలితే యెంత బరువు": {
+    "meaning": "if a mosquito alights on an elephant, what is the weight?",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఏరు అయినా మూడు నేరములు కాస్తుంది": {
+    "meaning": "one must forgive and forget",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఏతాంపాటకు యెదురు పాట లేదు": {
+    "meaning": "there was no rival song to the Etam song",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఒక చేత పసుపు, వక చేత ముసుకు": {
+    "meaning": "in one hand turmeric, in the other hand a hood",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఒక్క ప్రొద్దు మాట కుక్క యెరుగునా": {
+    "meaning": "does a dog know what a fast means?",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కండ్లకు గంతకట్టి అడవిలో వదిలిపెట్టబడ్డ వానివలె": {
+    "meaning": "said of putting a man into great difficulties",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కంసాలి వద్ద వుండవలె, కుంపట్లో వుండవలె": {
+    "meaning": "said of gold made away with by a swindling goldsmith",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కట్టినవారు వకరు అయితే, కాపురం చేసేవారు వకరు": {
+    "meaning": "the builder (of a house) is one and he who lives in it is another",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కరువున కడుపు కాల్చినమ్మను యెన్నటికీ మరవను": {
+    "meaning": "I shall never forget the lady who burnt my stomach (i.e. who fed me insufficiently) in the famine time",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "తలచుట్టము తోకపగ": {
+    "meaning": "I like the head but hate the tail. (literally I avow one kinsman and disavow another.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కాచిన చెట్టుకు రాళ్ల దెబ్బలు": {
+    "meaning": "blows with stones to the bearing tree",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "గరుత్మంతుణ్ని చూచిన పాము వలె": {
+    "meaning": "like a snake seeing Garutmat",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "గాజుపూసల గనిలో ఘనమయిన మణి కలుగునా": {
+    "meaning": "will a large gem be found in a crystal bead mine?",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "గాలి వచ్చినప్పుడుగదా తూర్పార పట్టుకోవలెను": {
+    "meaning": "strike while the iron is hot",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "గుడ్డివాడికి గుడ్డివాడు దారి చూపితే, యిద్దరూ గోతిలో పడతారు": {
+    "meaning": "if a blind man leads a blind man, both will fall into the pit",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఓహో బాబూ కనుక్కొన్నారు అన్నాడట": {
+    "meaning": "o father! they have discovered us",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కండ్లు ఆర్చినమ్మ యిండ్లు ఆర్చినది": {
+    "meaning": "the winking woman ruined families. (A pun on word Arcu.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కోతి చావు, కోమటి రంకు": {
+    "meaning": "a monkey's death, a Komati's adultery. (Both are concealed from the eye of the world.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కోపం పాపకారణం": {
+    "meaning": "anger is a cause of sin",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కోల ఆడితే, కోతి ఆడును": {
+    "meaning": "if you shake the stick the monkey will dance",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కొన్నది వంకాయ, కొసరినది గుమ్మడికాయ": {
+    "meaning": "what he bought was a brinjal, what he got to boot was a gourd",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "కోడిని గద్ద తన్నుకొని పోయినది": {
+    "meaning": "the fowl was carried off by the kite",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "గురువుకు తగ్గ శిష్యుడు": {
+    "meaning": "a disciple worthy of his guru",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "గురికి జానెడు యెచ్చు తక్కువగా కాల్చేవాడు": {
+    "meaning": "a man who misses the mark by a span",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "గొంతమ్మ కోరికలు": {
+    "meaning": "Gontamma's wishes",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "గూట్లో దీపం, కుక్షిలో అన్నం": {
+    "meaning": "[As soon as] the light [is] in the niche, [he puts his] food into his belly",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "గుర్రము తోకకు కళ్లెము పెట్టినట్టు": {
+    "meaning": "to put the cart before the horse",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "గురువు నిలుచుండి తాగితే, శిష్యుడు పరుగెత్తుతూ తాగుతాడు": {
+    "meaning": "if the guru drinks standing, the disciple will drink running. (According to Hindu practice, water should always be drunk",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "గొర్రె యేడిస్తే తోడేలుకు విచారమా": {
+    "meaning": "when the sheep cries will the wolf be grieved?",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "చంద్రుణ్ని చూచి కుక్కలు మొరిగినట్టు": {
+    "meaning": "like dogs barking at the moon",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "చచ్చిన వాని తల తూర్పున వుంటేనేమి, పడమట వుంటేనేమి": {
+    "meaning": "what does it matter whether a dead man's head lie towards the east or towards the west?",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "చక్కెర పందిట్లో తేనెవాన కురిశినట్టు": {
+    "meaning": "like honey raining on a sugar Pandili",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "చదువూ లేదు, సంధ్యా లేదు, సంతానం మెండు": {
+    "meaning": "[He has] no learning and [says] no prayers but [has] numerous issue. (Said of an ignorant, irreligious, sensual man.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "చింత లేదు, చింత లేకపోతే పులుసు లేదు": {
+    "meaning": "\"No matter\" said one, \"Then if there's no tamarind, there's no acid\" said the other. (There is here a pun upon the word ",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "గోరు వాస్తే వేలంత, వేలు వాస్తే కాలంత, కాలు వాస్తే రోలంత, రోలు వాస్తే యెంత": {
+    "meaning": "if the nail swell, [it will be] as big as finger; If the finger swell [it will be] as big as leg; If the leg swells [it ",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "చినుకులకు చెరువులు నిండుతవా": {
+    "meaning": "will the tanks be filled by drizzling rain?",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "చిన్నక్కను పెద్దక్కను, పెద్దక్కను చిన్నక్కను చేశేవాడు": {
+    "meaning": "he makes the younger sister the elder, and the elder sister the younger. (Said of an unprincipled, untruthful man.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "చీకటి కొన్నాళ్లు, వెన్నెల కొన్నాళ్లు": {
+    "meaning": "darkness for some days, moonlight for some days. (Joy and sorrow are equally divided.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "చీమలు పెట్టిన పుట్టలు పాములకు యిరవు అవుతున్నవి": {
+    "meaning": "anthills raised by ants become the dwelling of snakes. (One enjoys what another has acquired.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "చూస్తే నీది, చూడకుంటే నాది": {
+    "meaning": "if seen it's yours, if not seen it's mine. (The trick of a thief or a shoplifter who, if noticed, pretends that his inte",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "చెప్పితే శిగ్గు, దాస్తే దుఃఖం": {
+    "meaning": "if you tell it—shame; if you hide it—sorrow. (The allusion is to adultery.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "చెప్పులు చిన్నవి అని కాళ్లు తెగకోసుకో వచ్చునా": {
+    "meaning": "are you to cut your feet because your shoes are too small?",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "చెరుకు వుండే చోటికి చీమలు తామే వస్తవి": {
+    "meaning": "ants come of themselves to the place where there is sugarcane",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "చెరువు నిండితే కప్పలు చేరుతవి": {
+    "meaning": "when the tank fills, the frogs assemble",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "చోద్యాల సోమిదేవమ్మకు వాధ్యారి మొగుడు": {
+    "meaning": "the fastidious Somidevi has a Veda-teacher for a husband. (A pair of hypocrites.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "జరిగేమట్టుకు జయభేరి, జరగకపోతే రణభేరి": {
+    "meaning": "by smooth means if possible, if not, by force",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "జిల్లేడు చెట్టున పారిజాతములు పుట్టునా": {
+    "meaning": "will Parijata flowers grow on a Jilledu tree?",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "డబ్బుకూ ప్రాణానకూ లంకె": {
+    "meaning": "there is a link between money and life",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "జెముడుకు కాయలు వున్నవా నీడ వున్నదా": {
+    "meaning": "has the Jemudu fruit or shade?",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ఢిల్లీకి ఢిల్లి, పల్లెకు పల్లె": {
+    "meaning": "Delhi to Delhi, village to village. (Great people with great, little with little.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "తంగేటి జున్ను": {
+    "meaning": "honey in the Tangedu tree. (Easy to get at because the tree is small.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "తద్దినము నాటి జంధ్యము": {
+    "meaning": "the sacerdotal thread given on the day of obsequial rites. (It is worn temporarily by Sudras on such occasions. Said of ",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "తన నీడే తన పిశాచము": {
+    "meaning": "afraid of one's own shadow",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "తనయుని పుట్టుక తల్లి యెరుగును": {
+    "meaning": "the mother knows the birth of the son. (She knows who his father is.)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "తప్పెట కొట్టినవాడు దాసరి, శంఖం వూదినవాడు జంగము": {
+    "meaning": "he who beats a drum is a Dasari, he who sounds a coach is a Jangam",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "తల గట్టి, కడుపు గుల్ల": {
+    "meaning": "head solid, belly hollow",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "గోడమీద పిల్లి": {
+    "meaning": "one who takes neither side of an argument or controversy; a fence sitter",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "రేపు అనే రోజు వున్నదా": {
+    "meaning": "is there a day called tomorrow?",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "గుడ్డివాడెరుగునా కుందనపు చాయ": {
+    "meaning": "can a blind man discern the colour of pure gold?",
+    "literal": false,
+    "pos": "proverb"
+  }
+}

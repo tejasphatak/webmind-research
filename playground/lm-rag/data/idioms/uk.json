@@ -1,0 +1,787 @@
+{
+  "до р. хр.": {
+    "meaning": "BC (before Christ); BCE (before the Common Era)",
+    "literal": false,
+    "pos": "adv"
+  },
+  "око за око, зуб за зуб": {
+    "meaning": "eye for an eye, a tooth for a tooth",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "молоко на губах не обсохло": {
+    "meaning": "wet behind the ears, greenhorn",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "я не знаю": {
+    "meaning": "I don't know",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ви говорите англійською": {
+    "meaning": "do you speak English?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "хз": {
+    "meaning": "\"I do not know\".",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "брати до серця": {
+    "meaning": "to take to heart (to take something seriously)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "я українець": {
+    "meaning": "I am a Ukrainian (male)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "я українка": {
+    "meaning": "I am a Ukrainian (female)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "у мене є питання": {
+    "meaning": "I have a question",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "кожному своє": {
+    "meaning": "to each his own",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "двигун внутрішнього згоряння": {
+    "meaning": "internal combustion engine",
+    "literal": false,
+    "pos": "noun"
+  },
+  "будь ласка": {
+    "meaning": "please",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "як справи": {
+    "meaning": "how are you?, how are things?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "христос раждается": {
+    "meaning": "Christ is born!",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "слава ісусу христу": {
+    "meaning": "traditional Christian, mostly Catholic, greeting",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "христос рождається": {
+    "meaning": "Christ is born!",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "добрий ранок": {
+    "meaning": "good morning",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "як то кажуть": {
+    "meaning": "as the saying goes",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "так би мовити": {
+    "meaning": "as it were, so to speak",
+    "literal": false,
+    "pos": "adv"
+  },
+  "пролетарі всіх країн, єднайтеся": {
+    "meaning": "workers of the world, unite!",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "перепрошую": {
+    "meaning": "Excuse me!",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "нема за що": {
+    "meaning": "don't mention it, not at all (conventional reply to an expression of gratitude)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "час від часу": {
+    "meaning": "from time to time, now and then, now and again, occasionally",
+    "literal": false,
+    "pos": "adv"
+  },
+  "і тому подібне": {
+    "meaning": "and the like, and so forth",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "і так далі": {
+    "meaning": "and so on, and so forth",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "мінімальна заробітна плата": {
+    "meaning": "minimum wage",
+    "literal": false,
+    "pos": "noun"
+  },
+  "у кожному жарті є часточка правди": {
+    "meaning": "there's a grain of truth in every joke (whenever a person is joking, they are actually disguising thoughts and emotions,",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "любов з першого погляду": {
+    "meaning": "love at first sight",
+    "literal": false,
+    "pos": "noun"
+  },
+  "кохання з першого погляду": {
+    "meaning": "love at first sight",
+    "literal": false,
+    "pos": "noun"
+  },
+  "у всякому разі": {
+    "meaning": "in any case, at any rate, in any event",
+    "literal": false,
+    "pos": "adv"
+  },
+  "мене звати": {
+    "meaning": "my name is...",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "так чи інакше": {
+    "meaning": "one way or another, somehow or other, anyhow",
+    "literal": false,
+    "pos": "adv"
+  },
+  "менше з тим": {
+    "meaning": "anyway (used to indicate a change of subject)",
+    "literal": false,
+    "pos": "adv"
+  },
+  "дуже приємно": {
+    "meaning": "pleased to meet you, nice to meet you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "приємно познайомитися": {
+    "meaning": "pleased to meet you, nice to meet you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "злодій у законі": {
+    "meaning": "thief in law (under the USSR, a respected, high-ranking criminal who obeys the Thieves’ Code)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "многая літа": {
+    "meaning": "wish for longevity, many years (of prosperity, health, etc.)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "у свинячий голос": {
+    "meaning": "late, tardily (literally: in a pig's voice)",
+    "literal": false,
+    "pos": "adv"
+  },
+  "внутрішньо переміщена особа": {
+    "meaning": "internally displaced person",
+    "literal": false,
+    "pos": "noun"
+  },
+  "не йняти віру": {
+    "meaning": "to not believe, to disbelieve (+dative)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "не йняти віри": {
+    "meaning": "alternative form of не йня́ти ві́ру (ne jnjáty víru)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "притягнутий за вуха": {
+    "meaning": "far-fetched",
+    "literal": false,
+    "pos": "adj"
+  },
+  "з глузду з'їхати": {
+    "meaning": "to go crazy, to lose one's mind",
+    "literal": false,
+    "pos": "verb"
+  },
+  "лізти поперед батька в пекло": {
+    "meaning": "to rush needlessly",
+    "literal": false,
+    "pos": "verb"
+  },
+  "валовий внутрішній продукт": {
+    "meaning": "gross domestic product",
+    "literal": false,
+    "pos": "noun"
+  },
+  "к бісу": {
+    "meaning": "to hell with",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ґбісу": {
+    "meaning": "alternative form of к бі́су (k bísu)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "саморобний вибуховий пристрій": {
+    "meaning": "improvised explosive device",
+    "literal": false,
+    "pos": "noun"
+  },
+  "раз і назавжди": {
+    "meaning": "once and for all",
+    "literal": false,
+    "pos": "adv"
+  },
+  "картопля в мундирах": {
+    "meaning": "boiled unpeeled potato(es)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "картопля в кожушках": {
+    "meaning": "boiled unpeeled potato(es)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ласкаво просимо": {
+    "meaning": "Greeting given upon someone's arrival: welcome",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "засоби масової інформації": {
+    "meaning": "mass media (public communication that reaches a large audience)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "всі дороги ведуть до риму": {
+    "meaning": "all roads lead to Rome (different paths to the same goal)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "язик до києва доведе": {
+    "meaning": "one must be communicative and ask other people if needed",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "як до києва рачки": {
+    "meaning": "far, a long way",
+    "literal": false,
+    "pos": "adv"
+  },
+  "терпи, козаче, отаманом будеш": {
+    "meaning": "said to someone that needs to endure something",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "вари, срако, борщ, а я піду на москалів дивитися": {
+    "meaning": "said of something done poorly",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "північний льодовитий океан": {
+    "meaning": "Arctic Ocean (the smallest of the five oceans of the Earth, on and around the North Pole, bordered by the three continen",
+    "literal": false,
+    "pos": "noun"
+  },
+  "скоріш за все": {
+    "meaning": "most likely",
+    "literal": false,
+    "pos": "adv"
+  },
+  "скоріше за все": {
+    "meaning": "alternative form of скорі́ш за все (skoríš za vse, “most likely”)",
+    "literal": false,
+    "pos": "adv"
+  },
+  "як марко в пеклі": {
+    "meaning": "(with verbs товкти́ся (tovktýsja, “to jostle”), гаса́ти (hasáty, “to run, to rush around”), etc.) ceaselessly, quickly, ",
+    "literal": false,
+    "pos": "adv"
+  },
+  "моя хата скраю, я нічого не знаю": {
+    "meaning": "it's none of my business, I don't care",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "моя хата скраю": {
+    "meaning": "ellipsis of моя́ ха́та скра́ю, я нічо́го не зна́ю (mojá xáta skráju, ja ničóho ne znáju)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "синдром набутого імунодефіциту": {
+    "meaning": "acquired immune deficiency syndrome, AIDS",
+    "literal": false,
+    "pos": "noun"
+  },
+  "т. ін.": {
+    "meaning": "abbreviation of і таке інше і (i take inše i, “and so on and so on, etc.”)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "у т. ч.": {
+    "meaning": "abbreviation of у тому числі (u tomu čysli, “including”)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "до того ж": {
+    "meaning": "additionally, also, besides, furthermore, in addition, moreover, what is more",
+    "literal": false,
+    "pos": "adv"
+  },
+  "рано чи пізно": {
+    "meaning": "sooner or later",
+    "literal": false,
+    "pos": "adv"
+  },
+  "шакалячий експрес": {
+    "meaning": "a group of Internet users set to massively condemn/shame something",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "раз та гаразд": {
+    "meaning": "even though something is done rarely, it is done extremely well",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "в першу чергу": {
+    "meaning": "first, first of all, first and foremost, in the first place, in the first instance, primarily (before anything else in i",
+    "literal": false,
+    "pos": "adv"
+  },
+  "налякати їжака голою сракою": {
+    "meaning": "To fail to be threatening.",
+    "literal": false,
+    "pos": "verb"
+  },
+  "накласти на себе руки": {
+    "meaning": "to commit suicide, to kill oneself, to take one's own life",
+    "literal": false,
+    "pos": "verb"
+  },
+  "голівка статевого члена": {
+    "meaning": "glans penis",
+    "literal": false,
+    "pos": "noun"
+  },
+  "висадити в повітря": {
+    "meaning": "to blow up (to destroy by explosion)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "висаджувати в повітря": {
+    "meaning": "to blow up (to destroy by explosion)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "число з рухомою комою": {
+    "meaning": "floating-point number",
+    "literal": false,
+    "pos": "noun"
+  },
+  "збити з пантелику": {
+    "meaning": "to knock for a loop, to confuse",
+    "literal": false,
+    "pos": "verb"
+  },
+  "мати на увазі": {
+    "meaning": "to mean (to signify)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "чи що": {
+    "meaning": "or something, perhaps, maybe, as if (or something like that - usually used in a question)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "на перший погляд": {
+    "meaning": "at first sight, at first blush, at a glance (on cursory examination)",
+    "literal": false,
+    "pos": "adv"
+  },
+  "волам хвости крутити": {
+    "meaning": "to work in a low-paid job",
+    "literal": false,
+    "pos": "verb"
+  },
+  "перша світова війна": {
+    "meaning": "World War I",
+    "literal": false,
+    "pos": "noun"
+  },
+  "друга світова війна": {
+    "meaning": "World War II",
+    "literal": false,
+    "pos": "noun"
+  },
+  "день захисту дітей": {
+    "meaning": "Children's Day.",
+    "literal": false,
+    "pos": "noun"
+  },
+  "гроші не пахнуть": {
+    "meaning": "money does not smell",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "звести рахунки з життям": {
+    "meaning": "to commit suicide, to end it all, to end one's life, to kill oneself, to take one's own life",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ходи сюди": {
+    "meaning": "come here",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "якщо на те пішло": {
+    "meaning": "for that matter, come to that",
+    "literal": false,
+    "pos": "adv"
+  },
+  "їбала жаба гадюку": {
+    "meaning": "Two or more unpleasant people are fighting each other; like rats in a sack",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "міжнародний фонетичний алфавіт": {
+    "meaning": "International Phonetic Alphabet",
+    "literal": false,
+    "pos": "noun"
+  },
+  "робити з мухи слона": {
+    "meaning": "to make a mountain out of a molehill",
+    "literal": false,
+    "pos": "verb"
+  },
+  "переливати з пустого в порожнє": {
+    "meaning": "to talk empty, useless, unimportant talks",
+    "literal": false,
+    "pos": "verb"
+  },
+  "не святі горшки ліплять": {
+    "meaning": "anyone can learn to do anything if they wish to",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "як ся маєш": {
+    "meaning": "how are you?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "розлад аутистичного спектру": {
+    "meaning": "autism spectrum disorder",
+    "literal": false,
+    "pos": "noun"
+  },
+  "селище міського типу": {
+    "meaning": "urban-type settlement",
+    "literal": false,
+    "pos": "noun"
+  },
+  "з поверненням": {
+    "meaning": "welcome back",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "якщо я не помиляюся": {
+    "meaning": "if I'm not mistaken",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "вишенька на торті": {
+    "meaning": "cherry on the cake, cherry on top, icing on the cake",
+    "literal": false,
+    "pos": "noun"
+  },
+  "розлад харчової поведінки": {
+    "meaning": "eating disorder",
+    "literal": false,
+    "pos": "noun"
+  },
+  "яблуку ніде впасти": {
+    "meaning": "it's packed to the gills, it's packed to the rafters",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "під мухою": {
+    "meaning": "tipsy, buzzed (slightly drink)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "є таке": {
+    "meaning": "Used as an affirmative response; yes, yeah",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "то є": {
+    "meaning": "this",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "за копійку в церкві пердне": {
+    "meaning": "said of someone who is a sellout",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "хуй будеш": {
+    "meaning": "Used to mock a commentor complaining about Russophobia, or opposing collective guilt against Russians for the Russian in",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "засіб масової інформації": {
+    "meaning": "nominative/accusative singular of за́соби ма́сової інформа́ції (zásoby másovoji informáciji)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "цирк на дроті": {
+    "meaning": "three-ring circus; pandemonium",
+    "literal": false,
+    "pos": "noun"
+  },
+  "квиток до кобзона": {
+    "meaning": "\"Ticket to Kobzon\": a quick death for a Russian soldier in Ukraine.",
+    "literal": false,
+    "pos": "noun"
+  },
+  "до н. е.": {
+    "meaning": "B.C., BCE",
+    "literal": false,
+    "pos": "adv"
+  },
+  "після р. хр.": {
+    "meaning": "AD (anno Domini); CE (Common Era)",
+    "literal": false,
+    "pos": "adv"
+  },
+  "христос хрещається": {
+    "meaning": "Christ is baptised!",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "у річці йордан": {
+    "meaning": "\"In the Jordan river\", the traditional response to a greeting on Epiphany",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "прийти до тями": {
+    "meaning": "to come to one's senses, to recover one's senses, to regain one's senses, to come to, to come round, to regain conscious",
+    "literal": false,
+    "pos": "verb"
+  },
+  "нема лиха без добра": {
+    "meaning": "a blessing in disguise, something bad that has a good result.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "немає лиха без добра": {
+    "meaning": "alternative form of нема́ ли́ха без добра́ (nemá lýxa bez dobrá): there is no evil without good; a blessing in disguise",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "кулик кулика бачить здалека": {
+    "meaning": "birds of a feather flock together",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ранні пташки росу п'ють, а пізні слізки ллють": {
+    "meaning": "the early bird catches the worm, the early bird gets the worm",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "про вовка промовка": {
+    "meaning": "speak of the devil (when someone talks about another person, that person happens to arrive)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "я називаюсє": {
+    "meaning": "my name is",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "мені ... років": {
+    "meaning": "I am ... year(s) old",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "мніе ... ліет": {
+    "meaning": "I am ... year(s) old",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "я з": {
+    "meaning": "I'm from",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "походу з": {
+    "meaning": "I'm from",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "як не срачка, то болячка": {
+    "meaning": "out of the frying pan, into the fire; referring to a situation that is inevitably as bad as the previous one",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "земля скловатою": {
+    "meaning": "rest in piss, burn in hell (a curse expressing a wish for a deceased person to suffer after death)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "нема диму без вогню": {
+    "meaning": "there's no smoke without fire",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "як грім серед ясного неба": {
+    "meaning": "out of the blue",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "селищ міського типу": {
+    "meaning": "genitive plural of се́лище місько́го ти́пу (sélyšče misʹkóho týpu)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "показати де раки зимують": {
+    "meaning": "to punish someone, to teach someone a lesson",
+    "literal": false,
+    "pos": "verb"
+  },
+  "христос народився": {
+    "meaning": "Christ is born!; Merry Christmas!",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "славимо його": {
+    "meaning": "\"Let us glorify Him!\"",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ламати голову над чимось": {
+    "meaning": "to get confused",
+    "literal": false,
+    "pos": "verb"
+  },
+  "коли рак на горі свисне": {
+    "meaning": "when pigs fly, never (for something that will never happen)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "голова й два вуха": {
+    "meaning": "absent-minded",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "не плети гівна дівці в коси": {
+    "meaning": "(Used to tell another person to stop talking nonsense)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "до дупа така дупа": {
+    "meaning": "(Used to condemn another person for talking nonsense)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "як вітром здуло": {
+    "meaning": "vanished into thin air",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "всьо на свої лотоки": {
+    "meaning": "always looking out for one's own advantage, turning everything to one's own benefit",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "в руках": {
+    "meaning": "in one's hands, in one's power, under one's control or management",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "держати в руках": {
+    "meaning": "to keep someone under control, to hold in check, to keep a tight rein on",
+    "literal": false,
+    "pos": "verb"
+  },
+  "дати в руку": {
+    "meaning": "to hand over, to put into someone's hands, to entrust",
+    "literal": false,
+    "pos": "verb"
+  },
+  "дати з рук": {
+    "meaning": "to hand over, to give out of one's hands, to relinquish",
+    "literal": false,
+    "pos": "verb"
+  },
+  "не на руку": {
+    "meaning": "inconvenient, unsuitable, disadvantageous",
+    "literal": false,
+    "pos": "adv"
+  },
+  "не рука": {
+    "meaning": "it won't do; it is not suitable, convenient, or acceptable",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "з вільної руки": {
+    "meaning": "of one's own free will, voluntarily",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "на свою руку": {
+    "meaning": "on one's own, independently, on one's own initiative or risk",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "дивитися на руки": {
+    "meaning": "to watch someone closely, to keep a close eye on someone (especially to prevent them from stealing or cheating)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "з першої руки": {
+    "meaning": "firsthand, from the original source",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "з порожніми руками": {
+    "meaning": "empty-handed, with empty hands, without gifts, unrewarded",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "мати довгі руки": {
+    "meaning": "to be a thief, to be light-fingered, to have sticky fingers, to be prone to stealing",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ходити з довгою рукою": {
+    "meaning": "to beg, to ask for alms",
+    "literal": false,
+    "pos": "verb"
+  },
+  "дати за руки": {
+    "meaning": "to give as a deposit, to give as collateral, to pawn",
+    "literal": false,
+    "pos": "verb"
+  },
+  "як дві краплі води": {
+    "meaning": "like two peas in a pod (very similar)",
+    "literal": false,
+    "pos": "phrase"
+  }
+}

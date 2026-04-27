@@ -1,0 +1,997 @@
+{
+  "в целости и сохранности": {
+    "meaning": "safe and sound; free from danger or injury",
+    "literal": false,
+    "pos": "adv"
+  },
+  "мальчик для битья": {
+    "meaning": "whipping boy; scapegoat",
+    "literal": false,
+    "pos": "noun"
+  },
+  "белый": {
+    "meaning": "как бе́лый день (kak bélyj denʹ)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "многоразовый транспортный космический корабль": {
+    "meaning": "Space Transportation System (STS)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "посёлок городского типа": {
+    "meaning": "urban-type settlement",
+    "literal": false,
+    "pos": "noun"
+  },
+  "до р. хр.": {
+    "meaning": "BC (before Christ); BCE (before the Common Era)",
+    "literal": false,
+    "pos": "adv"
+  },
+  "после р. хр.": {
+    "meaning": "AD (anno Domini); CE (Common Era)",
+    "literal": false,
+    "pos": "adv"
+  },
+  "воспрещается курить": {
+    "meaning": "no smoking",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "против часовой стрелки": {
+    "meaning": "anticlockwise, counter-clockwise",
+    "literal": false,
+    "pos": "adv"
+  },
+  "по часовой стрелке": {
+    "meaning": "clockwise",
+    "literal": false,
+    "pos": "adv"
+  },
+  "когда рак на горе свистнет": {
+    "meaning": "when pigs fly, never",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "оружие массового поражения": {
+    "meaning": "weapon(s) of mass destruction",
+    "literal": false,
+    "pos": "noun"
+  },
+  "без кота мышам раздолье": {
+    "meaning": "when the cat's away the mice will play",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "делать большие глаза": {
+    "meaning": "to look (as if) surprised or puzzled. (Lit., \"to make large eyes\".)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "курам на смех": {
+    "meaning": "Something ridiculous, silly, or completely unsatisfactory.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "через мой труп": {
+    "meaning": "over my dead body",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "теория великого объединения": {
+    "meaning": "grand unification theory",
+    "literal": false,
+    "pos": "noun"
+  },
+  "неопознанный летающий объект": {
+    "meaning": "unidentified flying object",
+    "literal": false,
+    "pos": "noun"
+  },
+  "если бы только": {
+    "meaning": "if only",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "и т. д.": {
+    "meaning": "etc., and so forth, and so on",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "и т.д.": {
+    "meaning": "etc., and so forth, and so on",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "и др.": {
+    "meaning": "et alii, etc.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "и т. п.": {
+    "meaning": "etc., and so forth, and so on",
+    "literal": false,
+    "pos": "adv"
+  },
+  "до н. э.": {
+    "meaning": "abbreviation of до на́шей э́ры (do nášej éry): B.C., BCE",
+    "literal": false,
+    "pos": "adv"
+  },
+  "вход воспрещён": {
+    "meaning": "no admittance",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "посторонним вход воспрещён": {
+    "meaning": "no admittance; authorized personnel only",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "яйца курицу не учат": {
+    "meaning": "don't teach your grandmother to suck eggs",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "держать за яйца": {
+    "meaning": "to get by the balls",
+    "literal": false,
+    "pos": "verb"
+  },
+  "яйца задницу не учат": {
+    "meaning": "synonym of я́йца ку́рицу не у́чат (jájca kúricu ne účat, “don't teach your grandmother to suck eggs”)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "не учи учёного": {
+    "meaning": "don't teach your grandmother to suck eggs",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "учёного учить — только портить": {
+    "meaning": "don't teach your grandmother to suck eggs",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "не учи плавать щуку, щука знает свою науку": {
+    "meaning": "don't teach your grandmother to suck eggs",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "лающая собака не кусает": {
+    "meaning": "barking dogs seldom bite",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "расскажи это своей бабушке": {
+    "meaning": "tell it to Sweeney, tell it to the marines",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ври больше": {
+    "meaning": "tell it to Sweeney; tell it to the marines",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "расскажи это кому-нибудь другому": {
+    "meaning": "tell it to Sweeney; tell it to the marines",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "до нашей эры": {
+    "meaning": "Before the Common Era (BCE), before Christ (BC)",
+    "literal": false,
+    "pos": "adv"
+  },
+  "крем под пудру": {
+    "meaning": "foundation cream",
+    "literal": false,
+    "pos": "noun"
+  },
+  "крем для бритья": {
+    "meaning": "shaving cream",
+    "literal": false,
+    "pos": "noun"
+  },
+  "крем для рук": {
+    "meaning": "hand lotion, hand cream",
+    "literal": false,
+    "pos": "noun"
+  },
+  "крем от загара": {
+    "meaning": "suntan lotion",
+    "literal": false,
+    "pos": "noun"
+  },
+  "крем от веснушек": {
+    "meaning": "freckle remover",
+    "literal": false,
+    "pos": "noun"
+  },
+  "карандаш для бровей": {
+    "meaning": "eyebrow pencil",
+    "literal": false,
+    "pos": "noun"
+  },
+  "щётка для ресниц": {
+    "meaning": "eyelash brush",
+    "literal": false,
+    "pos": "noun"
+  },
+  "где туалет": {
+    "meaning": "where is the toilet?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "я вас люблю": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "я тебя люблю": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "каждому своё": {
+    "meaning": "to each his own",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "око за око, зуб за зуб": {
+    "meaning": "eye for an eye, a tooth for a tooth",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "крем для лица": {
+    "meaning": "face cream",
+    "literal": false,
+    "pos": "noun"
+  },
+  "крем для обуви": {
+    "meaning": "shoe polish",
+    "literal": false,
+    "pos": "noun"
+  },
+  "в лес дрова возить": {
+    "meaning": "to bring owls to Athens, to carry coals to Newcastle (to do something that is not needed)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ездить в тулу со своим самоваром": {
+    "meaning": "to do something that is clearly not needed",
+    "literal": false,
+    "pos": "verb"
+  },
+  "в тулу со своим самоваром": {
+    "meaning": "coals to Newcastle; (to do) something pointless",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "серп и молот": {
+    "meaning": "hammer and sickle (Soviet symbol of industry and agriculture)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "семь чудес света": {
+    "meaning": "Seven Wonders of the World",
+    "literal": false,
+    "pos": "noun"
+  },
+  "фтопку": {
+    "meaning": "burn it! delete it!",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "соседняя очередь всегда движется быстрее": {
+    "meaning": "the grass is always greener on the other side",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "за двумя зайцами погонишься, ни одного не поймаешь": {
+    "meaning": "a bird in the hand is worth two in the bush; grasp all, lose all",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "действительное причастие настоящего времени": {
+    "meaning": "present participle active",
+    "literal": false,
+    "pos": "noun"
+  },
+  "страдательное причастие настоящего времени": {
+    "meaning": "passive present participle",
+    "literal": false,
+    "pos": "noun"
+  },
+  "страдательное причастие прошедшего времени": {
+    "meaning": "passive past participle",
+    "literal": false,
+    "pos": "noun"
+  },
+  "действительное причастие прошедшего времени": {
+    "meaning": "past participle active",
+    "literal": false,
+    "pos": "noun"
+  },
+  "деепричастие настоящего времени": {
+    "meaning": "present adverbial participle, present gerund",
+    "literal": false,
+    "pos": "noun"
+  },
+  "деепричастие прошедшего времени": {
+    "meaning": "past adverbial participle, past gerund",
+    "literal": false,
+    "pos": "noun"
+  },
+  "острая респираторная вирусная инфекция": {
+    "meaning": "common cold; upper respiratory tract infection",
+    "literal": false,
+    "pos": "noun"
+  },
+  "лить как из ведра": {
+    "meaning": "to rain buckets",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "работать как папа карло": {
+    "meaning": "to work hard, to work like a dog",
+    "literal": false,
+    "pos": "verb"
+  },
+  "синдром приобретённого иммунодефицита": {
+    "meaning": "acquired immune deficiency syndrome, AIDS",
+    "literal": false,
+    "pos": "noun"
+  },
+  "и тому подобное": {
+    "meaning": "and so on, and the like, and that kind of thing",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "как дела": {
+    "meaning": "how are you?; how is it going?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "как поживаешь": {
+    "meaning": "how are you?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "как поживаете": {
+    "meaning": "how are you?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "большому кораблю большое плавание": {
+    "meaning": "great ships require deep waters",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "друг на друга": {
+    "meaning": "against one another, against each other",
+    "literal": false,
+    "pos": "adv"
+  },
+  "друг от друга": {
+    "meaning": "one from another",
+    "literal": false,
+    "pos": "adv"
+  },
+  "друг у друга": {
+    "meaning": "at one another",
+    "literal": false,
+    "pos": "adv"
+  },
+  "друг за другом": {
+    "meaning": "one after another",
+    "literal": false,
+    "pos": "adv"
+  },
+  "друг с другом": {
+    "meaning": "with one another, with each other",
+    "literal": false,
+    "pos": "adv"
+  },
+  "друг против друга": {
+    "meaning": "face to face; vis-à-vis",
+    "literal": false,
+    "pos": "adv"
+  },
+  "и так далее": {
+    "meaning": "et cetera, and so forth, and so on",
+    "literal": false,
+    "pos": "adv"
+  },
+  "в гостях хорошо, а дома лучше": {
+    "meaning": "there's no place like home",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "вы говорите по-английски": {
+    "meaning": "do you speak English?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "шах и мат": {
+    "meaning": "checkmate, check and mate",
+    "literal": false,
+    "pos": "noun"
+  },
+  "с наступающим новым годом": {
+    "meaning": "happy coming New Year!",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "с рождеством христовым": {
+    "meaning": "Merry Christmas",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "пролетарии всех стран, соединяйтесь": {
+    "meaning": "workers of the world, unite!",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "будет дождь": {
+    "meaning": "is it going to rain?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "я говорю по-английски": {
+    "meaning": "I speak English.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "шаг за шагом": {
+    "meaning": "step by step",
+    "literal": false,
+    "pos": "adv"
+  },
+  "что за чёрт": {
+    "meaning": "what the hell",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "какого чёрта": {
+    "meaning": "why the hell",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "тем не менее": {
+    "meaning": "nevertheless",
+    "literal": false,
+    "pos": "adv"
+  },
+  "молоко на губах не обсохло": {
+    "meaning": "wet behind the ears, greenhorn",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "я не знаю": {
+    "meaning": "I don’t know",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "кто рано встаёт, тому бог подаёт": {
+    "meaning": "the early bird gets the worm",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "я полюбил тебя": {
+    "meaning": "I'm in love with you (male speaker)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "я полюбила тебя": {
+    "meaning": "I'm in love with you (female speaker)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "оружия массового поражения": {
+    "meaning": "inflection of ору́жие ма́ссового пораже́ния (orúžije mássovovo poražénija):",
+    "literal": false,
+    "pos": "noun"
+  },
+  "короче, склифосовский": {
+    "meaning": "Used to cut short someone's long speech.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "вести себя, как слон в посудной лавке": {
+    "meaning": "to act like a bull in a china shop",
+    "literal": false,
+    "pos": "verb"
+  },
+  "чёрным по белому": {
+    "meaning": "clearly, explicitly",
+    "literal": false,
+    "pos": "adv"
+  },
+  "рыбак рыбака видит издалека": {
+    "meaning": "birds of a feather flock together",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "дурак дурака видит издалека": {
+    "meaning": "birds of a feather flock together",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "делать из мухи слона": {
+    "meaning": "to make a mountain out of a molehill",
+    "literal": false,
+    "pos": "verb"
+  },
+  "язык проглотил": {
+    "meaning": "cat got your tongue?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "километр в час": {
+    "meaning": "kilometer per hour, km/h",
+    "literal": false,
+    "pos": "noun"
+  },
+  "сантиметр в секунду": {
+    "meaning": "centimeters per second, cm/s",
+    "literal": false,
+    "pos": "noun"
+  },
+  "лёгок на помине": {
+    "meaning": "speak of the devil",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "про серого речь, а серый навстречь": {
+    "meaning": "speak of the devil",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "а как же": {
+    "meaning": "what about, how about? (used to ask someone to consider something or someone that they apparently have not considered)",
+    "literal": false,
+    "pos": "adv"
+  },
+  "хоть убей": {
+    "meaning": "for the life of me",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "халиф": {
+    "meaning": "хали́ф на час (xalíf na čas)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "с волками жить — по-волчьи выть": {
+    "meaning": "when in Rome, do as the Romans do",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "мужской половой член": {
+    "meaning": "male sexual member, penis",
+    "literal": false,
+    "pos": "noun"
+  },
+  "голь на выдумку хитра": {
+    "meaning": "necessity is the mother of invention",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "в чём дело": {
+    "meaning": "what's up?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "советская социалистическая республика": {
+    "meaning": "Soviet Socialist Republic (SSR)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "о пролитом молоке не плачут": {
+    "meaning": "don't cry over spilt milk",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "со своим уставом в чужой монастырь не ходят": {
+    "meaning": "when in Rome, do as the Romans do",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "куй железо, пока горячо": {
+    "meaning": "strike while the iron is hot",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "сколько лет, сколько зим": {
+    "meaning": "\"It’s been ages since we met!\", long time no see",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "смерть шпионам": {
+    "meaning": "\"Death to spies!\", rallying cry of SMERSH, the counterintelligence department of the GRU and NKVD.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "и у стен есть уши": {
+    "meaning": "the walls have ears",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "отсос пограничного слоя": {
+    "meaning": "boundary layer bleed",
+    "literal": false,
+    "pos": "noun"
+  },
+  "с тех пор": {
+    "meaning": "since that time, since then",
+    "literal": false,
+    "pos": "adv"
+  },
+  "с этих пор": {
+    "meaning": "immediately, now",
+    "literal": false,
+    "pos": "adv"
+  },
+  "приёмник воздушного давления": {
+    "meaning": "pitot tube (airplanes)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "передняя стойка шасси": {
+    "meaning": "nosewheel leg (jet fighter)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "причастие настоящего времени": {
+    "meaning": "present participle",
+    "literal": false,
+    "pos": "noun"
+  },
+  "самодельное взрывное устройство": {
+    "meaning": "improvised explosive device",
+    "literal": false,
+    "pos": "noun"
+  },
+  "книга за семью печатями": {
+    "meaning": "closed book, enigma, mystery",
+    "literal": false,
+    "pos": "noun"
+  },
+  "из грязи в князи": {
+    "meaning": "from rags to riches; from zero to hero",
+    "literal": false,
+    "pos": "adv"
+  },
+  "рано или поздно": {
+    "meaning": "sooner or later, eventually",
+    "literal": false,
+    "pos": "adv"
+  },
+  "с рождеством христовым и с новым годом": {
+    "meaning": "Merry Christmas and a Happy New Year!",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "в том числе": {
+    "meaning": "including",
+    "literal": false,
+    "pos": "adv"
+  },
+  "международный фонетический алфавит": {
+    "meaning": "International Phonetic Alphabet",
+    "literal": false,
+    "pos": "noun"
+  },
+  "град идёт": {
+    "meaning": "it’s hailing.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "в последний момент": {
+    "meaning": "in the nick of time",
+    "literal": false,
+    "pos": "adv"
+  },
+  "я не понимаю": {
+    "meaning": "I don't understand",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "который час": {
+    "meaning": "what time is it?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "авиация дальнего действия": {
+    "meaning": "strategic aviation, long-range aviation",
+    "literal": false,
+    "pos": "noun"
+  },
+  "не сули журавля в небе, дай синицу в руки": {
+    "meaning": "a bird in the hand is worth two in the bush",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "я так думаю": {
+    "meaning": "I think so",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "я так не думаю": {
+    "meaning": "I don't think so",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "как тебя зовут": {
+    "meaning": "what is your name? (familiar)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "как вас зовут": {
+    "meaning": "what is your name? (formal)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "какой у тебя телефон": {
+    "meaning": "what's your phone number?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "какой у вас телефон": {
+    "meaning": "what's your phone number?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "какая сейчас погода": {
+    "meaning": "how's the weather?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "откуда ты родом": {
+    "meaning": "where are you from? (familiar)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "откуда вы родом": {
+    "meaning": "where are you from? (formal)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "меня зовут": {
+    "meaning": "my name is...",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ракетное реактивное оружие": {
+    "meaning": "rocket weapon(s) (includes all types of rockets, from rocket-propelled grenades, to guided anti-tank missiles, to rocket",
+    "literal": false,
+    "pos": "noun"
+  },
+  "дай мне свой телефон": {
+    "meaning": "what's your phone number?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "дайте мне свой телефон": {
+    "meaning": "what's your phone number? (formal)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "в это время": {
+    "meaning": "at the time, at that time",
+    "literal": false,
+    "pos": "adv"
+  },
+  "пришла беда — отворяй ворота": {
+    "meaning": "when it rains, it pours",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "поспешишь — людей насмешишь": {
+    "meaning": "haste makes waste",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "пробка на дороге": {
+    "meaning": "traffic jam",
+    "literal": false,
+    "pos": "noun"
+  },
+  "тартрат диэтиламида лизергиновой кислоты": {
+    "meaning": "tartrate of lysergic acid diethylamide, acid, LSD",
+    "literal": false,
+    "pos": "noun"
+  },
+  "яблоко от яблони недалеко падает": {
+    "meaning": "the apple doesn't fall far from the tree (an apple falls close to the apple tree).",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "не знаю": {
+    "meaning": "I don't know",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "чело": {
+    "meaning": "бить чело́м impf (bitʹ čelóm)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "точка с запятой": {
+    "meaning": "semicolon (punctuation mark indicating a pause longer than the comma)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "как посеешь, так и пожнёшь": {
+    "meaning": "as you sow, so shall you reap",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "что посеешь, то и пожнёшь": {
+    "meaning": "as you sow, so shall you reap",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "то и дело": {
+    "meaning": "now and then, every now and then",
+    "literal": false,
+    "pos": "adv"
+  },
+  "булочка с начинкой": {
+    "meaning": "burger",
+    "literal": false,
+    "pos": "noun"
+  },
+  "не понимаю": {
+    "meaning": "I don't understand",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "убить одним выстрелом двух зайцев": {
+    "meaning": "to kill two birds with one stone",
+    "literal": false,
+    "pos": "verb"
+  },
+  "не дели шкуру неубитого медведя": {
+    "meaning": "don't count your chickens before they're hatched",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "цыплят по осени считают": {
+    "meaning": "don't count your chickens before they're hatched",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "сколько вам лет": {
+    "meaning": "how old are you? (formal)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "сколько тебе лет": {
+    "meaning": "how old are you? (informal)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "что и требовалось доказать": {
+    "meaning": "quod erat demonstrandum, which was to be proved; which was to be demonstrated, abbreviation: ч.т.д. (č.t.d.)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "двигатель внутреннего сгорания": {
+    "meaning": "internal combustion engine",
+    "literal": false,
+    "pos": "noun"
+  },
+  "курение запрещено": {
+    "meaning": "no smoking",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "с глаз долой — из сердца вон": {
+    "meaning": "out of sight, out of mind",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "самоходная артиллерийская установка": {
+    "meaning": "self-propelled artillery, self-propelled artillery mount",
+    "literal": false,
+    "pos": "noun"
+  },
+  "периодическая система элементов": {
+    "meaning": "periodic table of elements",
+    "literal": false,
+    "pos": "noun"
+  },
+  "будь верен сам себе": {
+    "meaning": "to thine own self be true",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "от любопытства кошка сдохла": {
+    "meaning": "curiosity killed the cat",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "меньше знаешь — крепче спишь": {
+    "meaning": "curiosity killed the cat",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "каждый охотник желает знать, где сидит фазан": {
+    "meaning": "A mnemonic for the color sequence of the visible spectrum, equivalent to English Roy G. Biv: кра́сный (krásnyj), ора́нже",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "там хорошо, где нас нет": {
+    "meaning": "the grass is always greener on the other side",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "дамы и господа": {
+    "meaning": "ladies and gentlemen",
+    "literal": false,
+    "pos": "noun"
+  },
+  "век живи — век учись": {
+    "meaning": "it's never too late to mend; you're never too old to learn, live and learn",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "наука не мука": {
+    "meaning": "knowledge is not torment",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "через золото слёзы льются": {
+    "meaning": "money can't buy happiness",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "не всё то золото, что блестит": {
+    "meaning": "all that glitters is not gold",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "конденсат бозе — эйнштейна": {
+    "meaning": "Bose-Einstein condensate",
+    "literal": false,
+    "pos": "noun"
+  },
+  "за три пизды": {
+    "meaning": "very far away; in bumfuck nowhere; Bumfuck, Egypt; BFE",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "с рождеством": {
+    "meaning": "Merry Christmas",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "имя и отчество": {
+    "meaning": "name and patronymic",
+    "literal": false,
+    "pos": "noun"
+  },
+  "друг в друга": {
+    "meaning": "one another, each other",
+    "literal": false,
+    "pos": "adv"
+  },
+  "друг к другу": {
+    "meaning": "to one another, to each other",
+    "literal": false,
+    "pos": "adv"
+  },
+  "москва не сразу строилась": {
+    "meaning": "Rome wasn't built in a day",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "в два счёта": {
+    "meaning": "in two shakes, quickly",
+    "literal": false,
+    "pos": "adv"
+  }
+}

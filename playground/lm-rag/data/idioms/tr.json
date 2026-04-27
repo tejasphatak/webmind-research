@@ -1,0 +1,997 @@
+{
+  "kg": {
+    "meaning": "initialism of kolay gelsin",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "sg": {
+    "meaning": "initialism of siktir git",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "sa": {
+    "meaning": "initialism of selamünaleyküm",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "allahu ekber": {
+    "meaning": "Allahu akbar (God is the most great)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "bende": {
+    "meaning": "contraction of ben (“me”) + de (“too”): me too",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "demi": {
+    "meaning": "misspelling of de mi",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "sokağa çıkma yasağı": {
+    "meaning": "curfew",
+    "literal": false,
+    "pos": "noun"
+  },
+  "seni seviyorum": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "arv": {
+    "meaning": "initialism of Allah rahatlık versin",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "teşekkür ederim": {
+    "meaning": "thank you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "sana âşığım": {
+    "meaning": "I'm in love with you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "bilmiyorum": {
+    "meaning": "I don't know",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "senden nefret ediyorum": {
+    "meaning": "I hate you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "anlamıyorum": {
+    "meaning": "I don’t understand",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "vb.": {
+    "meaning": "abbreviation of ve benzeri (“etc.”)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "buda": {
+    "meaning": "misspelling of bu da (“and this; this one too”)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "fransız kalmak": {
+    "meaning": "To be clueless",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "bir şey anladıysam arap olayım": {
+    "meaning": "I do not understand what was just said; it’s all Greek to me",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "çıkmaz ayın son çarşambası": {
+    "meaning": "when pigs fly; never.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "balık kavağa çıkınca": {
+    "meaning": "when pigs fly, when hell freezes over",
+    "literal": false,
+    "pos": "adv"
+  },
+  "güzellik mi çirkinlik mi": {
+    "meaning": "A well known game in Turkey. Literal translation is \"beauty or ugliness?\".",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "anlamadım": {
+    "meaning": "first-person singular indicative negative simple past of anlamak",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "nasılsınız": {
+    "meaning": "how are you?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "nasılsın": {
+    "meaning": "how are you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "i̇ngilizce biliyor musun": {
+    "meaning": "Do you know English? (It's used instead of \"Do you speak ...\").",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "i̇ngilizce biliyor musunuz": {
+    "meaning": "Do you know English? (It's used instead of \"Do you speak ...\").",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "i̇ngilizce konuşabiliyor musun": {
+    "meaning": "Can you speak English? (It's used instead of \"Do you speak ...\").",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "i̇ngilizce konuşabiliyor musunuz": {
+    "meaning": "Can you speak English? (It’s used instead of “Do you speak ...”).",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "davulun sesi uzaktan hoş gelir": {
+    "meaning": "the grass is always greener on the other side, distance lends enchantment to the view",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "herkes hata yapar": {
+    "meaning": "Everyone makes mistakes, to err is human",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "hatasız kul olmaz": {
+    "meaning": "to err is human",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "kb": {
+    "meaning": "initialism of kusura bakma",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "çok teşekkür ederim": {
+    "meaning": "thank you so much",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "boynuz sineği deri yangısı": {
+    "meaning": "horn fly dermatitis",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bal olan yerde sinek de olur": {
+    "meaning": "around something beautiful, parasites who want to take advantage of it roam",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "dünyanın en eski işi": {
+    "meaning": "the world's oldest profession",
+    "literal": false,
+    "pos": "noun"
+  },
+  "dünyanın en eski mesleği": {
+    "meaning": "the world's oldest profession",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ikizkenar dik üçgen": {
+    "meaning": "isosceles right triangle",
+    "literal": false,
+    "pos": "noun"
+  },
+  "koyu sırtlı saka": {
+    "meaning": "The lesser goldfinch (Spinus psaltria)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "çok yaşa": {
+    "meaning": "long live",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "çok yaşayın": {
+    "meaning": "bless you; said to somebody who has sneezed (formal).",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "tek boynuzlu at": {
+    "meaning": "unicorn",
+    "literal": false,
+    "pos": "noun"
+  },
+  "otuz bir çekmek": {
+    "meaning": "to masturbate (for men)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ermeni gelini gibi kırıtmak": {
+    "meaning": "to behave coquettishly",
+    "literal": false,
+    "pos": "verb"
+  },
+  "bir taşla iki kuş vurmak": {
+    "meaning": "to kill two birds with one stone",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "sıcak su torbası": {
+    "meaning": "hot water bottle (typically rubber container used to apply heat to parts of the body)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "it ürür, kervan yürür": {
+    "meaning": "the dogs bark, but the caravan goes on.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "kulaklı orman baykuşu": {
+    "meaning": "long-eared owl (Asio otus)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "küçük gümüş martı": {
+    "meaning": "common gull (Larus canus)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ayn": {
+    "meaning": "initialism of aynen",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "yalancının mumu yatsıya kadar yanar": {
+    "meaning": "a lie has no legs",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "kış uykusuna yatmak": {
+    "meaning": "to hibernate",
+    "literal": false,
+    "pos": "verb"
+  },
+  "çin dağ kedisi": {
+    "meaning": "Chinese mountain cat",
+    "literal": false,
+    "pos": "noun"
+  },
+  "çin çöl kedisi": {
+    "meaning": "Chinese mountain cat",
+    "literal": false,
+    "pos": "noun"
+  },
+  "sen sağ ben selamet": {
+    "meaning": "There's nothing left to do.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "şehadet şerbetini içmek": {
+    "meaning": "to become a martyr, become martyrized.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ecel şerbeti içmek": {
+    "meaning": "to die, pass away.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "yalana şerbetli olmak": {
+    "meaning": "To be able to lie without hesitating",
+    "literal": false,
+    "pos": "verb"
+  },
+  "kan kusup kızılcık şerbeti içtim demek": {
+    "meaning": "to behave like everything's alright, in spite of the hard conditions one lived.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "i̇ngilizce bilmiyorum": {
+    "meaning": "I don't speak English",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "sütten ağzı yanan, yoğurdu üfleyerek yer": {
+    "meaning": "once bitten, twice shy",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "havlayan köpek ısırmaz": {
+    "meaning": "barking dogs seldom bite",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "vakit nakittir": {
+    "meaning": "time is money",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "intikam soğuk yenen bir yemektir": {
+    "meaning": "revenge is a dish best served cold",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "en büyük ortak bölen": {
+    "meaning": "greatest common divisor",
+    "literal": false,
+    "pos": "noun"
+  },
+  "en küçük ortak kat": {
+    "meaning": "least common multiple",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bir avuç toprak olmak": {
+    "meaning": "to die",
+    "literal": false,
+    "pos": "verb"
+  },
+  "hakk'ın rahmetine kavuşmak": {
+    "meaning": "to die, to pass away",
+    "literal": false,
+    "pos": "verb"
+  },
+  "armut dalının dibine düşer": {
+    "meaning": "the apple doesn't fall far from the tree",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "türkçe bilmiyorum": {
+    "meaning": "I don't speak Turkish",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "benimle evlenir misin": {
+    "meaning": "will you marry me?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "gözden ırak olan gönülden de ırak olur": {
+    "meaning": "out of sight, out of mind.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "... yaşındayım": {
+    "meaning": "I'm ... year(s) old",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "kim bilir": {
+    "meaning": "who knows?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ig": {
+    "meaning": "initialism of iyi geceler",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "kütle çekim etkileşimi": {
+    "meaning": "gravitational interaction",
+    "literal": false,
+    "pos": "noun"
+  },
+  "güçlü nükleer etkileşim": {
+    "meaning": "strong nuclear interaction",
+    "literal": false,
+    "pos": "noun"
+  },
+  "güçlü nükleer kuvvet": {
+    "meaning": "strong nuclear force",
+    "literal": false,
+    "pos": "noun"
+  },
+  "zayıf nükleer etkileşim": {
+    "meaning": "weak nuclear interaction",
+    "literal": false,
+    "pos": "noun"
+  },
+  "zayıf nükleer kuvvet": {
+    "meaning": "weak nuclear force",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kütle çekim kuvveti": {
+    "meaning": "gravitational force",
+    "literal": false,
+    "pos": "noun"
+  },
+  "elveda zalim dünya": {
+    "meaning": "goodbye, cruel world!",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "dindar değilim": {
+    "meaning": "I'm not religious",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "granüllü endoplazmik retikulum": {
+    "meaning": "rough endoplasmic reticulum",
+    "literal": false,
+    "pos": "noun"
+  },
+  "granülsüz endoplazmik retikulum": {
+    "meaning": "smooth endoplasmic reticulum",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kulak misafiri olmak": {
+    "meaning": "to overhear",
+    "literal": false,
+    "pos": "verb"
+  },
+  "aman tanrım": {
+    "meaning": "oh my God",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "orta yaş krizi": {
+    "meaning": "mid-life crisis",
+    "literal": false,
+    "pos": "noun"
+  },
+  "orta yaş bunalımı": {
+    "meaning": "mid-life crisis",
+    "literal": false,
+    "pos": "noun"
+  },
+  "eline sağlık": {
+    "meaning": "Literally, \"health to your hand\"; a toast or congratulation on good work, especially good cooking.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ellerine sağlık": {
+    "meaning": "Literally, \"health to your hands\"; a toast or congratulation on good work, especially good cooking.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ellerinize sağlık": {
+    "meaning": "Literally, \"health to your hands\" (formal speech); a toast or congratulation on good work, especially good cooking.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "elinize sağlık": {
+    "meaning": "Literally, \"health to your hand\" (formal speech); a toast or congratulation on good work, especially good cooking.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "yağmurdan kaçarken doluya tutulmak": {
+    "meaning": "to go out of the frying pan, into the fire",
+    "literal": false,
+    "pos": "verb"
+  },
+  "yardıma ihtiyacın var mı": {
+    "meaning": "do you need help?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "yardıma ihtiyacınız var mı": {
+    "meaning": "do you need help?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "belirtili isim tamlaması": {
+    "meaning": "A compound noun in which the attributive noun takes the genitive case suffix while the noun which is modified takes the ",
+    "literal": false,
+    "pos": "noun"
+  },
+  "belirtili ad tamlaması": {
+    "meaning": "A compound noun in which the attributive noun takes the genitive case suffix while the noun which is modified takes the ",
+    "literal": false,
+    "pos": "noun"
+  },
+  "belirtisiz isim tamlaması": {
+    "meaning": "A compound noun in which the attributive noun isn't suffixed while the noun which is modified takes the 3rd person posse",
+    "literal": false,
+    "pos": "noun"
+  },
+  "belirtisiz ad tamlaması": {
+    "meaning": "A compound noun in which the attributive noun isn't suffixed while the noun which is modified takes the 3rd person posse",
+    "literal": false,
+    "pos": "noun"
+  },
+  "takısız isim tamlaması": {
+    "meaning": "A compound noun in which neither the attributive noun nor the noun which is modified is suffixed.",
+    "literal": false,
+    "pos": "noun"
+  },
+  "takısız ad tamlaması": {
+    "meaning": "A compound noun in which neither the attributive noun nor the noun which is modified is suffixed.",
+    "literal": false,
+    "pos": "noun"
+  },
+  "zincirleme isim tamlaması": {
+    "meaning": "A compound noun which consists of at least three nouns.",
+    "literal": false,
+    "pos": "noun"
+  },
+  "zincirleme ad tamlaması": {
+    "meaning": "a compound noun which consists of at least three nouns",
+    "literal": false,
+    "pos": "noun"
+  },
+  "zincirleme isim tamlamasını": {
+    "meaning": "definite accusative singular of zincirleme isim tamlaması",
+    "literal": false,
+    "pos": "noun"
+  },
+  "zincirleme isim tamlamaları": {
+    "meaning": "nominative plural of zincirleme isim tamlaması",
+    "literal": false,
+    "pos": "noun"
+  },
+  "zincirleme isim tamlamalarını": {
+    "meaning": "definite accusative plural of zincirleme isim tamlaması",
+    "literal": false,
+    "pos": "noun"
+  },
+  "zincirleme isim tamlamalarına": {
+    "meaning": "dative plural of zincirleme isim tamlaması",
+    "literal": false,
+    "pos": "noun"
+  },
+  "zincirleme isim tamlamalarında": {
+    "meaning": "locative plural of zincirleme isim tamlaması",
+    "literal": false,
+    "pos": "noun"
+  },
+  "zincirleme isim tamlamalarından": {
+    "meaning": "ablative plural of zincirleme isim tamlaması",
+    "literal": false,
+    "pos": "noun"
+  },
+  "zincirleme isim tamlamalarının": {
+    "meaning": "definite genitive plural of zincirleme isim tamlaması",
+    "literal": false,
+    "pos": "noun"
+  },
+  "zincirleme isim tamlamasına": {
+    "meaning": "dative singular of zincirleme isim tamlaması",
+    "literal": false,
+    "pos": "noun"
+  },
+  "zincirleme isim tamlamasında": {
+    "meaning": "locative singular of zincirleme isim tamlaması",
+    "literal": false,
+    "pos": "noun"
+  },
+  "zincirleme isim tamlamasından": {
+    "meaning": "ablative singular of zincirleme isim tamlaması",
+    "literal": false,
+    "pos": "noun"
+  },
+  "zincirleme isim tamlamasının": {
+    "meaning": "definite genitive singular of zincirleme isim tamlaması",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bir sorum var": {
+    "meaning": "I have a question",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "yardımına ihtiyacım var": {
+    "meaning": "I need your help",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "yardımınıza ihtiyacım var": {
+    "meaning": "I need your help",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "uygulama programlama arayüzü": {
+    "meaning": "application programming interface",
+    "literal": false,
+    "pos": "noun"
+  },
+  "uygulama programlama arayüzünü": {
+    "meaning": "accusative singular of uygulama programlama arayüzü",
+    "literal": false,
+    "pos": "noun"
+  },
+  "sorun nedir": {
+    "meaning": "What's wrong? What's the problem?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "rica ederim": {
+    "meaning": "Used to make a kind request; please.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "akılsız başın cezasını ayaklar çeker": {
+    "meaning": "those who do not think (especially those who forget an item) have to make a physical effort to deal with the consequence",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "nesne yönelimli programlama": {
+    "meaning": "object-oriented programming",
+    "literal": false,
+    "pos": "noun"
+  },
+  "nesne yönelimli programlamayı": {
+    "meaning": "accusative singular of nesne yönelimli programlama",
+    "literal": false,
+    "pos": "noun"
+  },
+  "nesne yönelimli programlamalar": {
+    "meaning": "nominative plural of nesne yönelimli programlama",
+    "literal": false,
+    "pos": "noun"
+  },
+  "uygulama programlama arayüzleri": {
+    "meaning": "nominative plural of uygulama programlama arayüzü",
+    "literal": false,
+    "pos": "noun"
+  },
+  "geleneksel çin tıbbı": {
+    "meaning": "traditional Chinese medicine",
+    "literal": false,
+    "pos": "noun"
+  },
+  "geleneksel çin tıbbını": {
+    "meaning": "accusative singular of geleneksel Çin tıbbı",
+    "literal": false,
+    "pos": "noun"
+  },
+  "geleneksel çin tıpları": {
+    "meaning": "nominative plural of geleneksel Çin tıbbı (Is irrelevant in reality, as there only exists one traditional Chinese medici",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ortak katların en küçüğü": {
+    "meaning": "least common multiple",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ortak katların en küçüğünü": {
+    "meaning": "accusative singular of ortak katların en küçüğü",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ortak katların en küçükleri": {
+    "meaning": "nominative plural of ortak katların en küçüğü",
+    "literal": false,
+    "pos": "noun"
+  },
+  "en büyük ortak böleni": {
+    "meaning": "accusative singular of en büyük ortak bölen",
+    "literal": false,
+    "pos": "noun"
+  },
+  "en büyük ortak bölenler": {
+    "meaning": "nominative plural of en büyük ortak bölen",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ortak bölenlerin en büyüğü": {
+    "meaning": "synonym of en büyük ortak bölen",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ortak bölenlerin en büyüğünü": {
+    "meaning": "accusative singular of ortak bölenlerin en büyüğü",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ortak bölenlerin en büyükleri": {
+    "meaning": "nominative plural of ortak bölenlerin en büyüğü",
+    "literal": false,
+    "pos": "noun"
+  },
+  "iş ve işçi bulma kurumu": {
+    "meaning": "job center",
+    "literal": false,
+    "pos": "noun"
+  },
+  "iş ve işçi bulma kurumunu": {
+    "meaning": "accusative singular of iş ve işçi bulma kurumu",
+    "literal": false,
+    "pos": "noun"
+  },
+  "iş ve işçi bulma kurumları": {
+    "meaning": "nominative plural of iş ve işçi bulma kurumu",
+    "literal": false,
+    "pos": "noun"
+  },
+  "oy verme hakkı": {
+    "meaning": "franchise",
+    "literal": false,
+    "pos": "noun"
+  },
+  "oy verme hakkını": {
+    "meaning": "accusative singular of oy verme hakkı",
+    "literal": false,
+    "pos": "noun"
+  },
+  "oy verme hakları": {
+    "meaning": "nominative plural of oy verme hakkı",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ister al, ister alma": {
+    "meaning": "take it or leave it",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "iyi yolda olmak": {
+    "meaning": "shape up (for a person: to improve)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "iyi yolda olur": {
+    "meaning": "third-person singular indicative aorist of iyi yolda olmak",
+    "literal": false,
+    "pos": "verb"
+  },
+  "baştan savma yapmak": {
+    "meaning": "to skimp",
+    "literal": false,
+    "pos": "verb"
+  },
+  "baştan savma yapar": {
+    "meaning": "third-person singular indicative aorist of baştan savma yapmak",
+    "literal": false,
+    "pos": "verb"
+  },
+  "soyut fabrika tasarım örüntüsü": {
+    "meaning": "abstract factory pattern",
+    "literal": false,
+    "pos": "noun"
+  },
+  "soyut fabrika tasarım örüntüsünü": {
+    "meaning": "accusative singular of soyut fabrika tasarım örüntüsü",
+    "literal": false,
+    "pos": "noun"
+  },
+  "soyut fabrika tasarım örüntüleri": {
+    "meaning": "nominative plural of soyut fabrika tasarım örüntüsü",
+    "literal": false,
+    "pos": "noun"
+  },
+  "emniyet kemerini bağlamak": {
+    "meaning": "buckle up",
+    "literal": false,
+    "pos": "verb"
+  },
+  "servis odaklı mimari": {
+    "meaning": "service-oriented architecture",
+    "literal": false,
+    "pos": "noun"
+  },
+  "servis odaklı mimariyi": {
+    "meaning": "accusative singular of servis odaklı mimari",
+    "literal": false,
+    "pos": "noun"
+  },
+  "servis odaklı mimariler": {
+    "meaning": "nominative plural of servis odaklı mimari",
+    "literal": false,
+    "pos": "noun"
+  },
+  "hizmet yönelimli mimari": {
+    "meaning": "synonym of servis odaklı mimari",
+    "literal": false,
+    "pos": "noun"
+  },
+  "hizmet yönelimli mimariyi": {
+    "meaning": "accusative singular of hizmet yönelimli mimari",
+    "literal": false,
+    "pos": "noun"
+  },
+  "hizmet yönelimli mimariler": {
+    "meaning": "nominative plural of hizmet yönelimli mimari",
+    "literal": false,
+    "pos": "noun"
+  },
+  "hindi sesi çıkarmak": {
+    "meaning": "to gobble",
+    "literal": false,
+    "pos": "verb"
+  },
+  "yedi ölümcül günah": {
+    "meaning": "seven deadly sins",
+    "literal": false,
+    "pos": "noun"
+  },
+  "yedi ölümcül günahı": {
+    "meaning": "accusative singular of yedi ölümcül günah",
+    "literal": false,
+    "pos": "noun"
+  },
+  "yedi ölümcül günahlar": {
+    "meaning": "nominative plural of yedi ölümcül günah",
+    "literal": false,
+    "pos": "noun"
+  },
+  "soyut fabrika tasarım deseni": {
+    "meaning": "synonym of soyut fabrika tasarım örüntüsü",
+    "literal": false,
+    "pos": "noun"
+  },
+  "soyut fabrika tasarım desenini": {
+    "meaning": "accusative singular of soyut fabrika tasarım deseni",
+    "literal": false,
+    "pos": "noun"
+  },
+  "soyut fabrika tasarım desenleri": {
+    "meaning": "nominative plural of soyut fabrika tasarım deseni",
+    "literal": false,
+    "pos": "noun"
+  },
+  "cephe yönelimli programlama": {
+    "meaning": "aspect-oriented software development",
+    "literal": false,
+    "pos": "noun"
+  },
+  "cephe yönelimli programlamayı": {
+    "meaning": "accusative singular of cephe yönelimli programlama",
+    "literal": false,
+    "pos": "noun"
+  },
+  "cephe yönelimli programlamalar": {
+    "meaning": "nominative plural of cephe yönelimli programlama",
+    "literal": false,
+    "pos": "noun"
+  },
+  "donanım tanımlama dili": {
+    "meaning": "hardware description language",
+    "literal": false,
+    "pos": "noun"
+  },
+  "donanım tanımlama dilini": {
+    "meaning": "accusative singular of donanım tanımlama dili",
+    "literal": false,
+    "pos": "noun"
+  },
+  "donanım tanımlama dilleri": {
+    "meaning": "nominative plural of donanım tanımlama dili",
+    "literal": false,
+    "pos": "noun"
+  },
+  "sosyal paylaşım web sitesi": {
+    "meaning": "alternative form of sosyal paylaşım Web sitesi (Web should be capitalised, as there is only one World Wide Web, but is s",
+    "literal": false,
+    "pos": "noun"
+  },
+  "sosyal paylaşım web sitesini": {
+    "meaning": "accusative singular of sosyal paylaşım Web sitesi",
+    "literal": false,
+    "pos": "noun"
+  },
+  "sosyal paylaşım web siteleri": {
+    "meaning": "nominative plural of sosyal paylaşım Web sitesi",
+    "literal": false,
+    "pos": "noun"
+  },
+  "sosyal paylaşım sitesi": {
+    "meaning": "clipping of sosyal paylaşım Web sitesi",
+    "literal": false,
+    "pos": "noun"
+  },
+  "sosyal paylaşım sitesini": {
+    "meaning": "accusative singular of sosyal paylaşım sitesi",
+    "literal": false,
+    "pos": "noun"
+  },
+  "sosyal paylaşım siteleri": {
+    "meaning": "nominative plural of sosyal paylaşım sitesi",
+    "literal": false,
+    "pos": "noun"
+  },
+  "havadan havaya füze": {
+    "meaning": "air-to-air missile",
+    "literal": false,
+    "pos": "noun"
+  },
+  "havadan havaya füzeyi": {
+    "meaning": "accusative singular of havadan havaya füze",
+    "literal": false,
+    "pos": "noun"
+  },
+  "havadan havaya füzeler": {
+    "meaning": "nominative plural of havadan havaya füze",
+    "literal": false,
+    "pos": "noun"
+  },
+  "çok yüksek frekans": {
+    "meaning": "very high frequency",
+    "literal": false,
+    "pos": "noun"
+  },
+  "çok yüksek frekansı": {
+    "meaning": "accusative singular of çok yüksek frekans",
+    "literal": false,
+    "pos": "noun"
+  },
+  "çok yüksek frekanslar": {
+    "meaning": "nominative plural of çok yüksek frekans",
+    "literal": false,
+    "pos": "noun"
+  },
+  "havadan karaya füze": {
+    "meaning": "air-to-surface missile",
+    "literal": false,
+    "pos": "noun"
+  },
+  "havadan karaya füzeyi": {
+    "meaning": "accusative singular of havadan karaya füze",
+    "literal": false,
+    "pos": "noun"
+  },
+  "havadan karaya füzeler": {
+    "meaning": "nominative plural of havadan karaya füze",
+    "literal": false,
+    "pos": "noun"
+  },
+  "karadan havaya füze": {
+    "meaning": "surface-to-air missile",
+    "literal": false,
+    "pos": "noun"
+  },
+  "karadan havaya füzeyi": {
+    "meaning": "accusative singular of karadan havaya füze",
+    "literal": false,
+    "pos": "noun"
+  },
+  "karadan havaya füzeler": {
+    "meaning": "nominative plural of karadan havaya füze",
+    "literal": false,
+    "pos": "noun"
+  },
+  "karadan karaya füze": {
+    "meaning": "surface-to-surface missile",
+    "literal": false,
+    "pos": "noun"
+  },
+  "karadan karaya füzeyi": {
+    "meaning": "accusative singular of karadan karaya füze",
+    "literal": false,
+    "pos": "noun"
+  },
+  "karadan karaya füzeler": {
+    "meaning": "nominative plural of karadan karaya füze",
+    "literal": false,
+    "pos": "noun"
+  },
+  "otomatik bilet makinası": {
+    "meaning": "ticket machine",
+    "literal": false,
+    "pos": "noun"
+  },
+  "otomatik bilet makinasını": {
+    "meaning": "accusative singular of otomatik bilet makinası",
+    "literal": false,
+    "pos": "noun"
+  },
+  "otomatik bilet makinaları": {
+    "meaning": "nominative plural of otomatik bilet makinası",
+    "literal": false,
+    "pos": "noun"
+  },
+  "yönetim kurulu başkanı": {
+    "meaning": "Chief Executive Officer",
+    "literal": false,
+    "pos": "noun"
+  },
+  "yönetim kurulu başkanı'nı": {
+    "meaning": "accusative singular of Yönetim Kurulu Başkanı",
+    "literal": false,
+    "pos": "noun"
+  },
+  "yönetim kurulu başkanları": {
+    "meaning": "nominative plural of Yönetim Kurulu Başkanı",
+    "literal": false,
+    "pos": "noun"
+  }
+}

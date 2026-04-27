@@ -1,0 +1,1002 @@
+{
+  "hakuna matata": {
+    "meaning": "No worries, take it easy, hakuna matata.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "duka la vitabu": {
+    "meaning": "bookshop, bookstore",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mfumuko wa bei": {
+    "meaning": "economic inflation (increase in prices)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "alama ya mkato": {
+    "meaning": "comma (punctuation mark)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "masomo ya ziada": {
+    "meaning": "tuition (sum of money paid for instruction)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "makali ya kisu": {
+    "meaning": "cutting edge of a knife",
+    "literal": false,
+    "pos": "noun"
+  },
+  "afisa wa usalama": {
+    "meaning": "police officer (an officer in a law enforcement agency)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "alama ya mshangao": {
+    "meaning": "exclamation mark (punctuation for excitement or surprise)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "maji ya machungwa": {
+    "meaning": "orange juice",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mara kwa mara": {
+    "meaning": "from time to time, now and then",
+    "literal": false,
+    "pos": "adv"
+  },
+  "ukingo wa bahari": {
+    "meaning": "shore (the land on or near a waterline)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "utabiri wa hali ya anga": {
+    "meaning": "weather forecast (prediction of future weather)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "sanduku la posta": {
+    "meaning": "post office box",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kiongozi wa mashtaka": {
+    "meaning": "prosecutor (a lawyer who decides whether to charge a person with a crime)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "stendi ya teksi": {
+    "meaning": "taxi stand",
+    "literal": false,
+    "pos": "noun"
+  },
+  "stesheni ya treni": {
+    "meaning": "train station",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kampuni ya ndege": {
+    "meaning": "airline",
+    "literal": false,
+    "pos": "noun"
+  },
+  "dawa ya viatu": {
+    "meaning": "shoe polish",
+    "literal": false,
+    "pos": "noun"
+  },
+  "usiku wa leo": {
+    "meaning": "tonight",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ni saa ngapi": {
+    "meaning": "what time is it?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "siku ya mwaka": {
+    "meaning": "New Year's Day",
+    "literal": false,
+    "pos": "noun"
+  },
+  "maduka ya vitabu": {
+    "meaning": "plural of duka la vitabu",
+    "literal": false,
+    "pos": "noun"
+  },
+  "afisa wa polisi": {
+    "meaning": "police officer",
+    "literal": false,
+    "pos": "noun"
+  },
+  "maafisa wa polisi": {
+    "meaning": "plural of afisa wa polisi",
+    "literal": false,
+    "pos": "noun"
+  },
+  "maafisa wa usalama": {
+    "meaning": "plural of afisa wa usalama",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mpira wa kikapu": {
+    "meaning": "basketball",
+    "literal": false,
+    "pos": "noun"
+  },
+  "jina lako nani": {
+    "meaning": "what is your name?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "mashine ya barafu": {
+    "meaning": "refrigerator",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mashine za barafu": {
+    "meaning": "plural of mashine ya barafu",
+    "literal": false,
+    "pos": "noun"
+  },
+  "tangu na tangu": {
+    "meaning": "for ever and ever",
+    "literal": false,
+    "pos": "adv"
+  },
+  "chai ya rangi": {
+    "meaning": "milkless tea",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mbuga ya wanyama": {
+    "meaning": "game reserve",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mbuga za wanyama": {
+    "meaning": "plural of mbuga ya wanyama",
+    "literal": false,
+    "pos": "noun"
+  },
+  "seli nyekundu ya damu": {
+    "meaning": "red blood cell",
+    "literal": false,
+    "pos": "noun"
+  },
+  "seli nyekundu za damu": {
+    "meaning": "plural of seli nyekundu ya damu",
+    "literal": false,
+    "pos": "noun"
+  },
+  "seli nyeupe ya damu": {
+    "meaning": "white blood cell",
+    "literal": false,
+    "pos": "noun"
+  },
+  "seli nyeupe za damu": {
+    "meaning": "plural of seli nyeupe ya damu",
+    "literal": false,
+    "pos": "noun"
+  },
+  "akaunti ya benki": {
+    "meaning": "bank account",
+    "literal": false,
+    "pos": "noun"
+  },
+  "akaunti za benki": {
+    "meaning": "plural of akaunti ya benki",
+    "literal": false,
+    "pos": "noun"
+  },
+  "uwanja wa ndege": {
+    "meaning": "airport",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mavi ya mbuzi": {
+    "meaning": "clubs (suit of cards)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mzungu wa pili": {
+    "meaning": "queen",
+    "literal": false,
+    "pos": "noun"
+  },
+  "wazungu wa pili": {
+    "meaning": "plural of mzungu wa pili",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mzungu wa tatu": {
+    "meaning": "jack",
+    "literal": false,
+    "pos": "noun"
+  },
+  "wazungu wa tatu": {
+    "meaning": "plural of mzungu wa tatu",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mzungu wa nne": {
+    "meaning": "king",
+    "literal": false,
+    "pos": "noun"
+  },
+  "wazungu wa nne": {
+    "meaning": "plural of mzungu wa nne",
+    "literal": false,
+    "pos": "noun"
+  },
+  "tundu la pua": {
+    "meaning": "nostril",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ishara ya msalaba": {
+    "meaning": "sign of the cross",
+    "literal": false,
+    "pos": "noun"
+  },
+  "haba na haba hujaza kibaba": {
+    "meaning": "little by little fills the container",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "unatoka wapi": {
+    "meaning": "where are you from?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "jina langu ni": {
+    "meaning": "my name is...",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "jina langu": {
+    "meaning": "my name is...",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "u hali gani": {
+    "meaning": "how are you?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "maji ya madafu": {
+    "meaning": "coconut water",
+    "literal": false,
+    "pos": "noun"
+  },
+  "haraka haraka haina baraka": {
+    "meaning": "haste makes waste",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "maradhi ya zinaa": {
+    "meaning": "sexually transmitted disease",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mpira wa wavu": {
+    "meaning": "volleyball",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mpira wa miguu": {
+    "meaning": "football, soccer",
+    "literal": false,
+    "pos": "noun"
+  },
+  "dawa ya wadudu": {
+    "meaning": "insecticide",
+    "literal": false,
+    "pos": "noun"
+  },
+  "uhuru wa maoni": {
+    "meaning": "freedom of speech",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kiwanja cha michezo": {
+    "meaning": "arena, stadium",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kiwanja cha ndege": {
+    "meaning": "airfield, landing strip",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kituo cha basi": {
+    "meaning": "bus station",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mshtuko wa moyo": {
+    "meaning": "heart attack",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mtoto wa mbwa": {
+    "meaning": "son of a bitch (term of abuse)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "homa ya manjano": {
+    "meaning": "jaundice, particularly as caused by yellow fever",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mkono wa kulia": {
+    "meaning": "the right hand",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kidole cha shahada": {
+    "meaning": "forefinger, index finger",
+    "literal": false,
+    "pos": "noun"
+  },
+  "nyundo na mundu": {
+    "meaning": "hammer and sickle",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kombe la dunia": {
+    "meaning": "world cup",
+    "literal": false,
+    "pos": "noun"
+  },
+  "jengo la forodha": {
+    "meaning": "custom house",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mifumuko ya bei": {
+    "meaning": "plural of mfumuko wa bei",
+    "literal": false,
+    "pos": "noun"
+  },
+  "namna gani": {
+    "meaning": "what's up?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "mbio za nyika": {
+    "meaning": "marathon (42.195 kilometer road race)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "wewe ni nani": {
+    "meaning": "who are you?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "kingo za bahari": {
+    "meaning": "plural of ukingo wa bahari",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kete ya sataranji": {
+    "meaning": "a chess piece",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kete za sataranji": {
+    "meaning": "plural of kete ya sataranji",
+    "literal": false,
+    "pos": "noun"
+  },
+  "karata ya kucheza": {
+    "meaning": "playing card",
+    "literal": false,
+    "pos": "noun"
+  },
+  "karata za kucheza": {
+    "meaning": "plural of karata ya kucheza",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mfumo wa jua": {
+    "meaning": "solar system",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mifumo ya jua": {
+    "meaning": "plural of mfumo wa jua",
+    "literal": false,
+    "pos": "noun"
+  },
+  "nyanja za ndege": {
+    "meaning": "plural of uwanja wa ndege",
+    "literal": false,
+    "pos": "noun"
+  },
+  "je unanikamata": {
+    "meaning": "am I under arrest?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "punde si punde": {
+    "meaning": "suddenly",
+    "literal": false,
+    "pos": "adv"
+  },
+  "mpira wa pete": {
+    "meaning": "netball",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ugonjwa wa kichomi": {
+    "meaning": "pneumonia",
+    "literal": false,
+    "pos": "noun"
+  },
+  "homa ya matumbo": {
+    "meaning": "typhoid",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mpira wa meza": {
+    "meaning": "table tennis",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bustani ya wanyama": {
+    "meaning": "zoo",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bustani za wanyama": {
+    "meaning": "plural of bustani ya wanyama",
+    "literal": false,
+    "pos": "noun"
+  },
+  "njia ya mtandao": {
+    "meaning": "internet",
+    "literal": false,
+    "pos": "noun"
+  },
+  "idd el hajj": {
+    "meaning": "Eid al-Adha",
+    "literal": false,
+    "pos": "noun"
+  },
+  "idd el fitr": {
+    "meaning": "Eid al-Fitr",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kwa shingo upande": {
+    "meaning": "reluctantly",
+    "literal": false,
+    "pos": "adv"
+  },
+  "la chumvi nyingi": {
+    "meaning": "to live a long life",
+    "literal": false,
+    "pos": "verb"
+  },
+  "mbwa wa polisi": {
+    "meaning": "police dog",
+    "literal": false,
+    "pos": "noun"
+  },
+  "maji ya ukwaju": {
+    "meaning": "tamarind juice (sweetened drink flavored with tamarind)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "chai ya maziwa": {
+    "meaning": "milk tea",
+    "literal": false,
+    "pos": "noun"
+  },
+  "upinde wa mvua": {
+    "meaning": "rainbow",
+    "literal": false,
+    "pos": "noun"
+  },
+  "pinde za mvua": {
+    "meaning": "plural of upinde wa mvua",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kadi ya posta": {
+    "meaning": "postcard",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kadi ya mkopo": {
+    "meaning": "credit card",
+    "literal": false,
+    "pos": "noun"
+  },
+  "nambari ya siri": {
+    "meaning": "personal identification number (PIN)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "nambari ya simu": {
+    "meaning": "telephone number",
+    "literal": false,
+    "pos": "noun"
+  },
+  "chakula cha haraka": {
+    "meaning": "fast food",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kadi ya sim": {
+    "meaning": "SIM card",
+    "literal": false,
+    "pos": "noun"
+  },
+  "chumba cha kulia": {
+    "meaning": "dining room",
+    "literal": false,
+    "pos": "noun"
+  },
+  "chumba cha kulala": {
+    "meaning": "bedroom, sleeping-room",
+    "literal": false,
+    "pos": "noun"
+  },
+  "alama za mshangao": {
+    "meaning": "plural of alama ya mshangao",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bwawa la kuogelea": {
+    "meaning": "swimming pool",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bonde la ufa": {
+    "meaning": "rift valley",
+    "literal": false,
+    "pos": "noun"
+  },
+  "afya ya akili": {
+    "meaning": "mental health",
+    "literal": false,
+    "pos": "noun"
+  },
+  "miwani ya jua": {
+    "meaning": "sunglasses",
+    "literal": false,
+    "pos": "noun"
+  },
+  "michezo ya olimpiki": {
+    "meaning": "Olympic Games",
+    "literal": false,
+    "pos": "noun"
+  },
+  "moja kwa moja": {
+    "meaning": "straight, straight on",
+    "literal": false,
+    "pos": "adv"
+  },
+  "rangi ya mdomo": {
+    "meaning": "lipstick",
+    "literal": false,
+    "pos": "noun"
+  },
+  "karibu chakula": {
+    "meaning": "enjoy your meal, bon appétit",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "kidole cha mguu": {
+    "meaning": "toe",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kidole cha mkono": {
+    "meaning": "finger",
+    "literal": false,
+    "pos": "noun"
+  },
+  "paji la uso": {
+    "meaning": "forehead",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mwanzi wa pua": {
+    "meaning": "nostril",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mianzi ya pua": {
+    "meaning": "plural of mwanzi wa pua",
+    "literal": false,
+    "pos": "noun"
+  },
+  "njia ya kukata": {
+    "meaning": "shortcut",
+    "literal": false,
+    "pos": "noun"
+  },
+  "huduma ya kwanza": {
+    "meaning": "first aid",
+    "literal": false,
+    "pos": "noun"
+  },
+  "gari la moshi": {
+    "meaning": "train",
+    "literal": false,
+    "pos": "noun"
+  },
+  "magari ya moshi": {
+    "meaning": "plural of gari la moshi",
+    "literal": false,
+    "pos": "noun"
+  },
+  "hali ya hewa": {
+    "meaning": "weather",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mpango wa kando": {
+    "meaning": "adultery, infidelity",
+    "literal": false,
+    "pos": "noun"
+  },
+  "simu za rununu": {
+    "meaning": "plural of simu ya rununu",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mfungwa wa vita": {
+    "meaning": "prisoner of war (POW)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "wafungwa wa vita": {
+    "meaning": "plural of mfungwa wa vita",
+    "literal": false,
+    "pos": "noun"
+  },
+  "simu ya mkononi": {
+    "meaning": "mobile phone (a portable telephone, a cellphone)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "simu za mikononi": {
+    "meaning": "plural of simu ya mkononi",
+    "literal": false,
+    "pos": "noun"
+  },
+  "gharama ya maisha": {
+    "meaning": "cost of living",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mapigo ya moyo": {
+    "meaning": "plural of pigo la moyo",
+    "literal": false,
+    "pos": "noun"
+  },
+  "tetemeko la ardhi": {
+    "meaning": "earthquake",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bomu la ardhini": {
+    "meaning": "land mine",
+    "literal": false,
+    "pos": "noun"
+  },
+  "alama za mkato": {
+    "meaning": "plural of alama ya mkato",
+    "literal": false,
+    "pos": "noun"
+  },
+  "alama ya reli": {
+    "meaning": "hash symbol, hash sign, number sign (the character #)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "alama za reli": {
+    "meaning": "plural of alama ya reli",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kifundo cha mguu": {
+    "meaning": "ankle",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kazi ya ziada": {
+    "meaning": "homework",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kituo cha mafuta": {
+    "meaning": "petrol station (UK); gas station (US)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mvua ya mawe": {
+    "meaning": "hail",
+    "literal": false,
+    "pos": "noun"
+  },
+  "nguo ya ndani": {
+    "meaning": "underwear",
+    "literal": false,
+    "pos": "noun"
+  },
+  "nguo za ndani": {
+    "meaning": "plural of nguo ya ndani",
+    "literal": false,
+    "pos": "noun"
+  },
+  "hasira ya mkizi furaha ya mvuvi": {
+    "meaning": "the anger of the mullet is the joy of the fisherman",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "vidole vya shahada": {
+    "meaning": "plural of kidole cha shahada",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kidole cha pete": {
+    "meaning": "ring finger (finger next to the little finger)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "vidole vya pete": {
+    "meaning": "plural of kidole cha pete",
+    "literal": false,
+    "pos": "noun"
+  },
+  "piga moyo konde": {
+    "meaning": "to be brave",
+    "literal": false,
+    "pos": "verb"
+  },
+  "rafiki wa kike": {
+    "meaning": "girlfriend",
+    "literal": false,
+    "pos": "noun"
+  },
+  "rafiki wa kiume": {
+    "meaning": "boyfriend",
+    "literal": false,
+    "pos": "noun"
+  },
+  "filamu ya kutisha": {
+    "meaning": "horror movie",
+    "literal": false,
+    "pos": "noun"
+  },
+  "duka la manunuzi": {
+    "meaning": "shopping center, shopping mall",
+    "literal": false,
+    "pos": "noun"
+  },
+  "lugha ya mama": {
+    "meaning": "mother tongue",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mabomu ya ardhini": {
+    "meaning": "plural of bomu la ardhini",
+    "literal": false,
+    "pos": "noun"
+  },
+  "viongozi wa mashtaka": {
+    "meaning": "plural of kiongozi wa mashtaka",
+    "literal": false,
+    "pos": "noun"
+  },
+  "matetemeko ya ardhi": {
+    "meaning": "plural of tetemeko la ardhi",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kiti cha gurudumu": {
+    "meaning": "alternative form of kiti cha magurudumu",
+    "literal": false,
+    "pos": "noun"
+  },
+  "viti vya gurudumu": {
+    "meaning": "plural of kiti cha gurudumu",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kliniki ya kutoa mimba": {
+    "meaning": "abortion clinic",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kliniki za kutoa mimba": {
+    "meaning": "plural of kliniki ya kutoa mimba",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mfumko wa bei": {
+    "meaning": "alternative form of mfumuko wa bei",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mifumko ya bei": {
+    "meaning": "plural of mfumko wa bei",
+    "literal": false,
+    "pos": "noun"
+  },
+  "tendo la ndoa": {
+    "meaning": "sex (sexual intercourse)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "filamu ya ngono": {
+    "meaning": "pornographic movie",
+    "literal": false,
+    "pos": "noun"
+  },
+  "filamu za ngono": {
+    "meaning": "plural of filamu ya ngono",
+    "literal": false,
+    "pos": "noun"
+  },
+  "staili ya mapenzi": {
+    "meaning": "sex position",
+    "literal": false,
+    "pos": "noun"
+  },
+  "staili za mapenzi": {
+    "meaning": "plural of staili ya mapenzi",
+    "literal": false,
+    "pos": "noun"
+  },
+  "shahada ya uzamili": {
+    "meaning": "master's degree",
+    "literal": false,
+    "pos": "noun"
+  },
+  "shahada za uzamili": {
+    "meaning": "plural of shahada ya uzamili",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ukwepaji wa kodi": {
+    "meaning": "tax evasion",
+    "literal": false,
+    "pos": "noun"
+  },
+  "dawa ya mapenzi": {
+    "meaning": "love potion",
+    "literal": false,
+    "pos": "noun"
+  },
+  "dawa za mapenzi": {
+    "meaning": "plural of dawa ya mapenzi",
+    "literal": false,
+    "pos": "noun"
+  },
+  "dawa ya meno": {
+    "meaning": "toothpaste",
+    "literal": false,
+    "pos": "noun"
+  },
+  "dawa ya mswaki": {
+    "meaning": "toothpaste",
+    "literal": false,
+    "pos": "noun"
+  },
+  "soko la nyumbani": {
+    "meaning": "domestic market",
+    "literal": false,
+    "pos": "noun"
+  },
+  "masoko ya nyumbani": {
+    "meaning": "plural of soko la nyumbani",
+    "literal": false,
+    "pos": "noun"
+  },
+  "soko la nje": {
+    "meaning": "foreign market",
+    "literal": false,
+    "pos": "noun"
+  },
+  "masoko ya nje": {
+    "meaning": "plural of soko la nje",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kidole cha kati": {
+    "meaning": "middle finger",
+    "literal": false,
+    "pos": "noun"
+  },
+  "vidole vya kati": {
+    "meaning": "plural of kidole cha kati",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kidole cha mwisho": {
+    "meaning": "little finger, pinky",
+    "literal": false,
+    "pos": "noun"
+  },
+  "vidole vya mwisho": {
+    "meaning": "plural of kidole cha mwisho",
+    "literal": false,
+    "pos": "noun"
+  },
+  "vidole vya mguu": {
+    "meaning": "plural of kidole cha mguu",
+    "literal": false,
+    "pos": "noun"
+  },
+  "vidole vya mkono": {
+    "meaning": "plural of kidole cha mkono",
+    "literal": false,
+    "pos": "noun"
+  },
+  "nyumba ya uzazi": {
+    "meaning": "womb, uterus",
+    "literal": false,
+    "pos": "noun"
+  },
+  "nyumba za uzazi": {
+    "meaning": "plural of nyumba ya uzazi",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ulemavu wa ngozi": {
+    "meaning": "albinism",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mfumo wa kinga": {
+    "meaning": "immune system",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mifumo ya kinga": {
+    "meaning": "plural of mfumo wa kinga",
+    "literal": false,
+    "pos": "noun"
+  },
+  "simu ya rununu": {
+    "meaning": "mobile phone (a portable telephone, a cellphone)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "hati ya kusafiria": {
+    "meaning": "passport (official document)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "hati za kusafiria": {
+    "meaning": "plural of hati ya kusafiria",
+    "literal": false,
+    "pos": "noun"
+  },
+  "makamu wa rais": {
+    "meaning": "vice president",
+    "literal": false,
+    "pos": "noun"
+  },
+  "lugha ya ishara": {
+    "meaning": "sign language",
+    "literal": false,
+    "pos": "noun"
+  },
+  "lugha za ishara": {
+    "meaning": "plural of lugha ya ishara",
+    "literal": false,
+    "pos": "noun"
+  }
+}

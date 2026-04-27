@@ -1,0 +1,502 @@
+{
+  "আমি তোমাকে ভালবাসি": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "এশিয়ান কালো ভাল্লুক": {
+    "meaning": "Asian black bear, Ursus thibetanus",
+    "literal": false,
+    "pos": "noun"
+  },
+  "এশিয়ান কালো ভালুক": {
+    "meaning": "Asian black bear, Ursus thibetanus",
+    "literal": false,
+    "pos": "noun"
+  },
+  "আপনার নাম কী": {
+    "meaning": "what is your name?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "তোমার নাম কী": {
+    "meaning": "what is your name?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আমি জানতে চাই": {
+    "meaning": "I want to know",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আমি তোমাকে ঘৃণা করি": {
+    "meaning": "I hate you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আপনি কি ধার্মিক": {
+    "meaning": "are you religious?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "তুমি কি ধার্মিক": {
+    "meaning": "are you religious?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আপনারা কি ধার্মিক": {
+    "meaning": "are you religious?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "তোমরা কি ধার্মিক": {
+    "meaning": "are you religious?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আমি ধার্মিক নই": {
+    "meaning": "I'm not religious",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আমার সাহায্য লাগবে": {
+    "meaning": "I need help",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আমার পানি লাগবে": {
+    "meaning": "I need water",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আমার ছাতা লাগবে": {
+    "meaning": "I need an umbrella",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আমি বুঝি না": {
+    "meaning": "I don't understand",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "বুঝি না": {
+    "meaning": "I don't understand",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আমি জানি না": {
+    "meaning": "I don't know",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "জানি না": {
+    "meaning": "I don't know",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আল্লাহু আকবার": {
+    "meaning": "Allahu akbar means God is great.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আমি মুসলমান": {
+    "meaning": "I'm a Muslim",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আমি মুসলিম": {
+    "meaning": "I'm a Muslim",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আপনি কেমন আছেন": {
+    "meaning": "how are you?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "তুমি কেমন আছো": {
+    "meaning": "how are you?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "তুই কেমন আছিস": {
+    "meaning": "how are you?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আমি ইংরেজি বলতে পারি না": {
+    "meaning": "I can't speak English",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "শুভ জন্মদিন": {
+    "meaning": "happy birthday",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আমি জানি": {
+    "meaning": "I know",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ঈদ মুবারাক": {
+    "meaning": "eid mubarak",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ঈদ মোবারক": {
+    "meaning": "eid mubarak",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ঈদ মুবারক": {
+    "meaning": "eid mubarak",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ঈদ মোবারাক": {
+    "meaning": "eid mubarak",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "মাথা থেকে পা পর্যন্ত": {
+    "meaning": "head to toe; entirely, completely",
+    "literal": false,
+    "pos": "adv"
+  },
+  "আমার ডাক্তার লাগবে": {
+    "meaning": "I need a doctor",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আমার প্রশ্ন আছে": {
+    "meaning": "I have a question",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "অকারণে কিছুই ঘটে না": {
+    "meaning": "no smoke without fire (Gossip or accusations are often substantiated by fact)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "বলিতে কি": {
+    "meaning": "to tell the truth",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আশমান জমিন ফারাক": {
+    "meaning": "great difference",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আশমান-জমিন ফারাক": {
+    "meaning": "Alternative spelling and pronunciation of আসমান জমিন ফারাক (asman zomin farak)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আসমান জমিন ফারাক": {
+    "meaning": "a huge difference; a night and day type of difference",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আসমান-জমিন ফারাক": {
+    "meaning": "alternative spelling of আসমান জমিন ফারাক (asman zomin farak)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ঘর পোড়া গরু সিঁদুরে মেঘ দেখে ডরায়": {
+    "meaning": "once bitten, twice shy, a burnt child dreads the fire (literally, \"the home-burnt cow cowers before a red cloud\")",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "অ আ ক খ": {
+    "meaning": "alphabet, ABC",
+    "literal": false,
+    "pos": "noun"
+  },
+  "গলাত দাও দেওয়া": {
+    "meaning": "to commit suicide, to take one's own life, to kill oneself",
+    "literal": false,
+    "pos": "verb"
+  },
+  "অকর্মার ধাড়ি": {
+    "meaning": "a great idler, very lazy",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "অকর্মার শেষ": {
+    "meaning": "an ultimate idler, inveterate mischiefmaker",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "অকস্মাৎ বজ্রাঘাত": {
+    "meaning": "something much unexpected, a bolt from the blue",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "অকাজের কাজি": {
+    "meaning": "an ultimate evildoer, a mischief-monger",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "অকাজের কাজী": {
+    "meaning": "alternative form of অকাজের কাজী (okajer kaji)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "অকালে কী না খায়": {
+    "meaning": "necessity knows no law",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "অকূলে কূল পাওয়া": {
+    "meaning": "to get out of jeopardy, to get rid of a great danger",
+    "literal": false,
+    "pos": "verb"
+  },
+  "এক পয়সায় অক্রূর সংবাদ শুনানো": {
+    "meaning": "to tell a long story in short",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "অক্রূর সংবাদ শুনানো": {
+    "meaning": "to tell a long story in short",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "অক্ষরে অক্ষরে পালন করা": {
+    "meaning": "to carry out strictly according to one's instructions, to act accordingly",
+    "literal": false,
+    "pos": "verb"
+  },
+  "শুভ নববর্ষ": {
+    "meaning": "Happy New Year, A wish said around the start of a new year to wish someone well for the New Year (holiday) or for the (e",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "অগতির গতি": {
+    "meaning": "the only/last resort for the helpless person; the only way out",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "অগ্নিশর্মা হয়ে ওঠা": {
+    "meaning": "to flare up with rage",
+    "literal": false,
+    "pos": "verb"
+  },
+  "অঘোরে পড়ে থাকা": {
+    "meaning": "to lie unconscious",
+    "literal": false,
+    "pos": "verb"
+  },
+  "অঙ্কুরে বিনাশ করা": {
+    "meaning": "nip in the bud",
+    "literal": false,
+    "pos": "verb"
+  },
+  "বত্ব": {
+    "meaning": "by the way",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ওতফ": {
+    "meaning": "what the fuck",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "এক ঢিলে দুই পাখি মারা": {
+    "meaning": "to kill two birds with one stone",
+    "literal": false,
+    "pos": "verb"
+  },
+  "আপনার হুকুম শিরোধার্য": {
+    "meaning": "your wish is my command",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "দিল্লি বহুদূর": {
+    "meaning": "there's many a slip twixt cup and lip; there is still much work to be done",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "নিজের ঢাক নিজে পিটানো": {
+    "meaning": "to blow one's own trumpet, to toot one's own horn",
+    "literal": false,
+    "pos": "verb"
+  },
+  "যো হুকুম": {
+    "meaning": "as you wish",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "যে আজ্ঞা": {
+    "meaning": "as you wish",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ইটটি মারলে পাটকেলটি খেতে হয়": {
+    "meaning": "tit for tat",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "অবলার মুখই বল": {
+    "meaning": "None can control a woman’s tongue",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "দিল্লিকা লাড্ডু": {
+    "meaning": "apple of Sodom, Dead Sea apple; something that looks desirable but is worthless.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "নাচতে না জানলে উঠোন বাঁকা": {
+    "meaning": "A bad workman quarrels with his tools",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "যত গর্জে তত বর্ষে না": {
+    "meaning": "barking dogs seldom bite; people who make threats rarely carry them out.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "দুনিয়ার মজদুর এক হও": {
+    "meaning": "workers of the world, unite",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আকাশ পাতাল পার্থক্য": {
+    "meaning": "great difference",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "জহুরি জহর চেনে": {
+    "meaning": "a shepherd knows his ewe",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "আমি হিন্দু": {
+    "meaning": "I'm Hindu",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আমি খ্রিস্টান": {
+    "meaning": "I'm a Christian",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "শুভ বিজয়া": {
+    "meaning": "Happy Dussehra",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আমি ভারতীয়": {
+    "meaning": "I am Indian (person from the Republic of India)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আমি বাংলাদেশী": {
+    "meaning": "I am Bangladeshi",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "তোর নাম কী": {
+    "meaning": "what is your name?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "নাচতে না জানলে উঠান বাঁকা": {
+    "meaning": "Upon failure, it is easier to blame the tools used rather than how they were employed, a bad workman always blames his t",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "আমার তোমাকে মনে পড়ছে": {
+    "meaning": "I miss you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আখেরী চাহার শোম্বা": {
+    "meaning": "Akhiri Chahar Shamba, the last Wednesday of the Arabic month of Safar (regarded as the day of the last recovery from an ",
+    "literal": false,
+    "pos": "noun"
+  },
+  "নিজের চরকায় তেল দাও": {
+    "meaning": "mind your own business",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ঝিকে মেরে বউকে শেখানো": {
+    "meaning": "to teach the guilty a lesson by railing at the innocent (literally, \"teaching one's wife by beating his maid\")",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "আত্মরতিমূলক ব্যক্তিত্ব ব্যাধি": {
+    "meaning": "narcissistic personality disorder",
+    "literal": false,
+    "pos": "noun"
+  },
+  "জিলাপির প্যাঁচ": {
+    "meaning": "Extremely complicated",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "মত প্রকাশের স্বাধীনতা": {
+    "meaning": "The right of citizens to speak, or otherwise communicate, without fear of harm or prosecution.",
+    "literal": false,
+    "pos": "noun"
+  },
+  "মব প্রকাশের স্বাধীনতা": {
+    "meaning": "The misinterpretation of freedom to form mobs; freedumb.",
+    "literal": false,
+    "pos": "noun"
+  },
+  "না ফেরার দেশ": {
+    "meaning": "afterlife",
+    "literal": false,
+    "pos": "noun"
+  },
+  "আফওয়ান": {
+    "meaning": "pardon me, excuse me",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "আওয়ামী লীগের ফাইনাল কল": {
+    "meaning": "A warning that carries no real consequences; an empty threat.",
+    "literal": false,
+    "pos": "noun"
+  },
+  "নিবিড় পরিচর্যা কেন্দ্র": {
+    "meaning": "intensive care unit",
+    "literal": false,
+    "pos": "noun"
+  },
+  "উলুবনে মুক্তা ছড়ানো": {
+    "meaning": "to cast pearls before swine",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "কালীঘাটের মানুষ কালীদর্শন করে না": {
+    "meaning": "you never know what you've got till it's gone",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "খোশবিয়ান": {
+    "meaning": "good morning",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "বড় বসন্ত বৌরি": {
+    "meaning": "Blue-throated barbet (Psilopogon asiaticus)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "জয় শ্রী রাম": {
+    "meaning": "victory to Deity Rāma: Jai Shri Ram",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "দুর্ভাগ্য অনেক স্থলে সৌভাগ্যের কারণ হয়": {
+    "meaning": "misfortune often leads to good fortune; a blessing in disguise.",
+    "literal": false,
+    "pos": "proverb"
+  }
+}

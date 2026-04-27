@@ -1,0 +1,997 @@
+{
+  "بسم الله": {
+    "meaning": "bismillah, in the name of God",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "اوج لذت جنسی": {
+    "meaning": "orgasm",
+    "literal": false,
+    "pos": "noun"
+  },
+  "بفرمایید": {
+    "meaning": "what can I do for you?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "توانا بود هر که دانا بود": {
+    "meaning": "knowledge is power",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "آب و هوا": {
+    "meaning": "climate, weather conditions",
+    "literal": false,
+    "pos": "noun"
+  },
+  "کرم": {
+    "meaning": "I'm deaf",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "زین": {
+    "meaning": "alternative form of از این (az in, “'from this'”)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "یکی بود یکی نبود": {
+    "meaning": "once upon a time (literally One was, one wasn't.)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "الخ": {
+    "meaning": "etc.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "بین نژادهای مختلف": {
+    "meaning": "interracial",
+    "literal": false,
+    "pos": "adj"
+  },
+  "چرت و پرت": {
+    "meaning": "nonsense",
+    "literal": false,
+    "pos": "noun"
+  },
+  "تجدید نظر کردن": {
+    "meaning": "to revise",
+    "literal": false,
+    "pos": "verb"
+  },
+  "همدستی در جرم": {
+    "meaning": "complicity",
+    "literal": false,
+    "pos": "noun"
+  },
+  "خیلی مخلصیم": {
+    "meaning": "we are very sincere; used as a response to a greeting or expression of gratitude",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "به خاطر سپردن": {
+    "meaning": "to commit to memory; to learn by heart",
+    "literal": false,
+    "pos": "verb"
+  },
+  "به فراموشی سپردن": {
+    "meaning": "to forget",
+    "literal": false,
+    "pos": "verb"
+  },
+  "قوس و قزح": {
+    "meaning": "alternative spelling of قوسوقزح (qaws-u-qazah /ġows-o-ġazah, “rainbow”)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "دکتر می‌خواهم": {
+    "meaning": "I need a doctor",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "کورم": {
+    "meaning": "I'm blind",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "کور هستم": {
+    "meaning": "I'm blind",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "مسلمانم": {
+    "meaning": "I'm a Muslim",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "مسلمان هستم": {
+    "meaning": "I'm a Muslim",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "انگلیسی بلد نیستم": {
+    "meaning": "I don't know English",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "مسیحی هستم": {
+    "meaning": "I'm a Christian",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "گی هستم": {
+    "meaning": "I'm gay",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "فارسی بلد نیستم": {
+    "meaning": "I don't speak Persian",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "اسم شما چیست": {
+    "meaning": "what's your name?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "عید مبارک": {
+    "meaning": "eid mubarak",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "سرما خوردم": {
+    "meaning": "I have a cold",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "قانون بقاء انرژی": {
+    "meaning": "law of conservation of energy",
+    "literal": false,
+    "pos": "noun"
+  },
+  "کجا زندگی می‌کنید": {
+    "meaning": "where do you live?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "عاشقتم": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "دوستت دارم": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "مذهبی نیستم": {
+    "meaning": "I'm not religious",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "خواستن توانستن است": {
+    "meaning": "Where there's a will, there's a way.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "آمیزش جنسی دهانی": {
+    "meaning": "oral sex",
+    "literal": false,
+    "pos": "noun"
+  },
+  "آمیزش جنسی گروهی": {
+    "meaning": "group sex",
+    "literal": false,
+    "pos": "noun"
+  },
+  "آمیزش جنسی مقعدی": {
+    "meaning": "anal sex",
+    "literal": false,
+    "pos": "noun"
+  },
+  "خواهش می‌کنم": {
+    "meaning": "please",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "می‌خوام بدونم": {
+    "meaning": "I want to know",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "نمی‌دونم": {
+    "meaning": "I don't know",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "نمی‌دانم": {
+    "meaning": "I don't know",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "به خدا اعتقاد دارید": {
+    "meaning": "do you believe in God?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "به خدا اعتقاد داری": {
+    "meaning": "do you believe in God?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "به وجود آمدن": {
+    "meaning": "to come into existence",
+    "literal": false,
+    "pos": "verb"
+  },
+  "به وجود آوردن": {
+    "meaning": "to bring into existence; to produce, to create",
+    "literal": false,
+    "pos": "verb"
+  },
+  "به وجود اومدن": {
+    "meaning": "Tehrani form of به وجود آمدن (be vojud âmadan)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "پا به عرصه وجود گذاشتن": {
+    "meaning": "to come into the world; to be born",
+    "literal": false,
+    "pos": "verb"
+  },
+  "سه کاف": {
+    "meaning": "the three kafs; three of the more vulgar words in Persian, all of which begin with the letter ک (kaf).",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "خرس سیاه آمریکایی": {
+    "meaning": "American black bear",
+    "literal": false,
+    "pos": "noun"
+  },
+  "خرس سیاه آسیایی": {
+    "meaning": "Asiatic black bear",
+    "literal": false,
+    "pos": "noun"
+  },
+  "تولدت مبارک": {
+    "meaning": "happy birthday (to you)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "کوسه بزرگ سفید": {
+    "meaning": "great white shark",
+    "literal": false,
+    "pos": "noun"
+  },
+  "آلت تناسلی مرد": {
+    "meaning": "penis",
+    "literal": false,
+    "pos": "noun"
+  },
+  "به خواب رفتن": {
+    "meaning": "to go to sleep",
+    "literal": false,
+    "pos": "verb"
+  },
+  "فرمانده کل قوا": {
+    "meaning": "commander in chief",
+    "literal": false,
+    "pos": "noun"
+  },
+  "وسیع باش و تنها و سر به زیر و سخت": {
+    "meaning": "Be great and solitary and humble and strong",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "به کمک احتیاج دارید": {
+    "meaning": "do you need help?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "به کمک احتیاج داری": {
+    "meaning": "do you need help?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "به کمک شما احتیاج دارم": {
+    "meaning": "I need your help",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "به کمکت احتیاج دارم": {
+    "meaning": "I need your help",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "از خاطر رفتن": {
+    "meaning": "to fade from memory, to be forgotten",
+    "literal": false,
+    "pos": "verb"
+  },
+  "پا به جهان گذاشتن": {
+    "meaning": "to be born",
+    "literal": false,
+    "pos": "verb"
+  },
+  "پا به سن گذاشتن": {
+    "meaning": "to get older",
+    "literal": false,
+    "pos": "verb"
+  },
+  "پا در میان گذاشتن": {
+    "meaning": "to intervene, to intercede",
+    "literal": false,
+    "pos": "verb"
+  },
+  "پشت سر گذاشتن": {
+    "meaning": "to experience",
+    "literal": false,
+    "pos": "verb"
+  },
+  "خانم‌ها و آقایان": {
+    "meaning": "ladies and gentlemen",
+    "literal": false,
+    "pos": "noun"
+  },
+  "به دنیا آمدن": {
+    "meaning": "to be born",
+    "literal": false,
+    "pos": "verb"
+  },
+  "نیروی هسته‌ای قوی": {
+    "meaning": "strong nuclear force",
+    "literal": false,
+    "pos": "noun"
+  },
+  "نیروی هسته‌ای ضعیف": {
+    "meaning": "weak nuclear force",
+    "literal": false,
+    "pos": "noun"
+  },
+  "یک بار دیگر": {
+    "meaning": "once again",
+    "literal": false,
+    "pos": "adv"
+  },
+  "نزدیک شدن به": {
+    "meaning": "to approach",
+    "literal": false,
+    "pos": "verb"
+  },
+  "کاری است که شده": {
+    "meaning": "what's done is done",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ره": {
+    "meaning": "initialism of رحمه الله (rahemahollâh)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "پندار نیک، گفتار نیک، کردار نیک": {
+    "meaning": "alternative form of اندیشه نیک، گفتار نیک، کردار نیک (andiše-ye nik, goftâr-e nik, kerdâr-e nik, “Good thoughts, Good wo",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "به هم زدن": {
+    "meaning": "to disarrange",
+    "literal": false,
+    "pos": "verb"
+  },
+  "حالت چطوره": {
+    "meaning": "how are you?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "کمک می‌خوای": {
+    "meaning": "do you need help?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "از یک سو": {
+    "meaning": "on the one hand",
+    "literal": false,
+    "pos": "adv"
+  },
+  "از یک طرف": {
+    "meaning": "on the one hand (literally: from one side)",
+    "literal": false,
+    "pos": "adv"
+  },
+  "از طرف دیگر": {
+    "meaning": "on the other hand, then again",
+    "literal": false,
+    "pos": "adv"
+  },
+  "از بیخ عرب بودن": {
+    "meaning": "to not know at all; to find all Greek to one; literally, “to be a complete Arab; to be an Arab from the roots”",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "قابل ندارد": {
+    "meaning": "a kind of taarof commonly used by sellers, literally means \"it worth no money at all\"",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "کاری نکردم": {
+    "meaning": "don't mention it, you're welcome (literally, \"I did nothing\")",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "وظیفه‌ام بود": {
+    "meaning": "it was my duty",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "قابلی نداره": {
+    "meaning": "alternative form of قابل ندارد",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "قابل نداره": {
+    "meaning": "alternative form of قابل ندارد",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "قابلی ندارد": {
+    "meaning": "alternative form of قابل ندارد",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "قدمت روی چشم": {
+    "meaning": "walk on my eyes",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "قدمت رو چشم": {
+    "meaning": "alternative form of قدمت روی چشم",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "قربانت بروم": {
+    "meaning": "may I be sacrificed for you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "قربونت برم": {
+    "meaning": "synonym of قربانت بروم (qorbânat beravam)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "قربونت": {
+    "meaning": "synonym of قربانت بروم (qorbânat beravam)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "قربانت بشوم": {
+    "meaning": "synonym of قربانت بروم (qorbânat beravam)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "فدایت بشوم": {
+    "meaning": "synonym of قربانت بروم (qorbânat beravam)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "فدات": {
+    "meaning": "synonym of قربانت بروم (qorbânat beravam)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "شر و ور": {
+    "meaning": "nonsense",
+    "literal": false,
+    "pos": "noun"
+  },
+  "امرار معاش کردن": {
+    "meaning": "to make a living",
+    "literal": false,
+    "pos": "verb"
+  },
+  "به کار بردن": {
+    "meaning": "to use",
+    "literal": false,
+    "pos": "verb"
+  },
+  "به خودی خود": {
+    "meaning": "per se, by itself",
+    "literal": false,
+    "pos": "adv"
+  },
+  "جست و جو": {
+    "meaning": "alternative form of جستجو",
+    "literal": false,
+    "pos": "noun"
+  },
+  "دنبال ... بودن": {
+    "meaning": "to be looking for something; to be after",
+    "literal": false,
+    "pos": "verb"
+  },
+  "گفت و گو": {
+    "meaning": "alternative form of گفتگو",
+    "literal": false,
+    "pos": "noun"
+  },
+  "اگر لطف کنید": {
+    "meaning": "if you please, if you would be so kind",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "زحمت نکشید": {
+    "meaning": "do not burden yourself (a polite way to turn down an offer)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "دل به دریا زدن": {
+    "meaning": "to risk",
+    "literal": false,
+    "pos": "verb"
+  },
+  "دنبال ... گشتن": {
+    "meaning": "to be looking for",
+    "literal": false,
+    "pos": "verb"
+  },
+  "منتظر ... بودن": {
+    "meaning": "to be waiting for",
+    "literal": false,
+    "pos": "verb"
+  },
+  "خود را گول زدن": {
+    "meaning": "to deceive oneself",
+    "literal": false,
+    "pos": "verb"
+  },
+  "به زبان آوردن": {
+    "meaning": "to bring up, to mention",
+    "literal": false,
+    "pos": "verb"
+  },
+  "به یاد آوردن": {
+    "meaning": "to remember, to recall",
+    "literal": false,
+    "pos": "verb"
+  },
+  "خدا را شکر": {
+    "meaning": "thankfully",
+    "literal": false,
+    "pos": "adv"
+  },
+  "منظورت چیست": {
+    "meaning": "what do you mean?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "چیست": {
+    "meaning": "what's (what is)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "به نظر آمدن": {
+    "meaning": "to seem, appear",
+    "literal": false,
+    "pos": "verb"
+  },
+  "در هر حال": {
+    "meaning": "anyway, anyhow",
+    "literal": false,
+    "pos": "adv"
+  },
+  "مربوط به آینده": {
+    "meaning": "futuristic",
+    "literal": false,
+    "pos": "adj"
+  },
+  "حمل و نقل": {
+    "meaning": "transportation",
+    "literal": false,
+    "pos": "noun"
+  },
+  "دلم برات تنگ شده": {
+    "meaning": "I miss you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "از دل برود هر آنکه از دیده برفت": {
+    "meaning": "out of sight, out of mind",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "از دل نرود هر آنکه از دیده برفت": {
+    "meaning": "It's hard to forget the beloved, even though s/he is not nearby any more.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "کاش": {
+    "meaning": "I wish, if only",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "مار در آستین پروراندن": {
+    "meaning": "to nourish a viper in one's bosom",
+    "literal": false,
+    "pos": "verb"
+  },
+  "گرگ و میش": {
+    "meaning": "alternative form of گرگومیش",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ماشین لباس شویی": {
+    "meaning": "alternative form of ماشین لباسشویی",
+    "literal": false,
+    "pos": "noun"
+  },
+  "اون ممه رو لولو برد": {
+    "meaning": "that ship has sailed, the party is over",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "دی ان ای": {
+    "meaning": "alternative form of دیانای",
+    "literal": false,
+    "pos": "noun"
+  },
+  "شاهنامه آخرش خوشه": {
+    "meaning": "don't judge early: things may unexpectedly end in a bad way; he who laughs last laughs best",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "تولید ناخالص داخلی": {
+    "meaning": "gross domestic product, GDP",
+    "literal": false,
+    "pos": "noun"
+  },
+  "تولید ناخالص ملی": {
+    "meaning": "gross national product, GNP",
+    "literal": false,
+    "pos": "noun"
+  },
+  "کیست": {
+    "meaning": "A contraction of کی (ki, “who”) and است (ast, “is”).",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "داس و چکش": {
+    "meaning": "hammer and sickle",
+    "literal": false,
+    "pos": "noun"
+  },
+  "کار، کار انگلیسی‌هاست": {
+    "meaning": "The English are behind it.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "نت دولا چنگ": {
+    "meaning": "semiquaver or sixteenth note (US)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "بی قید و شرط": {
+    "meaning": "unconditional",
+    "literal": false,
+    "pos": "adj"
+  },
+  "سر کیسه را شل کردن": {
+    "meaning": "to spend more money, to spend money more readily (literally, \"to loosen the drawstring of the bag\")",
+    "literal": false,
+    "pos": "verb"
+  },
+  "دو تا هندوانه را با یک دست برداشتن": {
+    "meaning": "to pick up or lift two watermelons using one hand",
+    "literal": false,
+    "pos": "verb"
+  },
+  "تعارف تیکه پاره کردن": {
+    "meaning": "to practice taarof in an excessive manner",
+    "literal": false,
+    "pos": "verb"
+  },
+  "از بین بردن": {
+    "meaning": "to annihilate, eradicate, completely destroy (to reduce to nothing, put an end to; for example, a city, civilization)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "از بین رفتن": {
+    "meaning": "to be destroyed, to be annihilated",
+    "literal": false,
+    "pos": "verb"
+  },
+  "سرطان دهانه رحم": {
+    "meaning": "cervical cancer",
+    "literal": false,
+    "pos": "noun"
+  },
+  "افسردگی پس از زایمان": {
+    "meaning": "postnatal depression, postpartum depression",
+    "literal": false,
+    "pos": "noun"
+  },
+  "راک اند رول": {
+    "meaning": "rock and roll",
+    "literal": false,
+    "pos": "noun"
+  },
+  "از چه روی": {
+    "meaning": "why",
+    "literal": false,
+    "pos": "adv"
+  },
+  "املای نانوشته غلط ندارد": {
+    "meaning": "if there are no mistakes, it's probably because no action has been taken; or, when judging a person's mistakes, one shou",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "بر حذر بودن": {
+    "meaning": "to be cautious",
+    "literal": false,
+    "pos": "verb"
+  },
+  "دروغ مصلحت آمیز به از راست فتنه انگیز": {
+    "meaning": "An expediential lie is better than a truth that causes trouble",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "بر پای خاستن": {
+    "meaning": "to stand up",
+    "literal": false,
+    "pos": "verb"
+  },
+  "دوباره مجذوب شدن": {
+    "meaning": "re-engage",
+    "literal": false,
+    "pos": "verb"
+  },
+  "به یاد داشتن": {
+    "meaning": "to remember",
+    "literal": false,
+    "pos": "verb"
+  },
+  "لا تبدیل لخلق الله": {
+    "meaning": "a leopard cannot change its spots",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "روزی از روزها": {
+    "meaning": "a day among the days",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "روزی روزگاری": {
+    "meaning": "a day, a time",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "بی چشم و رو": {
+    "meaning": "ungrateful",
+    "literal": false,
+    "pos": "adj"
+  },
+  "مفسد فی الارض": {
+    "meaning": "someone who has spread corruption on Earth, a broadly defined capital crime in Iran",
+    "literal": false,
+    "pos": "noun"
+  },
+  "فشار خون بالا": {
+    "meaning": "hypertension, high blood pressure",
+    "literal": false,
+    "pos": "noun"
+  },
+  "هرج و مرج": {
+    "meaning": "anarchy, turmoil, chaos",
+    "literal": false,
+    "pos": "noun"
+  },
+  "افزایش پیدا کردن": {
+    "meaning": "increase",
+    "literal": false,
+    "pos": "verb"
+  },
+  "این چیه": {
+    "meaning": "what is that?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "دمت گرم": {
+    "meaning": "bravo!; good job!",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "یا رومی روم، یا زنگی زنگ": {
+    "meaning": "the person, thing, or concept should be considered as black-and-white",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "نه رومی روم، نه زنگی زنگ": {
+    "meaning": "the person, thing, or concept should not be considered as black-and-white",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "شب چله زمستان": {
+    "meaning": "The night of midwinter.",
+    "literal": false,
+    "pos": "noun"
+  },
+  "چی بودیم، چی شدیم": {
+    "meaning": "whatever happened to us!; expression of melancholy for a glorious past or of general cultural pessimism",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "اندیشه نیک، گفتار نیک، کردار نیک": {
+    "meaning": "Good thoughts, Good words, Good deeds; a phrase that represents the three pillars of Zoroastrian Faith",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "بی گدار به آب زدن": {
+    "meaning": "to be rash, to not look before you leap",
+    "literal": false,
+    "pos": "verb"
+  },
+  "به هم خوردن": {
+    "meaning": "to collide",
+    "literal": false,
+    "pos": "verb"
+  },
+  "خودکشی از ترس مرگ": {
+    "meaning": "a hazardous and foredoomed course of action taken by someone who finds themselves in a slowly but continuously deteriora",
+    "literal": false,
+    "pos": "noun"
+  },
+  "از دست دادن": {
+    "meaning": "to lose, especially something of emotional value, e.g. a loved one",
+    "literal": false,
+    "pos": "verb"
+  },
+  "در این فاصله": {
+    "meaning": "in the meantime, meanwhile",
+    "literal": false,
+    "pos": "adv"
+  },
+  "دل می‌باله ترا": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "پوست جوز هندی": {
+    "meaning": "mace, the envelope of nutmeg",
+    "literal": false,
+    "pos": "noun"
+  },
+  "عروسک پشت پرده": {
+    "meaning": "Any plant of the genus Physalis.",
+    "literal": false,
+    "pos": "noun"
+  },
+  "مرگ بر اسرائیل": {
+    "meaning": "\"death to Israel\", \"down with Israel\"",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "پیگرد قانونی داشتن": {
+    "meaning": "to be prosecutable",
+    "literal": false,
+    "pos": "verb"
+  },
+  "دل کسی را زدن": {
+    "meaning": "to become uninteresting, boring, unpleasant, or repulsive as a result of excessiveness or passage of time",
+    "literal": false,
+    "pos": "verb"
+  },
+  "مگر نه": {
+    "meaning": "Isn't it so, isn't it? (used to induce agreement from the listener)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "به ستوه آمدن": {
+    "meaning": "to become overwhelmed, fed up, plagued, or sick of lingering irritation",
+    "literal": false,
+    "pos": "verb"
+  },
+  "به ستوه آوردن": {
+    "meaning": "to swamp, plague, or fatigue",
+    "literal": false,
+    "pos": "verb"
+  },
+  "با این همه": {
+    "meaning": "despite all this, nevertheless",
+    "literal": false,
+    "pos": "adv"
+  },
+  "کوزه‌گر از کوزه شکسته آب می‌خورد": {
+    "meaning": "the shoemaker's children go barefoot",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "پشمام ریخت": {
+    "meaning": "I was freaked out!",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "در شهر کوران، یک‌چشم پادشاست": {
+    "meaning": "in the land of the blind, the one-eyed man is king",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "به دست آوردن": {
+    "meaning": "to obtain",
+    "literal": false,
+    "pos": "verb"
+  },
+  "به ساز کسی رقصیدن": {
+    "meaning": "dance to someone's tune",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "تا وقتی که": {
+    "meaning": "until",
+    "literal": false,
+    "pos": "adv"
+  },
+  "آب در هاون کوبیدن": {
+    "meaning": "to beat a dead horse: to persist to do something pointless, to make a futile attempt, or to do something in vain beyond ",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "رخ عقاب گرفتن": {
+    "meaning": "to get a smug look, to turn up one's nose",
+    "literal": false,
+    "pos": "verb"
+  },
+  "به هم رسیدن": {
+    "meaning": "to meet, to get together",
+    "literal": false,
+    "pos": "verb"
+  },
+  "سر و صدا": {
+    "meaning": "noise, tumult",
+    "literal": false,
+    "pos": "noun"
+  },
+  "آب و جارو": {
+    "meaning": "washing and cleaning, sweeping clean (a building, a house, etc.)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "از یاد بردن": {
+    "meaning": "to forget",
+    "literal": false,
+    "pos": "verb"
+  },
+  "از بر کردن": {
+    "meaning": "to memorize",
+    "literal": false,
+    "pos": "verb"
+  },
+  "اعتماد به نفس": {
+    "meaning": "self-confidence",
+    "literal": false,
+    "pos": "noun"
+  },
+  "کیرم دهنت": {
+    "meaning": "fuck off, screw you, up yours, fuck you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "حلقه به گوش": {
+    "meaning": "obedient; submissive; slavish",
+    "literal": false,
+    "pos": "adj"
+  },
+  "آت و آشغال": {
+    "meaning": "junk, trash, dreck",
+    "literal": false,
+    "pos": "noun"
+  },
+  "مثل پلو تو دوری": {
+    "meaning": "A humorous reply to the greeting چطوری (četor-i, “how are you?”).",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "شست‌و شو کردن": {
+    "meaning": "to wash",
+    "literal": false,
+    "pos": "verb"
+  }
+}

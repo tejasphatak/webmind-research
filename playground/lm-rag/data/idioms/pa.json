@@ -1,0 +1,127 @@
+{
+  "ਤੁਹਾਡਾ ਕੀ ਹਾਲ ਹੈ": {
+    "meaning": "how are you?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ਕੋਈ ਗੱਲ ਨਹੀਂ": {
+    "meaning": "no worries",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ਕਿੱਦਾਂ": {
+    "meaning": "how are you?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ਕਰ ਰਿਹਾ ਹਾਂ": {
+    "meaning": "indicative masculine present progressive of ਕਰਨਾ (karnā)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ਮੱਕੀ ਦੀ ਰੋਟੀ": {
+    "meaning": "maize roti, cornbread",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ਖਿਆਲੀ ਪੁਲਾਉ ਪਕਾਉਣਾ": {
+    "meaning": "build castles in the air (daydream)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ਰਾਈ ਦਾ ਪਹਾੜ ਬਣਾਉਣਾ": {
+    "meaning": "make a mountain out of a molehill",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ਹਵਾਲਾ ਲੋੜੀਂਦਾ": {
+    "meaning": "citation needed",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ਕਿੱਕਰ ਦੀ ਗੂੰਦ": {
+    "meaning": "gum arabic derived from the babul tree",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ਕੇਂਦਰ ਸ਼ਾਸਿਤ ਪ੍ਰਦੇਸ਼": {
+    "meaning": "union territory (administrative division ruled by the central government)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ਬਣਾਉਟੀ ਮਸ਼ੀਨੀ ਬੁੱਧੀ": {
+    "meaning": "artificial intelligence",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ਕਣ ਭੌਤਿਕ ਵਿਗਿਆਨ": {
+    "meaning": "particle physics",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ਜੰਗ ਦਾ ਮੈਦਾਨ": {
+    "meaning": "battlefield",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ਵਕਤੀ ਤੌਰ ਤੇ": {
+    "meaning": "temporarily, for the time being",
+    "literal": false,
+    "pos": "adv"
+  },
+  "ਸਾਹ ਨਾਲ਼ੀ ਦੀ ਸੋਜ": {
+    "meaning": "bronchitis",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ਭਾੜੇ ਦੇ ਟੱਟੂ": {
+    "meaning": "hired pony",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ਨੀਲੀ ਜਲ ਕੁੱਕੜੀ": {
+    "meaning": "grey-headed swamphen (Porphyrio poliocephalus)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ਮੁਰਗੇ ਦਾ ਮੀਟ": {
+    "meaning": "chicken",
+    "literal": false,
+    "pos": "noun"
+  },
+  "شطرنج دے مہرے": {
+    "meaning": "plural of شَطرَن٘ج دا مُہرَہ (śat̤raṉj dā muhrah); chess pieces",
+    "literal": false,
+    "pos": "noun"
+  },
+  "شطرنج دا مہرہ": {
+    "meaning": "chess piece",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ਸ਼ਤਰੰਜ ਦੇ ਮੋਹਰੇ": {
+    "meaning": "plural of ਸ਼ਤਰੰਜ ਦਾ ਮੋਹਰਾ (śatrañj dā mohrā); chess pieces",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ਸ਼ਤਰੰਜ ਦਾ ਮੋਹਰਾ": {
+    "meaning": "chess piece",
+    "literal": false,
+    "pos": "noun"
+  },
+  "اڈٹھ کراڑی منکا لدھا، ڈھڈ تے لمکایا": {
+    "meaning": "when an inexperienced person receives a unique object, he shows it off to everyone",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "آپنے اوگن وی گن جاپدے نیں": {
+    "meaning": "said of a person who overly praises himself",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ساڈا کتا کتا، تہاڈا کتا ٹامی": {
+    "meaning": "a phrase used to point out double standards",
+    "literal": false,
+    "pos": "phrase"
+  }
+}

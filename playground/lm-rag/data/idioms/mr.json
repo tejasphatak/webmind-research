@@ -30,5 +30,20 @@
   "आकाशाला गवसणी घालणे": {
     "meaning": "attempt the impossible",
     "literal": false
+  },
+  "अल्लाहो अकबर": {
+    "meaning": "Allahu akbar",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "कमीत कमी": {
+    "meaning": "at least",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "कुत्र्याचे शेपूट वाकडे ते वाकडेच": {
+    "meaning": "a leopard cannot change its spots",
+    "literal": false,
+    "pos": "proverb"
   }
 }

@@ -30,5 +30,1000 @@
   "लोहे के चने चबाना": {
     "meaning": "do something very difficult",
     "literal": false
+  },
+  "दूर के ढोल सुहावने": {
+    "meaning": "the grass is always greener on the other side",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "जी हाँ": {
+    "meaning": "yes",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "जी नहीं": {
+    "meaning": "no",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "हाँ जी": {
+    "meaning": "alternative form of जी हाँ (jī hā̃)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "आम तौर से": {
+    "meaning": "usually",
+    "literal": false,
+    "pos": "adv"
+  },
+  "आम तौर पर": {
+    "meaning": "usually",
+    "literal": false,
+    "pos": "adv"
+  },
+  "बुरा भला सुनाना": {
+    "meaning": "to abuse (verbally)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "धुरी की मोडा": {
+    "meaning": "crank",
+    "literal": false,
+    "pos": "noun"
+  },
+  "मैं तुझ से प्यार करता हूँ": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मैं तुझ से प्रेम करता हूँ": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मैं तुम से प्यार करता हूँ": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मैं तुम से प्रेम करता हूँ": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मैं आप से प्यार करता हूँ": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मैं आप से प्रेम करता हूँ": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मैं तुझ से प्यार करती हूँ": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मैं तुझ से प्रेम करती हूँ": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मैं तुम से प्रेम करती हूँ": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मैं तुम से प्यार करती हूँ": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मैं आप से प्यार करती हूँ": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मैं आप से प्रेम करती हूँ": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मुझे प्यास लगी है": {
+    "meaning": "I am thirsty",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मिस्र अरब गणराज्य": {
+    "meaning": "Arab Republic of Egypt (official name of Egypt: a country in North Africa and West Asia)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ख़ास तौर पर": {
+    "meaning": "especially, particularly",
+    "literal": false,
+    "pos": "adv"
+  },
+  "मैं अंग्रेज़ी नहीं बोलता हूँ": {
+    "meaning": "I don't speak English",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मैं अंग्रेज़ी नहीं बोलती हूँ": {
+    "meaning": "I don't speak English",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मैं धार्मिक नहीं हूँ": {
+    "meaning": "I'm not religious",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "आप कैसे हैं": {
+    "meaning": "how are you?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "कैसे हो": {
+    "meaning": "how are you?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "रान में ज़ोर होना": {
+    "meaning": "to be masculine, to have an abundance of virility",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ख़ुदा की बर्रा": {
+    "meaning": "Lamb of God",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ख़ुदा का मेमना": {
+    "meaning": "Lamb of God",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ऐसी तैसी करना": {
+    "meaning": "to make a mockery of something",
+    "literal": false,
+    "pos": "verb"
+  },
+  "बुड्ढी के बाल": {
+    "meaning": "cotton candy, candy floss, fairy floss",
+    "literal": false,
+    "pos": "noun"
+  },
+  "अंगारा हो जाना": {
+    "meaning": "for one's face to redden from anger",
+    "literal": false,
+    "pos": "verb"
+  },
+  "अंगारों पर पैर रखना": {
+    "meaning": "to intentionally do something dangerous or harmful to oneself; to intentionally get oneself in trouble",
+    "literal": false,
+    "pos": "verb"
+  },
+  "मैं ठीक हूँ": {
+    "meaning": "I am fine",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "क्या आप हिंदी बोलते हैं": {
+    "meaning": "Do you speak Hindi?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मेरा नाम ... है": {
+    "meaning": "my name is...",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मिट्टी का तेल": {
+    "meaning": "kerosene",
+    "literal": false,
+    "pos": "noun"
+  },
+  "टाइम क्या है": {
+    "meaning": "what time is it?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "कितने बजे हैं": {
+    "meaning": "what time is it?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "लाल दानव तारा": {
+    "meaning": "red giant",
+    "literal": false,
+    "pos": "noun"
+  },
+  "शतरंज का मोहर": {
+    "meaning": "chess piece, chessman",
+    "literal": false,
+    "pos": "noun"
+  },
+  "बंद परिपथ दूरदर्शन": {
+    "meaning": "closed-circuit television",
+    "literal": false,
+    "pos": "noun"
+  },
+  "जिगर का टुकड़ा": {
+    "meaning": "most loved person",
+    "literal": false,
+    "pos": "noun"
+  },
+  "समय क्या है": {
+    "meaning": "what time is it (what is the time of day?)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "क्या वक़्त है": {
+    "meaning": "what time is it",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "जान है तो जहान है": {
+    "meaning": "if there's life, then there's the world; where there is a will",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "दूर के ढोल सुहावने लगते हैं": {
+    "meaning": "the grass is always greener on the other side (literally, “From far away, the drums sound better”)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "जाति ना पूछो साधु की; पूछ लीजिए ज्ञान": {
+    "meaning": "don't judge a book by its cover; \"Ask not a saint of their caste; rather, of their knowledge.\"",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "अपना पालक पनीर देखना": {
+    "meaning": "to mind one's own business (to concern oneself only with what is of interest to oneself and not interfere in the affairs",
+    "literal": false,
+    "pos": "verb"
+  },
+  "आपका नाम क्या है": {
+    "meaning": "what is your name (formal)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मुझे माफ़ करो": {
+    "meaning": "I'm sorry (informal)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "अब की बार": {
+    "meaning": "this time",
+    "literal": false,
+    "pos": "noun"
+  },
+  "शुभ क्रिस्मस": {
+    "meaning": "merry Christmas",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "शुभ रात्रि": {
+    "meaning": "good night",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "क्या मैं फ़ारसी बोल रहा हूँ": {
+    "meaning": "Is my speech incomprehensible?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मैं ... साल का हूँ": {
+    "meaning": "I'm ... year(s) old",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "दिल्ली अभी दूर है": {
+    "meaning": "there's many a slip twixt cup and lip; there is still much work to be done",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "मुझे पता नहीं": {
+    "meaning": "I don't know",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मैं नहीं जानता हूँ": {
+    "meaning": "I don't know (masculine)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "अधजल गगरी छलकत जाय": {
+    "meaning": "the empty vessels make the most noise; those who know little still show off",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "मैं तुम्हारी याद करता हूँ": {
+    "meaning": "I miss you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "क्या हाल है": {
+    "meaning": "how are you?, how's it going?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "वन्दे मातरम्": {
+    "meaning": "Vande Mataram; the motto of India, meaning \"I praise thee, Mother\", often used nationalistically",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मैं ईसाई हूँ": {
+    "meaning": "I'm a Christian",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "दाल में कुछ काला होना": {
+    "meaning": "Literally, “For something black to be in the lentils”",
+    "literal": false,
+    "pos": "verb"
+  },
+  "केंद्र शासित प्रदेश": {
+    "meaning": "union territory",
+    "literal": false,
+    "pos": "noun"
+  },
+  "एक दूजे के वास्ते": {
+    "meaning": "made for each other",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "प्राण पखेरू उड़ जाना": {
+    "meaning": "to die",
+    "literal": false,
+    "pos": "verb"
+  },
+  "मुख्य कार्यकारी अधिकारी": {
+    "meaning": "chief executive officer, CEO",
+    "literal": false,
+    "pos": "noun"
+  },
+  "कबाब में हड्डी": {
+    "meaning": "third wheel, someone who interferes in a relationship",
+    "literal": false,
+    "pos": "noun"
+  },
+  "मुँह काला करना": {
+    "meaning": "to blacken the face of (sb.)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "मैं हिंदू हूँ": {
+    "meaning": "I'm Hindu",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "सुप्रभात": {
+    "meaning": "good morning",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "कोई बात नहीं": {
+    "meaning": "no problem; it’s no big deal",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "अंधों में काना राजा": {
+    "meaning": "in the land of the blind, the one-eyed man is king",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "अपना उल्लू सीधा करना": {
+    "meaning": "to be selfish, to fulfill one's self-interest",
+    "literal": false,
+    "pos": "verb"
+  },
+  "क्या आप ठीक हैं": {
+    "meaning": "are you OK?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "उल्टा चोर कोतवाल को डांटे": {
+    "meaning": "the pot calls the kettle black",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "भगवान की कृपा से": {
+    "meaning": "by the Grace of God (not necessarily in a religious context)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "हाथ में होना": {
+    "meaning": "in the control of",
+    "literal": false,
+    "pos": "verb"
+  },
+  "हाथ पाँव चलना": {
+    "meaning": "to be working, to work",
+    "literal": false,
+    "pos": "verb"
+  },
+  "क्या आप मेरी मदद कर सकते हैं": {
+    "meaning": "can you help me?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "राम जाने": {
+    "meaning": "I don't know; God knows",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "अंडे का शहज़ादा": {
+    "meaning": "an unexperienced man, novice",
+    "literal": false,
+    "pos": "noun"
+  },
+  "घर का भेदी लंका ढाये": {
+    "meaning": "\"he who knows household secrets can bring down Lanka (a prosperous ancient city)\"",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "बंदर क्या जाने अदरक का स्वाद": {
+    "meaning": "cast pearls before swine",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "नाच न जाने आँगन टेढ़ा": {
+    "meaning": "\"knows no dance, says the stage is askew\"; a bad workman always blames his tools",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "सरकार का दामाद": {
+    "meaning": "a person favored by the government, usually due to familial connections",
+    "literal": false,
+    "pos": "noun"
+  },
+  "मुँह मीठा करना": {
+    "meaning": "to celebrate by distributing sweets",
+    "literal": false,
+    "pos": "verb"
+  },
+  "अक़्ल का दुश्मन": {
+    "meaning": "a fool, idiot, stupid person",
+    "literal": false,
+    "pos": "noun"
+  },
+  "नाक पर मक्खी न बैठने देना": {
+    "meaning": "to be pretentious and arrogant, to be haughty and aloof",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ऊँची दुकान फीका पकवान": {
+    "meaning": "\"fancy shop, tasteless food\": you can't judge a book by its cover; reality may be different from image",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "एक हाथ से ताली नहीं बजती": {
+    "meaning": "\"one cannot clap with just one hand\": it takes two to make a quarrel",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "सब्र का फल मीठा होता है": {
+    "meaning": "\"the fruit of patience is sweet\"; patience is a virtue",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "नाकों चने चबवाना": {
+    "meaning": "to confuse, perplex",
+    "literal": false,
+    "pos": "verb"
+  },
+  "यह मुँह और मसूर की दाल": {
+    "meaning": "\"this face, and [you want] masoor dal\"; do not demand more than you are worth",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "यथा राजा तथा प्रजा": {
+    "meaning": "\"as is the king, so are the subjects\": people follow the example of leaders",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "बीच में आना": {
+    "meaning": "to intervene, interfere; to obstruct",
+    "literal": false,
+    "pos": "verb"
+  },
+  "विश्व विरासत स्थल": {
+    "meaning": "World Heritage Site",
+    "literal": false,
+    "pos": "noun"
+  },
+  "विश्व धरोहर स्थल": {
+    "meaning": "World Heritage Site",
+    "literal": false,
+    "pos": "noun"
+  },
+  "सकल घरेलू उत्पाद": {
+    "meaning": "gross domestic product",
+    "literal": false,
+    "pos": "noun"
+  },
+  "नया साल मुबारक": {
+    "meaning": "Happy New Year",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "नए वर्ष की शुभकामनाएँ": {
+    "meaning": "happy New Year",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ईद का चाँद": {
+    "meaning": "a rarity, sight, wonder",
+    "literal": false,
+    "pos": "noun"
+  },
+  "दूध का दूध और पानी का पानी": {
+    "meaning": "crystal clear, able to be understood",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ख़ून का बदला ख़ून": {
+    "meaning": "eye for an eye, tit for tat",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "अपनी गली में कुत्ता भी शेर होता है": {
+    "meaning": "\"even a dog is a lion in his own alley\"; one acts stronger in one's own neighbourhood",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "यहोवा के साक्षी": {
+    "meaning": "Jehovah's Witnesses",
+    "literal": false,
+    "pos": "noun"
+  },
+  "परियों का देश": {
+    "meaning": "fairyland",
+    "literal": false,
+    "pos": "noun"
+  },
+  "अग्नि से बपतिस्मा": {
+    "meaning": "baptism by fire",
+    "literal": false,
+    "pos": "noun"
+  },
+  "सौ सुनार की, एक लोहार की": {
+    "meaning": "a hundred blows of a goldsmith are worth one blow of a blacksmith",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "मरे बिना स्वर्ग नहीं मिलता": {
+    "meaning": "without dying, one does not see heaven; to reach one's goal one must act",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "हाँ में हाँ मिलाना": {
+    "meaning": "to feign agreement or concurrence with someone",
+    "literal": false,
+    "pos": "verb"
+  },
+  "आप कहाँ रहते हैं": {
+    "meaning": "where do you live",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "वह बेहोश है": {
+    "meaning": "he's unconscious",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "आपके कितने भाई बहन हैं": {
+    "meaning": "how many siblings do you have?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "तुम्हारे कितने भाई बहन हैं": {
+    "meaning": "how many siblings do you have?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "साठे पर पाठा": {
+    "meaning": "an old man who behaves as a young man",
+    "literal": false,
+    "pos": "noun"
+  },
+  "नयन सुख प्राप्ति": {
+    "meaning": "eye candy",
+    "literal": false,
+    "pos": "noun"
+  },
+  "कम से कम": {
+    "meaning": "at least",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "न रहेगा बाँस न बजेगी बाँसुरी": {
+    "meaning": "eliminating the source of the problem rids one of the problem",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "उल्लू का पट्ठा": {
+    "meaning": "an idiot, moron, dunderhead",
+    "literal": false,
+    "pos": "noun"
+  },
+  "सुमड़ी में लेना": {
+    "meaning": "to take sneakily",
+    "literal": false,
+    "pos": "verb"
+  },
+  "हल्के से लेना": {
+    "meaning": "to take sneakily",
+    "literal": false,
+    "pos": "verb"
+  },
+  "पल्ले नहीं पड़ना": {
+    "meaning": "to not to understand something",
+    "literal": false,
+    "pos": "verb"
+  },
+  "सीना चौड़ा होना": {
+    "meaning": "to fill lungs (with pride, happiness, etc.); to swell",
+    "literal": false,
+    "pos": "verb"
+  },
+  "छाती चौड़ी होना": {
+    "meaning": "to fill lungs (with pride, happiness, etc.); to swell",
+    "literal": false,
+    "pos": "verb"
+  },
+  "थककर बैठ जाना": {
+    "meaning": "to give up",
+    "literal": false,
+    "pos": "verb"
+  },
+  "थकके बैठ जाना": {
+    "meaning": "alternative form of थककर बैठ जाना (thakkar baiṭh jānā)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "थक के बैठ जाना": {
+    "meaning": "alternative form of थककर बैठ जाना (thakkar baiṭh jānā)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "फट के हाथ में आना": {
+    "meaning": "to become extremely afraid, scared or frightened",
+    "literal": false,
+    "pos": "verb"
+  },
+  "जागृत हो जाना": {
+    "meaning": "to wake up, to awaken",
+    "literal": false,
+    "pos": "verb"
+  },
+  "दूर हो जाना": {
+    "meaning": "to go away (from someone or something)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "प्यार हो जाना": {
+    "meaning": "to fall in love",
+    "literal": false,
+    "pos": "verb"
+  },
+  "प्यार में पड़ना": {
+    "meaning": "to fall in love",
+    "literal": false,
+    "pos": "verb"
+  },
+  "निकट दृष्टि दोष": {
+    "meaning": "nearsightedness, shortsightedness",
+    "literal": false,
+    "pos": "noun"
+  },
+  "पहले आप": {
+    "meaning": "after you (a gesture, usually polite, urging another person to take a turn at something ahead of the speaker)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "क्या आप शादीशुदा हैं": {
+    "meaning": "are you married",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "आदमी हो या चूहा": {
+    "meaning": "are you a man or a mouse",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "अंधे हो क्या": {
+    "meaning": "are you blind (a rhetorical question to an individual who has failed to see or notice something)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "जैसा कि मैं कह रहा था": {
+    "meaning": "as I was saying ― Used to refer back to a previous statement in a discourse",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "कोयले जैसा काला": {
+    "meaning": "black as coal, completely black",
+    "literal": false,
+    "pos": "adj"
+  },
+  "गाहे-बगाहे": {
+    "meaning": "at times, sometimes, from time to time, not often, occasionally",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "वस्तु रूप में": {
+    "meaning": "in-kind",
+    "literal": false,
+    "pos": "adj"
+  },
+  "घर की मुर्ग़ी दाल बराबर": {
+    "meaning": "\"homemade chicken is no better than daal\"; one does not appreciate what is taken for granted",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "आस्तीन का साँप": {
+    "meaning": "a snake in the grass",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "उड़ती चिड़िया के पर पहचानना": {
+    "meaning": "to make a sharp observation",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "जय श्री राम": {
+    "meaning": "victory to Lord Rāma: Jai Shri Ram",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "पूरा का पूरा": {
+    "meaning": "complete, entire, whole",
+    "literal": false,
+    "pos": "adj"
+  },
+  "बंदूक की शक्ति": {
+    "meaning": "gunpowder",
+    "literal": false,
+    "pos": "noun"
+  },
+  "कूदने की रस्सी": {
+    "meaning": "jumping rope",
+    "literal": false,
+    "pos": "noun"
+  },
+  "शब बख़ैर": {
+    "meaning": "good night",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "क्या आप हिन्दी बोलते हैं": {
+    "meaning": "alternative spelling of क्या आप हिंदी बोलते हैं (kyā āp hindī bolte ha͠i)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "मैं हिन्दू हूँ": {
+    "meaning": "alternative spelling of मैं हिंदू हूँ (ma͠i hindū hū̃)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "कौड़ी को तंग": {
+    "meaning": "steeped in poverty, destitute",
+    "literal": false,
+    "pos": "adj"
+  },
+  "सोलह आने सच": {
+    "meaning": "absolutely; completely correct",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ईश्वर जाने": {
+    "meaning": "I don't know; God knows",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "जन्मदिन मुबारक हो": {
+    "meaning": "happy birthday!",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "एक एक करके": {
+    "meaning": "one by one",
+    "literal": false,
+    "pos": "adv"
+  },
+  "अकेला चना भाँड़ नहीं फोड़ता": {
+    "meaning": "\"a single lentil cannot break the pot\"; it is difficult to do something big by oneself",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "मुझे भूख लगी है": {
+    "meaning": "I'm hungry",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "घोड़े बेचकर सोना": {
+    "meaning": "to sleep peacefully, deeply or carelessly",
+    "literal": false,
+    "pos": "verb"
+  },
+  "घोड़ा घास से यारी करे तो खाए क्या?": {
+    "meaning": "think of your self-interest when making friends",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "फ़लाना-ढिमकाना": {
+    "meaning": "et cetera, and so on",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "पेट साफ़ करना": {
+    "meaning": "to empty one's bowels, to have satisfactory digestion and defecation",
+    "literal": false,
+    "pos": "verb"
+  },
+  "अहल ईमान": {
+    "meaning": "people of faith, O ye who believe (a Quranic instruction towards the Muslim believers)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ज़हेनसीब": {
+    "meaning": "as luck would have it",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "चुल्लू भर पानी में डूब मरना": {
+    "meaning": "\"to die drowning in a palmful of water\" to be greatly ashamed or embarrassed; to not show one's face out of shame",
+    "literal": false,
+    "pos": "verb"
+  },
+  "सुबह बख़ैर": {
+    "meaning": "good morning",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "अल्लाहो अकबर": {
+    "meaning": "Allahu akbar",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "जलते घर में हाथ सेंकना": {
+    "meaning": "to take advantage of another's misfortune",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "तूफ़ान के पहले की शांति": {
+    "meaning": "calm before the storm",
+    "literal": false,
+    "pos": "noun"
+  },
+  "तूफ़ान के पहले की शान्ति": {
+    "meaning": "alternative spelling of तूफ़ान के पहले की शांति (tūfān ke pahle kī śānti)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "छत्तीस का आँकड़ा": {
+    "meaning": "conflict; opposition",
+    "literal": false,
+    "pos": "noun"
+  },
+  "छत्तीस के आँकड़े": {
+    "meaning": "inflection of छत्तीस का आँकड़ा (chattīs kā ā̃kṛā):",
+    "literal": false,
+    "pos": "noun"
+  },
+  "छत्तीस के आँकड़ों": {
+    "meaning": "oblique plural of छत्तीस का आँकड़ा (chattīs kā ā̃kṛā)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "तथास्तु": {
+    "meaning": "so be it, amen",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "हर हर महादेव": {
+    "meaning": "\"Hail Shiva, the Destroyer\": an invocation towards Shiva, the god of destruction and time.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "३६ का आँकड़ा": {
+    "meaning": "alternative spelling of छत्तीस का आँकड़ा (chattīs kā ā̃kṛā)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "३६ के आँकड़े": {
+    "meaning": "inflection of ३६ का आँकड़ा (36 kā ā̃kṛā):",
+    "literal": false,
+    "pos": "noun"
+  },
+  "३६ के आँकड़ों": {
+    "meaning": "oblique plural of ३६ का आँकड़ा (36 kā ā̃kṛā)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "आपका हुक्म सर आँखों पर": {
+    "meaning": "your wish is my command",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "एक गंदी मछली पूरे तालाब को गंदा कर देती है": {
+    "meaning": "one bad apple can spoil the barrel",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "जो हुक्म मेरे आक़ा": {
+    "meaning": "as you wish, my Lord",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "जो हुक्म": {
+    "meaning": "as you wish",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "क्या हाल चाल?": {
+    "meaning": "how's it going?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "विश्व के कार्यकर्ताओं एकजुट हो जाओ": {
+    "meaning": "workers of the world, unite",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "दुनिया के मजदूरों एक हो जाओ": {
+    "meaning": "workers of the world, unite",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "जब जाति तब सवेरे": {
+    "meaning": "“Whenever you wake up, that’s your morning”; better late than never",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "जिसकी लाठी उसकी भैंस": {
+    "meaning": "\"Whoever has the stick has the buffalo\"; might makes right",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "अंत भला तो सब भला": {
+    "meaning": "all's well that ends well",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "दिल्ली का लड्डू": {
+    "meaning": "apple of Sodom; something that looks desirable but is worthless.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "उल्लू के पट्ठे": {
+    "meaning": "idiot, fool",
+    "literal": false,
+    "pos": "noun"
+  },
+  "मैं हिंदुस्तानी हूँ": {
+    "meaning": "I am Hindustani (Indian)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "चोर की दाढ़ी में तिनका": {
+    "meaning": "a guilty person will hide or brush off (real or unreal) evidence",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "क्या बात है": {
+    "meaning": "amazing",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "चार सौ बीस": {
+    "meaning": "fraudulent, deceitful",
+    "literal": false,
+    "pos": "adj"
   }
 }

@@ -1,0 +1,277 @@
+{
+  "എങ്ങനെയിരിക്കുന്നു": {
+    "meaning": "how are you?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "നമസ്കാരം": {
+    "meaning": "hello, greetings",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "കയ്യിൽ": {
+    "meaning": "in hand",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "നാളെ നാളെ നീളെ നീളെ": {
+    "meaning": "procrastination should be avoided",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "അക്കരെ നിന്നാൽ ഇക്കരെ പച്ച": {
+    "meaning": "the grass is always greener on the other side",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "മുറ്റത്തെ മുല്ലയ്ക്ക് മണമില്ല": {
+    "meaning": "familiarity breeds contempt",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "കുരയ്ക്കുന്ന പട്ടി കടിക്കില്ല": {
+    "meaning": "barking dogs seldom bite",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "മിന്നുന്നതെല്ലാം പൊന്നല്ല": {
+    "meaning": "All that glitters is not gold",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "പയ്യെത്തിന്നാൽ പനയും തിന്നാം": {
+    "meaning": "Patient work can conquer any problem; slow and steady wins the race",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ചങ്ങാതി നന്നായാൽ കണ്ണാടി വേണ്ട": {
+    "meaning": "The one who has a good friend doesn't need any mirror",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "മൂക്കില്ലാ രാജ്യത്ത് മുറിമൂക്കൻ രാജാവ്": {
+    "meaning": "in the land of the blind, the one-eyed man is king",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ഉണ്മോരുടെ ഭാഗ്യം ഉഴുതേടം കാണാം": {
+    "meaning": "If you want to find the reason of success of people who are in higher positions, it would be wise to take a look at thei",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "കൂപമണ്ഡൂകം": {
+    "meaning": "\"the frog in a well\"; a fool with limited outlook",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "പഴഞ്ചൊല്ലിൽ പതിരില്ല": {
+    "meaning": "a proverb about proverbs.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ചൊട്ടയിലെ ശീലം ചുടലവരെ": {
+    "meaning": "old habits die hard",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ചെകുത്താനും കടലിനുമിടയിൽ": {
+    "meaning": "between the devil and the deep blue sea",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "എന്തുണ്ട് വിശേഷം": {
+    "meaning": "what's new; what's up; casual greeting used while meeting someone",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "വീണ്ടും കാണാം": {
+    "meaning": "see you; goodbye",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "പിന്നെ കാണാം": {
+    "meaning": "see you later; goodbye",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "തോക്കിൽ കയറി വെടി വയ്ക്കുക": {
+    "meaning": "jump the gun",
+    "literal": false,
+    "pos": "verb"
+  },
+  "തോക്കിൽ കയറി വെടി വയ്ക്കരുത്": {
+    "meaning": "don't jump the gun",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "മിണ്ടാപ്പൂച്ച കലമുടയ്ക്കും": {
+    "meaning": "The quiet ones may turn out be the troublemaker.",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "കാക്കയ്ക്ക് തൻ കുഞ്ഞ് പൊൻ കുഞ്ഞ്": {
+    "meaning": "everyone gives preferences to themselves",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "അറിയാത്ത പിള്ള കൊള്ളുമ്പോൾ അറിയും": {
+    "meaning": "the ignorant will only learn through suffering",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ഗതി കെട്ടാൽ പുലി പുല്ലും തിന്നും": {
+    "meaning": "\"a hungry dog will eat dung\" or \"desperation can make a person do surprising things\"",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "കാര്യം കാണാൻ കഴുതക്കാലും പിടിക്കണം": {
+    "meaning": "you might need to do many things to be successful",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "എലിയെ പേടിച്ചു ഇല്ലം ചുടുക": {
+    "meaning": "dont over act for silly problems",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "പട്ടി പുല്ലു തിന്നുകയുമില്ല, പശുവിനെക്കൊണ്ടു തീറ്റിക്കുകയുമില്ല": {
+    "meaning": "some people won't let others live in peace",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "പട്ടിയുടെ വാൽ പന്തീരാണ്ടു കൊല്ലം കുഴലിലിട്ടാലും വളഞ്ഞേ ഇരിക്കത്തുള്ളു": {
+    "meaning": "some people never change",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ഈനാമ്പേച്ചിക്ക് മരപ്പട്ടി കൂട്ട്": {
+    "meaning": "there will always be supporters for some people inspite of whatever they do",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ഇല മുള്ളിൽ വീണാലും മുള്ള് ഇലയിൽ വീണാലും കേട് ഇലയ്ക്കാണ്": {
+    "meaning": "beware of the people you mingle with",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "അമിതമായാൽ അമൃതും വിഷം": {
+    "meaning": "too much of anything is hazardous",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ഒന്നെങ്കിൽ കളരിക്ക് പുറത്ത് അല്ലെങ്കിൽ ആശാന്റെ നെഞ്ചത്ത്": {
+    "meaning": "everything should be in limits, neither too much nor too little",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "സമ്പത്ത് കാലത്ത് തൈ പത്ത് വച്ചാൽ, ആപത്ത് കാലത്ത് കാ പത്ത് തിന്നാം": {
+    "meaning": "save up when you can",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "പാപി ചെല്ലുന്നിടം പാതാളം": {
+    "meaning": "a proverb on sinners",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ഒരു പാലം ഇട്ടാൽ അങ്ങോട്ടും ഇങ്ങോട്ടും വേണം": {
+    "meaning": "if someone helps you, you should help him too",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ചേരയെ തിന്നുന്ന നാട്ടിൽ ചെന്നാൽ നടു കഷണം തിന്നണം": {
+    "meaning": "learn to adapt",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "അട്ടയെ പിടിച്ച് മെത്തയിൽ കിടത്തിയാൽ അത് കിടക്കില്ല": {
+    "meaning": "some people never change no matter what you do for them",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "താൻ കുഴിച്ച കുഴിയിൽ താൻ തന്നെ വീഴും": {
+    "meaning": "he who digs a pit for others falls in himself",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "വിദ്യാ ധനം സർവ്വ ധനാൽ പ്രധാനം": {
+    "meaning": "education is more important than all other wealth",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "മൂത്തവർ ചൊല്ലും, മുതു നെല്ലിക്ക ആദ്യം കയ്ക്കും, പിന്നെ മധുരിക്കും": {
+    "meaning": "good work might be hard but it will pay off",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "അർധ രാത്രിക്ക് കുട പിടിക്കുക": {
+    "meaning": "doing the wrong thing at the wrong time",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "കടുവ കൂട്ടിൽ തല ഇടുക": {
+    "meaning": "to mess up",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "കിണറ്റിലെ തവള": {
+    "meaning": "being naive",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "അടിക്കല്ല് മാന്തുക": {
+    "meaning": "to destroy",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "കുളം തോണ്ടുക": {
+    "meaning": "to destroy",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "കണ്ണിൽ പൊടിയിടുക": {
+    "meaning": "to deceive",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ശവത്തിൽ കുത്തുക": {
+    "meaning": "hurting a man who is already in a bad situation",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "മോങ്ങാൻ ഇരിന്ന നായിന്റെ തലയിൽ തേങ്ങ വീഴുക": {
+    "meaning": "get more problems in an already screwed up situation",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ഇങ്കിലാബ് സിന്ദാബാദ്": {
+    "meaning": "long live the revolution",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ശരിയാണ്": {
+    "meaning": "correct, it is correct, it is so",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ശരിയാണെങ്കിൽ": {
+    "meaning": "if so be, if it is correct...",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "കണ്ണിൽ ചോരയില്ലായ്മ": {
+    "meaning": "sadism, no humanity or mercy",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ശ്രീ ജയവർധനപുര കോട്ട": {
+    "meaning": "Sri Jayawardenepura Kotte, the legislative capital of Sri Lanka.",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ഉള്ളത്": {
+    "meaning": "ഉള്ളത് ഉള്ളതുപോലെ പറയുക (uḷḷatŭ uḷḷatupōle paṟayuka): To tell things exactly as they are; to speak the plain truth.",
+    "literal": false,
+    "pos": "phrase"
+  }
+}

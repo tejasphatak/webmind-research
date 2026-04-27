@@ -1,0 +1,992 @@
+{
+  "io": {
+    "meaning": "initialism of in Ordnung (“all right”)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "tour de force": {
+    "meaning": "alternative spelling of Tour de Force",
+    "literal": false,
+    "pos": "noun"
+  },
+  "deus ex machina": {
+    "meaning": "alternative form of Deus ex Machina",
+    "literal": false,
+    "pos": "noun"
+  },
+  "magna cum laude": {
+    "meaning": "magna cum laude",
+    "literal": false,
+    "pos": "adv"
+  },
+  "summa cum laude": {
+    "meaning": "summa cum laude",
+    "literal": false,
+    "pos": "adv"
+  },
+  "triebleben der klänge": {
+    "meaning": "chordal life force",
+    "literal": false,
+    "pos": "noun"
+  },
+  "steif wie ein stock": {
+    "meaning": "stiff as a poker / stiff as a board",
+    "literal": false,
+    "pos": "adj"
+  },
+  "ka": {
+    "meaning": "alternative spelling of k. A.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "sitz im leben": {
+    "meaning": "sociological setting",
+    "literal": false,
+    "pos": "noun"
+  },
+  "schnick schnack schnuck": {
+    "meaning": "rock paper scissors (game)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "an der ecke": {
+    "meaning": "at the corner, nearby",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "um die ecke bringen": {
+    "meaning": "to get rid of, to kill, to do someone in, to rub someone out",
+    "literal": false,
+    "pos": "verb"
+  },
+  "durch den kakao ziehen": {
+    "meaning": "to pull someone's leg, to make fun of someone or something, to roast someone",
+    "literal": false,
+    "pos": "verb"
+  },
+  "auf den keks gehen": {
+    "meaning": "synonym of auf die Nerven gehen",
+    "literal": false,
+    "pos": "verb"
+  },
+  "you name it": {
+    "meaning": "you name it",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "im übertragenen sinne": {
+    "meaning": "figurative, figuratively, in the figurative sense",
+    "literal": false,
+    "pos": "adv"
+  },
+  "wenn ostern und pfingsten auf einen tag fallen": {
+    "meaning": "when pigs fly (never, expressed idiomatically)",
+    "literal": false,
+    "pos": "adv"
+  },
+  "nicht die bohne": {
+    "meaning": "not at all",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "reiz und reaktion": {
+    "meaning": "stimulus and response",
+    "literal": false,
+    "pos": "noun"
+  },
+  "in sich abgeschlossen": {
+    "meaning": "self-contained",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "an sankt nimmerlein": {
+    "meaning": "when pigs fly, never",
+    "literal": false,
+    "pos": "adv"
+  },
+  "nur über meine leiche": {
+    "meaning": "over my dead body, never",
+    "literal": false,
+    "pos": "adv"
+  },
+  "rom ist nicht an einem tag erbaut worden": {
+    "meaning": "Rome wasn't built in a day",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "zuviel des guten": {
+    "meaning": "too much of a good thing; over the top",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "und so weiter": {
+    "meaning": "et cetera, and so on, and so forth",
+    "literal": false,
+    "pos": "adv"
+  },
+  "kyrie eleison": {
+    "meaning": "O Lord, have mercy (upon us)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "einmal ist keinmal": {
+    "meaning": "Once doesn’t count; one swallow does not a summer make",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ich auch": {
+    "meaning": "me too, literally, “I too”",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "vielen dank": {
+    "meaning": "thank you very much",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "shit happens": {
+    "meaning": "shit happens",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "mit geduld und zeit kommt man weit": {
+    "meaning": "good things come to those who wait; patience is a virtue; one will get that for which one hopes, if one waits",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "in der not schmeckt jedes brot": {
+    "meaning": "beggars can't be choosers",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "morgenstund hat gold im mund": {
+    "meaning": "Proverb extolling the virtues of activity in the morning hours, encouraging early rising",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "eulen nach athen tragen": {
+    "meaning": "bring owls to Athens, carry coals to Newcastle",
+    "literal": false,
+    "pos": "verb"
+  },
+  "mit sack und pack": {
+    "meaning": "with all one's belongings, bag and baggage",
+    "literal": false,
+    "pos": "adv"
+  },
+  "mit kind und kegel": {
+    "meaning": "as a large group; with all of one's family, contents, and/or livestock",
+    "literal": false,
+    "pos": "adv"
+  },
+  "arm wie eine kirchenmaus": {
+    "meaning": "poor as a church mouse",
+    "literal": false,
+    "pos": "adj"
+  },
+  "stein und bein schwören": {
+    "meaning": "to swear on a stack of Bibles, to swear an absolute oath, to promise emphatically",
+    "literal": false,
+    "pos": "verb"
+  },
+  "das blaue vom himmel versprechen": {
+    "meaning": "to make a promise that cannot be fulfilled. (literally: to promise [someone] the Blue out of the Blue Sky)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "kopf und kragen": {
+    "meaning": "safety, well-being",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ect.": {
+    "meaning": "misspelling of etc.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "never change a running system": {
+    "meaning": "if it ain't broke, don't fix it; leave well enough alone",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ldvh": {
+    "meaning": "RTFM",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "gn8": {
+    "meaning": "abbreviation of gute Nacht (“good night”)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "so ist das leben": {
+    "meaning": "such is life",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ich liebe dich": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "zwei fliegen mit einer klappe schlagen": {
+    "meaning": "kill two birds with one stone",
+    "literal": false,
+    "pos": "verb"
+  },
+  "auf dem absteigenden ast sein": {
+    "meaning": "to go south, to take a turn for the worse",
+    "literal": false,
+    "pos": "verb"
+  },
+  "den ast absägen, auf dem man sitzt": {
+    "meaning": "to undermine one's own position; to act in a way that will eventually make one lose something that one is dependent on",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "peu à peu": {
+    "meaning": "bit by bit, little by little",
+    "literal": false,
+    "pos": "adv"
+  },
+  "maul- und klauenseuche": {
+    "meaning": "foot-and-mouth disease",
+    "literal": false,
+    "pos": "noun"
+  },
+  "an einem seidenen faden hängen": {
+    "meaning": "to hang by a thread",
+    "literal": false,
+    "pos": "verb"
+  },
+  "am seidenen faden hängen": {
+    "meaning": "alternative form of an einem seidenen Faden hängen",
+    "literal": false,
+    "pos": "verb"
+  },
+  "auf biegen und brechen": {
+    "meaning": "by hook or by crook",
+    "literal": false,
+    "pos": "adv"
+  },
+  "alles gute zum geburtstag": {
+    "meaning": "happy birthday",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "wie geht's": {
+    "meaning": "how are you?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "sprechen sie englisch": {
+    "meaning": "do you speak English?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ich heiße": {
+    "meaning": "my name is...",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "sprichst du englisch": {
+    "meaning": "do you speak English?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "durch und durch": {
+    "meaning": "through and through",
+    "literal": false,
+    "pos": "adv"
+  },
+  "sturm im wasserglas": {
+    "meaning": "tempest in a teacup, tempest in a tea-kettle",
+    "literal": false,
+    "pos": "noun"
+  },
+  "den spieß umdrehen": {
+    "meaning": "turn the tables (literally: turn the pike)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "auf einen sprung vorbeikommen": {
+    "meaning": "drop by, pop in",
+    "literal": false,
+    "pos": "verb"
+  },
+  "von etwas wind bekommen": {
+    "meaning": "to get wind of something",
+    "literal": false,
+    "pos": "verb"
+  },
+  "vom tellerwäscher zum millionär": {
+    "meaning": "from rags to riches",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "fix und fertig": {
+    "meaning": "bushed, burnt out, dead on one's feet, at the end of one's rope, running on fumes, ready to drop, out of steam",
+    "literal": false,
+    "pos": "adj"
+  },
+  "aus einer mücke einen elefanten machen": {
+    "meaning": "to make a mountain out of a mole hill",
+    "literal": false,
+    "pos": "verb"
+  },
+  "kein kommentar": {
+    "meaning": "no comment",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "im sturm erobern": {
+    "meaning": "to take by storm",
+    "literal": false,
+    "pos": "verb"
+  },
+  "im sturm nehmen": {
+    "meaning": "to take by storm",
+    "literal": false,
+    "pos": "verb"
+  },
+  "im sturm einnehmen": {
+    "meaning": "to take by storm",
+    "literal": false,
+    "pos": "verb"
+  },
+  "o.a.": {
+    "meaning": "abbreviation of oben angegeben (“mentioned above”)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "zu herzen nehmen": {
+    "meaning": "take to heart",
+    "literal": false,
+    "pos": "verb"
+  },
+  "in medias res": {
+    "meaning": "in medias res (in the middle of a storyline)",
+    "literal": false,
+    "pos": "adv"
+  },
+  "auf den zug aufspringen": {
+    "meaning": "to jump on the bandwagon",
+    "literal": false,
+    "pos": "verb"
+  },
+  "spitze des eisbergs": {
+    "meaning": "tip of the iceberg",
+    "literal": false,
+    "pos": "noun"
+  },
+  "rund um die uhr": {
+    "meaning": "around the clock, 24/7",
+    "literal": false,
+    "pos": "adv"
+  },
+  "essen auf rädern": {
+    "meaning": "meals on wheels",
+    "literal": false,
+    "pos": "noun"
+  },
+  "in saus und braus leben": {
+    "meaning": "to live in clover, to live on the fat of the land",
+    "literal": false,
+    "pos": "verb"
+  },
+  "gern geschehen": {
+    "meaning": "You're welcome: a response to an expression of thanks.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "was geht": {
+    "meaning": "what's up",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "gesellschaft mit beschränkter haftung": {
+    "meaning": "limited liability company (type of company)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "leck mich im arsch": {
+    "meaning": "kiss my ass",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "in strömen regnen": {
+    "meaning": "rain cats and dogs (to rain very heavily)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "aus allen kannen gießen": {
+    "meaning": "synonym of aus allen Kannen schütten",
+    "literal": false,
+    "pos": "verb"
+  },
+  "aus allen kannen schütten": {
+    "meaning": "to rain cats and dogs (to rain very heavily)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "zum ritter schlagen": {
+    "meaning": "to knight (to confer a knighthood upon)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "proletarier aller länder, vereinigt euch": {
+    "meaning": "workers of the world, unite!",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "sesam, öffne dich": {
+    "meaning": "open sesame!",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "wie vom donner gerührt": {
+    "meaning": "thunderstruck",
+    "literal": false,
+    "pos": "adj"
+  },
+  "wie der vater, so der sohn": {
+    "meaning": "like father, like son",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "viele köche verderben den brei": {
+    "meaning": "too many cooks spoil the broth",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "alle wege führen nach rom": {
+    "meaning": "all roads lead to Rome",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ein bild sagt mehr als tausend worte": {
+    "meaning": "a picture is worth a thousand words, a picture paints a thousand words",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "geduld ist eine tugend": {
+    "meaning": "patience is a virtue",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "neue besen kehren gut": {
+    "meaning": "a new broom sweeps clean",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "es ist nicht alles gold, was glänzt": {
+    "meaning": "all that glitters is not gold",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "eine schraube locker haben": {
+    "meaning": "to have a screw loose",
+    "literal": false,
+    "pos": "verb"
+  },
+  "einen dachschaden haben": {
+    "meaning": "to have a screw loose (literally: to have a roof damage)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "in der nase bohren": {
+    "meaning": "to pick one's nose",
+    "literal": false,
+    "pos": "verb"
+  },
+  "mit angehaltenem atem": {
+    "meaning": "with bated breath",
+    "literal": false,
+    "pos": "adv"
+  },
+  "samt und sonders": {
+    "meaning": "the whole lot, each and every; collectively and each individual",
+    "literal": false,
+    "pos": "adv"
+  },
+  "crème de la crème": {
+    "meaning": "crème de la crème",
+    "literal": false,
+    "pos": "noun"
+  },
+  "die nase voll haben": {
+    "meaning": "to be fed up (with something); to have had it up to here",
+    "literal": false,
+    "pos": "verb"
+  },
+  "das kriegsbeil begraben": {
+    "meaning": "bury the hatchet",
+    "literal": false,
+    "pos": "verb"
+  },
+  "das kriegsbeil ausgraben": {
+    "meaning": "to dig up the hatchet",
+    "literal": false,
+    "pos": "verb"
+  },
+  "auf die palme bringen": {
+    "meaning": "to drive someone up the wall",
+    "literal": false,
+    "pos": "verb"
+  },
+  "stück für stück": {
+    "meaning": "piece by piece, bit by bit",
+    "literal": false,
+    "pos": "adv"
+  },
+  "nach und nach": {
+    "meaning": "gradually, little by little, bit by bit",
+    "literal": false,
+    "pos": "adv"
+  },
+  "in der tat": {
+    "meaning": "indeed",
+    "literal": false,
+    "pos": "adv"
+  },
+  "auf der anderen seite": {
+    "meaning": "on the other hand",
+    "literal": false,
+    "pos": "adv"
+  },
+  "auf dem falschen dampfer": {
+    "meaning": "incorrect, on the wrong track, off the mark",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "auf dem richtigen dampfer": {
+    "meaning": "on the right track",
+    "literal": false,
+    "pos": "adj"
+  },
+  "den geist aufgeben": {
+    "meaning": "to give up the ghost",
+    "literal": false,
+    "pos": "verb"
+  },
+  "s.d.": {
+    "meaning": "nonstandard spelling of s. d.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "mittel zum zweck": {
+    "meaning": "means to an end",
+    "literal": false,
+    "pos": "noun"
+  },
+  "den buckel hinhalten": {
+    "meaning": "to take the blame",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ein exempel statuieren": {
+    "meaning": "to set a warning example",
+    "literal": false,
+    "pos": "verb"
+  },
+  "die bank sprengen": {
+    "meaning": "to break the bank",
+    "literal": false,
+    "pos": "verb"
+  },
+  "öl ins feuer gießen": {
+    "meaning": "to add fuel to the fire",
+    "literal": false,
+    "pos": "verb"
+  },
+  "niet- und nagelfest": {
+    "meaning": "nailed down (as in: everything that wasn't nailed down)",
+    "literal": false,
+    "pos": "adj"
+  },
+  "im griff haben": {
+    "meaning": "to have under control",
+    "literal": false,
+    "pos": "verb"
+  },
+  "in berufung gehen": {
+    "meaning": "to appeal",
+    "literal": false,
+    "pos": "verb"
+  },
+  "per anhalter fahren": {
+    "meaning": "to hitchhike",
+    "literal": false,
+    "pos": "verb"
+  },
+  "nadel im heuhaufen": {
+    "meaning": "needle in a haystack",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "die katze aus dem sack lassen": {
+    "meaning": "to let the cat out of the bag",
+    "literal": false,
+    "pos": "verb"
+  },
+  "gute besserung": {
+    "meaning": "get well soon (a phrase indicating hope that the listener recovers from physical illness)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "im selben atemzug": {
+    "meaning": "in the same breath",
+    "literal": false,
+    "pos": "adv"
+  },
+  "kost und logis": {
+    "meaning": "board and lodging, room and board",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ins visier nehmen": {
+    "meaning": "to target, to set sight on",
+    "literal": false,
+    "pos": "verb"
+  },
+  "zur kasse bitten": {
+    "meaning": "to charge, to make someone pay",
+    "literal": false,
+    "pos": "verb"
+  },
+  "den nagel auf den kopf treffen": {
+    "meaning": "to hit the nail on the head",
+    "literal": false,
+    "pos": "verb"
+  },
+  "von ganzem herzen": {
+    "meaning": "wholeheartedly",
+    "literal": false,
+    "pos": "adv"
+  },
+  "ab und zu": {
+    "meaning": "now and then, occasionally",
+    "literal": false,
+    "pos": "adv"
+  },
+  "frohe ostern": {
+    "meaning": "happy Easter",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "es lebe": {
+    "meaning": "long live",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "mit leeren händen": {
+    "meaning": "empty-handed",
+    "literal": false,
+    "pos": "adj"
+  },
+  "im namen von": {
+    "meaning": "alternative form of im Namen",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "3g": {
+    "meaning": "geimpft, genesen oder getestet (“vaccinated, recovered or tested”)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "2g": {
+    "meaning": "geimpft oder genesen (“vaccinated or recovered”)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "in eine schublade stecken": {
+    "meaning": "to pigeonhole",
+    "literal": false,
+    "pos": "verb"
+  },
+  "auf der grünen wiese": {
+    "meaning": "on a greenfield site",
+    "literal": false,
+    "pos": "adj"
+  },
+  "ich verstehe nicht": {
+    "meaning": "I don't understand.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "geschehen ist geschehen": {
+    "meaning": "no use crying over spilt milk, what's done is done",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "mit fug und recht": {
+    "meaning": "justifiably, rightly",
+    "literal": false,
+    "pos": "adv"
+  },
+  "wie geht es dir": {
+    "meaning": "how are you, often abbreviated to wie geht's?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "wie geht es ihnen": {
+    "meaning": "how are you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "wie geht es": {
+    "meaning": "how are you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "wie geht es euch": {
+    "meaning": "how are you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "es tut mir leid": {
+    "meaning": "Sorry.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "auf dem kriegspfad": {
+    "meaning": "on the warpath",
+    "literal": false,
+    "pos": "adj"
+  },
+  "sein licht unter den scheffel stellen": {
+    "meaning": "to hide one's light under a bushel",
+    "literal": false,
+    "pos": "verb"
+  },
+  "haar in der suppe": {
+    "meaning": "fly in the ointment",
+    "literal": false,
+    "pos": "noun"
+  },
+  "auf teufel komm raus": {
+    "meaning": "by hook or by crook",
+    "literal": false,
+    "pos": "adv"
+  },
+  "das handtuch werfen": {
+    "meaning": "to throw in the towel",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ins gras beißen": {
+    "meaning": "to bite the dust, to die",
+    "literal": false,
+    "pos": "verb"
+  },
+  "eine lange nase machen": {
+    "meaning": "to thumb one's nose",
+    "literal": false,
+    "pos": "verb"
+  },
+  "eine nase drehen": {
+    "meaning": "to thumb one's nose",
+    "literal": false,
+    "pos": "verb"
+  },
+  "kalte füße bekommen": {
+    "meaning": "to get cold feet",
+    "literal": false,
+    "pos": "verb"
+  },
+  "über die planke gehen": {
+    "meaning": "to walk the plank",
+    "literal": false,
+    "pos": "verb"
+  },
+  "lange rede, kurzer sinn": {
+    "meaning": "long story short",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "jacke wie hose": {
+    "meaning": "six of one, half a dozen of the other",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "i. d. r.": {
+    "meaning": "initialism of in der Regel",
+    "literal": false,
+    "pos": "adv"
+  },
+  "in der regel": {
+    "meaning": "as a rule, usually",
+    "literal": false,
+    "pos": "adv"
+  },
+  "in kraft": {
+    "meaning": "effective, in force",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "in kraft treten": {
+    "meaning": "to become effective; to come into force",
+    "literal": false,
+    "pos": "verb"
+  },
+  "mit offenen karten spielen": {
+    "meaning": "to play it straight",
+    "literal": false,
+    "pos": "verb"
+  },
+  "übung macht den meister": {
+    "meaning": "practice makes perfect",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "vor die hunde gehen": {
+    "meaning": "to go to the dogs",
+    "literal": false,
+    "pos": "verb"
+  },
+  "in angriff nehmen": {
+    "meaning": "to tackle",
+    "literal": false,
+    "pos": "verb"
+  },
+  "in die bresche springen": {
+    "meaning": "to step into the breach",
+    "literal": false,
+    "pos": "verb"
+  },
+  "hin und her": {
+    "meaning": "back and forth, to and fro",
+    "literal": false,
+    "pos": "adv"
+  },
+  "das kind mit dem bade ausschütten": {
+    "meaning": "to throw the baby out with the bathwater",
+    "literal": false,
+    "pos": "verb"
+  },
+  "perlen vor die säue werfen": {
+    "meaning": "cast pearls before swine",
+    "literal": false,
+    "pos": "verb"
+  },
+  "zum schluss kommen": {
+    "meaning": "to conclude.",
+    "literal": false,
+    "pos": "verb"
+  },
+  "man ist, was man isst": {
+    "meaning": "you are what you eat",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "einem geschenkten gaul schaut man nicht ins maul": {
+    "meaning": "don't look a gift horse in the mouth",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "hammer und sichel": {
+    "meaning": "hammer and sickle",
+    "literal": false,
+    "pos": "noun"
+  },
+  "gott sei dank": {
+    "meaning": "fortunately; luckily",
+    "literal": false,
+    "pos": "adv"
+  },
+  "äpfel mit birnen vergleichen": {
+    "meaning": "to compare apples and oranges (compare two things that cannot properly be compared)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "art und weise": {
+    "meaning": "way, manner, method (of doing something)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "die radieschen von unten betrachten": {
+    "meaning": "to push up daisies",
+    "literal": false,
+    "pos": "verb"
+  },
+  "ganz ohr sein": {
+    "meaning": "to be all ears (to listen carefully or eagerly; to anticipate)",
+    "literal": false,
+    "pos": "verb"
+  },
+  "an den haaren herbeigezogen": {
+    "meaning": "far-fetched; absurd (highly unlikely)",
+    "literal": false,
+    "pos": "adj"
+  },
+  "eine kette ist nur so stark wie ihr schwächstes glied": {
+    "meaning": "a chain is only as strong as its weakest link",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "kb": {
+    "meaning": "initialism of kein Bock",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "s. u.": {
+    "meaning": "initialism of siehe unten (“see below”)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "o. ä.": {
+    "meaning": "abbreviation of oder Ähnliche / Ähnliches (“or similar items / things”)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "seinen hut nehmen": {
+    "meaning": "to resign; to quit",
+    "literal": false,
+    "pos": "verb"
+  },
+  "auf nummer sicher gehen": {
+    "meaning": "to play it safe",
+    "literal": false,
+    "pos": "verb"
+  },
+  "über die stränge schlagen": {
+    "meaning": "to kick over the traces",
+    "literal": false,
+    "pos": "verb"
+  },
+  "auf großem fuß leben": {
+    "meaning": "to have an expensive life-style, to live the high life",
+    "literal": false,
+    "pos": "verb"
+  },
+  "den löffel abgeben": {
+    "meaning": "to die; to bite the dust; to kick the bucket",
+    "literal": false,
+    "pos": "verb"
+  },
+  "hand in hand": {
+    "meaning": "hand in hand",
+    "literal": false,
+    "pos": "adv"
+  },
+  "persona non grata": {
+    "meaning": "persona non grata",
+    "literal": false,
+    "pos": "noun"
+  },
+  "wenn der berg nicht zum propheten kommt, muss der prophet wohl zum berge kommen": {
+    "meaning": "if the mountain won't come to Muhammad, Muhammad must go to the mountain",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "a.a.o.": {
+    "meaning": "alternative form of a. a. O.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "as der asse": {
+    "meaning": "ace of aces",
+    "literal": false,
+    "pos": "noun"
+  }
+}

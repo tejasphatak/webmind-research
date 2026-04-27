@@ -1,0 +1,987 @@
+{
+  "gia nã đại": {
+    "meaning": "Canadian",
+    "literal": false,
+    "pos": "adj"
+  },
+  "vô tuyến truyền hình": {
+    "meaning": "television",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bn": {
+    "meaning": "initialism of bao nhiêu",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "一箭雙鵰": {
+    "meaning": "chữ Hán form of nhất tiễn song điêu (“to kill two birds with one stone”)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "光明正大": {
+    "meaning": "chữ Hán form of quang minh chính đại (“high-principled; open and aboveboard; just and honorable; frank and righteous; wi",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "長生不老": {
+    "meaning": "chữ Hán form of trường sinh bất lão (“immortal”)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "急急如律令": {
+    "meaning": "chữ Hán form of cấp cấp như luật lệnh",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "病從口入，禍從口出": {
+    "meaning": "chữ Hán form of bệnh tòng khẩu nhập, hoạ tòng khẩu xuất (“Illness comes in via the mouth because of food and trouble goe",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "萬事起頭難": {
+    "meaning": "chữ Hán form of vạn sự khởi đầu nan (“getting started is always the hardest part”)",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "trường đại học": {
+    "meaning": "Used other than figuratively or idiomatically: see trường, đại học.",
+    "literal": false,
+    "pos": "noun"
+  },
+  "恭喜發財": {
+    "meaning": "chữ Hán form of cung hỉ phát tài (“May you have a prosperous New Year!”)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "củ cải trắng": {
+    "meaning": "daikon, the East Asian long white radish, particularly its Vietnamese varieties.",
+    "literal": false,
+    "pos": "noun"
+  },
+  "đường mạch nha": {
+    "meaning": "malt sugar; maltose",
+    "literal": false,
+    "pos": "noun"
+  },
+  "đường thốt nốt": {
+    "meaning": "palm sugar",
+    "literal": false,
+    "pos": "noun"
+  },
+  "cà phê sữa đá": {
+    "meaning": "a Vietnamese coffee drink made with brewed coffee, sweetened condensed milk, and ice",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bóng bầu dục": {
+    "meaning": "American football",
+    "literal": false,
+    "pos": "noun"
+  },
+  "chỉ ... thôi": {
+    "meaning": "only; just",
+    "literal": false,
+    "pos": "adv"
+  },
+  "câu lạc bộ": {
+    "meaning": "a club (association of members)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "名正言順": {
+    "meaning": "chữ Hán form of danh chính ngôn thuận (“to be fitting and proper; to be perfectly justified or deserved”)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "nước xốt cà chua": {
+    "meaning": "tomato sauce",
+    "literal": false,
+    "pos": "noun"
+  },
+  "hoa kim châm": {
+    "meaning": "daylily",
+    "literal": false,
+    "pos": "noun"
+  },
+  "hoa lơ trắng": {
+    "meaning": "cauliflower",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bông cải trắng": {
+    "meaning": "cauliflower",
+    "literal": false,
+    "pos": "noun"
+  },
+  "chất bảo quản": {
+    "meaning": "a preservative (chemical used to retard decay)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mộc nhĩ đen": {
+    "meaning": "Jew's-ear",
+    "literal": false,
+    "pos": "noun"
+  },
+  "cải bẹ xanh": {
+    "meaning": "brown mustard; Indian mustard (Brassica juncea)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "trống định âm": {
+    "meaning": "timpani",
+    "literal": false,
+    "pos": "noun"
+  },
+  "hươu cao cổ": {
+    "meaning": "a giraffe (mammal)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "đá da trời": {
+    "meaning": "lapis lazuli",
+    "literal": false,
+    "pos": "noun"
+  },
+  "gỗ trôi giạt": {
+    "meaning": "driftwood",
+    "literal": false,
+    "pos": "noun"
+  },
+  "nhập gia tuỳ tục": {
+    "meaning": "when in Rome, do as the Romans do",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "nhập gia tuỳ tục, nhập giang tuỳ khúc": {
+    "meaning": "when in Rome, do as the Romans do",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "vắng chủ nhà, gà vọc niêu tôm": {
+    "meaning": "when the cat's away the mice will play",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "như nước đổ đầu vịt": {
+    "meaning": "like water off a duck's back.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "chủ vắng nhà, gà vọc niêu tôm": {
+    "meaning": "when the cat's away the mice will play",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "nấm linh chi": {
+    "meaning": "Ganoderma lucidum (a mushroom used in traditional Asian medicine)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "tam thập lục": {
+    "meaning": "a hammered dulcimer with 36 strings, used in the traditional and classical music of Vietnam",
+    "literal": false,
+    "pos": "noun"
+  },
+  "tiếng tây ban nha": {
+    "meaning": "Spanish language",
+    "literal": false,
+    "pos": "noun"
+  },
+  "nguyên tắc vàng": {
+    "meaning": "golden rule",
+    "literal": false,
+    "pos": "noun"
+  },
+  "quá tắc vật đạn cải": {
+    "meaning": "When making a mistake, do not be afraid to correct it.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ôn, lương, cung, kiệm, nhượng": {
+    "meaning": "Be cordial, kind, courteous, modest, and deferential.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ôn cố tri tân": {
+    "meaning": "One should be able to derive new understanding while revising what one has learned.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "quân tử bất khí": {
+    "meaning": "a gentleman is no tool",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "con trâu là đầu cơ nghiệp": {
+    "meaning": "having a water buffalo allows one to start a business",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "thú có túi": {
+    "meaning": "a marsupial",
+    "literal": false,
+    "pos": "noun"
+  },
+  "đậu hoà lan": {
+    "meaning": "snow pea(s)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "lựu đạn cay": {
+    "meaning": "tear gas shell, tear gas canister, tear gas grenade, tear gas",
+    "literal": false,
+    "pos": "noun"
+  },
+  "công xéc tô": {
+    "meaning": "concerto",
+    "literal": false,
+    "pos": "noun"
+  },
+  "nhật kí web": {
+    "meaning": "blog",
+    "literal": false,
+    "pos": "noun"
+  },
+  "nấm đầu khỉ": {
+    "meaning": "an edible mushroom, Hericium erinaceus",
+    "literal": false,
+    "pos": "noun"
+  },
+  "thổ nhĩ kỳ": {
+    "meaning": "Alternative spelling of Thổ Nhĩ Kì: Turkey (a country located in Eastern Thrace in Southeastern Europe and Anatolia in W",
+    "literal": false,
+    "pos": "adj"
+  },
+  "như nước đổ lá khoai": {
+    "meaning": "like water off a duck's back.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "mãng cầu ta": {
+    "meaning": "sugar apple (Annona squamosa)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mãng cầu xiêm": {
+    "meaning": "soursop (Annona muricata)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "mãng cầu tây": {
+    "meaning": "cherimoya (Annona cherimola)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "chủ nghĩa cộng sản": {
+    "meaning": "communism",
+    "literal": false,
+    "pos": "noun"
+  },
+  "tam âm la": {
+    "meaning": "a traditional Vietnamese musical instrument consisting of three small tuned gongs in a wooden frame; derived from the Ch",
+    "literal": false,
+    "pos": "noun"
+  },
+  "tiểu hồi hương": {
+    "meaning": "fennel",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bánh mì pháp": {
+    "meaning": "baguette, French bread",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bánh sừng bò": {
+    "meaning": "croissant",
+    "literal": false,
+    "pos": "noun"
+  },
+  "khúc côn cầu": {
+    "meaning": "hockey",
+    "literal": false,
+    "pos": "noun"
+  },
+  "đài quyền đạo": {
+    "meaning": "taekwondo",
+    "literal": false,
+    "pos": "noun"
+  },
+  "thái cực quyền": {
+    "meaning": "tai chi chuan",
+    "literal": false,
+    "pos": "noun"
+  },
+  "nước chảy đá mòn": {
+    "meaning": "with patience, everything is possible",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ngọc lan tây": {
+    "meaning": "ylang ylang (a tree of the species Cananga odorata)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "vì sao": {
+    "meaning": "Used other than figuratively or idiomatically: see vì, sao.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "thiên văn học": {
+    "meaning": "astronomy",
+    "literal": false,
+    "pos": "noun"
+  },
+  "đào lộn hột": {
+    "meaning": "cashew",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bất động sản": {
+    "meaning": "real estate (property that cannot easily be moved)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "人定勝天": {
+    "meaning": "chữ Hán form of nhân định thắng thiên",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "lục huyền cầm": {
+    "meaning": "a scalloped guitar; Vietnamese guitar (a guitar with scoops in the fingerboard)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ghi-ta phím lõm": {
+    "meaning": "a Vietnamized guitar with a scalloped fretboard allowing for bending ornamentation",
+    "literal": false,
+    "pos": "noun"
+  },
+  "vl": {
+    "meaning": "initialism of vãi lồn",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "kim tự tháp": {
+    "meaning": "a pyramid",
+    "literal": false,
+    "pos": "noun"
+  },
+  "căn bậc hai": {
+    "meaning": "square root",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ma cà rồng": {
+    "meaning": "blood-sucking evil spirit in ethnic minority's folklores",
+    "literal": false,
+    "pos": "noun"
+  },
+  "móc chìa khoá": {
+    "meaning": "key fob (an item carried on a key ring)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "chân trời sự kiện": {
+    "meaning": "event horizon",
+    "literal": false,
+    "pos": "noun"
+  },
+  "vật chất tối": {
+    "meaning": "dark matter",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ngũ vị hương": {
+    "meaning": "five-spice powder, five-spice, five spice",
+    "literal": false,
+    "pos": "noun"
+  },
+  "thuật chiêm tinh": {
+    "meaning": "astrology",
+    "literal": false,
+    "pos": "noun"
+  },
+  "vật lý học": {
+    "meaning": "alternative spelling of vật lí học",
+    "literal": false,
+    "pos": "noun"
+  },
+  "gan ngỗng béo": {
+    "meaning": "foie gras",
+    "literal": false,
+    "pos": "noun"
+  },
+  "cối xay gió": {
+    "meaning": "windmill",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ý đại lợi": {
+    "meaning": "Italian",
+    "literal": false,
+    "pos": "adj"
+  },
+  "máy vi tính": {
+    "meaning": "computer (a programmable device)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "chữ trung quốc": {
+    "meaning": "Chinese character, hanzi (writing system of Chinese)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "thiên hướng tình dục": {
+    "meaning": "sexual orientation",
+    "literal": false,
+    "pos": "noun"
+  },
+  "thông rụng lá": {
+    "meaning": "larch (Larix)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "viện bảo tàng": {
+    "meaning": "synonym of bảo tàng (“museum”)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bao dương vật": {
+    "meaning": "condom",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bao cao su": {
+    "meaning": "a condom",
+    "literal": false,
+    "pos": "noun"
+  },
+  "sâm bổ lượng": {
+    "meaning": "synonym of chè sâm bổ lượng",
+    "literal": false,
+    "pos": "noun"
+  },
+  "cá ngừ đại dương": {
+    "meaning": "tuna",
+    "literal": false,
+    "pos": "noun"
+  },
+  "chè sâm bổ lượng": {
+    "meaning": "A cold, sweet Vietnamese soup of Cantonese origin",
+    "literal": false,
+    "pos": "noun"
+  },
+  "rắn hổ mang": {
+    "meaning": "a cobra (venomous snake)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "cá hổ kình": {
+    "meaning": "killer whale",
+    "literal": false,
+    "pos": "noun"
+  },
+  "vòng đu quay": {
+    "meaning": "Ferris wheel",
+    "literal": false,
+    "pos": "noun"
+  },
+  "báo hoa mai": {
+    "meaning": "a leopard",
+    "literal": false,
+    "pos": "noun"
+  },
+  "báo sư tử": {
+    "meaning": "a puma; a cougar",
+    "literal": false,
+    "pos": "noun"
+  },
+  "súng liên thanh": {
+    "meaning": "machine gun",
+    "literal": false,
+    "pos": "noun"
+  },
+  "máy bay lên thẳng": {
+    "meaning": "helicopter",
+    "literal": false,
+    "pos": "noun"
+  },
+  "máy bay trực thăng": {
+    "meaning": "helicopter",
+    "literal": false,
+    "pos": "noun"
+  },
+  "áo tắm hai mảnh": {
+    "meaning": "bikini",
+    "literal": false,
+    "pos": "noun"
+  },
+  "xe hai bánh": {
+    "meaning": "a two-wheeled vehicle such as a bicycle or motorcycle, as opposed to a three-wheeled one such as a rickshaw or a four-wh",
+    "literal": false,
+    "pos": "noun"
+  },
+  "sách giáo khoa": {
+    "meaning": "textbook",
+    "literal": false,
+    "pos": "noun"
+  },
+  "xe ba gác": {
+    "meaning": "Commonly refer to a type of three-wheeled motorbike wagon or cart used for deliveries in Vietnam. It can also be referre",
+    "literal": false,
+    "pos": "noun"
+  },
+  "đất phù sa": {
+    "meaning": "illuvium",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bánh quy giòn": {
+    "meaning": "cracker",
+    "literal": false,
+    "pos": "noun"
+  },
+  "chủ nghĩa phát xít": {
+    "meaning": "fascism",
+    "literal": false,
+    "pos": "noun"
+  },
+  "chiến tranh lạnh": {
+    "meaning": "cold war",
+    "literal": false,
+    "pos": "noun"
+  },
+  "chủ nghĩa xã hội": {
+    "meaning": "socialism",
+    "literal": false,
+    "pos": "noun"
+  },
+  "chiến tranh thế giới": {
+    "meaning": "a world war",
+    "literal": false,
+    "pos": "noun"
+  },
+  "chủ nghĩa dân tộc": {
+    "meaning": "nationalism",
+    "literal": false,
+    "pos": "noun"
+  },
+  "chủ nghĩa nhân văn": {
+    "meaning": "humanism",
+    "literal": false,
+    "pos": "noun"
+  },
+  "chủ nghĩa vô chính phủ": {
+    "meaning": "anarchism",
+    "literal": false,
+    "pos": "noun"
+  },
+  "vô chính phủ": {
+    "meaning": "anarchy",
+    "literal": false,
+    "pos": "noun"
+  },
+  "chủ nghĩa nam nữ bình quyền": {
+    "meaning": "gender equality",
+    "literal": false,
+    "pos": "noun"
+  },
+  "xã hội chủ nghĩa": {
+    "meaning": "socialism",
+    "literal": false,
+    "pos": "noun"
+  },
+  "đông nam á": {
+    "meaning": "Southeast Asian",
+    "literal": false,
+    "pos": "adj"
+  },
+  "bồ công anh": {
+    "meaning": "dandelion",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ngọc lục bảo": {
+    "meaning": "emerald",
+    "literal": false,
+    "pos": "noun"
+  },
+  "trà trân châu": {
+    "meaning": "bubble tea",
+    "literal": false,
+    "pos": "noun"
+  },
+  "nước cốt dừa": {
+    "meaning": "coconut milk",
+    "literal": false,
+    "pos": "noun"
+  },
+  "giá trị tổng kiểm": {
+    "meaning": "checksum (value)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "từ nguyên học": {
+    "meaning": "etymology",
+    "literal": false,
+    "pos": "noun"
+  },
+  "tiếng do thái": {
+    "meaning": "Hebrew (language)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "vũ khí hạt nhân": {
+    "meaning": "nuclear weapon (explosive device)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kẹo bơ cứng": {
+    "meaning": "toffee",
+    "literal": false,
+    "pos": "noun"
+  },
+  "đái tháo đường": {
+    "meaning": "diabetes",
+    "literal": false,
+    "pos": "noun"
+  },
+  "siêu máy tính": {
+    "meaning": "a supercomputer",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ổ đĩa cứng": {
+    "meaning": "a hard disk drive",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bộ chính trị": {
+    "meaning": "politburo",
+    "literal": false,
+    "pos": "noun"
+  },
+  "nấm kim châm": {
+    "meaning": "enoki mushroom",
+    "literal": false,
+    "pos": "noun"
+  },
+  "hợp âm rải": {
+    "meaning": "arpeggio",
+    "literal": false,
+    "pos": "noun"
+  },
+  "tháng mười một": {
+    "meaning": "November",
+    "literal": false,
+    "pos": "noun"
+  },
+  "tháng mười hai": {
+    "meaning": "December",
+    "literal": false,
+    "pos": "noun"
+  },
+  "người việt nam": {
+    "meaning": "Vietnamese:",
+    "literal": false,
+    "pos": "noun"
+  },
+  "tôi là người việt": {
+    "meaning": "I am Vietnamese",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "chào buổi sáng": {
+    "meaning": "good morning",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "bách khoa toàn thư": {
+    "meaning": "encyclopedia",
+    "literal": false,
+    "pos": "noun"
+  },
+  "siêu tân tinh": {
+    "meaning": "supernova",
+    "literal": false,
+    "pos": "noun"
+  },
+  "sao lùn trắng": {
+    "meaning": "white dwarf",
+    "literal": false,
+    "pos": "noun"
+  },
+  "sao khổng lồ đỏ": {
+    "meaning": "red giant",
+    "literal": false,
+    "pos": "noun"
+  },
+  "gái mại dâm": {
+    "meaning": "prostitute",
+    "literal": false,
+    "pos": "noun"
+  },
+  "v/v": {
+    "meaning": "initialism of về việc (“on the matter of”)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "cám ơn rất nhiều": {
+    "meaning": "thank you very much",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "mĩ nhân ngư": {
+    "meaning": "mermaid",
+    "literal": false,
+    "pos": "noun"
+  },
+  "trường mĩ thuật": {
+    "meaning": "art school",
+    "literal": false,
+    "pos": "noun"
+  },
+  "cả nhà": {
+    "meaning": "Used other than figuratively or idiomatically: see cả, nhà.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "bé hạt tiêu": {
+    "meaning": "little body, great mind",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "tàu cánh ngầm": {
+    "meaning": "hydrofoil",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bác sĩ nhi": {
+    "meaning": "pediatrician",
+    "literal": false,
+    "pos": "noun"
+  },
+  "anh yêu em": {
+    "meaning": "I love you (man to woman)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "em yêu anh": {
+    "meaning": "I love you (woman to man)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "giáng sinh vui vẻ": {
+    "meaning": "Merry Christmas",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "sinh nhật vui vẻ": {
+    "meaning": "happy birthday",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "số điện thoại": {
+    "meaning": "telephone number",
+    "literal": false,
+    "pos": "noun"
+  },
+  "số dây nói": {
+    "meaning": "telephone number",
+    "literal": false,
+    "pos": "noun"
+  },
+  "nam nhân ngư": {
+    "meaning": "merman",
+    "literal": false,
+    "pos": "noun"
+  },
+  "lễ các đẳng": {
+    "meaning": "All Souls' Day",
+    "literal": false,
+    "pos": "noun"
+  },
+  "lễ các đẳng linh hồn": {
+    "meaning": "All Souls' Day",
+    "literal": false,
+    "pos": "noun"
+  },
+  "gấp làm đôi": {
+    "meaning": "twofold",
+    "literal": false,
+    "pos": "adv"
+  },
+  "cung hỉ phát tài": {
+    "meaning": "May you have a prosperous New Year!",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "lễ tình nhân": {
+    "meaning": "Saint Valentine's Day",
+    "literal": false,
+    "pos": "noun"
+  },
+  "hàng không mẫu hạm": {
+    "meaning": "A warship designed to carry aircraft, serving as a seagoing air base, with a deck on which aircraft can be launched and ",
+    "literal": false,
+    "pos": "noun"
+  },
+  "địa chất học": {
+    "meaning": "geology",
+    "literal": false,
+    "pos": "noun"
+  },
+  "diệp lục tố": {
+    "meaning": "chlorophyll (a chemical supporting photosynthesis)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "chất diệp lục": {
+    "meaning": "chlorophyll (a chemical supporting photosynthesis)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "hợp chất hữu cơ": {
+    "meaning": "an organic compound",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bạch huyết cầu": {
+    "meaning": "leukocyte",
+    "literal": false,
+    "pos": "noun"
+  },
+  "bàn chải đánh răng": {
+    "meaning": "toothbrush",
+    "literal": false,
+    "pos": "noun"
+  },
+  "huyết sắc tố": {
+    "meaning": "haemoglobin",
+    "literal": false,
+    "pos": "noun"
+  },
+  "nước kết tinh": {
+    "meaning": "water of crystallization",
+    "literal": false,
+    "pos": "noun"
+  },
+  "tình một đêm": {
+    "meaning": "one-night stand",
+    "literal": false,
+    "pos": "noun"
+  },
+  "yêu nhiều thì ốm, ôm nhiều thì yếu": {
+    "meaning": "love a lot and you will get sick, hug a lot and you will get weak (alluding to STD and impotence due to overindulgence)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "nhiễm sắc thể": {
+    "meaning": "a chromosome",
+    "literal": false,
+    "pos": "noun"
+  },
+  "chúc mừng năm mới": {
+    "meaning": "Happy Lunar New Year!",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "chúc may mắn": {
+    "meaning": "Wish you well.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "tây ban nha": {
+    "meaning": "Spanish",
+    "literal": false,
+    "pos": "adj"
+  },
+  "để cho": {
+    "meaning": "In order to.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "thùng rỗng kêu to": {
+    "meaning": "empty vessels make the most sound",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "người hoa kì": {
+    "meaning": "person of the United States or U.S. American",
+    "literal": false,
+    "pos": "noun"
+  },
+  "cái này là gì": {
+    "meaning": "what is this?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "dầu gan cá": {
+    "meaning": "cod liver oil",
+    "literal": false,
+    "pos": "noun"
+  },
+  "kính hiển vi": {
+    "meaning": "a microscope",
+    "literal": false,
+    "pos": "noun"
+  },
+  "ông ăn chả, bà ăn nem": {
+    "meaning": "he eats chả, she eats nem",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ăn cơm trước kẻng": {
+    "meaning": "to have sex before marriage; to have premarital sex",
+    "literal": false,
+    "pos": "verb"
+  },
+  "tiến thoái lưỡng nan": {
+    "meaning": "it's difficult either to advance or to retreat.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ngậm máu phun người, trước dơ miệng mình": {
+    "meaning": "Curses are like young chickens, they always come home to roost.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "重男輕女": {
+    "meaning": "chữ Hán form of trọng nam khinh nữ (“valuing men and belittling women; favouring boys over girls”)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "trọng nam khinh nữ": {
+    "meaning": "to favor males over females, especially when deciding to have children; to be sexist against females",
+    "literal": false,
+    "pos": "verb"
+  },
+  "nam tôn nữ ti": {
+    "meaning": "valuing men above women, the belief that men are superior to women",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "quả cầu tuyết": {
+    "meaning": "snow globe",
+    "literal": false,
+    "pos": "noun"
+  },
+  "xe mô tô": {
+    "meaning": "motorcycle",
+    "literal": false,
+    "pos": "noun"
+  },
+  "nhân dân tệ": {
+    "meaning": "renminbi (the official currency of the People's Republic of China)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "di truyền học": {
+    "meaning": "genetics",
+    "literal": false,
+    "pos": "noun"
+  }
+}

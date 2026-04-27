@@ -1,0 +1,217 @@
+{
+  "તમે કેમ છો": {
+    "meaning": "how are you? (formal)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "કેમ છે": {
+    "meaning": "how are you (casual)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ગાંડ આંગળી કરવું": {
+    "meaning": "to badger, pester, annoy, bother",
+    "literal": false,
+    "pos": "verb"
+  },
+  "સારા કામમાં સો વિઘ્નો": {
+    "meaning": "a proverb for how there are countless obstacles to doing a good deed, but that one should proceed anyways",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "સકલ ઘરેલુ ઉત્પાદન": {
+    "meaning": "gross domestic product",
+    "literal": false,
+    "pos": "noun"
+  },
+  "મજામાં છું": {
+    "meaning": "I'm good",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "લઘુત્તમ ટેકાનો ભાવ": {
+    "meaning": "Minimum Support Price",
+    "literal": false,
+    "pos": "noun"
+  },
+  "સ્વચાલિત ગણક યંત્ર": {
+    "meaning": "automated teller machine",
+    "literal": false,
+    "pos": "noun"
+  },
+  "સોનાંની થાળીમાં લોઢાંની મેખ": {
+    "meaning": "for there to be something unfortunate or unpleasant in something otherwise quite pleasing",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "ઉતાવળે આંબા ન પાકે": {
+    "meaning": "Rome wasn't built in a day",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "બધા દેશોમાં કામદાર, સંગઠિત": {
+    "meaning": "workers of the world, unite",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "હું તને પ્રેમ કરું છું": {
+    "meaning": "I love you",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ઈદ મુબારક": {
+    "meaning": "eid mubarak",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "હું શાકાહારી છું": {
+    "meaning": "I'm a vegetarian",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "શું હું ફારસી બોલું છું": {
+    "meaning": "Is my speech incomprehensible?",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "અલ્લાહુ અકબર": {
+    "meaning": "Allahu akbar",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "રાત ગઈ વાત ગઈ": {
+    "meaning": "the ship has sailed",
+    "literal": false,
+    "pos": "proverb"
+  },
+  "જય જિનેન્દ્ર": {
+    "meaning": "a Jain greeting: hello, greetings; farewell, good bye",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "મને ભૂખ લાગી છે": {
+    "meaning": "I'm hungry",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "મને તરસ લાગી છે": {
+    "meaning": "I'm thirsty",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "વરસાદ પડે છે": {
+    "meaning": "it's raining",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "બરફ પડે છે": {
+    "meaning": "it's snowing",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "હું તમારો ફોન વાપરું": {
+    "meaning": "can I use your phone? (polite)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "પોલીસને બોલાવો": {
+    "meaning": "call the police",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ચિંતા ના કરીશ": {
+    "meaning": "don't worry",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "તમે પ્રભુમાં માનો છો": {
+    "meaning": "do you believe in God (formal)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "તારો પાસે બોયફ્રેન્ડ છે": {
+    "meaning": "do you have a boyfriend (informal)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "ભગવાન તેમના આત્માને શાંતિ આપે": {
+    "meaning": "God rest their soul",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "હું મુસલમાન છું": {
+    "meaning": "I'm a Muslim",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "હું યહૂદી છું": {
+    "meaning": "I'm Jewish",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "હું ...માં જન્મ્યો હતો": {
+    "meaning": "I was born in ...",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "હું ... વર્ષનો છું": {
+    "meaning": "I'm ... year(s) old",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "હું ગે છું": {
+    "meaning": "I'm gay",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "મારું માથું દુખે છે": {
+    "meaning": "I have a headache",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "તું મને પ્રેમ કરે છે": {
+    "meaning": "do you love me",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "મને ઠંડી લાગે છે": {
+    "meaning": "I'm cold",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "કેન્દ્ર શાસિત પ્રદેશ": {
+    "meaning": "union territory",
+    "literal": false,
+    "pos": "noun"
+  },
+  "જય શ્રી કૃષ્ણ": {
+    "meaning": "a Vaishnava greeting: hello, greetings; farewell, good bye (Literally, “victory to Lord Krishna”)",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "હુમત હુખ્ત અને હવર્ત": {
+    "meaning": "Good thoughts, good words, good deeds; a phrase that represents the three pillars of Zoroastrian faith.",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "હથોડો અને દાતરડું": {
+    "meaning": "hammer and sickle (symbol of communism)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "મારી પાસે પૈસા નથી": {
+    "meaning": "I have no money",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "હું નોકરી શોધું છું": {
+    "meaning": "I'm looking for a job",
+    "literal": false,
+    "pos": "phrase"
+  },
+  "વગેરે": {
+    "meaning": "et cetera, and so on",
+    "literal": false,
+    "pos": "phrase"
+  }
+}

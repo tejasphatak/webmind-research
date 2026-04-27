@@ -200,15 +200,13 @@ def _lemmatize(word: str, pos: str, vocab: dict) -> str:
             if candidate in vocab:
                 candidates.append(candidate)
 
-    # Include the original word as a candidate if it's in vocab
-    # "need" IS in vocab → should be preferred over "nee" (stripped form)
-    if lower in vocab:
-        candidates.append(lower)
-
     # Prefer longest candidate (least stripping = most accurate lemma)
     if candidates:
         return max(candidates, key=len)
 
+    # Fallback: return as-is
+    if lower in vocab:
+        return lower
     return lower
 
 

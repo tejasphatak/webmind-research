@@ -180,35 +180,53 @@ def _get_weighted_meaning_set(word: str) -> Dict[str, float]:
 # CONTEXT-FILTERED MEANING CLOUDS — non-neural attention
 # ============================================================
 
-def _context_meaning(word: str, context_words: Set[str]) -> Set[str]:
-    """Filter word's meaning set by context. Implicit WSD via set intersection.
-    'bank' + {habitat, river} → keeps geography, drops finance."""
-    full = _get_meaning_set(word)
+def _context_meaning(word: str, context_words: Set[str]) -> Dict[str, float]:
+    """Filter word's meaning set by context using GRADED activation.
+    Each meaning gets weight proportional to how many context words support it.
+    Unsupported meanings get 0.1x weight (suppressed, not eliminated).
+    Returns Dict[str, float] — meaning → activation weight."""
+    full = _get_weighted_meaning_set(word)
     if not context_words or not full:
         return full
-    territory = set()
+
+    # Count votes: how many context words' meaning sets contain each meaning
+    vote_count: Dict[str, int] = {}
     for cw in context_words:
-        territory.update(_get_meaning_set(cw))
-        territory.add(cw)
-    filtered = full & territory
-    # Dynamic minimum: proportional to meaning set size (not fixed)
-    # Word with 10 meanings needs 1 match (10%). Word with 50 needs 5.
-    min_matches = max(2, len(full) // 5)
-    if len(filtered) < min_matches:
-        return full
-    return filtered
+        cw_meanings = _get_meaning_set(cw)  # Binary set for vote counting
+        for m in full:
+            if m in cw_meanings or m == cw:
+                vote_count[m] = vote_count.get(m, 0) + 1
+
+    if not vote_count:
+        return full  # No context overlap — keep everything
+
+    max_votes = max(vote_count.values())
+
+    # Graded activation: voted meanings keep weight, unvoted get 0.1x
+    graded: Dict[str, float] = {}
+    for meaning, base_weight in full.items():
+        votes = vote_count.get(meaning, 0)
+        if votes > 0:
+            graded[meaning] = base_weight * (votes / max_votes)
+        else:
+            graded[meaning] = base_weight * 0.1  # Active suppression
+    return graded
 
 
-def _meaning_cloud(words: Set[str]) -> Set[str]:
-    """Build context-aware meaning cloud.
-    Each word's meaning set filtered by OTHER words in the same text."""
-    cloud = set()
+def _meaning_cloud(words: Set[str]) -> Dict[str, float]:
+    """Build context-aware WEIGHTED meaning cloud.
+    Each word's meaning set filtered by OTHER words (graded activation).
+    Returns Dict[str, float] — meaning → activation weight."""
+    cloud: Dict[str, float] = {}
     word_list = list(words)
     for word in word_list:
         context = words - {word}
-        filtered_meaning = _context_meaning(word, context)
-        cloud.update(filtered_meaning)
-    cloud.update(words)
+        filtered = _context_meaning(word, context)
+        for m, w in filtered.items():
+            cloud[m] = max(cloud.get(m, 0), w)
+    # Include original words at full activation
+    for w in words:
+        cloud[w] = 1.0
     return cloud
 
 
@@ -319,8 +337,12 @@ def _matrix_similarity(set_a: Set[str], set_b: Set[str]) -> float:
     cloud_a = _meaning_cloud(src_a)
     cloud_b = _meaning_cloud(src_b)
     if cloud_a and cloud_b:
-        intersection = len(cloud_a & cloud_b)
-        cloud_score = intersection / min(len(cloud_a), len(cloud_b))
+        # Weighted intersection: sum of min(weight_a, weight_b) for shared keys
+        shared_keys = set(cloud_a.keys()) & set(cloud_b.keys())
+        weighted_inter = sum(min(cloud_a[k], cloud_b[k]) for k in shared_keys)
+        total_a = sum(cloud_a.values())
+        total_b = sum(cloud_b.values())
+        cloud_score = weighted_inter / min(total_a, total_b) if min(total_a, total_b) > 0 else 0.0
         scores.append(cloud_score)
 
     if direct:

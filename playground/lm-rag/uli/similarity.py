@@ -346,16 +346,10 @@ def text_similarity(text_a: str, text_b: str, lang: str = 'en') -> float:
 # ============================================================
 
 def _split_sentences(text: str) -> List[str]:
-    """Split text into sentences using spaCy's sentence boundary detection."""
-    try:
-        from .lexer import _get_spacy
-        nlp = _get_spacy()
-        doc = nlp(text)
-        sentences = [sent.text.strip() for sent in doc.sents if sent.text.strip()]
-        return sentences if sentences else [text]
-    except Exception:
-        sentences = re.split(r'(?<=[.!?])\s+', text)
-        return [s.strip() for s in sentences if s.strip()] or [text]
+    """Split text into sentences using punctuation rules (no spaCy needed)."""
+    from .pos_tagger import split_sentences
+    sentences = split_sentences(text)
+    return sentences if sentences else [text]
 
 
 def question_passage_relevance(question: str, passage: str,

@@ -152,10 +152,12 @@ def _tag_word(word: str, vocab: dict, is_sentence_start: bool = False,
             if len(pos_list) == 1:
                 return pos_list[0]
             # Context disambiguation for NOUN/VERB ambiguity
-            if 'VERB' in pos_list and 'NOUN' in pos_list:
-                # After DET/ADP/ADJ → NOUN ("the bank", "on the bank", "big run")
-                if prev_pos in ('DET', 'ADP', 'ADJ'):
+            # Context disambiguation for ambiguous POS
+            if 'NOUN' in pos_list:
+                # After DET/ADP → NOUN ("the bank", "the capital", "on the bank")
+                if prev_pos in ('DET', 'ADP'):
                     return 'NOUN'
+            if 'VERB' in pos_list and 'NOUN' in pos_list:
                 # After AUX/PRON/NOUN → VERB ("does GPS work", "I run")
                 if prev_pos in ('AUX', 'PRON', 'NOUN', 'PROPN', 'ADV'):
                     return 'VERB'

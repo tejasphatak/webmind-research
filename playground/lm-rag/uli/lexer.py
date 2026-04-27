@@ -257,9 +257,21 @@ def _get_spacy(lang='en'):
     return _spacy_models[lang]
 
 
-def tokenize(text: str, lang: str = 'en'):
-    """Tokenize text using spaCy. Returns (tokens, entity_spans).
-    entity_spans are spaCy's grouped multi-word entities."""
+def tokenize(text: str, lang: str = 'en', use_spacy: bool = False):
+    """Tokenize text. Returns (tokens, entity_spans).
+
+    Default: uses vocab-backed POS tagger (no neural model, 77K word DB).
+    use_spacy=True: falls back to spaCy (300MB neural model) if needed.
+    """
+    if use_spacy:
+        return _tokenize_spacy(text, lang)
+    # Use our vocab-backed tagger
+    from .pos_tagger import tokenize_vocab
+    return tokenize_vocab(text, lang)
+
+
+def _tokenize_spacy(text: str, lang: str = 'en'):
+    """Tokenize using spaCy (fallback). Kept for comparison/testing."""
     nlp = _get_spacy(lang)
     doc = nlp(text)
 
@@ -277,9 +289,7 @@ def tokenize(text: str, lang: str = 'en'):
             entity_type=tok.ent_type_,
         ))
 
-    # spaCy's grouped entity spans (multi-word: "Leonardo da Vinci", "World War II")
     entity_spans = [(ent.text, ent.label_) for ent in doc.ents]
-
     return tokens, entity_spans
 
 

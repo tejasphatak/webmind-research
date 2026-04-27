@@ -522,21 +522,11 @@ def _extract_features(tokens: List[Token]) -> Dict[str, Set[str]]:
 
 
 def token_similarity(tokens_a: List[Token], tokens_b: List[Token]) -> float:
-    """Similarity from first principles (rewritten from 1379-pair analysis).
+    """Slot-matching similarity: count shared content words, bridge unmatched
+    through meaning similarity, gate Jaccard by content overlap.
 
-    How a human compares two sentences:
-    1. Identify content words (nouns, verbs, adjectives)
-    2. Match them: exact, synonym, or unrelated
-    3. Shared verbs with DIFFERENT objects = different activity (compound meaning)
-    4. Function words only contribute if content also matches
-
-    Five patterns from STS-B analysis drive the algorithm:
-    P1 (38%): Direct overlap → count shared words
-    P2 (15%): Same verb + diff object → verb credit scales with object similarity
-    P3 (9%):  Low overlap but related → bridge through synonyms
-    P4 (6%):  Verb synonyms → bridge through meaning_similarity
-    P5 (<1%): Function words without content → gate Jaccard
-    """
+    From 100-pair reasoning trace: this approach models how humans
+    compare sentences — normalize both to meaning, count shared slots."""
     feat_a = _extract_features(tokens_a)
     feat_b = _extract_features(tokens_b)
 
@@ -544,73 +534,74 @@ def token_similarity(tokens_a: List[Token], tokens_b: List[Token]) -> float:
     content_b = feat_b.get('content', set())
     all_a = feat_a.get('all_words', set())
     all_b = feat_b.get('all_words', set())
+
+    # All-words Jaccard (surface form, includes function words)
+    all_jaccard = len(all_a & all_b) / len(all_a | all_b) if all_a | all_b else 0.0
+
+    # No content words → Jaccard is the only signal
+    if not content_a and not content_b:
+        return all_jaccard
+
+    # SLOT MATCHING: count shared content, bridge unmatched through synonyms
+    total_slots = max(len(content_a), len(content_b), 1)
+    shared = content_a & content_b
+
+    # COMPOUND MEANING: shared verbs get credit proportional to noun overlap.
+    # "play" shared but harp≠keyboard → verb "play" gets LESS credit.
+    # This is intra-sentence attention without AST parsing.
     nouns_a = feat_a.get('nouns', set())
     nouns_b = feat_b.get('nouns', set())
     verbs_a = feat_a.get('verbs', set())
     verbs_b = feat_b.get('verbs', set())
+    shared_verbs = verbs_a & verbs_b
 
-    # Surface form: Jaccard on all words
-    all_jaccard = len(all_a & all_b) / len(all_a | all_b) if all_a | all_b else 0.0
+    noun_overlap = len(nouns_a & nouns_b) / len(nouns_a | nouns_b) if nouns_a | nouns_b else 1.0
 
-    # P5: No content words → Jaccard only
-    if not content_a and not content_b:
-        return all_jaccard
+    matched = 0.0
+    unique_nouns_a = nouns_a - nouns_b
+    unique_nouns_b = nouns_b - nouns_a
+    for word in shared:
+        if word in shared_verbs and unique_nouns_a and unique_nouns_b:
+            # Shared verb BUT both sentences have UNIQUE nouns →
+            # the verb operates on DIFFERENT objects
+            # "play harp" vs "play keyboard": unique nouns differ → reduce verb credit
+            # Weight by how SIMILAR the unique nouns are (harp↔keyboard = moderate)
+            best_noun_sim = 0.0
+            for na in unique_nouns_a:
+                for nb in unique_nouns_b:
+                    best_noun_sim = max(best_noun_sim, _meaning_similarity(na, nb))
+            # Verb credit = noun similarity (harp↔keyboard ≈ 0.3 → verb gets 0.3)
+            matched += max(best_noun_sim, 0.1)  # Floor of 0.1 (same verb has SOME value)
+        else:
+            matched += 1.0
 
-    # DP-style optimal word alignment:
-    # For each word in the SMALLER content set, find its best match in the larger.
-    # Matched pairs contribute their similarity to the total score.
-    smaller = content_a if len(content_a) <= len(content_b) else content_b
-    larger = content_b if len(content_a) <= len(content_b) else content_a
-
-    total_score = 0.0
-    used = set()
-
-    for word in smaller:
-        # Find best match in larger set
-        best_match = None
+    # Bridge unmatched words through meaning similarity
+    # "slicing" ↔ "cutting" = 0.8 (synonyms) → partial credit
+    unique_a = content_a - shared
+    unique_b = content_b - shared
+    used_b = set()
+    for wa in unique_a:
         best_sim = 0.0
+        best_wb = None
+        for wb in unique_b:
+            if wb not in used_b:
+                sim = _meaning_similarity(wa, wb)
+                if sim > best_sim:
+                    best_sim = sim
+                    best_wb = wb
+        if best_sim > 0.3 and best_wb:  # Threshold: at least moderate similarity
+            matched += best_sim
+            used_b.add(best_wb)
 
-        for candidate in larger:
-            if candidate in used:
-                continue
-            if word == candidate:
-                sim = 1.0
-            else:
-                sim = _meaning_similarity(word, candidate)
-            if sim > best_sim:
-                best_sim = sim
-                best_match = candidate
+    slot_score = min(matched / total_slots, 1.0)
 
-        if best_match and best_sim > 0.2:
-            # P2: COMPOUND MEANING — if this is a VERB match and nouns DIFFER,
-            # scale the verb credit by object similarity.
-            # "play" matched to "play" but harp≠keyboard → reduce credit.
-            if (word in verbs_a or word in verbs_b) and best_sim >= 0.8:
-                unique_nouns_a = nouns_a - nouns_b
-                unique_nouns_b = nouns_b - nouns_a
-                if unique_nouns_a and unique_nouns_b:
-                    # How similar are the unique objects?
-                    obj_sim = 0.0
-                    for na in unique_nouns_a:
-                        for nb in unique_nouns_b:
-                            obj_sim = max(obj_sim, _meaning_similarity(na, nb))
-                    # Verb credit = weighted average of verb match and object match
-                    # play↔play=1.0, harp↔keyboard=0.3 → (1.0 + 0.3)/2 = 0.65
-                    best_sim = (best_sim + obj_sim) / 2.0
-
-            total_score += best_sim
-            used.add(best_match)
-
-    # Normalize by smaller set (overlap coefficient)
-    # The aligned words divided by how many we tried to align
-    content_sim = total_score / len(smaller) if smaller else 0.0
-
-    # P5: Jaccard gate — only boosts when content also matches
-    shared = content_a & content_b
+    # GATE: Jaccard only boosts when content ALSO matches
     if shared or not (content_a and content_b):
-        return max(content_sim, all_jaccard)
+        return max(slot_score, all_jaccard)
     else:
-        return content_sim * 0.9 + all_jaccard * 0.1
+        # Content exists on both sides but DOESN'T overlap →
+        # Jaccard is noise (function words only). Slight credit.
+        return slot_score * 0.9 + all_jaccard * 0.1
 
 
 def text_similarity(text_a: str, text_b: str, lang: str = 'en') -> float:

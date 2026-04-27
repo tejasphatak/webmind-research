@@ -45,5 +45,395 @@
     "meaning": "a leopard cannot change its spots",
     "literal": false,
     "pos": "proverb"
+  },
+  "ॐ": {
+    "meaning": "the sacred syllable and mantra in Hinduism, Buddhism, Jainism and Sikhism",
+    "literal": false,
+    "pos": "intj"
+  },
+  "धन्यवाद": {
+    "meaning": "thanks, thank you",
+    "literal": false,
+    "pos": "intj"
+  },
+  "नमस्ते": {
+    "meaning": "A salutation; a greeting used for most purposes including hello, goodbye, etc.; namaste",
+    "literal": false,
+    "pos": "intj"
+  },
+  "पूर्ण संख्या": {
+    "meaning": "whole number",
+    "literal": false,
+    "pos": "noun"
+  },
+  "बौद्ध धर्म": {
+    "meaning": "Buddhism",
+    "literal": false,
+    "pos": "noun"
+  },
+  "दक्षिण अमेरिका": {
+    "meaning": "South America (the continent forming the southern part of the Americas)",
+    "literal": false,
+    "pos": "name"
+  },
+  "हिंदू धर्म": {
+    "meaning": "Hinduism",
+    "literal": false,
+    "pos": "noun"
+  },
+  "हो": {
+    "meaning": "yes",
+    "literal": false,
+    "pos": "intj"
+  },
+  "सिख धर्म": {
+    "meaning": "Sikhism; the Sikh religion",
+    "literal": false,
+    "pos": "name"
+  },
+  "शीख धर्म": {
+    "meaning": "Sikhism",
+    "literal": false,
+    "pos": "noun"
+  },
+  "संस्कृत भाषा": {
+    "meaning": "Sanskrit",
+    "literal": false,
+    "pos": "name"
+  },
+  "आंध्र प्रदेश": {
+    "meaning": "Andhra Pradesh (a state in southeastern India, where Telugu is the primary language)",
+    "literal": false,
+    "pos": "name"
+  },
+  "पाव भाजी": {
+    "meaning": "pav bhaji",
+    "literal": false,
+    "pos": "noun"
+  },
+  "वडा पाव": {
+    "meaning": "vada pav",
+    "literal": false,
+    "pos": "noun"
+  },
+  "बटाटा वडा": {
+    "meaning": "batata vada",
+    "literal": false,
+    "pos": "noun"
+  },
+  "पूर्वी एशिया": {
+    "meaning": "East Asia (a geographic region comprising the eastern part of Asia, inclusive of China proper, Japan, North Korea, South Korea, and Taiwan and sometim",
+    "literal": false,
+    "pos": "name"
+  },
+  "दक्षिण एशिया": {
+    "meaning": "South Asia (a geographic region of Asia, comprising all the countries of the Indian subcontinent (principally India, Pakistan, Bangladesh, Nepal, and ",
+    "literal": false,
+    "pos": "name"
+  },
+  "दक्षिणपूर्व एशिया": {
+    "meaning": "Southeast Asia (a geographic region of Asia, comprising the territories of Brunei, Cambodia, East Timor, Indonesia, Laos, Malaysia, Myanmar (Burma), t",
+    "literal": false,
+    "pos": "name"
+  },
+  "अहो": {
+    "meaning": "a respectful exclamation used to draw someone's attention, usually someone senior in age; roughly equivalent to excuse me, hey etc.",
+    "literal": false,
+    "pos": "intj"
+  },
+  "नमस्कार": {
+    "meaning": "a salutation; a greeting used for most purposes including hello, good morning/afternoon, and goodbye; namaskar",
+    "literal": false,
+    "pos": "intj"
+  },
+  "होय": {
+    "meaning": "yes",
+    "literal": false,
+    "pos": "intj"
+  },
+  "अरे": {
+    "meaning": "hey, sirrah, you there",
+    "literal": false,
+    "pos": "intj"
+  },
+  "तर": {
+    "meaning": "so, consequently, in that case",
+    "literal": false,
+    "pos": "intj"
+  },
+  "ओम्": {
+    "meaning": "the sacred syllable and mantra in Hinduism, Buddhism, Jainism and Sikhism",
+    "literal": false,
+    "pos": "intj"
+  },
+  "पोर्ट ब्लेयर": {
+    "meaning": "Port Blair (the capital city of the Andaman and Nicobar Islands, India)",
+    "literal": false,
+    "pos": "name"
+  },
+  "मूक बधिर": {
+    "meaning": "deaf-mute",
+    "literal": false,
+    "pos": "adj"
+  },
+  "उत्तर कोरिया": {
+    "meaning": "North Korea (a country in East Asia)",
+    "literal": false,
+    "pos": "name"
+  },
+  "दक्षिण कोरिया": {
+    "meaning": "South Korea (a country in East Asia, comprising the southern part of the Korean Peninsula)",
+    "literal": false,
+    "pos": "name"
+  },
+  "नवी दिल्ली": {
+    "meaning": "New Delhi (a city, the capital city of India)",
+    "literal": false,
+    "pos": "name"
+  },
+  "विले पार्ले": {
+    "meaning": "Vile Parle (a suburb of Mumbai, Maharashtra, India)",
+    "literal": false,
+    "pos": "name"
+  },
+  "नवी मुंबई": {
+    "meaning": "Navi Mumbai (a city in Maharashtra, India)",
+    "literal": false,
+    "pos": "name"
+  },
+  "साओ पाउलो": {
+    "meaning": "São Paulo (a municipality, the state capital of São Paulo, Brazil)",
+    "literal": false,
+    "pos": "name"
+  },
+  "शाबास": {
+    "meaning": "good job, bravo, shabash",
+    "literal": false,
+    "pos": "intj"
+  },
+  "स्वागतम": {
+    "meaning": "welcome",
+    "literal": false,
+    "pos": "intj"
+  },
+  "माहीत असणे": {
+    "meaning": "to know",
+    "literal": false,
+    "pos": "verb"
+  },
+  "लिंबू सरबत": {
+    "meaning": "lemonade",
+    "literal": false,
+    "pos": "noun"
+  },
+  "सोव्हिएत संघ": {
+    "meaning": "Soviet Union",
+    "literal": false,
+    "pos": "name"
+  },
+  "गोळी मारणे": {
+    "meaning": "to shoot",
+    "literal": false,
+    "pos": "verb"
+  },
+  "आठवड्याचे वार": {
+    "meaning": "days of week",
+    "literal": false,
+    "pos": "noun"
+  },
+  "बुद्धीबळातील सोंगटी": {
+    "meaning": "chess piece",
+    "literal": false,
+    "pos": "noun"
+  },
+  "बुद्धिबळातील सोंगटी": {
+    "meaning": "chess piece",
+    "literal": false,
+    "pos": "noun"
+  },
+  "झेक प्रजासत्ताक": {
+    "meaning": "Czech Republic (a country in Central Europe)",
+    "literal": false,
+    "pos": "name"
+  },
+  "दहा हजार": {
+    "meaning": "ten thousand",
+    "literal": false,
+    "pos": "num"
+  },
+  "दहा लाख": {
+    "meaning": "ten lakhs",
+    "literal": false,
+    "pos": "num"
+  },
+  "दहा कोटी": {
+    "meaning": "ten crores",
+    "literal": false,
+    "pos": "num"
+  },
+  "जास्तीत जास्त": {
+    "meaning": "maximum",
+    "literal": false,
+    "pos": "adj"
+  },
+  "भिस्मिल्ला": {
+    "meaning": "bismillah",
+    "literal": false,
+    "pos": "intj"
+  },
+  "युनायटेड किंग्डम": {
+    "meaning": "United Kingdom (a kingdom and country in Northern Europe)",
+    "literal": false,
+    "pos": "name"
+  },
+  "छत्रपती संभाजीनगर": {
+    "meaning": "Chhatrapati Sambhajinagar (a city in Maharashtra, India)",
+    "literal": false,
+    "pos": "name"
+  },
+  "बास": {
+    "meaning": "enough",
+    "literal": false,
+    "pos": "intj"
+  },
+  "कृषी पर्यटन": {
+    "meaning": "agritourism",
+    "literal": false,
+    "pos": "noun"
+  },
+  "अकाली उत्सर्ग": {
+    "meaning": "premature ejaculation",
+    "literal": false,
+    "pos": "noun"
+  },
+  "नमस्कार करणे": {
+    "meaning": "to pay obeisance",
+    "literal": false,
+    "pos": "verb"
+  },
+  "वाढदिवसाच्या शुभेच्छा": {
+    "meaning": "happy birthday!",
+    "literal": false,
+    "pos": "intj"
+  },
+  "गैरसमज होणे": {
+    "meaning": "to misunderstand",
+    "literal": false,
+    "pos": "verb"
+  },
+  "रामराम": {
+    "meaning": "a salutation; a greeting used amongst Hindus for most purposes including hello, good morning/afternoon, and goodbye",
+    "literal": false,
+    "pos": "intj"
+  },
+  "सशस्त्र सेना": {
+    "meaning": "military",
+    "literal": false,
+    "pos": "noun"
+  },
+  "आराम खुर्ची": {
+    "meaning": "rocking chair",
+    "literal": false,
+    "pos": "noun"
+  },
+  "मित्र परिवार": {
+    "meaning": "circle of friends",
+    "literal": false,
+    "pos": "noun"
+  },
+  "मासिक पाळी": {
+    "meaning": "menstruation, menstrual cycle",
+    "literal": false,
+    "pos": "noun"
+  },
+  "उपवास करणे": {
+    "meaning": "to fast, abstain from food",
+    "literal": false,
+    "pos": "verb"
+  },
+  "उपास करणे": {
+    "meaning": "to fast, abstain from food",
+    "literal": false,
+    "pos": "verb"
+  },
+  "अंतराळ विज्ञान": {
+    "meaning": "astronautics",
+    "literal": false,
+    "pos": "noun"
+  },
+  "अंतराळ पोशाख": {
+    "meaning": "space suit",
+    "literal": false,
+    "pos": "noun"
+  },
+  "हमी घेणे": {
+    "meaning": "to assume responsibility",
+    "literal": false,
+    "pos": "verb"
+  },
+  "हमी देणे": {
+    "meaning": "to (give a) guarantee",
+    "literal": false,
+    "pos": "verb"
+  },
+  "हवामान बदल": {
+    "meaning": "climate change",
+    "literal": false,
+    "pos": "noun"
+  },
+  "श्वास घेणे": {
+    "meaning": "to breathe, take a breath",
+    "literal": false,
+    "pos": "verb"
+  },
+  "श्वास लागणे": {
+    "meaning": "to pant, gasp; breathe in a quick or labored manner.",
+    "literal": false,
+    "pos": "verb"
+  },
+  "डल्ला मारणे": {
+    "meaning": "to loot, sack",
+    "literal": false,
+    "pos": "verb"
+  },
+  "बाऊ करणे": {
+    "meaning": "to exaggerate, make a fuss about",
+    "literal": false,
+    "pos": "verb"
+  },
+  "नऊवारी साडी": {
+    "meaning": "a traditional Maharashtrian nine-yard sari, draped in a distinctive style that allows ease of movement and resembles a trouser-like form, traditionall",
+    "literal": false,
+    "pos": "noun"
+  },
+  "खमंग काकडी": {
+    "meaning": "a spiced cucumber preparation, typically made with chopped cucumber mixed with salt, chilli, peanut powder, curd or lemon juice, and finished with a t",
+    "literal": false,
+    "pos": "noun"
+  },
+  "काळजी करणे": {
+    "meaning": "to worry",
+    "literal": false,
+    "pos": "verb"
+  },
+  "गोळा करणे": {
+    "meaning": "to collect, gather",
+    "literal": false,
+    "pos": "verb"
+  },
+  "गोळा होणे": {
+    "meaning": "to assemble, gather",
+    "literal": false,
+    "pos": "verb"
+  },
+  "काळे मीठ": {
+    "meaning": "kala namak (black salt)",
+    "literal": false,
+    "pos": "noun"
+  },
+  "आमेन": {
+    "meaning": "amen; so be it",
+    "literal": false,
+    "pos": "intj"
   }
 }

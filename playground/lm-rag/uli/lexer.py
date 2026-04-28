@@ -260,14 +260,35 @@ def _get_spacy(lang='en'):
 def tokenize(text: str, lang: str = 'en', use_spacy: bool = False):
     """Tokenize text. Returns (tokens, entity_spans).
 
-    Default: uses vocab-backed POS tagger (no neural model, 77K word DB).
+    Default: uses grammar engine (no neural model, 77K word DB + Farlex rules).
     use_spacy=True: falls back to spaCy (300MB neural model) if needed.
     """
     if use_spacy:
         return _tokenize_spacy(text, lang)
-    # Use our vocab-backed tagger
-    from .pos_tagger import tokenize_vocab
-    return tokenize_vocab(text, lang)
+    return _tokenize_engine(text, lang)
+
+
+def _tokenize_engine(text: str, lang: str = 'en'):
+    """Tokenize using the grammar engine (parts_of_speech + syntax rules)."""
+    from .engine import tag_sentence
+    if not text or not text.strip():
+        return [], []
+    # Split on whitespace; strip trailing sentence punctuation so "keyboard."
+    # becomes "keyboard" — otherwise lemmas include the period and WordNet lookups fail.
+    words = [w.rstrip('.,!?;:') or w for w in text.split()]
+    # Remove any tokens that became empty after stripping (bare punctuation)
+    words = [w for w in words if w]
+    tagged = tag_sentence(words, lang)
+    tokens = []
+    for w, pos, lemma in tagged:
+        token_lang = detect_token_language(w)
+        tokens.append(Token(
+            text=w,
+            lang=token_lang,
+            pos=pos,
+            lemma=lemma,
+        ))
+    return tokens, []
 
 
 def _tokenize_spacy(text: str, lang: str = 'en'):

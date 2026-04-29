@@ -150,7 +150,10 @@ class DuckDuckGoProvider(SearchProvider):
 
     def search(self, query: str, max_results: int = 3) -> List[SearchResult]:
         try:
-            from duckduckgo_search import DDGS
+            try:
+                from ddgs import DDGS
+            except ImportError:
+                from duckduckgo_search import DDGS
             results = []
             with DDGS() as ddgs:
                 for r in ddgs.text(query, max_results=max_results):
@@ -271,6 +274,252 @@ class GoogleSearchProvider(SearchProvider):
 
 
 # ============================================================
+# Dictionary Provider (Free Dictionary API — no key needed)
+# ============================================================
+
+class DictionaryProvider(SearchProvider):
+    """Look up word/compound definitions from Free Dictionary API.
+
+    Priority: check this BEFORE web search. It's free, fast, and
+    gives structured definitions. If the dictionary knows the word,
+    we don't need to hit the web.
+
+    Also checks the local wordnet.db for definitions.
+    """
+    name = 'dictionary'
+
+    def __init__(self, wordnet_db_path=None):
+        self._db_path = wordnet_db_path
+        self._conn = None
+
+    def _get_conn(self):
+        if self._conn is None and self._db_path and os.path.exists(self._db_path):
+            import sqlite3
+            self._conn = sqlite3.connect(self._db_path)
+        return self._conn
+
+    def search(self, query: str, max_results: int = 3) -> List[SearchResult]:
+        results = []
+
+        # Step 1: Local wordnet.db lookup
+        conn = self._get_conn()
+        if conn:
+            local = self._search_local(query, conn)
+            if local:
+                results.extend(local[:max_results])
+
+        # Step 2: Free Dictionary API (if local didn't have it)
+        if not results:
+            api_results = self._search_api(query)
+            results.extend(api_results[:max_results])
+
+        return results
+
+    def _search_local(self, query: str, conn) -> List[SearchResult]:
+        """Search local wordnet.db for definitions."""
+        cur = conn.cursor()
+        results = []
+
+        # Check compounds table first
+        cur.execute(
+            'SELECT compound, pos, definition FROM compounds '
+            'WHERE compound=? AND pos != ?',
+            (query.lower(), 'REJECTED')
+        )
+        for compound, pos, definition in cur.fetchall():
+            if definition:
+                results.append(SearchResult(
+                    title=compound,
+                    text=f'{compound} ({pos}): {definition}',
+                    source='wordnet',
+                    score=1.0,
+                ))
+
+        # Check senses table
+        if not results:
+            # For multi-word queries, try each word
+            words = query.lower().split()
+            for word in words:
+                cur.execute(
+                    'SELECT word, pos, definition FROM senses '
+                    'WHERE word=? ORDER BY sense_num LIMIT 3',
+                    (word,)
+                )
+                for w, pos, definition in cur.fetchall():
+                    if definition:
+                        results.append(SearchResult(
+                            title=w,
+                            text=f'{w} ({pos}): {definition}',
+                            source='wordnet',
+                            score=0.8,
+                        ))
+
+        return results
+
+    def _search_api(self, query: str) -> List[SearchResult]:
+        """Look up via Free Dictionary API (dictionaryapi.dev)."""
+        results = []
+        # Try the compound as-is, then individual words
+        words_to_try = [query.replace(' ', '%20')]
+        if ' ' in query:
+            words_to_try.extend(query.split())
+
+        for word in words_to_try:
+            try:
+                url = f'https://api.dictionaryapi.dev/api/v2/entries/en/{word}'
+                req = urllib.request.Request(
+                    url, headers={'User-Agent': 'LM-RAG/1.0'}
+                )
+                with urllib.request.urlopen(req, timeout=5) as r:
+                    data = json.loads(r.read())
+
+                if not isinstance(data, list):
+                    continue
+
+                for entry in data[:2]:
+                    entry_word = entry.get('word', word)
+                    meanings = entry.get('meanings', [])
+                    for meaning in meanings[:2]:
+                        pos = meaning.get('partOfSpeech', '')
+                        defs = meaning.get('definitions', [])
+                        for d in defs[:2]:
+                            defn = d.get('definition', '')
+                            if defn:
+                                text = f'{entry_word} ({pos}): {defn}'
+                                example = d.get('example', '')
+                                if example:
+                                    text += f' Example: {example}'
+                                results.append(SearchResult(
+                                    title=entry_word,
+                                    text=text,
+                                    source='dictionary',
+                                    score=0.9,
+                                ))
+            except Exception:
+                continue
+
+        return results
+
+    def define(self, word_or_compound: str) -> Optional[str]:
+        """Quick definition lookup. Returns first definition or None.
+
+        Use this from the thinker's reasoning loop for gap resolution.
+        """
+        results = self.search(word_or_compound, max_results=1)
+        if results:
+            return results[0].text
+        return None
+
+
+# ============================================================
+# SearXNG Provider (self-hosted meta-search)
+# ============================================================
+
+class SearXNGProvider(SearchProvider):
+    """Self-hosted SearXNG meta-search engine.
+
+    Aggregates Google, Bing, DuckDuckGo, Wikipedia in one call.
+    Runs locally — no API key, no rate limits, unlimited queries.
+    """
+    name = 'searxng'
+
+    def __init__(self, base_url=None):
+        self.base_url = base_url or 'http://127.0.0.1:8888'
+
+    def search(self, query: str, max_results: int = 5) -> List[SearchResult]:
+        try:
+            params = urllib.parse.urlencode({
+                'q': query, 'format': 'json', 'language': 'en',
+            })
+            req = urllib.request.Request(
+                f'{self.base_url}/search?{params}',
+                headers={'Accept': 'application/json'}
+            )
+            with urllib.request.urlopen(req, timeout=15) as r:
+                data = json.loads(r.read())
+
+            results = []
+            for item in data.get('results', [])[:max_results]:
+                text = item.get('content', '')
+                if text:
+                    results.append(SearchResult(
+                        title=item.get('title', ''),
+                        text=text,
+                        source=self.name,
+                        article_id=item.get('url', ''),
+                    ))
+            return results
+        except Exception:
+            return []
+
+
+# ============================================================
+# Tavily Provider (AI-optimized search)
+# ============================================================
+
+class TavilyProvider(SearchProvider):
+    """Tavily search — purpose-built for AI agents.
+
+    Returns clean extracted text, not raw HTML snippets.
+    Free tier: 1,000 queries/month.
+    """
+    name = 'tavily'
+
+    def __init__(self):
+        creds_path = os.path.expanduser('~/.claude/secrets/tavily.json')
+        try:
+            with open(creds_path) as f:
+                creds = json.load(f)
+            self.api_key = creds['api_key']
+        except Exception:
+            self.api_key = None
+
+    def search(self, query: str, max_results: int = 5) -> List[SearchResult]:
+        if not self.api_key:
+            return []
+        try:
+            payload = json.dumps({
+                'query': query,
+                'max_results': min(max_results, 10),
+                'search_depth': 'basic',
+                'include_answer': True,
+            }).encode()
+            req = urllib.request.Request(
+                'https://api.tavily.com/search',
+                data=payload,
+                headers={
+                    'Content-Type': 'application/json',
+                    'Authorization': f'Bearer {self.api_key}',
+                }
+            )
+            with urllib.request.urlopen(req, timeout=15) as r:
+                data = json.loads(r.read())
+
+            results = []
+            # Tavily returns a direct answer + individual results
+            answer = data.get('answer', '')
+            if answer:
+                results.append(SearchResult(
+                    title='Tavily Answer',
+                    text=answer,
+                    source=self.name,
+                    score=0.95,
+                ))
+            for item in data.get('results', [])[:max_results]:
+                text = item.get('content', '')
+                if text:
+                    results.append(SearchResult(
+                        title=item.get('title', ''),
+                        text=text,
+                        source=self.name,
+                        article_id=item.get('url', ''),
+                    ))
+            return results
+        except Exception:
+            return []
+
+
+# ============================================================
 # Synapse KB Provider (local FAISS)
 # ============================================================
 
@@ -334,14 +583,22 @@ class SearchEngine:
         return all_results
 
 
-def create_default_engine() -> SearchEngine:
-    """Create search engine with default providers."""
+def create_default_engine(wordnet_db_path=None) -> SearchEngine:
+    """Create search engine with default providers.
+
+    Priority order: Dictionary (free, fast) → Wikipedia → Brave → DuckDuckGo
+    The dictionary provider checks wordnet.db first, then the free API.
+    """
     engine = SearchEngine()
+    # Dictionary — always first (free, fast, structured definitions)
+    db_path = wordnet_db_path or os.path.join(
+        os.path.dirname(__file__), 'data', 'vocab', 'wordnet.db'
+    )
+    engine.register(DictionaryProvider(wordnet_db_path=db_path))
     # Brave Search — best snippets, $5/mo free credit
     brave = BraveSearchProvider()
     if brave.api_key:
         engine.register(brave)
-    # Google Custom Search — DISABLED (API shut down globally)
     # Wikipedia — always available, full article text
     engine.register(WikipediaProvider())
     # DuckDuckGo — fallback (often rate-limited)

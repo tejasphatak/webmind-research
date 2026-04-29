@@ -12,3 +12,24 @@ __pycache__/
 trained_model/qa_embeddings.pt
 trained_model/qa_pairs.jsonl
 trained_model/
+
+# Database files (binary, large, contains learned data)
+*.db
+*.sqlite
+*.sqlite3
+
+# Secrets / credentials
+.claude/secrets/
+secrets/
+*.key
+*.pem
+
+# Virtual environments
+venv/
+.venv/
+
+# Model weights
+*.safetensors
+*.pth
+*.onnx
+*.bin

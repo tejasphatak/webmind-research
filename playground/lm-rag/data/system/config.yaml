@@ -1,0 +1,275 @@
+identity:
+  name: "ULI Reasoning Engine"
+  version: "1.0"
+  system_prompt: |
+    You are a knowledge reasoning assistant built on a curated knowledge graph and
+    verified external sources. You answer questions from facts, not speculation.
+    When you do not know something, you say so honestly and search for it.
+    You are grounded, accurate, and transparent about uncertainty.
+
+capabilities:
+  - factual_qa        # Who/what/where/when from knowledge graph
+  - coding_assist     # Explain, write, debug code — any programming language
+  - web_research      # Internet search for recent or unknown topics
+  - content_generate  # Essays, brainstorms, explanations from KG neighbourhood
+  - academic_research # arXiv, Semantic Scholar, PubMed for research queries
+  - conversation      # General chat (grounded, not speculative)
+
+safety:
+  max_input_chars: 8000
+  blocklist_patterns:
+    # Weapons / explosives — "how to", "make", "build", "create" all covered
+    - "(how\\s+to\\s+|)(make|build|create|synthesize|manufacture)\\s+(a\\s+)?(bomb|explosive|ied|weapon|bioweapon|chemical\\s+weapon|nerve\\s+agent)"
+    # Malware / cyber attacks — any action verb
+    - "(write|create|build|make|generate|code|develop)\\s+.{0,30}(malware|ransomware|exploit|spyware|keylogger|rootkit|worm|trojan)"
+    - "(hack|attack|compromise|breach)\\s+.{0,30}(server|system|network|computer|database)"
+    # Drug synthesis
+    - "(how\\s+to\\s+|)(synthesize|manufacture|produce|cook|make)\\s+.{0,20}(meth|methamphetamine|heroin|cocaine|fentanyl|lsd|crystal\\s+meth)"
+    # Step-by-step harmful instructions
+    - "step.{0,10}(by|to).{0,10}step.{0,30}(kill|attack|hack|poison|harm|murder)"
+    # Instructions / guides for harm
+    - "(instructions?\\s+for|guide\\s+(to|for)|guide\\s+on)\\s+.{0,40}(kill|harm|attack|poison|weapon|murder|explosive|hack)"
+    # Virus / malware creation
+    - "(create|write|build|make|develop)\\s+(a\\s+)?(computer\\s+)?(virus|worm|trojan|backdoor|payload)"
+    # Self-harm instructions (not crisis — actual methods)
+    - "(how\\s+to|instructions?\\s+for).{0,30}(suicide|self.harm|overdose|self.destruct)"
+    # CSAM / illegal content generation
+    - "generate.{0,20}(child\\s+pornography|csam|illegal\\s+content)"
+  crisis_patterns:
+    - "\\b(suicide|suicidal|kill\\s+myself|end\\s+my\\s+life|self.harm|hurt\\s+myself)\\b"
+  crisis_response: |
+    It sounds like you may be going through something very difficult. Please reach
+    out to someone who can help right now:
+      US:  988 Suicide & Crisis Lifeline — call or text 988
+      UK:  Samaritans — 116 123
+      IN:  iCall — 9152987821
+    You are not alone.
+
+# MCP servers — registered in priority order per capability
+# transport: sse | stdio | builtin | rest_adapter
+# api_key_env: name of environment variable holding the API key (never hardcode)
+mcp_servers:
+
+  # Self-hosted meta-search (aggregates Google, Bing, DDG, Wikipedia)
+  - name: searxng
+    url: "http://127.0.0.1:8888"
+    transport: rest_adapter
+    capabilities: [web_search, encyclopedia]
+    timeout_seconds: 15
+    enabled: true
+
+  # AI-optimized search (clean text, direct answers)
+  - name: tavily
+    url: "https://api.tavily.com/search"
+    transport: rest_adapter
+    capabilities: [web_search, factual]
+    api_key_env: TAVILY_API_KEY
+    timeout_seconds: 10
+    enabled: true
+
+  # Built-in (no external service needed)
+  - name: duckduckgo
+    transport: builtin
+    capabilities: [web_search]
+    enabled: true
+
+  - name: wikipedia
+    url: "https://en.wikipedia.org/w/api.php"
+    transport: rest_adapter
+    capabilities: [encyclopedia, factual]
+    timeout_seconds: 8
+    enabled: true
+
+  # Research / Academic (all free, no key needed unless noted)
+  - name: arxiv
+    url: "https://export.arxiv.org/api/query"
+    transport: rest_adapter
+    capabilities: [research, academic, preprints]
+    timeout_seconds: 10
+    enabled: true
+
+  - name: semantic_scholar
+    url: "https://api.semanticscholar.org/graph/v1/paper/search"
+    transport: rest_adapter
+    capabilities: [research, academic, citations]
+    timeout_seconds: 8
+    enabled: true
+
+  - name: pubmed
+    url: "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
+    transport: rest_adapter
+    capabilities: [research, academic, biomedical]
+    timeout_seconds: 8
+    enabled: true
+
+  - name: openalex
+    url: "https://api.openalex.org/works"
+    transport: rest_adapter
+    capabilities: [research, academic, open_access]
+    timeout_seconds: 8
+    enabled: true
+
+  - name: crossref
+    url: "https://api.crossref.org/works"
+    transport: rest_adapter
+    capabilities: [research, academic, doi]
+    timeout_seconds: 8
+    enabled: true
+
+  - name: dblp
+    url: "https://dblp.org/search/publ/api"
+    transport: rest_adapter
+    capabilities: [research, academic, computer_science]
+    timeout_seconds: 8
+    enabled: true
+
+  - name: internet_archive
+    url: "https://archive.org/advancedsearch.php"
+    transport: rest_adapter
+    capabilities: [research, encyclopedia, historical]
+    timeout_seconds: 10
+    enabled: true
+
+  - name: huggingface
+    url: "https://huggingface.co/api/papers"
+    transport: rest_adapter
+    capabilities: [research, coding, ml_models]
+    timeout_seconds: 8
+    enabled: true
+
+  # Code documentation
+  - name: deepwiki
+    url: "https://deepwiki.com/mcp"
+    transport: sse
+    capabilities: [documentation, coding]
+    tools: [read_wiki_structure, read_wiki_contents]
+    timeout_seconds: 8
+    enabled: true
+
+  # Requires API key — disabled by default
+  - name: brave-search
+    url: "https://api.search.brave.com/res/v1/web/search"
+    transport: rest_adapter
+    capabilities: [web_search]
+    api_key_env: BRAVE_API_KEY
+    timeout_seconds: 5
+    enabled: true
+
+  - name: nasa_ads
+    url: "https://api.adsabs.harvard.edu/v1/search/query"
+    transport: rest_adapter
+    capabilities: [research, academic, astronomy, physics]
+    api_key_env: NASA_ADS_TOKEN
+    timeout_seconds: 8
+    enabled: true
+
+# Source trust tiers — determines which results are stored in the KG
+source_trust:
+  tiers:
+    - name: curated
+      score: 1.0
+      sources: [seed_data, human_verified]
+      auto_store: true
+
+    - name: structured
+      score: 0.85
+      sources: [wikipedia, pubmed, semantic_scholar, openalex, crossref, dblp, deepwiki]
+      auto_store: true
+
+    - name: academic_preprint
+      score: 0.75
+      sources: [arxiv, huggingface, nasa_ads, internet_archive]
+      auto_store: true
+
+    - name: semi_structured
+      score: 0.60
+      sources: [brave-search, duckduckgo, google]
+      auto_store: false
+
+    - name: unknown
+      score: 0.30
+      sources: []
+      auto_store: false
+
+  corroboration_boost: 0.15   # +0.15 if same fact from 2+ independent sources
+  store_threshold: 0.75       # minimum score to write a fact into the KG
+
+# Conversation patterns — used by thinker._classify() and dialogue engine
+conversation:
+  greetings: [hi, hello, hey, howdy, greetings, yo, sup]
+  greeting_phrases:
+    - "how are you"
+    - "good morning"
+    - "good evening"
+    - "good afternoon"
+    - "what's up"
+    - "whats up"
+  farewells: [bye, goodbye, later, farewell, goodnight, cya]
+  farewell_phrases:
+    - "see you"
+    - "talk later"
+    - "gotta go"
+    - "have a good"
+  acknowledgments:
+    - thanks
+    - thank
+    - ok
+    - okay
+    - cool
+    - great
+    - interesting
+    - nice
+    - awesome
+    - perfect
+    - wonderful
+    - excellent
+    - noted
+  acknowledgment_phrases:
+    - "got it"
+    - "makes sense"
+    - "i see"
+    - "that helps"
+    - "good to know"
+    - "that's helpful"
+    - "thank you"
+
+# Dialogue signals — used by dialogue.py
+dialogue:
+  signals: [your, you, yours, yourself]
+  task_verbs:
+    - find
+    - search
+    - download
+    - get
+    - fetch
+    - summarize
+    - translate
+    - write
+    - build
+    - create
+    - calculate
+    - check
+    - read
+    - analyze
+    - run
+    - test
+    - explain
+    - compare
+    - list
+    - show
+    - give
+    - tell
+    - solve
+    - define
+    - describe
+    - generate
+    - print
+    - sort
+    - filter
+    - compile
+    - execute
+    - install
+    - deploy
+    - send
+    - upload
+    - convert

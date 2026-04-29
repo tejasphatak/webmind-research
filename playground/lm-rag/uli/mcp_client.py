@@ -28,6 +28,7 @@ import os
 import re
 import urllib.parse
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Dict, List, Optional, Any
 
 log = logging.getLogger('uli.mcp_client')
@@ -50,17 +51,41 @@ class MCPClient:
 
     def call_capability(self, capability: str, args: dict) -> Optional[str]:
         """
-        Try all servers for this capability in config order.
-        Returns first non-empty result, or None if all fail.
+        Try all servers for this capability in parallel.
+        Returns the first non-empty result to arrive.
         """
-        for server in self.servers_for(capability):
+        servers = self.servers_for(capability)
+        if not servers:
+            return None
+
+        # Single server — no thread overhead
+        if len(servers) == 1:
             try:
-                result = self._dispatch(server, args)
+                result = self._dispatch(servers[0], args)
                 if result and result.strip():
-                    log.debug(f"MCP hit: {server.name} for capability={capability}")
                     return result
             except Exception as e:
-                log.debug(f"MCP {server.name} failed: {e}")
+                log.debug("MCP %s failed: %s", servers[0].name, e)
+            return None
+
+        # Multiple servers — fire all in parallel, take first good result
+        with ThreadPoolExecutor(max_workers=min(len(servers), 4)) as pool:
+            futures = {
+                pool.submit(self._dispatch, server, args): server
+                for server in servers
+            }
+            for future in as_completed(futures):
+                server = futures[future]
+                try:
+                    result = future.result(timeout=10)
+                    if result and result.strip():
+                        log.debug("MCP hit: %s for capability=%s", server.name, capability)
+                        # Cancel remaining futures
+                        for f in futures:
+                            f.cancel()
+                        return result
+                except Exception as e:
+                    log.debug("MCP %s failed: %s", server.name, e)
         return None
 
     def _dispatch(self, server, args: dict) -> Optional[str]:

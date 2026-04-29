@@ -269,47 +269,50 @@ def classify(text: str) -> Intent:
         return graph_intent
 
     # ── Fallback: pattern matching ───────────────────────────────────────
-    # Only reached if graph DB unavailable or inconclusive
+    # Commented out — all intent classification should go through graph
+    # reasoning. If the graph doesn't know an intent, teach it by adding
+    # triggered_by edges, not by adding code here.
+    #
+    # # 1. Math — expressions or explicit math vocabulary
+    # if _MATH_PATTERN.search(text) and words & _MATH_SIGNALS:
+    #     return Intent.MATH
+    # if len(words & _MATH_SIGNALS) >= 2:
+    #     return Intent.MATH
+    #
+    # # 2. Coding — any coding verb AND any known PL/framework name
+    # has_pl   = bool(words & _KNOWN_PL)
+    # has_verb = bool(words & _CODING_VERBS)
+    # if has_pl and has_verb:
+    #     return Intent.CODING
+    # if has_pl and any(w in lower for w in ('what is', 'how does', 'how to', 'explain')):
+    #     return Intent.CODING
+    #
+    # # 3. Creative
+    # is_factual_qw = bool(re.match(
+    #     r'\b(who|what|where|when|which|how many|how much)\b', lower
+    # ))
+    # if len(words & _CREATIVE_SIGNALS) >= 1 and not is_factual_qw:
+    #     if any(w in lower for w in ('essay', 'brainstorm', 'timeline', 'overview',
+    #                                  'summarize', 'summary', 'draft', 'compose',
+    #                                  'blog', 'post', 'story', 'poem')):
+    #         return Intent.CREATIVE
+    #
+    # # 4. Research
+    # research_hits = len(words & _RESEARCH_SIGNALS)
+    # if research_hits >= 2 or any(w in lower for w in (
+    #     'arxiv', 'paper', 'published', 'citation', 'journal', 'preprint'
+    # )):
+    #     return Intent.RESEARCH
+    #
+    # # 5. Factual
+    # if is_factual_qw:
+    #     return Intent.FACTUAL
+    #
+    # # 6. Conversation — phrase-level check
+    # if any(lower.startswith(p) for p in _CONVERSATION_PHRASES):
+    #     return Intent.CONVERSATION
+    # if words & _CONVERSATION_SIGNALS:
+    #     return Intent.CONVERSATION
 
-    # 1. Math — expressions or explicit math vocabulary
-    if _MATH_PATTERN.search(text) and words & _MATH_SIGNALS:
-        return Intent.MATH
-    if len(words & _MATH_SIGNALS) >= 2:
-        return Intent.MATH
-
-    # 2. Coding — any coding verb AND any known PL/framework name
-    has_pl   = bool(words & _KNOWN_PL)
-    has_verb = bool(words & _CODING_VERBS)
-    if has_pl and has_verb:
-        return Intent.CODING
-    if has_pl and any(w in lower for w in ('what is', 'how does', 'how to', 'explain')):
-        return Intent.CODING
-
-    # 3. Creative
-    is_factual_qw = bool(re.match(
-        r'\b(who|what|where|when|which|how many|how much)\b', lower
-    ))
-    if len(words & _CREATIVE_SIGNALS) >= 1 and not is_factual_qw:
-        if any(w in lower for w in ('essay', 'brainstorm', 'timeline', 'overview',
-                                     'summarize', 'summary', 'draft', 'compose',
-                                     'blog', 'post', 'story', 'poem')):
-            return Intent.CREATIVE
-
-    # 4. Research
-    research_hits = len(words & _RESEARCH_SIGNALS)
-    if research_hits >= 2 or any(w in lower for w in (
-        'arxiv', 'paper', 'published', 'citation', 'journal', 'preprint'
-    )):
-        return Intent.RESEARCH
-
-    # 5. Factual
-    if is_factual_qw:
-        return Intent.FACTUAL
-
-    # 6. Conversation — phrase-level check
-    if any(lower.startswith(p) for p in _CONVERSATION_PHRASES):
-        return Intent.CONVERSATION
-    if words & _CONVERSATION_SIGNALS:
-        return Intent.CONVERSATION
-
+    # Default: if graph had no opinion, treat as factual (will hit web search)
     return Intent.FACTUAL

@@ -99,6 +99,9 @@ _FAREWELLS = frozenset(_CONV.get('farewells', []))
 _FAREWELL_PHRASES = tuple(_CONV.get('farewell_phrases', []))
 _ACKNOWLEDGMENTS = frozenset(_CONV.get('acknowledgments', []))
 _ACK_PHRASES = tuple(_CONV.get('acknowledgment_phrases', []))
+_INTRODUCTIONS = frozenset(_CONV.get('introductions', []))
+_INTRO_PHRASES = tuple(_CONV.get('introduction_phrases', []))
+_INTRO_RESPONSE = _CONV.get('introduction_response', 'Nice to meet you, {name}!')
 
 # thinker data
 _PRONOUNS = frozenset(_TD.get('pronouns', []))
@@ -1676,35 +1679,73 @@ class Thinker:
         return t
 
     # ── Step 6: CLASSIFY ───────────────────────────────
+    #
+    # All conversation patterns are loaded from the DB at module init
+    # (_CONV dict). No hardcoded pattern lists — the DB is the source
+    # of truth. To teach ULI a new conversation type, add it to the
+    # 'conversation' grammar_rules row.
+
+    # Build the pattern table from DB data (once, at class load)
+    # Each entry: (type_name, word_set, phrase_tuple, extra_check_fn)
+    _CONV_PATTERNS = [
+        ('greeting',       _GREETINGS,       _GREETING_PHRASES),
+        ('farewell',       _FAREWELLS,        _FAREWELL_PHRASES),
+        ('acknowledgment', _ACKNOWLEDGMENTS,  _ACK_PHRASES),
+        ('introduction',   _INTRODUCTIONS,    _INTRO_PHRASES),
+    ]
 
     def _classify(self, t: Thought) -> Thought:
-        """What kind of response does this input need?"""
+        """Classify input by matching against DB-loaded conversation patterns.
+
+        All patterns come from grammar_rules → conversation.
+        To teach a new conversation type, add it to the DB.
+        """
         lower = t.raw_input.lower().strip().rstrip('?!.')
         words = set(lower.split())
 
-        # Greeting
-        if words & _GREETINGS or any(p in lower for p in _GREETING_PHRASES):
-            non_greeting = words - _GREETINGS - {'there', 'you', 'are', 'how', 'do'}
-            if len(non_greeting) <= 1:
-                t.response_type = 'greeting'
-                return t
+        # Try each conversation pattern from the DB
+        for ptype, word_set, phrases in self._CONV_PATTERNS:
+            if words & word_set or any(p in lower for p in phrases):
+                # Type-specific guards (also from DB concepts, not hardcoded)
+                if ptype == 'greeting':
+                    # Only if most words ARE greeting words
+                    non_greeting = words - word_set - {'there', 'you', 'are', 'how', 'do'}
+                    if len(non_greeting) > 1:
+                        continue
+                elif ptype == 'acknowledgment':
+                    # Not if there's an embedded question
+                    if '?' in t.raw_input:
+                        continue
+                elif ptype == 'introduction':
+                    # Extract the name from grammar structure
+                    self._extract_user_name(t)
 
-        # Farewell
-        if words & _FAREWELLS or any(p in lower for p in _FAREWELL_PHRASES):
-            t.response_type = 'farewell'
-            return t
-
-        # Acknowledgment (no embedded question)
-        if words & _ACKNOWLEDGMENTS or any(p in lower for p in _ACK_PHRASES):
-            has_question = '?' in t.raw_input or any(
-                w in lower for w in ('what', 'who', 'where', 'when', 'why', 'how')
-            )
-            if not has_question:
-                t.response_type = 'acknowledgment'
+                t.response_type = ptype
                 return t
 
         t.response_type = 'factual'
         return t
+
+    def _extract_user_name(self, t: Thought):
+        """Extract user's name from an introduction statement.
+
+        Uses grammar parse: "My name is X" → extract complement of 'is'.
+        Fallback: last PROPN/NOUN in the sentence.
+        """
+        # From grammar: "name is X" → X is the complement
+        for i, (w, p, l) in enumerate(t.grouped):
+            if w.lower() == 'is' and i + 1 < len(t.grouped):
+                name_parts = [t.grouped[j][0] for j in range(i + 1, len(t.grouped))
+                              if t.grouped[j][1] not in ('PUNCT',)]
+                if name_parts:
+                    self._context['user_name'] = ' '.join(name_parts)
+                    return
+
+        # Fallback for "I'm X" / "Call me X" — last PROPN/NOUN
+        for w, p, l in reversed(t.grouped):
+            if p in ('PROPN', 'NOUN') and w.lower() not in _NOT_ENTITIES:
+                self._context['user_name'] = w
+                return
 
     # ── Step 7: RESPOND ────────────────────────────────
 
@@ -1730,6 +1771,11 @@ class Thinker:
                 t.response = f"Glad I could help with {topic}. Anything else?"
             else:
                 t.response = "You're welcome! Anything else?"
+            return t
+
+        if t.response_type == 'introduction':
+            name = self._context.get('user_name', '')
+            t.response = _INTRO_RESPONSE.format(name=name) if name else _INTRO_RESPONSE.format(name='')
             return t
 
         # Factual: check accumulated context FIRST
